@@ -1,0 +1,121 @@
+name,description,is_active
+Blood Tests,All blood related tests,true
+Urine Tests,All urine related tests,true
+Liver Function Tests,Tests to assess liver health,true
+Kidney Function Tests,Tests to assess kidney health,true
+Thyroid Tests,Tests for thyroid hormone levels,true
+Diabetes Tests,Tests for blood sugar and insulin,true
+Cardiac Tests,Tests related to heart function,true
+Hormone Tests,Tests for various hormone levels,true
+Allergy Tests,Tests to detect allergic reactions,true
+Infectious Disease Tests,"Tests for infections like HIV, Hepatitis",true
+Genetic Tests,Tests for genetic disorders,true
+Immunology Tests,Tests related to immune system,true
+Cancer Screening,Tests for early detection of cancer,true
+Radiology,"X-ray, CT, MRI imaging tests",true
+Pathology,Microscopic examination of tissues,true
+Microbiology,Tests for bacterial and viral infections,true
+Parasitology,Tests for parasitic infections,true
+Biopsy,Tissue sample analysis,true
+Coagulation Tests,Tests for blood clotting,true
+Hematology,Tests related to blood cells,true
+Pulmonary Function Tests,Tests for lung function,true
+Neurological Tests,Tests for brain and nerve function,true
+Bone Density Tests,Tests for bone strength,true
+Prenatal Tests,Tests during pregnancy,true
+Newborn Screening,Tests for newborn health,true
+Vision Tests,Tests for eye health,true
+Hearing Tests,Tests for auditory function,true
+Dermatology Tests,Tests for skin conditions,true
+Gastrointestinal Tests,Tests for digestive system,true
+Endocrinology Tests,Tests for endocrine system,true
+Rheumatology Tests,Tests for autoimmune diseases,true
+Toxicology Tests,Tests for toxins and drugs,true
+Occupational Health Tests,Tests for workplace health risks,true
+Veterinary Blood Tests,Blood tests for animals,true
+Veterinary Urine Tests,Urine tests for animals,true
+Veterinary Imaging,"X-ray, MRI for animals",true
+Veterinary Pathology,Tissue analysis for animals,true
+Veterinary Microbiology,Infection tests for animals,true
+Veterinary Genetic Tests,Genetic screening for animals,true
+Veterinary Allergy Tests,Allergy tests for animals,true
+Veterinary Hormone Tests,Hormone tests for animals,true
+Veterinary Cancer Screening,Cancer tests for animals,true
+Veterinary Prenatal Tests,Pregnancy tests for animals,true
+Veterinary Newborn Screening,Health tests for newborn animals,true
+Veterinary Vision Tests,Eye tests for animals,true
+Veterinary Hearing Tests,Ear tests for animals,true
+Veterinary Toxicology,Toxin tests for animals,true
+Veterinary Endocrinology,Endocrine tests for animals,true
+Veterinary Rheumatology,Autoimmune tests for animals,true
+Veterinary Gastrointestinal,Digestive tests for animals,true
+Veterinary Pulmonary Tests,Lung tests for animals,true
+Veterinary Neurological Tests,Brain and nerve tests for animals,true
+Veterinary Bone Density,Bone strength tests for animals,true
+Veterinary Coagulation,Blood clotting tests for animals,true
+Veterinary Hematology,Blood cell tests for animals,true
+Veterinary Immunology,Immune system tests for animals,true
+Veterinary Infectious Disease,Infection screening for animals,true
+Veterinary Biopsy,Tissue sample analysis for animals,true
+Veterinary Occupational Health,Workplace health tests for animals,true
+Custom Test Category 60,Description for custom test category 60,true
+Custom Test Category 61,Description for custom test category 61,true
+Custom Test Category 62,Description for custom test category 62,true
+Custom Test Category 63,Description for custom test category 63,true
+Custom Test Category 64,Description for custom test category 64,true
+Custom Test Category 65,Description for custom test category 65,true
+Custom Test Category 66,Description for custom test category 66,true
+Custom Test Category 67,Description for custom test category 67,true
+Custom Test Category 68,Description for custom test category 68,true
+Custom Test Category 69,Description for custom test category 69,true
+Custom Test Category 70,Description for custom test category 70,true
+Custom Test Category 71,Description for custom test category 71,true
+Custom Test Category 72,Description for custom test category 72,true
+Custom Test Category 73,Description for custom test category 73,true
+Custom Test Category 74,Description for custom test category 74,true
+Custom Test Category 75,Description for custom test category 75,true
+Custom Test Category 76,Description for custom test category 76,true
+Custom Test Category 77,Description for custom test category 77,true
+Custom Test Category 78,Description for custom test category 78,true
+Custom Test Category 79,Description for custom test category 79,true
+Custom Test Category 80,Description for custom test category 80,true
+Custom Test Category 81,Description for custom test category 81,true
+Custom Test Category 82,Description for custom test category 82,true
+Custom Test Category 83,Description for custom test category 83,true
+Custom Test Category 84,Description for custom test category 84,true
+Custom Test Category 85,Description for custom test category 85,true
+Custom Test Category 86,Description for custom test category 86,true
+Custom Test Category 87,Description for custom test category 87,true
+Custom Test Category 88,Description for custom test category 88,true
+Custom Test Category 89,Description for custom test category 89,true
+Custom Test Category 90,Description for custom test category 90,true
+Custom Test Category 91,Description for custom test category 91,true
+Custom Test Category 92,Description for custom test category 92,true
+Custom Test Category 93,Description for custom test category 93,true
+Custom Test Category 94,Description for custom test category 94,true
+Custom Test Category 95,Description for custom test category 95,true
+Custom Test Category 96,Description for custom test category 96,true
+Custom Test Category 97,Description for custom test category 97,true
+Custom Test Category 98,Description for custom test category 98,true
+Custom Test Category 99,Description for custom test category 99,true
+Custom Test Category 100,Description for custom test category 100,true
+Custom Test Category 101,Description for custom test category 101,true
+Custom Test Category 102,Description for custom test category 102,true
+Custom Test Category 103,Description for custom test category 103,true
+Custom Test Category 104,Description for custom test category 104,true
+Custom Test Category 105,Description for custom test category 105,true
+Custom Test Category 106,Description for custom test category 106,true
+Custom Test Category 107,Description for custom test category 107,true
+Custom Test Category 108,Description for custom test category 108,true
+Custom Test Category 109,Description for custom test category 109,true
+Custom Test Category 110,Description for custom test category 110,true
+Custom Test Category 111,Description for custom test category 111,true
+Custom Test Category 112,Description for custom test category 112,true
+Custom Test Category 113,Description for custom test category 113,true
+Custom Test Category 114,Description for custom test category 114,true
+Custom Test Category 115,Description for custom test category 115,true
+Custom Test Category 116,Description for custom test category 116,true
+Custom Test Category 117,Description for custom test category 117,true
+Custom Test Category 118,Description for custom test category 118,true
+Custom Test Category 119,Description for custom test category 119,true
+Custom Test Category 120,Description for custom test category 120,true

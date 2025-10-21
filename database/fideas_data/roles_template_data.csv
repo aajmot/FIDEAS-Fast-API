@@ -1,0 +1,135 @@
+name,description,is_active
+Manager,Management role,TRUE
+Salesman,Salesman,TRUE
+Accountant,Accountant,TRUE
+Marketing Manager,Marketing Manager,TRUE
+Senior Manager,Senior Manager,TRUE
+Director,Director,TRUE
+Billing Admin,Billing Admin,TRUE
+Security Admin,Security Admin,TRUE
+Approver ,Approver ,TRUE
+Support Agent,Support Agent,TRUE
+Auditor ,Auditor ,TRUE
+HR Executive,Human Resources Executive,TRUE
+IT Administrator,IT Administrator,TRUE
+Project Coordinator,Project Coordinator,TRUE
+Business Analyst,Business Analyst,TRUE
+Technical Lead,Technical Lead,TRUE
+Product Manager,Product Manager,TRUE
+Customer Success Manager,Customer Success Manager,TRUE
+Operations Manager,Operations Manager,TRUE
+Finance Controller,Finance Controller,TRUE
+Legal Advisor,Legal Advisor,TRUE
+Training Specialist,Training Specialist,TRUE
+Procurement Officer,Procurement Officer,TRUE
+Data Analyst,Data Analyst,TRUE
+System Architect,System Architect,TRUE
+Quality Assurance Engineer,Quality Assurance Engineer,TRUE
+Content Strategist,Content Strategist,TRUE
+UX Designer,User Experience Designer,TRUE
+Frontend Developer,Frontend Developer,TRUE
+Backend Developer,Backend Developer,TRUE
+DevOps Engineer,DevOps Engineer,TRUE
+Cloud Engineer,Cloud Infrastructure Engineer,TRUE
+Network Engineer,Network Infrastructure Engineer,TRUE
+Database Administrator,Database Administrator,TRUE
+Security Analyst,Security Analyst,TRUE
+Compliance Officer,Compliance Officer,TRUE
+Risk Manager,Risk Management Role,TRUE
+Scrum Master,Scrum Master for Agile Teams,TRUE
+Release Manager,Release Management Role,TRUE
+Mobile Developer,Mobile Application Developer,TRUE
+AI Engineer,Artificial Intelligence Engineer,TRUE
+Machine Learning Engineer,Machine Learning Engineer,TRUE
+Data Scientist,Data Scientist,TRUE
+Technical Writer,Technical Documentation Specialist,TRUE
+SEO Specialist,Search Engine Optimization Specialist,TRUE
+Social Media Manager,Social Media Strategy Manager,TRUE
+Graphic Designer,Graphic Designer,TRUE
+Video Editor,Video Editing Specialist,TRUE
+Event Coordinator,Event Planning and Coordination,TRUE
+Facilities Manager,Facilities Management Role,TRUE
+Inventory Manager,Inventory and Stock Management,TRUE
+name,description,is_active
+Enterprise Architect,Enterprise Architecture Role,TRUE
+Service Desk Analyst,IT Service Desk Analyst,TRUE
+Penetration Tester,Security Penetration Tester,TRUE
+Change Manager,Change Management Role,TRUE
+Incident Manager,Incident Management Role,TRUE
+Release Engineer,Software Release Engineer,TRUE
+Test Engineer,Software Test Engineer,TRUE
+Automation Engineer,Automation Specialist,TRUE
+Integration Specialist,System Integration Specialist,TRUE
+CRM Administrator,Customer Relationship Management Admin,TRUE
+ERP Consultant,Enterprise Resource Planning Consultant,TRUE
+Talent Acquisition Specialist,Recruitment and Hiring Specialist,TRUE
+Payroll Specialist,Payroll Processing Specialist,TRUE
+Compensation Analyst,Compensation and Benefits Analyst,TRUE
+Learning & Development Manager,Training and Development Manager,TRUE
+Public Relations Officer,Public Relations and Media Liaison,TRUE
+Brand Manager,Brand Strategy Manager,TRUE
+Account Manager,Client Account Manager,TRUE
+Field Technician,On-site Technical Support,TRUE
+Helpdesk Technician,Helpdesk Support Technician,TRUE
+Innovation Manager,Innovation and Strategy Manager,TRUE
+Digital Transformation Lead,Digital Transformation Leader,TRUE
+IT Support Specialist,IT Support and Troubleshooting,TRUE
+Application Support Analyst,Application Support Analyst,TRUE
+Business Development Executive,Business Growth and Development,TRUE
+Client Relationship Manager,Client Relationship Management,TRUE
+Knowledge Manager,Knowledge Management Role,TRUE
+Workforce Planner,Workforce Planning and Optimization,TRUE
+Sustainability Officer,Sustainability and Environmental Compliance,TRUE
+Energy Manager,Energy Efficiency and Management,TRUE
+Logistics Coordinator,Logistics and Supply Chain Coordination,TRUE
+Warehouse Supervisor,Warehouse Operations Supervisor,TRUE
+Fleet Manager,Fleet and Transportation Management,TRUE
+Contract Manager,Contract Negotiation and Management,TRUE
+Vendor Manager,Vendor Relationship Manager,TRUE
+Technical Recruiter,Technical Talent Acquisition,TRUE
+IT Compliance Analyst,IT Compliance and Governance,TRUE
+Digital Marketing Specialist,Digital Marketing Campaigns,TRUE
+E-commerce Manager,E-commerce Operations Manager,TRUE
+Localization Specialist,Language and Localization Expert,TRUE
+name,description,is_active
+Chief Technology Officer,Executive Technology Leadership,TRUE
+Chief Financial Officer,Executive Financial Leadership,TRUE
+Chief Operating Officer,Executive Operations Leadership,TRUE
+Chief Marketing Officer,Executive Marketing Leadership,TRUE
+Chief Human Resources Officer,Executive HR Leadership,TRUE
+Strategy Consultant,Business Strategy Consultant,TRUE
+Innovation Consultant,Innovation and Growth Consultant,TRUE
+Digital Product Designer,Digital Product Design Specialist,TRUE
+Cybersecurity Engineer,Cybersecurity and Threat Management,TRUE
+Data Governance Analyst,Data Governance and Compliance,TRUE
+AI Product Manager,AI Product Strategy and Management,TRUE
+Robotics Engineer,Robotics Design and Development,TRUE
+Blockchain Developer,Blockchain Application Developer,TRUE
+Smart Contract Auditor,Smart Contract Security Auditor,TRUE
+IoT Solutions Architect,Internet of Things Solutions Architect,TRUE
+Edge Computing Specialist,Edge Computing Infrastructure Expert,TRUE
+Virtualization Engineer,System Virtualization Engineer,TRUE
+Platform Engineer,Platform Infrastructure Engineer,TRUE
+Site Reliability Engineer,Site Reliability and Performance Engineer,TRUE
+Accessibility Specialist,Digital Accessibility Expert,TRUE
+name,description,is_active
+Cloud Solutions Architect,Cloud Architecture and Design,TRUE
+AI Research Scientist,Artificial Intelligence Researcher,TRUE
+Ethical Hacker,Security Testing and Ethical Hacking,TRUE
+IT Auditor,Information Technology Auditor,TRUE
+Business Continuity Manager,Business Continuity Planning,TRUE
+Disaster Recovery Specialist,Disaster Recovery Planning,TRUE
+Technical Account Manager,Technical Client Relationship Manager,TRUE
+IT Project Manager,IT Project Planning and Execution,TRUE
+Software Architect,Software System Architecture,TRUE
+Middleware Engineer,Middleware Integration Specialist,TRUE
+Data Engineer,Data Pipeline and Infrastructure Engineer,TRUE
+Data Quality Analyst,Data Accuracy and Quality Analyst,TRUE
+BI Developer,Business Intelligence Developer,TRUE
+Revenue Analyst,Revenue Forecasting and Analysis,TRUE
+Cost Accountant,Cost Accounting Specialist,TRUE
+Treasury Analyst,Treasury and Cash Flow Analyst,TRUE
+Legal Compliance Officer,Legal and Regulatory Compliance,TRUE
+Patent Analyst,Patent Research and Analysis,TRUE
+Grant Coordinator,Grant Management and Coordination,TRUE
+Community Manager,Online Community Engagement Manager,TRUE

@@ -1,0 +1,481 @@
+name,category_name,body_part,description,typical_duration,preparation_instruction,rate,hsn_code,gst,cess,is_active,parameter_names,parameter_units,parameter_ranges
+Complete Blood Count,Blood Tests,Blood,CBC test,2 hours,Fasting required,500.00,9018,5.00,0.00,true,Hemoglobin#WBC Count,g/dL#cells/mcL,12-16#4000-11000
+ALT Test 1,Hormone Tests,Urine,Advanced imaging scan,2 hours,Avoid caffeine,4839.65,9002,5.00,1.00,true,ALT#Platelet Count,U/L#cells/mcL,7-56#150000-450000
+Creatinine Test 2,Pathology,Heart,Pathogen detection,2 hours,No preparation needed,2570.51,9007,0.00,0.00,true,Creatinine#TSH#WBC Count,mg/dL#uIU/mL#cells/mcL,0.6-1.3#0.4-4.0#4000-11000
+Triglycerides Test 3,Imaging,Abdomen,Genetic screening,30 minutes,Hydration recommended,334.11,9005,0.00,2.00,false,Triglycerides#TSH,mg/dL#uIU/mL,<150#0.4-4.0
+Glucose Test 4,Infectious Disease Tests,Chest,Advanced imaging scan,4 hours,Fasting required,3585.91,9008,0.00,1.00,true,Glucose#Creatinine#ALT,mg/dL#mg/dL#U/L,70-110#0.6-1.3#7-56
+Hemoglobin Test 5,Urine Tests,Heart,Hormonal level analysis,Overnight,Avoid caffeine,3016.57,9020,0.00,0.00,true,Hemoglobin#WBC Count,g/dL#cells/mcL,12-16#4000-11000
+TSH Test 6,Imaging,Thyroid,Organ function evaluation,30 minutes,Hydration recommended,587.43,9011,12.00,1.00,false,TSH#Cholesterol#Hemoglobin,uIU/mL#mg/dL#g/dL,0.4-4.0#<200#12-16
+Glucose Test 7,Genetic Tests,Abdomen,Routine diagnostic test,3 hours,Hydration recommended,2347.59,9005,12.00,2.00,true,Glucose#Creatinine,mg/dL#mg/dL,70-110#0.6-1.3
+AST Test 8,Imaging,Kidney,Genetic screening,Overnight,Fasting required,1780.62,9002,0.00,2.00,false,AST#ALT,U/L#U/L,10-40#7-56
+Platelet Count Test 9,Cardiac Tests,Abdomen,Hormonal level analysis,Overnight,Fasting required,2225.68,9008,12.00,2.00,false,Platelet Count#Triglycerides#TSH,cells/mcL#mg/dL#uIU/mL,150000-450000#<150#0.4-4.0
+Platelet Count Test 10,Urine Tests,Urine,Pathogen detection,4 hours,No preparation needed,4417.88,9014,12.00,2.00,true,Platelet Count#Glucose#Hemoglobin,cells/mcL#mg/dL#g/dL,150000-450000#70-110#12-16
+Glucose Test 11,Blood Tests,Brain,Routine diagnostic test,30 minutes,Fasting required,553.90,9019,12.00,1.00,false,Glucose#Creatinine,mg/dL#mg/dL,70-110#0.6-1.3
+TSH Test 12,Liver Function Tests,Chest,Pathogen detection,30 minutes,Fasting required,211.12,9019,12.00,0.00,false,TSH#Platelet Count#Cholesterol,uIU/mL#cells/mcL#mg/dL,0.4-4.0#150000-450000#<200
+WBC Count Test 13,Genetic Tests,Abdomen,Organ function evaluation,Overnight,Avoid caffeine,2785.12,9007,5.00,1.00,false,WBC Count#AST#TSH,cells/mcL#U/L#uIU/mL,4000-11000#10-40#0.4-4.0
+ALT Test 14,Pathology,Liver,Routine diagnostic test,3 hours,No preparation needed,901.01,9003,12.00,1.00,true,ALT#Creatinine#Glucose,U/L#mg/dL#mg/dL,7-56#0.6-1.3#70-110
+Triglycerides Test 15,Imaging,Liver,Organ function evaluation,4 hours,Fasting required,3156.08,9002,12.00,2.00,true,Triglycerides#Hemoglobin#AST,mg/dL#g/dL#U/L,<150#12-16#10-40
+AST Test 16,Cardiac Tests,Kidney,Routine diagnostic test,1 hour,Fasting required,3803.79,9005,5.00,1.00,true,AST#Glucose,U/L#mg/dL,10-40#70-110
+Creatinine Test 17,Infectious Disease Tests,Chest,Organ function evaluation,30 minutes,Fasting required,3544.00,9015,5.00,1.00,true,Creatinine#Cholesterol#Platelet Count,mg/dL#mg/dL#cells/mcL,0.6-1.3#<200#150000-450000
+Cholesterol Test 18,Imaging,Chest,Genetic screening,2 hours,No preparation needed,1036.54,9002,0.00,2.00,false,Cholesterol#AST,mg/dL#U/L,<200#10-40
+WBC Count Test 19,Imaging,Brain,Hormonal level analysis,3 hours,Hydration recommended,4162.96,9008,5.00,1.00,true,WBC Count#Hemoglobin,cells/mcL#g/dL,4000-11000#12-16
+ALT Test 20,Pathology,Kidney,Organ function evaluation,30 minutes,Fasting required,2231.30,9011,5.00,0.00,false,ALT#AST#Cholesterol,U/L#U/L#mg/dL,7-56#10-40#<200
+WBC Count Test 21,Blood Tests,Abdomen,Routine diagnostic test,3 hours,No preparation needed,785.02,9005,5.00,1.00,false,WBC Count#Creatinine,cells/mcL#mg/dL,4000-11000#0.6-1.3
+WBC Count Test 22,Infectious Disease Tests,Kidney,Hormonal level analysis,3 hours,Hydration recommended,1211.28,9007,5.00,1.00,true,WBC Count#Hemoglobin,cells/mcL#g/dL,4000-11000#12-16
+AST Test 23,Imaging,Skin,Advanced imaging scan,Overnight,Avoid caffeine,2419.07,9012,0.00,1.00,true,AST#Platelet Count,U/L#cells/mcL,10-40#150000-450000
+WBC Count Test 24,Imaging,Thyroid,Hormonal level analysis,4 hours,Hydration recommended,3792.13,9005,0.00,0.00,false,WBC Count#Platelet Count,cells/mcL#cells/mcL,4000-11000#150000-450000
+Creatinine Test 25,Cardiac Tests,Chest,Routine diagnostic test,Overnight,Avoid caffeine,2595.14,9016,12.00,1.00,true,Creatinine#Cholesterol,mg/dL#mg/dL,0.6-1.3#<200
+TSH Test 26,Allergy Tests,Chest,Organ function evaluation,4 hours,Hydration recommended,4004.86,9010,12.00,2.00,true,TSH#Glucose#Triglycerides,uIU/mL#mg/dL#mg/dL,0.4-4.0#70-110#<150
+Triglycerides Test 27,Cardiac Tests,Skin,Routine diagnostic test,4 hours,Avoid caffeine,2301.33,9008,0.00,0.00,false,Triglycerides#Glucose#Cholesterol,mg/dL#mg/dL#mg/dL,<150#70-110#<200
+Hemoglobin Test 28,Liver Function Tests,Kidney,Routine diagnostic test,1 hour,Avoid caffeine,2295.33,9012,0.00,2.00,true,Hemoglobin#AST,g/dL#U/L,12-16#10-40
+TSH Test 29,Infectious Disease Tests,Chest,Pathogen detection,2 hours,No preparation needed,3297.40,9003,0.00,0.00,false,TSH#AST,uIU/mL#U/L,0.4-4.0#10-40
+AST Test 30,Allergy Tests,Skin,Advanced imaging scan,4 hours,No preparation needed,497.70,9016,5.00,2.00,false,AST#ALT,U/L#U/L,10-40#7-56
+WBC Count Test 31,Hormone Tests,Liver,Pathogen detection,Overnight,No preparation needed,883.10,9020,12.00,0.00,false,WBC Count#Triglycerides#ALT,cells/mcL#mg/dL#U/L,4000-11000#<150#7-56
+Glucose Test 32,Imaging,Blood,Genetic screening,30 minutes,Hydration recommended,2602.76,9007,0.00,1.00,false,Glucose#Hemoglobin#Triglycerides,mg/dL#g/dL#mg/dL,70-110#12-16#<150
+Glucose Test 33,Urine Tests,Thyroid,Pathogen detection,2 hours,Avoid caffeine,224.56,9002,0.00,1.00,true,Glucose#Hemoglobin,mg/dL#g/dL,70-110#12-16
+ALT Test 34,Cardiac Tests,Brain,Genetic screening,3 hours,Fasting required,3952.00,9007,5.00,2.00,false,ALT#Creatinine,U/L#mg/dL,7-56#0.6-1.3
+Cholesterol Test 35,Imaging,Chest,Genetic screening,Overnight,Avoid caffeine,3620.85,9008,0.00,0.00,false,Cholesterol#Glucose#WBC Count,mg/dL#mg/dL#cells/mcL,<200#70-110#4000-11000
+AST Test 36,Blood Tests,Liver,Hormonal level analysis,Overnight,No preparation needed,3948.93,9006,0.00,1.00,true,AST#Creatinine,U/L#mg/dL,10-40#0.6-1.3
+Cholesterol Test 37,Pathology,Blood,Pathogen detection,3 hours,No preparation needed,2864.59,9004,5.00,2.00,true,Cholesterol#Platelet Count#AST,mg/dL#cells/mcL#U/L,<200#150000-450000#10-40
+Platelet Count Test 38,Hormone Tests,Brain,Genetic screening,Overnight,Fasting required,429.46,9019,5.00,0.00,false,Platelet Count#TSH#Hemoglobin,cells/mcL#uIU/mL#g/dL,150000-450000#0.4-4.0#12-16
+Cholesterol Test 39,Hormone Tests,Abdomen,Hormonal level analysis,2 hours,Hydration recommended,4193.51,9008,12.00,0.00,false,Cholesterol#Glucose#Hemoglobin,mg/dL#mg/dL#g/dL,<200#70-110#12-16
+ALT Test 40,Pathology,Heart,Genetic screening,1 hour,No preparation needed,4424.54,9004,5.00,0.00,true,ALT#Creatinine,U/L#mg/dL,7-56#0.6-1.3
+Glucose Test 41,Infectious Disease Tests,Brain,Hormonal level analysis,Overnight,Fasting required,4985.58,9010,5.00,1.00,false,Glucose#Triglycerides#Cholesterol,mg/dL#mg/dL#mg/dL,70-110#<150#<200
+Hemoglobin Test 42,Imaging,Kidney,Pathogen detection,Overnight,Avoid caffeine,2269.79,9005,0.00,1.00,true,Hemoglobin#ALT#Creatinine,g/dL#U/L#mg/dL,12-16#7-56#0.6-1.3
+Triglycerides Test 43,Cardiac Tests,Thyroid,Hormonal level analysis,3 hours,Fasting required,3436.75,9017,5.00,2.00,true,Triglycerides#Glucose,mg/dL#mg/dL,<150#70-110
+Platelet Count Test 44,Liver Function Tests,Skin,Hormonal level analysis,4 hours,Hydration recommended,2623.33,9004,0.00,2.00,false,Platelet Count#WBC Count,cells/mcL#cells/mcL,150000-450000#4000-11000
+Hemoglobin Test 45,Urine Tests,Heart,Organ function evaluation,1 hour,Fasting required,337.85,9010,5.00,1.00,false,Hemoglobin#WBC Count,g/dL#cells/mcL,12-16#4000-11000
+Glucose Test 46,Genetic Tests,Kidney,Routine diagnostic test,2 hours,Avoid caffeine,813.60,9007,0.00,1.00,true,Glucose#Triglycerides#ALT,mg/dL#mg/dL#U/L,70-110#<150#7-56
+WBC Count Test 47,Cardiac Tests,Chest,Hormonal level analysis,1 hour,Fasting required,4936.87,9007,5.00,2.00,false,WBC Count#ALT,cells/mcL#U/L,4000-11000#7-56
+Creatinine Test 48,Allergy Tests,Urine,Organ function evaluation,4 hours,Hydration recommended,1547.25,9004,12.00,2.00,true,Creatinine#Cholesterol#AST,mg/dL#mg/dL#U/L,0.6-1.3#<200#10-40
+Triglycerides Test 49,Cardiac Tests,Urine,Routine diagnostic test,3 hours,No preparation needed,2810.26,9019,5.00,0.00,false,Triglycerides#ALT#Hemoglobin,mg/dL#U/L#g/dL,<150#7-56#12-16
+ALT Test 50,Urine Tests,Kidney,Routine diagnostic test,4 hours,Avoid caffeine,2683.34,9020,12.00,1.00,true,ALT#Cholesterol,U/L#mg/dL,7-56#<200
+Glucose Test 51,Allergy Tests,Brain,Advanced imaging scan,3 hours,Fasting required,3065.20,9017,5.00,1.00,false,Glucose#Triglycerides,mg/dL#mg/dL,70-110#<150
+Platelet Count Test 52,Imaging,Liver,Organ function evaluation,1 hour,Avoid caffeine,4416.33,9020,0.00,1.00,true,Platelet Count#Triglycerides#WBC Count,cells/mcL#mg/dL#cells/mcL,150000-450000#<150#4000-11000
+Triglycerides Test 53,Hormone Tests,Blood,Pathogen detection,2 hours,Hydration recommended,2056.07,9009,0.00,1.00,true,Triglycerides#Platelet Count,mg/dL#cells/mcL,<150#150000-450000
+ALT Test 54,Genetic Tests,Abdomen,Advanced imaging scan,3 hours,Fasting required,625.31,9020,5.00,2.00,false,ALT#TSH#Hemoglobin,U/L#uIU/mL#g/dL,7-56#0.4-4.0#12-16
+Glucose Test 55,Allergy Tests,Skin,Advanced imaging scan,2 hours,Fasting required,875.18,9008,12.00,0.00,true,Glucose#AST,mg/dL#U/L,70-110#10-40
+ALT Test 56,Allergy Tests,Skin,Genetic screening,4 hours,No preparation needed,2347.69,9001,12.00,2.00,false,ALT#Platelet Count#TSH,U/L#cells/mcL#uIU/mL,7-56#150000-450000#0.4-4.0
+Creatinine Test 57,Infectious Disease Tests,Kidney,Pathogen detection,30 minutes,Avoid caffeine,4781.96,9017,12.00,1.00,true,Creatinine#AST,mg/dL#U/L,0.6-1.3#10-40
+Cholesterol Test 58,Hormone Tests,Blood,Hormonal level analysis,2 hours,No preparation needed,3667.70,9015,12.00,1.00,false,Cholesterol#ALT,mg/dL#U/L,<200#7-56
+WBC Count Test 59,Cardiac Tests,Chest,Hormonal level analysis,4 hours,Avoid caffeine,3369.59,9016,0.00,0.00,true,WBC Count#Triglycerides#Glucose,cells/mcL#mg/dL#mg/dL,4000-11000#<150#70-110
+Platelet Count Test 60,Hormone Tests,Heart,Organ function evaluation,30 minutes,Avoid caffeine,2331.33,9006,0.00,2.00,false,Platelet Count#WBC Count#Hemoglobin,cells/mcL#cells/mcL#g/dL,150000-450000#4000-11000#12-16
+WBC Count Test 61,Blood Tests,Chest,Organ function evaluation,30 minutes,Avoid caffeine,2847.43,9020,12.00,0.00,true,WBC Count#Cholesterol,cells/mcL#mg/dL,4000-11000#<200
+WBC Count Test 62,Hormone Tests,Kidney,Pathogen detection,30 minutes,Avoid caffeine,4492.08,9008,0.00,0.00,true,WBC Count#Glucose,cells/mcL#mg/dL,4000-11000#70-110
+Creatinine Test 63,Blood Tests,Heart,Pathogen detection,4 hours,Fasting required,2910.08,9014,12.00,2.00,false,Creatinine#ALT,mg/dL#U/L,0.6-1.3#7-56
+TSH Test 64,Pathology,Blood,Pathogen detection,1 hour,Hydration recommended,4641.41,9013,0.00,0.00,false,TSH#Hemoglobin,uIU/mL#g/dL,0.4-4.0#12-16
+Platelet Count Test 65,Urine Tests,Urine,Pathogen detection,3 hours,Fasting required,4968.33,9007,5.00,2.00,true,Platelet Count#Creatinine,cells/mcL#mg/dL,150000-450000#0.6-1.3
+ALT Test 66,Blood Tests,Kidney,Pathogen detection,3 hours,No preparation needed,3416.29,9009,5.00,2.00,false,ALT#Cholesterol#WBC Count,U/L#mg/dL#cells/mcL,7-56#<200#4000-11000
+Hemoglobin Test 67,Urine Tests,Urine,Organ function evaluation,1 hour,Avoid caffeine,4566.74,9003,0.00,2.00,true,Hemoglobin#AST,g/dL#U/L,12-16#10-40
+AST Test 68,Pathology,Skin,Routine diagnostic test,2 hours,No preparation needed,4998.59,9015,0.00,2.00,false,AST#Cholesterol#TSH,U/L#mg/dL#uIU/mL,10-40#<200#0.4-4.0
+WBC Count Test 69,Pathology,Thyroid,Advanced imaging scan,30 minutes,No preparation needed,3500.40,9011,0.00,0.00,true,WBC Count#Cholesterol#Hemoglobin,cells/mcL#mg/dL#g/dL,4000-11000#<200#12-16
+TSH Test 70,Genetic Tests,Heart,Genetic screening,30 minutes,Hydration recommended,387.63,9004,12.00,1.00,true,TSH#Cholesterol#ALT,uIU/mL#mg/dL#U/L,0.4-4.0#<200#7-56
+Glucose Test 71,Infectious Disease Tests,Skin,Routine diagnostic test,4 hours,No preparation needed,1888.90,9013,5.00,1.00,false,Glucose#Cholesterol,mg/dL#mg/dL,70-110#<200
+Hemoglobin Test 72,Liver Function Tests,Kidney,Organ function evaluation,2 hours,No preparation needed,3071.39,9004,0.00,2.00,true,Hemoglobin#Platelet Count,g/dL#cells/mcL,12-16#150000-450000
+Creatinine Test 73,Infectious Disease Tests,Heart,Genetic screening,1 hour,No preparation needed,2491.08,9007,5.00,0.00,true,Creatinine#TSH#AST,mg/dL#uIU/mL#U/L,0.6-1.3#0.4-4.0#10-40
+Cholesterol Test 74,Infectious Disease Tests,Thyroid,Routine diagnostic test,4 hours,Hydration recommended,1148.88,9012,12.00,0.00,false,Cholesterol#Glucose,mg/dL#mg/dL,<200#70-110
+ALT Test 75,Pathology,Liver,Organ function evaluation,2 hours,No preparation needed,4768.92,9016,0.00,2.00,false,ALT#TSH#Glucose,U/L#uIU/mL#mg/dL,7-56#0.4-4.0#70-110
+AST Test 76,Urine Tests,Kidney,Advanced imaging scan,3 hours,Fasting required,1807.29,9004,5.00,0.00,true,AST#Triglycerides,U/L#mg/dL,10-40#<150
+Hemoglobin Test 77,Urine Tests,Brain,Organ function evaluation,1 hour,Hydration recommended,3210.77,9007,12.00,2.00,true,Hemoglobin#Glucose#Platelet Count,g/dL#mg/dL#cells/mcL,12-16#70-110#150000-450000
+Creatinine Test 78,Genetic Tests,Skin,Routine diagnostic test,Overnight,No preparation needed,2728.42,9013,12.00,1.00,true,Creatinine#Hemoglobin#Triglycerides,mg/dL#g/dL#mg/dL,0.6-1.3#12-16#<150
+TSH Test 79,Cardiac Tests,Kidney,Pathogen detection,3 hours,Hydration recommended,516.68,9001,5.00,2.00,false,TSH#Glucose,uIU/mL#mg/dL,0.4-4.0#70-110
+ALT Test 80,Genetic Tests,Thyroid,Genetic screening,3 hours,Fasting required,391.21,9016,12.00,2.00,true,ALT#Glucose,U/L#mg/dL,7-56#70-110
+AST Test 81,Imaging,Blood,Advanced imaging scan,1 hour,Avoid caffeine,837.74,9002,5.00,1.00,true,AST#ALT#Cholesterol,U/L#U/L#mg/dL,10-40#7-56#<200
+Cholesterol Test 82,Infectious Disease Tests,Skin,Pathogen detection,1 hour,Hydration recommended,1301.37,9009,0.00,2.00,false,Cholesterol#WBC Count#ALT,mg/dL#cells/mcL#U/L,<200#4000-11000#7-56
+TSH Test 83,Genetic Tests,Abdomen,Organ function evaluation,3 hours,Avoid caffeine,552.51,9019,5.00,2.00,false,TSH#Creatinine,uIU/mL#mg/dL,0.4-4.0#0.6-1.3
+Glucose Test 84,Imaging,Chest,Organ function evaluation,4 hours,Hydration recommended,4508.41,9009,12.00,0.00,false,Glucose#ALT#Triglycerides,mg/dL#U/L#mg/dL,70-110#7-56#<150
+Glucose Test 85,Imaging,Thyroid,Hormonal level analysis,30 minutes,No preparation needed,903.67,9009,5.00,2.00,false,Glucose#WBC Count,mg/dL#cells/mcL,70-110#4000-11000
+Cholesterol Test 86,Pathology,Brain,Routine diagnostic test,3 hours,Fasting required,1210.53,9000,5.00,0.00,true,Cholesterol#Triglycerides,mg/dL#mg/dL,<200#<150
+TSH Test 87,Blood Tests,Kidney,Advanced imaging scan,2 hours,No preparation needed,3473.86,9020,0.00,1.00,true,TSH#ALT#Glucose,uIU/mL#U/L#mg/dL,0.4-4.0#7-56#70-110
+ALT Test 88,Liver Function Tests,Urine,Organ function evaluation,4 hours,Hydration recommended,3647.21,9010,0.00,0.00,false,ALT#Hemoglobin#WBC Count,U/L#g/dL#cells/mcL,7-56#12-16#4000-11000
+Hemoglobin Test 89,Genetic Tests,Heart,Genetic screening,3 hours,No preparation needed,2399.05,9000,12.00,2.00,false,Hemoglobin#Glucose,g/dL#mg/dL,12-16#70-110
+Creatinine Test 90,Hormone Tests,Blood,Advanced imaging scan,2 hours,No preparation needed,3176.62,9016,12.00,1.00,true,Creatinine#Triglycerides,mg/dL#mg/dL,0.6-1.3#<150
+Triglycerides Test 91,Genetic Tests,Skin,Routine diagnostic test,3 hours,Hydration recommended,3479.09,9009,12.00,1.00,false,Triglycerides#Hemoglobin,mg/dL#g/dL,<150#12-16
+TSH Test 92,Imaging,Kidney,Organ function evaluation,4 hours,Avoid caffeine,2584.09,9006,0.00,0.00,false,TSH#Platelet Count#Hemoglobin,uIU/mL#cells/mcL#g/dL,0.4-4.0#150000-450000#12-16
+Platelet Count Test 93,Urine Tests,Skin,Hormonal level analysis,1 hour,Avoid caffeine,2247.09,9003,5.00,2.00,false,Platelet Count#TSH#AST,cells/mcL#uIU/mL#U/L,150000-450000#0.4-4.0#10-40
+TSH Test 94,Genetic Tests,Heart,Pathogen detection,1 hour,Fasting required,1539.20,9000,5.00,0.00,false,TSH#Platelet Count#Hemoglobin,uIU/mL#cells/mcL#g/dL,0.4-4.0#150000-450000#12-16
+Cholesterol Test 95,Imaging,Blood,Routine diagnostic test,Overnight,Fasting required,4767.29,9008,0.00,0.00,true,Cholesterol#Hemoglobin#Creatinine,mg/dL#g/dL#mg/dL,<200#12-16#0.6-1.3
+Triglycerides Test 96,Imaging,Abdomen,Advanced imaging scan,Overnight,Fasting required,3498.33,9014,5.00,0.00,false,Triglycerides#AST,mg/dL#U/L,<150#10-40
+AST Test 97,Pathology,Thyroid,Hormonal level analysis,3 hours,Avoid caffeine,4001.60,9001,12.00,1.00,false,AST#Cholesterol,U/L#mg/dL,10-40#<200
+Cholesterol Test 98,Blood Tests,Kidney,Genetic screening,3 hours,No preparation needed,3533.27,9006,12.00,0.00,false,Cholesterol#ALT,mg/dL#U/L,<200#7-56
+Hemoglobin Test 99,Urine Tests,Kidney,Genetic screening,4 hours,Avoid caffeine,1245.81,9001,5.00,0.00,false,Hemoglobin#TSH#WBC Count,g/dL#uIU/mL#cells/mcL,12-16#0.4-4.0#4000-11000
+Glucose Test 100,Imaging,Urine,Organ function evaluation,30 minutes,Avoid caffeine,4578.20,9011,5.00,0.00,true,Glucose#Hemoglobin,mg/dL#g/dL,70-110#12-16
+Creatinine Test 101,Liver Function Tests,Urine,Advanced imaging scan,30 minutes,No preparation needed,2796.57,9015,12.00,1.00,true,Creatinine#TSH#ALT,mg/dL#uIU/mL#U/L,0.6-1.3#0.4-4.0#7-56
+Glucose Test 102,Cardiac Tests,Chest,Advanced imaging scan,1 hour,Fasting required,1222.58,9017,12.00,0.00,false,Glucose#Platelet Count#WBC Count,mg/dL#cells/mcL#cells/mcL,70-110#150000-450000#4000-11000
+AST Test 103,Blood Tests,Brain,Pathogen detection,4 hours,No preparation needed,3970.20,9017,12.00,2.00,false,AST#WBC Count,U/L#cells/mcL,10-40#4000-11000
+TSH Test 104,Allergy Tests,Chest,Hormonal level analysis,2 hours,Avoid caffeine,2330.85,9005,12.00,2.00,true,TSH#Triglycerides,uIU/mL#mg/dL,0.4-4.0#<150
+Triglycerides Test 105,Cardiac Tests,Liver,Genetic screening,Overnight,No preparation needed,4992.69,9007,12.00,2.00,false,Triglycerides#Platelet Count#Glucose,mg/dL#cells/mcL#mg/dL,<150#150000-450000#70-110
+Glucose Test 106,Infectious Disease Tests,Kidney,Genetic screening,2 hours,Avoid caffeine,784.19,9011,12.00,0.00,true,Glucose#TSH#AST,mg/dL#uIU/mL#U/L,70-110#0.4-4.0#10-40
+Triglycerides Test 107,Pathology,Skin,Advanced imaging scan,1 hour,Fasting required,4307.41,9011,12.00,2.00,true,Triglycerides#Glucose,mg/dL#mg/dL,<150#70-110
+Cholesterol Test 108,Imaging,Urine,Organ function evaluation,30 minutes,Avoid caffeine,3445.01,9002,0.00,0.00,true,Cholesterol#Creatinine#Hemoglobin,mg/dL#mg/dL#g/dL,<200#0.6-1.3#12-16
+AST Test 109,Liver Function Tests,Kidney,Genetic screening,Overnight,No preparation needed,2731.39,9017,12.00,0.00,false,AST#ALT#Glucose,U/L#U/L#mg/dL,10-40#7-56#70-110
+Cholesterol Test 110,Genetic Tests,Abdomen,Routine diagnostic test,3 hours,No preparation needed,453.94,9001,12.00,2.00,true,Cholesterol#AST#WBC Count,mg/dL#U/L#cells/mcL,<200#10-40#4000-11000
+Triglycerides Test 111,Imaging,Chest,Organ function evaluation,3 hours,No preparation needed,4447.96,9007,0.00,1.00,true,Triglycerides#AST#Glucose,mg/dL#U/L#mg/dL,<150#10-40#70-110
+Creatinine Test 112,Urine Tests,Liver,Genetic screening,3 hours,Avoid caffeine,4419.55,9012,5.00,2.00,false,Creatinine#TSH#WBC Count,mg/dL#uIU/mL#cells/mcL,0.6-1.3#0.4-4.0#4000-11000
+Hemoglobin Test 113,Hormone Tests,Brain,Routine diagnostic test,30 minutes,Avoid caffeine,2426.63,9006,12.00,1.00,true,Hemoglobin#Creatinine,g/dL#mg/dL,12-16#0.6-1.3
+Cholesterol Test 114,Infectious Disease Tests,Chest,Genetic screening,3 hours,No preparation needed,3924.52,9003,5.00,1.00,true,Cholesterol#TSH#Glucose,mg/dL#uIU/mL#mg/dL,<200#0.4-4.0#70-110
+ALT Test 115,Allergy Tests,Abdomen,Routine diagnostic test,1 hour,Fasting required,2325.73,9004,12.00,1.00,false,ALT#Triglycerides,U/L#mg/dL,7-56#<150
+ALT Test 116,Blood Tests,Blood,Genetic screening,3 hours,Avoid caffeine,1872.62,9001,0.00,0.00,true,ALT#Creatinine,U/L#mg/dL,7-56#0.6-1.3
+Glucose Test 117,Allergy Tests,Liver,Organ function evaluation,30 minutes,No preparation needed,4208.09,9014,5.00,0.00,true,Glucose#Triglycerides,mg/dL#mg/dL,70-110#<150
+Cholesterol Test 118,Hormone Tests,Skin,Hormonal level analysis,1 hour,Avoid caffeine,2847.60,9007,0.00,0.00,true,Cholesterol#Glucose,mg/dL#mg/dL,<200#70-110
+Creatinine Test 119,Genetic Tests,Kidney,Hormonal level analysis,2 hours,Avoid caffeine,4357.74,9015,12.00,2.00,false,Creatinine#ALT#AST,mg/dL#U/L#U/L,0.6-1.3#7-56#10-40
+Creatinine Test 120,Infectious Disease Tests,Heart,Genetic screening,2 hours,Hydration recommended,346.24,9015,5.00,1.00,false,Creatinine#Triglycerides#Platelet Count,mg/dL#mg/dL#cells/mcL,0.6-1.3#<150#150000-450000
+Creatinine Test 121,Pathology,Heart,Advanced imaging scan,3 hours,No preparation needed,672.60,9001,5.00,0.00,false,Creatinine#Triglycerides#Cholesterol,mg/dL#mg/dL#mg/dL,0.6-1.3#<150#<200
+Glucose Test 122,Pathology,Abdomen,Genetic screening,2 hours,Avoid caffeine,2350.82,9011,0.00,2.00,false,Glucose#TSH#Triglycerides,mg/dL#uIU/mL#mg/dL,70-110#0.4-4.0#<150
+WBC Count Test 123,Cardiac Tests,Brain,Advanced imaging scan,4 hours,Hydration recommended,1619.18,9002,12.00,2.00,false,WBC Count#TSH,cells/mcL#uIU/mL,4000-11000#0.4-4.0
+AST Test 124,Allergy Tests,Chest,Routine diagnostic test,30 minutes,Fasting required,1671.06,9019,0.00,1.00,false,AST#Hemoglobin,U/L#g/dL,10-40#12-16
+Creatinine Test 125,Imaging,Skin,Organ function evaluation,Overnight,No preparation needed,1996.81,9010,12.00,0.00,false,Creatinine#AST,mg/dL#U/L,0.6-1.3#10-40
+Creatinine Test 126,Genetic Tests,Liver,Hormonal level analysis,Overnight,Fasting required,1020.86,9011,0.00,2.00,true,Creatinine#TSH,mg/dL#uIU/mL,0.6-1.3#0.4-4.0
+ALT Test 127,Imaging,Liver,Pathogen detection,30 minutes,Avoid caffeine,3181.30,9012,5.00,2.00,false,ALT#TSH,U/L#uIU/mL,7-56#0.4-4.0
+Hemoglobin Test 128,Infectious Disease Tests,Skin,Advanced imaging scan,3 hours,Hydration recommended,1804.49,9008,5.00,2.00,true,Hemoglobin#Platelet Count#Creatinine,g/dL#cells/mcL#mg/dL,12-16#150000-450000#0.6-1.3
+Glucose Test 129,Hormone Tests,Brain,Pathogen detection,1 hour,No preparation needed,1212.50,9010,0.00,0.00,false,Glucose#Cholesterol#WBC Count,mg/dL#mg/dL#cells/mcL,70-110#<200#4000-11000
+Cholesterol Test 130,Allergy Tests,Skin,Pathogen detection,1 hour,Avoid caffeine,4463.91,9015,0.00,2.00,false,Cholesterol#WBC Count#Hemoglobin,mg/dL#cells/mcL#g/dL,<200#4000-11000#12-16
+TSH Test 131,Cardiac Tests,Heart,Hormonal level analysis,30 minutes,Avoid caffeine,406.03,9014,12.00,0.00,false,TSH#Creatinine,uIU/mL#mg/dL,0.4-4.0#0.6-1.3
+Triglycerides Test 132,Cardiac Tests,Thyroid,Pathogen detection,30 minutes,Avoid caffeine,3920.90,9007,12.00,0.00,false,Triglycerides#Platelet Count#WBC Count,mg/dL#cells/mcL#cells/mcL,<150#150000-450000#4000-11000
+Platelet Count Test 133,Urine Tests,Thyroid,Genetic screening,3 hours,Fasting required,2028.85,9011,5.00,1.00,true,Platelet Count#Creatinine,cells/mcL#mg/dL,150000-450000#0.6-1.3
+Cholesterol Test 134,Liver Function Tests,Abdomen,Genetic screening,3 hours,Fasting required,2738.28,9006,12.00,1.00,true,Cholesterol#Hemoglobin,mg/dL#g/dL,<200#12-16
+ALT Test 135,Cardiac Tests,Blood,Routine diagnostic test,2 hours,No preparation needed,3717.12,9004,5.00,0.00,true,ALT#Platelet Count,U/L#cells/mcL,7-56#150000-450000
+WBC Count Test 136,Allergy Tests,Urine,Pathogen detection,4 hours,No preparation needed,4510.84,9002,0.00,2.00,true,WBC Count#ALT#TSH,cells/mcL#U/L#uIU/mL,4000-11000#7-56#0.4-4.0
+WBC Count Test 137,Urine Tests,Liver,Genetic screening,Overnight,Avoid caffeine,1848.24,9013,12.00,1.00,true,WBC Count#Platelet Count#Hemoglobin,cells/mcL#cells/mcL#g/dL,4000-11000#150000-450000#12-16
+Triglycerides Test 138,Urine Tests,Kidney,Routine diagnostic test,1 hour,No preparation needed,2676.17,9001,0.00,1.00,true,Triglycerides#WBC Count#Hemoglobin,mg/dL#cells/mcL#g/dL,<150#4000-11000#12-16
+Glucose Test 139,Allergy Tests,Kidney,Hormonal level analysis,30 minutes,Fasting required,452.89,9008,12.00,0.00,false,Glucose#Triglycerides,mg/dL#mg/dL,70-110#<150
+TSH Test 140,Genetic Tests,Heart,Organ function evaluation,4 hours,No preparation needed,4333.62,9016,5.00,0.00,false,TSH#AST#Triglycerides,uIU/mL#U/L#mg/dL,0.4-4.0#10-40#<150
+Platelet Count Test 141,Genetic Tests,Chest,Advanced imaging scan,3 hours,No preparation needed,848.92,9020,0.00,0.00,true,Platelet Count#ALT#Cholesterol,cells/mcL#U/L#mg/dL,150000-450000#7-56#<200
+Creatinine Test 142,Hormone Tests,Heart,Organ function evaluation,3 hours,Avoid caffeine,2441.01,9016,12.00,0.00,false,Creatinine#Hemoglobin#TSH,mg/dL#g/dL#uIU/mL,0.6-1.3#12-16#0.4-4.0
+Creatinine Test 143,Genetic Tests,Liver,Advanced imaging scan,Overnight,Avoid caffeine,4910.81,9013,0.00,2.00,true,Creatinine#AST,mg/dL#U/L,0.6-1.3#10-40
+Cholesterol Test 144,Allergy Tests,Skin,Pathogen detection,1 hour,Fasting required,3678.11,9006,5.00,2.00,false,Cholesterol#Creatinine#Glucose,mg/dL#mg/dL#mg/dL,<200#0.6-1.3#70-110
+Cholesterol Test 145,Allergy Tests,Skin,Advanced imaging scan,Overnight,Hydration recommended,3740.51,9013,5.00,1.00,false,Cholesterol#Triglycerides,mg/dL#mg/dL,<200#<150
+Hemoglobin Test 146,Pathology,Chest,Advanced imaging scan,3 hours,Fasting required,2552.44,9005,0.00,1.00,false,Hemoglobin#Platelet Count,g/dL#cells/mcL,12-16#150000-450000
+AST Test 147,Hormone Tests,Thyroid,Advanced imaging scan,Overnight,Fasting required,3689.62,9012,12.00,0.00,true,AST#Cholesterol#Triglycerides,U/L#mg/dL#mg/dL,10-40#<200#<150
+Glucose Test 148,Liver Function Tests,Kidney,Organ function evaluation,30 minutes,Fasting required,2239.50,9010,12.00,0.00,true,Glucose#WBC Count,mg/dL#cells/mcL,70-110#4000-11000
+WBC Count Test 149,Urine Tests,Heart,Pathogen detection,30 minutes,Avoid caffeine,1984.90,9017,5.00,1.00,true,WBC Count#Platelet Count#Glucose,cells/mcL#cells/mcL#mg/dL,4000-11000#150000-450000#70-110
+Platelet Count Test 150,Cardiac Tests,Kidney,Organ function evaluation,2 hours,Fasting required,1818.06,9008,5.00,2.00,true,Platelet Count#Cholesterol,cells/mcL#mg/dL,150000-450000#<200
+Creatinine Test 151,Cardiac Tests,Chest,Routine diagnostic test,3 hours,Hydration recommended,4720.62,9002,0.00,1.00,true,Creatinine#ALT,mg/dL#U/L,0.6-1.3#7-56
+WBC Count Test 152,Hormone Tests,Skin,Organ function evaluation,Overnight,No preparation needed,1918.67,9000,0.00,0.00,true,WBC Count#Triglycerides#Platelet Count,cells/mcL#mg/dL#cells/mcL,4000-11000#<150#150000-450000
+Hemoglobin Test 153,Infectious Disease Tests,Skin,Hormonal level analysis,4 hours,Avoid caffeine,4257.14,9015,5.00,1.00,false,Hemoglobin#TSH#Creatinine,g/dL#uIU/mL#mg/dL,12-16#0.4-4.0#0.6-1.3
+Glucose Test 154,Blood Tests,Kidney,Pathogen detection,Overnight,No preparation needed,1658.67,9001,0.00,2.00,true,Glucose#ALT,mg/dL#U/L,70-110#7-56
+Hemoglobin Test 155,Pathology,Skin,Genetic screening,4 hours,Fasting required,4453.51,9019,12.00,2.00,true,Hemoglobin#Cholesterol#WBC Count,g/dL#mg/dL#cells/mcL,12-16#<200#4000-11000
+WBC Count Test 156,Infectious Disease Tests,Brain,Genetic screening,Overnight,Fasting required,4955.59,9018,5.00,1.00,false,WBC Count#AST,cells/mcL#U/L,4000-11000#10-40
+Hemoglobin Test 157,Liver Function Tests,Chest,Organ function evaluation,1 hour,Avoid caffeine,1745.76,9011,5.00,1.00,true,Hemoglobin#AST,g/dL#U/L,12-16#10-40
+ALT Test 158,Allergy Tests,Brain,Genetic screening,3 hours,Fasting required,4264.53,9009,5.00,1.00,true,ALT#Creatinine,U/L#mg/dL,7-56#0.6-1.3
+TSH Test 159,Imaging,Brain,Genetic screening,1 hour,No preparation needed,4846.89,9013,12.00,2.00,false,TSH#Cholesterol,uIU/mL#mg/dL,0.4-4.0#<200
+Triglycerides Test 160,Genetic Tests,Brain,Genetic screening,3 hours,Hydration recommended,2173.08,9006,0.00,1.00,true,Triglycerides#AST,mg/dL#U/L,<150#10-40
+AST Test 161,Allergy Tests,Liver,Advanced imaging scan,30 minutes,Avoid caffeine,1107.31,9017,0.00,1.00,false,AST#Creatinine#Triglycerides,U/L#mg/dL#mg/dL,10-40#0.6-1.3#<150
+AST Test 162,Pathology,Chest,Genetic screening,2 hours,Avoid caffeine,2763.01,9017,12.00,2.00,true,AST#Glucose#WBC Count,U/L#mg/dL#cells/mcL,10-40#70-110#4000-11000
+TSH Test 163,Pathology,Urine,Pathogen detection,2 hours,No preparation needed,992.19,9019,5.00,2.00,false,TSH#Hemoglobin#ALT,uIU/mL#g/dL#U/L,0.4-4.0#12-16#7-56
+ALT Test 164,Imaging,Heart,Hormonal level analysis,3 hours,No preparation needed,545.17,9003,5.00,1.00,false,ALT#Platelet Count#Glucose,U/L#cells/mcL#mg/dL,7-56#150000-450000#70-110
+Platelet Count Test 165,Liver Function Tests,Liver,Pathogen detection,4 hours,Fasting required,3257.52,9013,5.00,2.00,false,Platelet Count#Creatinine#Cholesterol,cells/mcL#mg/dL#mg/dL,150000-450000#0.6-1.3#<200
+Triglycerides Test 166,Liver Function Tests,Blood,Pathogen detection,Overnight,No preparation needed,1769.78,9008,0.00,1.00,false,Triglycerides#Platelet Count,mg/dL#cells/mcL,<150#150000-450000
+Triglycerides Test 167,Infectious Disease Tests,Brain,Pathogen detection,30 minutes,Hydration recommended,3602.79,9009,12.00,2.00,false,Triglycerides#AST,mg/dL#U/L,<150#10-40
+Platelet Count Test 168,Cardiac Tests,Chest,Advanced imaging scan,3 hours,Fasting required,596.12,9019,5.00,0.00,false,Platelet Count#Glucose,cells/mcL#mg/dL,150000-450000#70-110
+Platelet Count Test 169,Genetic Tests,Brain,Hormonal level analysis,4 hours,Avoid caffeine,4256.00,9011,5.00,2.00,true,Platelet Count#Hemoglobin#TSH,cells/mcL#g/dL#uIU/mL,150000-450000#12-16#0.4-4.0
+Hemoglobin Test 170,Liver Function Tests,Liver,Pathogen detection,1 hour,Fasting required,4212.83,9014,5.00,0.00,true,Hemoglobin#Creatinine#Glucose,g/dL#mg/dL#mg/dL,12-16#0.6-1.3#70-110
+Creatinine Test 171,Blood Tests,Blood,Pathogen detection,30 minutes,Fasting required,3213.91,9015,5.00,1.00,false,Creatinine#ALT,mg/dL#U/L,0.6-1.3#7-56
+Cholesterol Test 172,Cardiac Tests,Abdomen,Routine diagnostic test,4 hours,Fasting required,1076.56,9008,5.00,0.00,false,Cholesterol#Platelet Count#Glucose,mg/dL#cells/mcL#mg/dL,<200#150000-450000#70-110
+WBC Count Test 173,Hormone Tests,Chest,Routine diagnostic test,30 minutes,Avoid caffeine,4320.36,9004,5.00,1.00,false,WBC Count#Glucose#ALT,cells/mcL#mg/dL#U/L,4000-11000#70-110#7-56
+Hemoglobin Test 174,Cardiac Tests,Skin,Hormonal level analysis,2 hours,Hydration recommended,3721.28,9004,12.00,2.00,false,Hemoglobin#Glucose#Triglycerides,g/dL#mg/dL#mg/dL,12-16#70-110#<150
+Creatinine Test 175,Allergy Tests,Thyroid,Genetic screening,2 hours,Hydration recommended,3259.11,9000,12.00,0.00,true,Creatinine#Hemoglobin,mg/dL#g/dL,0.6-1.3#12-16
+TSH Test 176,Hormone Tests,Thyroid,Organ function evaluation,30 minutes,No preparation needed,4743.32,9017,0.00,0.00,true,TSH#AST,uIU/mL#U/L,0.4-4.0#10-40
+Platelet Count Test 177,Imaging,Skin,Pathogen detection,30 minutes,Avoid caffeine,1849.71,9016,0.00,0.00,false,Platelet Count#Creatinine,cells/mcL#mg/dL,150000-450000#0.6-1.3
+Glucose Test 178,Blood Tests,Heart,Genetic screening,30 minutes,Avoid caffeine,3285.78,9016,12.00,1.00,false,Glucose#AST,mg/dL#U/L,70-110#10-40
+Platelet Count Test 179,Cardiac Tests,Abdomen,Genetic screening,3 hours,Fasting required,3377.49,9006,0.00,2.00,false,Platelet Count#WBC Count#AST,cells/mcL#cells/mcL#U/L,150000-450000#4000-11000#10-40
+Glucose Test 180,Imaging,Kidney,Hormonal level analysis,2 hours,Avoid caffeine,2474.40,9002,5.00,0.00,true,Glucose#Platelet Count#Hemoglobin,mg/dL#cells/mcL#g/dL,70-110#150000-450000#12-16
+Cholesterol Test 181,Infectious Disease Tests,Kidney,Routine diagnostic test,2 hours,Avoid caffeine,2603.35,9004,5.00,2.00,false,Cholesterol#AST#Triglycerides,mg/dL#U/L#mg/dL,<200#10-40#<150
+Glucose Test 182,Allergy Tests,Liver,Routine diagnostic test,30 minutes,Avoid caffeine,647.89,9011,5.00,0.00,true,Glucose#Creatinine,mg/dL#mg/dL,70-110#0.6-1.3
+Cholesterol Test 183,Infectious Disease Tests,Heart,Hormonal level analysis,3 hours,Avoid caffeine,1475.99,9004,5.00,2.00,false,Cholesterol#Platelet Count#Hemoglobin,mg/dL#cells/mcL#g/dL,<200#150000-450000#12-16
+Platelet Count Test 184,Urine Tests,Urine,Hormonal level analysis,3 hours,Hydration recommended,3657.91,9003,5.00,0.00,true,Platelet Count#Cholesterol,cells/mcL#mg/dL,150000-450000#<200
+Hemoglobin Test 185,Hormone Tests,Kidney,Organ function evaluation,3 hours,No preparation needed,1964.53,9019,5.00,0.00,true,Hemoglobin#Platelet Count#Creatinine,g/dL#cells/mcL#mg/dL,12-16#150000-450000#0.6-1.3
+Creatinine Test 186,Hormone Tests,Blood,Organ function evaluation,3 hours,Avoid caffeine,3556.81,9004,0.00,1.00,true,Creatinine#ALT,mg/dL#U/L,0.6-1.3#7-56
+Platelet Count Test 187,Infectious Disease Tests,Liver,Hormonal level analysis,4 hours,Avoid caffeine,2113.66,9006,0.00,1.00,true,Platelet Count#Glucose#Creatinine,cells/mcL#mg/dL#mg/dL,150000-450000#70-110#0.6-1.3
+Triglycerides Test 188,Hormone Tests,Heart,Pathogen detection,Overnight,No preparation needed,404.15,9006,5.00,1.00,true,Triglycerides#TSH#WBC Count,mg/dL#uIU/mL#cells/mcL,<150#0.4-4.0#4000-11000
+Glucose Test 189,Infectious Disease Tests,Thyroid,Pathogen detection,1 hour,Avoid caffeine,1045.14,9007,12.00,1.00,false,Glucose#WBC Count,mg/dL#cells/mcL,70-110#4000-11000
+Platelet Count Test 190,Hormone Tests,Abdomen,Advanced imaging scan,1 hour,Fasting required,3662.61,9014,12.00,1.00,true,Platelet Count#Creatinine,cells/mcL#mg/dL,150000-450000#0.6-1.3
+TSH Test 191,Blood Tests,Kidney,Hormonal level analysis,2 hours,No preparation needed,2315.07,9013,12.00,0.00,true,TSH#Glucose,uIU/mL#mg/dL,0.4-4.0#70-110
+Cholesterol Test 192,Liver Function Tests,Blood,Organ function evaluation,30 minutes,Avoid caffeine,421.06,9005,12.00,2.00,true,Cholesterol#TSH,mg/dL#uIU/mL,<200#0.4-4.0
+Triglycerides Test 193,Pathology,Abdomen,Pathogen detection,3 hours,No preparation needed,1202.08,9004,5.00,1.00,false,Triglycerides#Cholesterol#AST,mg/dL#mg/dL#U/L,<150#<200#10-40
+WBC Count Test 194,Infectious Disease Tests,Kidney,Pathogen detection,Overnight,Avoid caffeine,2238.25,9011,12.00,0.00,false,WBC Count#Glucose,cells/mcL#mg/dL,4000-11000#70-110
+Hemoglobin Test 195,Imaging,Kidney,Hormonal level analysis,4 hours,No preparation needed,1455.00,9014,12.00,2.00,false,Hemoglobin#Creatinine,g/dL#mg/dL,12-16#0.6-1.3
+TSH Test 196,Infectious Disease Tests,Blood,Organ function evaluation,4 hours,Avoid caffeine,4025.08,9010,5.00,1.00,true,TSH#Cholesterol#Hemoglobin,uIU/mL#mg/dL#g/dL,0.4-4.0#<200#12-16
+WBC Count Test 197,Cardiac Tests,Brain,Hormonal level analysis,30 minutes,Fasting required,4794.28,9016,5.00,2.00,true,WBC Count#Glucose,cells/mcL#mg/dL,4000-11000#70-110
+AST Test 198,Blood Tests,Heart,Routine diagnostic test,2 hours,Avoid caffeine,2996.26,9014,0.00,1.00,true,AST#TSH,U/L#uIU/mL,10-40#0.4-4.0
+WBC Count Test 199,Infectious Disease Tests,Kidney,Advanced imaging scan,1 hour,Hydration recommended,3012.98,9014,12.00,2.00,true,WBC Count#Platelet Count#AST,cells/mcL#cells/mcL#U/L,4000-11000#150000-450000#10-40
+ALT Test 200,Blood Tests,Urine,Organ function evaluation,3 hours,No preparation needed,4567.15,9004,5.00,0.00,false,ALT#Cholesterol,U/L#mg/dL,7-56#<200
+AST Test 201,Allergy Tests,Thyroid,Hormonal level analysis,30 minutes,Fasting required,2798.58,9000,0.00,1.00,true,AST#Triglycerides#WBC Count,U/L#mg/dL#cells/mcL,10-40#<150#4000-11000
+ALT Test 202,Allergy Tests,Brain,Hormonal level analysis,3 hours,No preparation needed,4663.99,9019,0.00,0.00,true,ALT#Cholesterol#Glucose,U/L#mg/dL#mg/dL,7-56#<200#70-110
+Cholesterol Test 203,Liver Function Tests,Brain,Advanced imaging scan,3 hours,Hydration recommended,1893.79,9010,12.00,1.00,true,Cholesterol#Creatinine,mg/dL#mg/dL,<200#0.6-1.3
+Triglycerides Test 204,Allergy Tests,Abdomen,Pathogen detection,4 hours,No preparation needed,4521.93,9003,0.00,1.00,true,Triglycerides#ALT#Cholesterol,mg/dL#U/L#mg/dL,<150#7-56#<200
+Hemoglobin Test 205,Pathology,Brain,Genetic screening,2 hours,Hydration recommended,1873.64,9008,5.00,0.00,false,Hemoglobin#Creatinine#Triglycerides,g/dL#mg/dL#mg/dL,12-16#0.6-1.3#<150
+Cholesterol Test 206,Imaging,Heart,Genetic screening,Overnight,No preparation needed,3529.40,9016,0.00,2.00,true,Cholesterol#Creatinine,mg/dL#mg/dL,<200#0.6-1.3
+Platelet Count Test 207,Liver Function Tests,Kidney,Routine diagnostic test,2 hours,No preparation needed,3591.91,9015,0.00,2.00,true,Platelet Count#AST#Cholesterol,cells/mcL#U/L#mg/dL,150000-450000#10-40#<200
+Platelet Count Test 208,Genetic Tests,Chest,Advanced imaging scan,3 hours,Avoid caffeine,2162.55,9001,0.00,1.00,false,Platelet Count#Triglycerides,cells/mcL#mg/dL,150000-450000#<150
+Platelet Count Test 209,Infectious Disease Tests,Brain,Pathogen detection,1 hour,Avoid caffeine,2671.72,9002,0.00,2.00,true,Platelet Count#AST,cells/mcL#U/L,150000-450000#10-40
+Triglycerides Test 210,Urine Tests,Heart,Organ function evaluation,2 hours,No preparation needed,4485.37,9020,12.00,0.00,true,Triglycerides#ALT#Creatinine,mg/dL#U/L#mg/dL,<150#7-56#0.6-1.3
+Platelet Count Test 211,Allergy Tests,Abdomen,Genetic screening,4 hours,Hydration recommended,657.44,9015,12.00,0.00,false,Platelet Count#Triglycerides#TSH,cells/mcL#mg/dL#uIU/mL,150000-450000#<150#0.4-4.0
+WBC Count Test 212,Genetic Tests,Chest,Advanced imaging scan,Overnight,Avoid caffeine,2442.46,9011,12.00,2.00,false,WBC Count#Platelet Count,cells/mcL#cells/mcL,4000-11000#150000-450000
+Cholesterol Test 213,Pathology,Skin,Organ function evaluation,2 hours,Hydration recommended,2315.67,9020,12.00,0.00,true,Cholesterol#TSH,mg/dL#uIU/mL,<200#0.4-4.0
+Triglycerides Test 214,Genetic Tests,Skin,Organ function evaluation,1 hour,Hydration recommended,4134.16,9019,12.00,2.00,true,Triglycerides#Platelet Count,mg/dL#cells/mcL,<150#150000-450000
+Creatinine Test 215,Liver Function Tests,Heart,Pathogen detection,1 hour,Avoid caffeine,4499.34,9011,5.00,1.00,true,Creatinine#Platelet Count,mg/dL#cells/mcL,0.6-1.3#150000-450000
+ALT Test 216,Blood Tests,Thyroid,Hormonal level analysis,4 hours,Fasting required,536.61,9005,0.00,0.00,false,ALT#Glucose#AST,U/L#mg/dL#U/L,7-56#70-110#10-40
+Platelet Count Test 217,Genetic Tests,Abdomen,Hormonal level analysis,4 hours,Fasting required,2565.74,9013,5.00,1.00,true,Platelet Count#WBC Count#Creatinine,cells/mcL#cells/mcL#mg/dL,150000-450000#4000-11000#0.6-1.3
+AST Test 218,Pathology,Skin,Advanced imaging scan,Overnight,No preparation needed,4870.84,9002,0.00,1.00,true,AST#WBC Count#Creatinine,U/L#cells/mcL#mg/dL,10-40#4000-11000#0.6-1.3
+AST Test 219,Cardiac Tests,Blood,Hormonal level analysis,Overnight,Fasting required,2083.49,9004,0.00,1.00,false,AST#TSH#Creatinine,U/L#uIU/mL#mg/dL,10-40#0.4-4.0#0.6-1.3
+Triglycerides Test 220,Pathology,Liver,Hormonal level analysis,30 minutes,Fasting required,3138.74,9020,5.00,0.00,false,Triglycerides#Creatinine,mg/dL#mg/dL,<150#0.6-1.3
+WBC Count Test 221,Cardiac Tests,Brain,Organ function evaluation,3 hours,Hydration recommended,3460.55,9017,5.00,1.00,false,WBC Count#TSH,cells/mcL#uIU/mL,4000-11000#0.4-4.0
+ALT Test 222,Urine Tests,Blood,Hormonal level analysis,4 hours,No preparation needed,2616.26,9012,0.00,0.00,false,ALT#AST#Triglycerides,U/L#U/L#mg/dL,7-56#10-40#<150
+Glucose Test 223,Hormone Tests,Chest,Hormonal level analysis,4 hours,Hydration recommended,3067.44,9003,5.00,0.00,false,Glucose#WBC Count#Platelet Count,mg/dL#cells/mcL#cells/mcL,70-110#4000-11000#150000-450000
+AST Test 224,Genetic Tests,Brain,Hormonal level analysis,Overnight,No preparation needed,2973.10,9001,5.00,0.00,true,AST#Hemoglobin,U/L#g/dL,10-40#12-16
+Creatinine Test 225,Liver Function Tests,Kidney,Routine diagnostic test,Overnight,Hydration recommended,4128.64,9007,0.00,0.00,true,Creatinine#AST,mg/dL#U/L,0.6-1.3#10-40
+Glucose Test 226,Genetic Tests,Liver,Genetic screening,Overnight,Avoid caffeine,2242.45,9020,12.00,2.00,true,Glucose#Triglycerides#TSH,mg/dL#mg/dL#uIU/mL,70-110#<150#0.4-4.0
+AST Test 227,Liver Function Tests,Liver,Pathogen detection,2 hours,No preparation needed,1730.52,9002,0.00,0.00,false,AST#Triglycerides#Cholesterol,U/L#mg/dL#mg/dL,10-40#<150#<200
+WBC Count Test 228,Urine Tests,Heart,Genetic screening,3 hours,Avoid caffeine,975.29,9001,0.00,0.00,false,WBC Count#ALT,cells/mcL#U/L,4000-11000#7-56
+Triglycerides Test 229,Liver Function Tests,Brain,Routine diagnostic test,Overnight,Avoid caffeine,821.19,9020,5.00,2.00,true,Triglycerides#Hemoglobin#Creatinine,mg/dL#g/dL#mg/dL,<150#12-16#0.6-1.3
+WBC Count Test 230,Imaging,Abdomen,Pathogen detection,30 minutes,No preparation needed,4521.53,9000,5.00,1.00,true,WBC Count#Glucose#Triglycerides,cells/mcL#mg/dL#mg/dL,4000-11000#70-110#<150
+Triglycerides Test 231,Hormone Tests,Blood,Organ function evaluation,30 minutes,Avoid caffeine,957.40,9004,12.00,0.00,true,Triglycerides#Hemoglobin,mg/dL#g/dL,<150#12-16
+Cholesterol Test 232,Allergy Tests,Thyroid,Advanced imaging scan,1 hour,Fasting required,562.80,9020,12.00,0.00,false,Cholesterol#AST,mg/dL#U/L,<200#10-40
+Platelet Count Test 233,Pathology,Chest,Routine diagnostic test,3 hours,Avoid caffeine,1225.94,9016,0.00,2.00,false,Platelet Count#WBC Count#Hemoglobin,cells/mcL#cells/mcL#g/dL,150000-450000#4000-11000#12-16
+TSH Test 234,Cardiac Tests,Chest,Routine diagnostic test,Overnight,Hydration recommended,4882.11,9015,0.00,2.00,false,TSH#ALT#WBC Count,uIU/mL#U/L#cells/mcL,0.4-4.0#7-56#4000-11000
+TSH Test 235,Urine Tests,Kidney,Pathogen detection,1 hour,Fasting required,3377.53,9001,12.00,0.00,true,TSH#Hemoglobin,uIU/mL#g/dL,0.4-4.0#12-16
+Triglycerides Test 236,Hormone Tests,Heart,Genetic screening,Overnight,No preparation needed,2877.60,9000,12.00,0.00,true,Triglycerides#AST#ALT,mg/dL#U/L#U/L,<150#10-40#7-56
+Triglycerides Test 237,Pathology,Abdomen,Genetic screening,2 hours,No preparation needed,452.20,9014,0.00,2.00,true,Triglycerides#Platelet Count,mg/dL#cells/mcL,<150#150000-450000
+Glucose Test 238,Allergy Tests,Kidney,Advanced imaging scan,30 minutes,Fasting required,1541.46,9009,12.00,1.00,true,Glucose#Hemoglobin,mg/dL#g/dL,70-110#12-16
+WBC Count Test 239,Urine Tests,Heart,Hormonal level analysis,2 hours,Hydration recommended,2391.49,9005,5.00,0.00,false,WBC Count#AST#Triglycerides,cells/mcL#U/L#mg/dL,4000-11000#10-40#<150
+AST Test 240,Infectious Disease Tests,Blood,Advanced imaging scan,Overnight,Fasting required,2614.96,9018,0.00,2.00,true,AST#ALT#Cholesterol,U/L#U/L#mg/dL,10-40#7-56#<200
+AST Test 241,Cardiac Tests,Blood,Routine diagnostic test,4 hours,Fasting required,1855.13,9007,12.00,0.00,false,AST#Creatinine#ALT,U/L#mg/dL#U/L,10-40#0.6-1.3#7-56
+TSH Test 242,Hormone Tests,Skin,Pathogen detection,2 hours,Hydration recommended,2506.50,9010,0.00,1.00,true,TSH#Hemoglobin#Glucose,uIU/mL#g/dL#mg/dL,0.4-4.0#12-16#70-110
+Triglycerides Test 243,Liver Function Tests,Brain,Organ function evaluation,3 hours,Fasting required,2601.24,9007,12.00,1.00,false,Triglycerides#Platelet Count,mg/dL#cells/mcL,<150#150000-450000
+ALT Test 244,Genetic Tests,Blood,Routine diagnostic test,Overnight,No preparation needed,1596.97,9018,0.00,2.00,false,ALT#Glucose,U/L#mg/dL,7-56#70-110
+Triglycerides Test 245,Pathology,Thyroid,Pathogen detection,3 hours,No preparation needed,404.78,9009,12.00,2.00,false,Triglycerides#ALT,mg/dL#U/L,<150#7-56
+Platelet Count Test 246,Hormone Tests,Blood,Pathogen detection,30 minutes,Avoid caffeine,4263.69,9019,0.00,0.00,true,Platelet Count#Creatinine#Glucose,cells/mcL#mg/dL#mg/dL,150000-450000#0.6-1.3#70-110
+Hemoglobin Test 247,Genetic Tests,Heart,Routine diagnostic test,3 hours,Fasting required,631.15,9010,12.00,2.00,true,Hemoglobin#Triglycerides#ALT,g/dL#mg/dL#U/L,12-16#<150#7-56
+Glucose Test 248,Pathology,Heart,Pathogen detection,1 hour,No preparation needed,4784.13,9004,5.00,0.00,true,Glucose#TSH,mg/dL#uIU/mL,70-110#0.4-4.0
+TSH Test 249,Genetic Tests,Skin,Advanced imaging scan,3 hours,Avoid caffeine,2342.17,9001,0.00,2.00,false,TSH#Hemoglobin,uIU/mL#g/dL,0.4-4.0#12-16
+TSH Test 250,Genetic Tests,Kidney,Genetic screening,1 hour,Avoid caffeine,3765.19,9009,0.00,0.00,false,TSH#Glucose,uIU/mL#mg/dL,0.4-4.0#70-110
+ALT Test 251,Cardiac Tests,Abdomen,Routine diagnostic test,1 hour,No preparation needed,4127.66,9010,5.00,1.00,false,ALT#Platelet Count,U/L#cells/mcL,7-56#150000-450000
+WBC Count Test 252,Hormone Tests,Brain,Organ function evaluation,4 hours,Avoid caffeine,1703.65,9017,12.00,0.00,false,WBC Count#Hemoglobin,cells/mcL#g/dL,4000-11000#12-16
+Cholesterol Test 253,Liver Function Tests,Skin,Advanced imaging scan,3 hours,Hydration recommended,2977.73,9001,12.00,0.00,true,Cholesterol#Hemoglobin,mg/dL#g/dL,<200#12-16
+Cholesterol Test 254,Genetic Tests,Chest,Advanced imaging scan,30 minutes,Fasting required,3169.99,9004,12.00,2.00,false,Cholesterol#Platelet Count,mg/dL#cells/mcL,<200#150000-450000
+Hemoglobin Test 255,Hormone Tests,Blood,Organ function evaluation,3 hours,Fasting required,4331.40,9020,0.00,1.00,false,Hemoglobin#TSH,g/dL#uIU/mL,12-16#0.4-4.0
+AST Test 256,Allergy Tests,Skin,Genetic screening,4 hours,Avoid caffeine,3882.54,9020,0.00,0.00,true,AST#ALT,U/L#U/L,10-40#7-56
+TSH Test 257,Infectious Disease Tests,Chest,Pathogen detection,2 hours,No preparation needed,2968.74,9014,0.00,0.00,false,TSH#WBC Count#Glucose,uIU/mL#cells/mcL#mg/dL,0.4-4.0#4000-11000#70-110
+Glucose Test 258,Pathology,Abdomen,Hormonal level analysis,4 hours,Fasting required,4854.73,9017,0.00,0.00,true,Glucose#ALT,mg/dL#U/L,70-110#7-56
+TSH Test 259,Allergy Tests,Kidney,Routine diagnostic test,30 minutes,Fasting required,4759.80,9008,5.00,1.00,true,TSH#WBC Count#Triglycerides,uIU/mL#cells/mcL#mg/dL,0.4-4.0#4000-11000#<150
+Glucose Test 260,Infectious Disease Tests,Liver,Hormonal level analysis,4 hours,Hydration recommended,2558.12,9019,12.00,2.00,false,Glucose#Cholesterol#ALT,mg/dL#mg/dL#U/L,70-110#<200#7-56
+ALT Test 261,Pathology,Blood,Routine diagnostic test,1 hour,No preparation needed,4216.57,9020,0.00,0.00,true,ALT#Cholesterol,U/L#mg/dL,7-56#<200
+Hemoglobin Test 262,Allergy Tests,Thyroid,Genetic screening,4 hours,Hydration recommended,4758.87,9004,5.00,2.00,false,Hemoglobin#ALT,g/dL#U/L,12-16#7-56
+ALT Test 263,Allergy Tests,Abdomen,Hormonal level analysis,4 hours,No preparation needed,3052.93,9014,0.00,0.00,false,ALT#Platelet Count#Cholesterol,U/L#cells/mcL#mg/dL,7-56#150000-450000#<200
+WBC Count Test 264,Imaging,Thyroid,Hormonal level analysis,4 hours,Hydration recommended,1631.96,9002,0.00,0.00,false,WBC Count#Glucose#ALT,cells/mcL#mg/dL#U/L,4000-11000#70-110#7-56
+Platelet Count Test 265,Imaging,Brain,Advanced imaging scan,Overnight,Avoid caffeine,4097.84,9007,5.00,2.00,false,Platelet Count#AST,cells/mcL#U/L,150000-450000#10-40
+Creatinine Test 266,Genetic Tests,Blood,Routine diagnostic test,3 hours,Avoid caffeine,2411.18,9017,5.00,2.00,false,Creatinine#Hemoglobin#WBC Count,mg/dL#g/dL#cells/mcL,0.6-1.3#12-16#4000-11000
+Hemoglobin Test 267,Urine Tests,Brain,Pathogen detection,30 minutes,Avoid caffeine,2972.20,9014,0.00,2.00,true,Hemoglobin#ALT,g/dL#U/L,12-16#7-56
+AST Test 268,Cardiac Tests,Kidney,Pathogen detection,3 hours,Fasting required,4494.68,9004,5.00,2.00,true,AST#WBC Count#ALT,U/L#cells/mcL#U/L,10-40#4000-11000#7-56
+ALT Test 269,Cardiac Tests,Heart,Genetic screening,1 hour,Fasting required,4489.13,9015,0.00,1.00,true,ALT#AST#WBC Count,U/L#U/L#cells/mcL,7-56#10-40#4000-11000
+Creatinine Test 270,Genetic Tests,Kidney,Advanced imaging scan,1 hour,Fasting required,932.82,9018,0.00,1.00,true,Creatinine#Glucose,mg/dL#mg/dL,0.6-1.3#70-110
+TSH Test 271,Blood Tests,Skin,Pathogen detection,30 minutes,Hydration recommended,323.51,9011,5.00,2.00,true,TSH#AST,uIU/mL#U/L,0.4-4.0#10-40
+Cholesterol Test 272,Urine Tests,Kidney,Pathogen detection,Overnight,Hydration recommended,2560.92,9020,12.00,2.00,false,Cholesterol#WBC Count#Triglycerides,mg/dL#cells/mcL#mg/dL,<200#4000-11000#<150
+TSH Test 273,Infectious Disease Tests,Blood,Genetic screening,3 hours,Fasting required,3299.69,9011,0.00,1.00,false,TSH#Platelet Count#Creatinine,uIU/mL#cells/mcL#mg/dL,0.4-4.0#150000-450000#0.6-1.3
+Creatinine Test 274,Blood Tests,Urine,Organ function evaluation,Overnight,Hydration recommended,2621.83,9017,5.00,0.00,false,Creatinine#Cholesterol,mg/dL#mg/dL,0.6-1.3#<200
+WBC Count Test 275,Blood Tests,Chest,Organ function evaluation,Overnight,Hydration recommended,4222.47,9003,5.00,2.00,true,WBC Count#Glucose#AST,cells/mcL#mg/dL#U/L,4000-11000#70-110#10-40
+Creatinine Test 276,Allergy Tests,Skin,Pathogen detection,1 hour,No preparation needed,335.66,9005,5.00,1.00,true,Creatinine#WBC Count,mg/dL#cells/mcL,0.6-1.3#4000-11000
+Glucose Test 277,Liver Function Tests,Thyroid,Genetic screening,4 hours,Hydration recommended,206.63,9007,5.00,2.00,false,Glucose#Creatinine#Triglycerides,mg/dL#mg/dL#mg/dL,70-110#0.6-1.3#<150
+WBC Count Test 278,Allergy Tests,Blood,Organ function evaluation,30 minutes,Fasting required,4523.49,9020,0.00,0.00,true,WBC Count#AST,cells/mcL#U/L,4000-11000#10-40
+ALT Test 279,Allergy Tests,Urine,Genetic screening,30 minutes,Avoid caffeine,3025.74,9018,5.00,1.00,false,ALT#Creatinine,U/L#mg/dL,7-56#0.6-1.3
+Cholesterol Test 280,Allergy Tests,Urine,Organ function evaluation,4 hours,Hydration recommended,1509.54,9015,0.00,2.00,true,Cholesterol#Creatinine,mg/dL#mg/dL,<200#0.6-1.3
+Hemoglobin Test 281,Pathology,Urine,Genetic screening,4 hours,Hydration recommended,1536.90,9006,5.00,1.00,false,Hemoglobin#ALT,g/dL#U/L,12-16#7-56
+Cholesterol Test 282,Hormone Tests,Heart,Advanced imaging scan,3 hours,Hydration recommended,375.94,9005,12.00,0.00,false,Cholesterol#ALT#WBC Count,mg/dL#U/L#cells/mcL,<200#7-56#4000-11000
+TSH Test 283,Imaging,Brain,Organ function evaluation,Overnight,Hydration recommended,2286.77,9015,0.00,0.00,true,TSH#Hemoglobin#ALT,uIU/mL#g/dL#U/L,0.4-4.0#12-16#7-56
+Glucose Test 284,Cardiac Tests,Skin,Genetic screening,4 hours,No preparation needed,4907.53,9017,0.00,1.00,false,Glucose#TSH#Hemoglobin,mg/dL#uIU/mL#g/dL,70-110#0.4-4.0#12-16
+Triglycerides Test 285,Imaging,Kidney,Organ function evaluation,2 hours,Fasting required,438.89,9015,12.00,0.00,true,Triglycerides#AST#Hemoglobin,mg/dL#U/L#g/dL,<150#10-40#12-16
+Cholesterol Test 286,Cardiac Tests,Heart,Advanced imaging scan,3 hours,Fasting required,772.43,9014,0.00,2.00,true,Cholesterol#Triglycerides,mg/dL#mg/dL,<200#<150
+Hemoglobin Test 287,Cardiac Tests,Liver,Hormonal level analysis,4 hours,No preparation needed,2956.15,9012,12.00,2.00,true,Hemoglobin#Triglycerides#AST,g/dL#mg/dL#U/L,12-16#<150#10-40
+ALT Test 288,Hormone Tests,Chest,Routine diagnostic test,1 hour,Avoid caffeine,688.56,9007,12.00,2.00,true,ALT#Creatinine,U/L#mg/dL,7-56#0.6-1.3
+Creatinine Test 289,Hormone Tests,Abdomen,Pathogen detection,3 hours,Fasting required,4946.84,9004,0.00,2.00,true,Creatinine#Triglycerides,mg/dL#mg/dL,0.6-1.3#<150
+Cholesterol Test 290,Blood Tests,Abdomen,Pathogen detection,3 hours,Fasting required,4096.20,9010,5.00,0.00,true,Cholesterol#Platelet Count,mg/dL#cells/mcL,<200#150000-450000
+Hemoglobin Test 291,Imaging,Kidney,Hormonal level analysis,1 hour,Avoid caffeine,3664.44,9012,5.00,1.00,false,Hemoglobin#Creatinine,g/dL#mg/dL,12-16#0.6-1.3
+Platelet Count Test 292,Genetic Tests,Chest,Routine diagnostic test,30 minutes,Fasting required,1089.33,9000,12.00,1.00,false,Platelet Count#Creatinine#TSH,cells/mcL#mg/dL#uIU/mL,150000-450000#0.6-1.3#0.4-4.0
+Cholesterol Test 293,Cardiac Tests,Kidney,Organ function evaluation,2 hours,Hydration recommended,2025.13,9018,12.00,1.00,false,Cholesterol#AST,mg/dL#U/L,<200#10-40
+ALT Test 294,Urine Tests,Heart,Advanced imaging scan,2 hours,Avoid caffeine,2753.64,9004,12.00,0.00,false,ALT#Triglycerides#AST,U/L#mg/dL#U/L,7-56#<150#10-40
+Triglycerides Test 295,Blood Tests,Chest,Organ function evaluation,30 minutes,No preparation needed,1184.40,9012,5.00,1.00,false,Triglycerides#Platelet Count,mg/dL#cells/mcL,<150#150000-450000
+Triglycerides Test 296,Imaging,Urine,Hormonal level analysis,1 hour,Avoid caffeine,2619.41,9011,5.00,0.00,false,Triglycerides#Platelet Count#ALT,mg/dL#cells/mcL#U/L,<150#150000-450000#7-56
+Platelet Count Test 297,Cardiac Tests,Brain,Organ function evaluation,30 minutes,No preparation needed,2482.59,9000,0.00,1.00,false,Platelet Count#Glucose,cells/mcL#mg/dL,150000-450000#70-110
+ALT Test 298,Pathology,Brain,Pathogen detection,30 minutes,No preparation needed,1281.54,9009,5.00,1.00,true,ALT#AST#Creatinine,U/L#U/L#mg/dL,7-56#10-40#0.6-1.3
+WBC Count Test 299,Blood Tests,Abdomen,Organ function evaluation,4 hours,No preparation needed,501.24,9015,12.00,2.00,false,WBC Count#AST,cells/mcL#U/L,4000-11000#10-40
+TSH Test 300,Cardiac Tests,Kidney,Organ function evaluation,3 hours,No preparation needed,1018.42,9005,12.00,2.00,true,TSH#Hemoglobin,uIU/mL#g/dL,0.4-4.0#12-16
+TSH Test 301,Liver Function Tests,Liver,Routine diagnostic test,Overnight,Hydration recommended,1203.24,9014,0.00,2.00,false,TSH#Creatinine#ALT,uIU/mL#mg/dL#U/L,0.4-4.0#0.6-1.3#7-56
+Hemoglobin Test 302,Liver Function Tests,Kidney,Organ function evaluation,1 hour,Hydration recommended,3912.31,9014,12.00,2.00,false,Hemoglobin#ALT,g/dL#U/L,12-16#7-56
+Creatinine Test 303,Cardiac Tests,Abdomen,Hormonal level analysis,Overnight,Avoid caffeine,2511.62,9005,12.00,0.00,true,Creatinine#TSH#AST,mg/dL#uIU/mL#U/L,0.6-1.3#0.4-4.0#10-40
+TSH Test 304,Imaging,Heart,Routine diagnostic test,30 minutes,No preparation needed,894.72,9012,5.00,1.00,false,TSH#Glucose#WBC Count,uIU/mL#mg/dL#cells/mcL,0.4-4.0#70-110#4000-11000
+WBC Count Test 305,Pathology,Abdomen,Routine diagnostic test,2 hours,Avoid caffeine,2064.60,9014,5.00,1.00,false,WBC Count#Glucose,cells/mcL#mg/dL,4000-11000#70-110
+Triglycerides Test 306,Pathology,Thyroid,Organ function evaluation,30 minutes,Fasting required,818.63,9000,5.00,1.00,true,Triglycerides#Glucose#Creatinine,mg/dL#mg/dL#mg/dL,<150#70-110#0.6-1.3
+AST Test 307,Genetic Tests,Chest,Advanced imaging scan,30 minutes,No preparation needed,4339.83,9018,0.00,1.00,false,AST#TSH#Triglycerides,U/L#uIU/mL#mg/dL,10-40#0.4-4.0#<150
+Hemoglobin Test 308,Infectious Disease Tests,Skin,Routine diagnostic test,Overnight,No preparation needed,4725.27,9004,5.00,0.00,false,Hemoglobin#Glucose#AST,g/dL#mg/dL#U/L,12-16#70-110#10-40
+WBC Count Test 309,Pathology,Heart,Organ function evaluation,2 hours,Fasting required,361.80,9015,12.00,0.00,true,WBC Count#TSH,cells/mcL#uIU/mL,4000-11000#0.4-4.0
+Platelet Count Test 310,Allergy Tests,Brain,Hormonal level analysis,4 hours,Fasting required,2161.81,9012,12.00,0.00,true,Platelet Count#Cholesterol,cells/mcL#mg/dL,150000-450000#<200
+ALT Test 311,Pathology,Brain,Routine diagnostic test,3 hours,Fasting required,671.49,9019,12.00,0.00,true,ALT#Hemoglobin#Cholesterol,U/L#g/dL#mg/dL,7-56#12-16#<200
+Cholesterol Test 312,Urine Tests,Blood,Hormonal level analysis,30 minutes,Hydration recommended,2478.49,9001,0.00,1.00,true,Cholesterol#TSH#Triglycerides,mg/dL#uIU/mL#mg/dL,<200#0.4-4.0#<150
+Platelet Count Test 313,Blood Tests,Heart,Pathogen detection,30 minutes,Avoid caffeine,404.62,9007,5.00,1.00,true,Platelet Count#AST#Glucose,cells/mcL#U/L#mg/dL,150000-450000#10-40#70-110
+AST Test 314,Urine Tests,Blood,Routine diagnostic test,1 hour,Hydration recommended,4948.99,9003,12.00,2.00,true,AST#WBC Count,U/L#cells/mcL,10-40#4000-11000
+Triglycerides Test 315,Infectious Disease Tests,Abdomen,Routine diagnostic test,4 hours,No preparation needed,1045.65,9005,0.00,2.00,false,Triglycerides#Platelet Count#WBC Count,mg/dL#cells/mcL#cells/mcL,<150#150000-450000#4000-11000
+AST Test 316,Infectious Disease Tests,Blood,Hormonal level analysis,1 hour,Fasting required,1533.51,9011,0.00,1.00,true,AST#Cholesterol#Platelet Count,U/L#mg/dL#cells/mcL,10-40#<200#150000-450000
+Glucose Test 317,Genetic Tests,Skin,Organ function evaluation,Overnight,Hydration recommended,862.71,9008,5.00,1.00,true,Glucose#Cholesterol#Triglycerides,mg/dL#mg/dL#mg/dL,70-110#<200#<150
+Hemoglobin Test 318,Hormone Tests,Urine,Organ function evaluation,Overnight,Hydration recommended,952.02,9004,5.00,0.00,true,Hemoglobin#TSH#WBC Count,g/dL#uIU/mL#cells/mcL,12-16#0.4-4.0#4000-11000
+Triglycerides Test 319,Imaging,Brain,Genetic screening,Overnight,Fasting required,691.47,9016,12.00,2.00,false,Triglycerides#AST#Creatinine,mg/dL#U/L#mg/dL,<150#10-40#0.6-1.3
+WBC Count Test 320,Genetic Tests,Blood,Advanced imaging scan,Overnight,Avoid caffeine,637.19,9008,0.00,2.00,true,WBC Count#Platelet Count#TSH,cells/mcL#cells/mcL#uIU/mL,4000-11000#150000-450000#0.4-4.0
+Triglycerides Test 321,Imaging,Heart,Organ function evaluation,2 hours,Fasting required,731.68,9008,12.00,2.00,true,Triglycerides#Creatinine,mg/dL#mg/dL,<150#0.6-1.3
+WBC Count Test 322,Infectious Disease Tests,Liver,Pathogen detection,2 hours,No preparation needed,2317.06,9010,0.00,2.00,false,WBC Count#TSH,cells/mcL#uIU/mL,4000-11000#0.4-4.0
+Glucose Test 323,Infectious Disease Tests,Kidney,Genetic screening,4 hours,Hydration recommended,1427.92,9008,12.00,0.00,false,Glucose#Hemoglobin,mg/dL#g/dL,70-110#12-16
+Glucose Test 324,Allergy Tests,Liver,Genetic screening,4 hours,Hydration recommended,4825.69,9006,12.00,1.00,false,Glucose#Triglycerides,mg/dL#mg/dL,70-110#<150
+TSH Test 325,Genetic Tests,Blood,Genetic screening,1 hour,Avoid caffeine,4208.21,9015,0.00,2.00,true,TSH#AST#Triglycerides,uIU/mL#U/L#mg/dL,0.4-4.0#10-40#<150
+AST Test 326,Liver Function Tests,Liver,Advanced imaging scan,2 hours,Hydration recommended,2479.50,9007,0.00,2.00,true,AST#Cholesterol,U/L#mg/dL,10-40#<200
+Platelet Count Test 327,Infectious Disease Tests,Skin,Routine diagnostic test,2 hours,Avoid caffeine,1125.81,9019,5.00,0.00,false,Platelet Count#Glucose#Creatinine,cells/mcL#mg/dL#mg/dL,150000-450000#70-110#0.6-1.3
+Triglycerides Test 328,Infectious Disease Tests,Chest,Pathogen detection,30 minutes,Avoid caffeine,1122.36,9013,12.00,1.00,true,Triglycerides#TSH,mg/dL#uIU/mL,<150#0.4-4.0
+WBC Count Test 329,Allergy Tests,Blood,Organ function evaluation,4 hours,Hydration recommended,1390.83,9003,0.00,0.00,true,WBC Count#Platelet Count#Glucose,cells/mcL#cells/mcL#mg/dL,4000-11000#150000-450000#70-110
+TSH Test 330,Infectious Disease Tests,Skin,Routine diagnostic test,30 minutes,Fasting required,1393.29,9009,5.00,0.00,true,TSH#ALT#Triglycerides,uIU/mL#U/L#mg/dL,0.4-4.0#7-56#<150
+Cholesterol Test 331,Urine Tests,Kidney,Organ function evaluation,1 hour,Fasting required,1587.90,9003,12.00,0.00,false,Cholesterol#WBC Count,mg/dL#cells/mcL,<200#4000-11000
+TSH Test 332,Allergy Tests,Kidney,Organ function evaluation,1 hour,Fasting required,4091.84,9020,0.00,1.00,false,TSH#Hemoglobin#Triglycerides,uIU/mL#g/dL#mg/dL,0.4-4.0#12-16#<150
+WBC Count Test 333,Pathology,Thyroid,Routine diagnostic test,3 hours,No preparation needed,2530.93,9003,5.00,0.00,false,WBC Count#Cholesterol,cells/mcL#mg/dL,4000-11000#<200
+ALT Test 334,Cardiac Tests,Urine,Genetic screening,4 hours,Hydration recommended,4648.65,9016,12.00,1.00,false,ALT#Creatinine#Hemoglobin,U/L#mg/dL#g/dL,7-56#0.6-1.3#12-16
+TSH Test 335,Imaging,Kidney,Advanced imaging scan,30 minutes,Fasting required,2163.00,9010,12.00,1.00,false,TSH#Cholesterol,uIU/mL#mg/dL,0.4-4.0#<200
+AST Test 336,Blood Tests,Brain,Advanced imaging scan,1 hour,No preparation needed,3219.64,9012,0.00,1.00,true,AST#Creatinine#Platelet Count,U/L#mg/dL#cells/mcL,10-40#0.6-1.3#150000-450000
+Glucose Test 337,Infectious Disease Tests,Kidney,Genetic screening,Overnight,No preparation needed,252.08,9003,12.00,1.00,true,Glucose#TSH,mg/dL#uIU/mL,70-110#0.4-4.0
+WBC Count Test 338,Hormone Tests,Heart,Advanced imaging scan,3 hours,Fasting required,3196.94,9012,0.00,2.00,false,WBC Count#Hemoglobin#Platelet Count,cells/mcL#g/dL#cells/mcL,4000-11000#12-16#150000-450000
+Cholesterol Test 339,Urine Tests,Chest,Organ function evaluation,30 minutes,Fasting required,1701.94,9015,0.00,1.00,true,Cholesterol#AST#Hemoglobin,mg/dL#U/L#g/dL,<200#10-40#12-16
+Creatinine Test 340,Urine Tests,Thyroid,Genetic screening,2 hours,No preparation needed,4790.71,9000,0.00,2.00,true,Creatinine#Hemoglobin#AST,mg/dL#g/dL#U/L,0.6-1.3#12-16#10-40
+ALT Test 341,Infectious Disease Tests,Thyroid,Hormonal level analysis,1 hour,Hydration recommended,3899.85,9000,12.00,1.00,false,ALT#Platelet Count#Glucose,U/L#cells/mcL#mg/dL,7-56#150000-450000#70-110
+Hemoglobin Test 342,Imaging,Abdomen,Pathogen detection,4 hours,Fasting required,3916.11,9007,0.00,0.00,false,Hemoglobin#Cholesterol,g/dL#mg/dL,12-16#<200
+Platelet Count Test 343,Blood Tests,Liver,Pathogen detection,3 hours,Fasting required,4305.76,9017,0.00,1.00,true,Platelet Count#TSH#ALT,cells/mcL#uIU/mL#U/L,150000-450000#0.4-4.0#7-56
+AST Test 344,Genetic Tests,Kidney,Hormonal level analysis,30 minutes,Hydration recommended,3716.78,9017,0.00,2.00,true,AST#ALT#Platelet Count,U/L#U/L#cells/mcL,10-40#7-56#150000-450000
+WBC Count Test 345,Urine Tests,Heart,Organ function evaluation,2 hours,Avoid caffeine,4094.33,9014,5.00,2.00,true,WBC Count#Triglycerides,cells/mcL#mg/dL,4000-11000#<150
+Creatinine Test 346,Hormone Tests,Chest,Genetic screening,Overnight,No preparation needed,1830.23,9016,12.00,0.00,true,Creatinine#Glucose,mg/dL#mg/dL,0.6-1.3#70-110
+Hemoglobin Test 347,Pathology,Skin,Pathogen detection,4 hours,Fasting required,3359.10,9016,12.00,2.00,false,Hemoglobin#Platelet Count,g/dL#cells/mcL,12-16#150000-450000
+TSH Test 348,Urine Tests,Brain,Advanced imaging scan,30 minutes,Avoid caffeine,2994.17,9011,5.00,1.00,false,TSH#ALT#Glucose,uIU/mL#U/L#mg/dL,0.4-4.0#7-56#70-110
+Glucose Test 349,Hormone Tests,Urine,Organ function evaluation,3 hours,Fasting required,3230.32,9006,12.00,0.00,true,Glucose#WBC Count#Triglycerides,mg/dL#cells/mcL#mg/dL,70-110#4000-11000#<150
+ALT Test 350,Liver Function Tests,Abdomen,Hormonal level analysis,3 hours,No preparation needed,3192.77,9012,0.00,1.00,false,ALT#Glucose,U/L#mg/dL,7-56#70-110
+WBC Count Test 351,Genetic Tests,Kidney,Advanced imaging scan,30 minutes,Fasting required,421.81,9000,12.00,2.00,false,WBC Count#Hemoglobin,cells/mcL#g/dL,4000-11000#12-16
+AST Test 352,Allergy Tests,Brain,Genetic screening,2 hours,Hydration recommended,3339.94,9004,5.00,0.00,false,AST#Cholesterol,U/L#mg/dL,10-40#<200
+TSH Test 353,Infectious Disease Tests,Heart,Advanced imaging scan,4 hours,Fasting required,1050.19,9012,5.00,0.00,true,TSH#Hemoglobin#Creatinine,uIU/mL#g/dL#mg/dL,0.4-4.0#12-16#0.6-1.3
+Triglycerides Test 354,Genetic Tests,Kidney,Genetic screening,3 hours,Avoid caffeine,1538.29,9003,12.00,2.00,false,Triglycerides#Glucose#Cholesterol,mg/dL#mg/dL#mg/dL,<150#70-110#<200
+TSH Test 355,Infectious Disease Tests,Skin,Routine diagnostic test,3 hours,Fasting required,3047.62,9015,12.00,2.00,true,TSH#Creatinine#Hemoglobin,uIU/mL#mg/dL#g/dL,0.4-4.0#0.6-1.3#12-16
+ALT Test 356,Hormone Tests,Chest,Hormonal level analysis,30 minutes,No preparation needed,4553.94,9018,0.00,2.00,true,ALT#Creatinine#WBC Count,U/L#mg/dL#cells/mcL,7-56#0.6-1.3#4000-11000
+Cholesterol Test 357,Genetic Tests,Urine,Advanced imaging scan,30 minutes,Fasting required,3771.22,9015,5.00,0.00,false,Cholesterol#Triglycerides,mg/dL#mg/dL,<200#<150
+TSH Test 358,Hormone Tests,Abdomen,Pathogen detection,Overnight,No preparation needed,2282.83,9002,5.00,0.00,false,TSH#Creatinine#Cholesterol,uIU/mL#mg/dL#mg/dL,0.4-4.0#0.6-1.3#<200
+Glucose Test 359,Urine Tests,Skin,Organ function evaluation,1 hour,Avoid caffeine,1820.84,9019,0.00,0.00,false,Glucose#TSH,mg/dL#uIU/mL,70-110#0.4-4.0
+WBC Count Test 360,Genetic Tests,Brain,Hormonal level analysis,2 hours,Fasting required,498.99,9008,12.00,2.00,false,WBC Count#Cholesterol,cells/mcL#mg/dL,4000-11000#<200
+ALT Test 361,Blood Tests,Heart,Hormonal level analysis,3 hours,Hydration recommended,4067.35,9018,0.00,1.00,true,ALT#WBC Count,U/L#cells/mcL,7-56#4000-11000
+AST Test 362,Imaging,Kidney,Routine diagnostic test,30 minutes,Hydration recommended,1662.14,9013,12.00,0.00,false,AST#Triglycerides#Creatinine,U/L#mg/dL#mg/dL,10-40#<150#0.6-1.3
+Hemoglobin Test 363,Cardiac Tests,Liver,Pathogen detection,Overnight,No preparation needed,2554.23,9011,5.00,1.00,false,Hemoglobin#WBC Count#Platelet Count,g/dL#cells/mcL#cells/mcL,12-16#4000-11000#150000-450000
+Platelet Count Test 364,Genetic Tests,Blood,Hormonal level analysis,4 hours,No preparation needed,2402.25,9010,12.00,0.00,false,Platelet Count#Triglycerides#Creatinine,cells/mcL#mg/dL#mg/dL,150000-450000#<150#0.6-1.3
+TSH Test 365,Cardiac Tests,Abdomen,Routine diagnostic test,4 hours,Fasting required,2204.90,9009,12.00,0.00,false,TSH#Platelet Count#ALT,uIU/mL#cells/mcL#U/L,0.4-4.0#150000-450000#7-56
+Glucose Test 366,Imaging,Urine,Hormonal level analysis,Overnight,Fasting required,1682.08,9008,12.00,1.00,true,Glucose#Creatinine#AST,mg/dL#mg/dL#U/L,70-110#0.6-1.3#10-40
+Creatinine Test 367,Infectious Disease Tests,Skin,Pathogen detection,1 hour,Avoid caffeine,2037.30,9000,0.00,2.00,true,Creatinine#WBC Count,mg/dL#cells/mcL,0.6-1.3#4000-11000
+Triglycerides Test 368,Blood Tests,Abdomen,Hormonal level analysis,1 hour,Avoid caffeine,4673.22,9013,12.00,2.00,false,Triglycerides#Hemoglobin#TSH,mg/dL#g/dL#uIU/mL,<150#12-16#0.4-4.0
+WBC Count Test 369,Allergy Tests,Chest,Advanced imaging scan,Overnight,No preparation needed,2649.03,9011,0.00,1.00,false,WBC Count#AST#Glucose,cells/mcL#U/L#mg/dL,4000-11000#10-40#70-110
+ALT Test 370,Liver Function Tests,Abdomen,Genetic screening,2 hours,Fasting required,898.23,9015,5.00,1.00,true,ALT#TSH#Glucose,U/L#uIU/mL#mg/dL,7-56#0.4-4.0#70-110
+Triglycerides Test 371,Pathology,Heart,Organ function evaluation,Overnight,Fasting required,2228.87,9010,5.00,2.00,false,Triglycerides#Cholesterol,mg/dL#mg/dL,<150#<200
+Creatinine Test 372,Genetic Tests,Brain,Routine diagnostic test,3 hours,No preparation needed,4206.05,9011,0.00,2.00,true,Creatinine#Cholesterol#Glucose,mg/dL#mg/dL#mg/dL,0.6-1.3#<200#70-110
+Hemoglobin Test 373,Cardiac Tests,Chest,Genetic screening,30 minutes,Hydration recommended,3361.83,9001,5.00,1.00,false,Hemoglobin#Platelet Count#Glucose,g/dL#cells/mcL#mg/dL,12-16#150000-450000#70-110
+AST Test 374,Liver Function Tests,Chest,Genetic screening,1 hour,No preparation needed,2875.21,9005,5.00,1.00,false,AST#TSH#Cholesterol,U/L#uIU/mL#mg/dL,10-40#0.4-4.0#<200
+ALT Test 375,Genetic Tests,Skin,Hormonal level analysis,Overnight,Avoid caffeine,4403.66,9009,5.00,1.00,true,ALT#TSH#Platelet Count,U/L#uIU/mL#cells/mcL,7-56#0.4-4.0#150000-450000
+WBC Count Test 376,Genetic Tests,Abdomen,Pathogen detection,2 hours,No preparation needed,1150.72,9003,0.00,2.00,true,WBC Count#Hemoglobin,cells/mcL#g/dL,4000-11000#12-16
+WBC Count Test 377,Imaging,Chest,Routine diagnostic test,Overnight,Hydration recommended,1801.60,9016,0.00,0.00,false,WBC Count#Triglycerides,cells/mcL#mg/dL,4000-11000#<150
+Platelet Count Test 378,Genetic Tests,Blood,Genetic screening,Overnight,No preparation needed,4800.29,9004,0.00,0.00,false,Platelet Count#AST#Triglycerides,cells/mcL#U/L#mg/dL,150000-450000#10-40#<150
+Glucose Test 379,Allergy Tests,Thyroid,Routine diagnostic test,4 hours,Fasting required,4251.76,9016,5.00,1.00,true,Glucose#Cholesterol#ALT,mg/dL#mg/dL#U/L,70-110#<200#7-56
+TSH Test 380,Liver Function Tests,Blood,Pathogen detection,3 hours,No preparation needed,1914.27,9009,5.00,2.00,true,TSH#Cholesterol,uIU/mL#mg/dL,0.4-4.0#<200
+Hemoglobin Test 381,Liver Function Tests,Heart,Routine diagnostic test,2 hours,Avoid caffeine,250.32,9015,12.00,0.00,true,Hemoglobin#Creatinine,g/dL#mg/dL,12-16#0.6-1.3
+AST Test 382,Cardiac Tests,Heart,Genetic screening,2 hours,No preparation needed,4311.31,9007,12.00,2.00,false,AST#ALT#Cholesterol,U/L#U/L#mg/dL,10-40#7-56#<200
+TSH Test 383,Genetic Tests,Skin,Organ function evaluation,2 hours,Hydration recommended,882.13,9016,5.00,0.00,false,TSH#ALT#WBC Count,uIU/mL#U/L#cells/mcL,0.4-4.0#7-56#4000-11000
+WBC Count Test 384,Imaging,Skin,Organ function evaluation,3 hours,Avoid caffeine,887.47,9003,5.00,0.00,false,WBC Count#Triglycerides#Cholesterol,cells/mcL#mg/dL#mg/dL,4000-11000#<150#<200
+Creatinine Test 385,Pathology,Heart,Organ function evaluation,30 minutes,Avoid caffeine,4972.49,9020,5.00,1.00,true,Creatinine#TSH,mg/dL#uIU/mL,0.6-1.3#0.4-4.0
+Cholesterol Test 386,Imaging,Kidney,Hormonal level analysis,4 hours,Hydration recommended,4547.30,9018,5.00,0.00,false,Cholesterol#Glucose,mg/dL#mg/dL,<200#70-110
+Hemoglobin Test 387,Urine Tests,Kidney,Genetic screening,30 minutes,Avoid caffeine,2144.25,9016,0.00,0.00,false,Hemoglobin#Triglycerides,g/dL#mg/dL,12-16#<150
+ALT Test 388,Allergy Tests,Chest,Routine diagnostic test,2 hours,Avoid caffeine,1331.85,9004,12.00,0.00,true,ALT#TSH#Glucose,U/L#uIU/mL#mg/dL,7-56#0.4-4.0#70-110
+ALT Test 389,Pathology,Skin,Routine diagnostic test,1 hour,Hydration recommended,3814.28,9017,0.00,0.00,false,ALT#AST,U/L#U/L,7-56#10-40
+Creatinine Test 390,Imaging,Abdomen,Advanced imaging scan,4 hours,No preparation needed,2188.03,9019,0.00,1.00,true,Creatinine#Glucose#Hemoglobin,mg/dL#mg/dL#g/dL,0.6-1.3#70-110#12-16
+WBC Count Test 391,Liver Function Tests,Blood,Organ function evaluation,2 hours,Hydration recommended,3326.99,9015,0.00,0.00,true,WBC Count#Platelet Count,cells/mcL#cells/mcL,4000-11000#150000-450000
+TSH Test 392,Imaging,Thyroid,Hormonal level analysis,3 hours,Hydration recommended,1171.14,9003,0.00,1.00,true,TSH#Hemoglobin,uIU/mL#g/dL,0.4-4.0#12-16
+Platelet Count Test 393,Urine Tests,Abdomen,Genetic screening,Overnight,Avoid caffeine,4311.47,9016,0.00,1.00,true,Platelet Count#Cholesterol,cells/mcL#mg/dL,150000-450000#<200
+Platelet Count Test 394,Urine Tests,Urine,Hormonal level analysis,4 hours,Hydration recommended,3895.76,9013,12.00,2.00,false,Platelet Count#AST#Glucose,cells/mcL#U/L#mg/dL,150000-450000#10-40#70-110
+Glucose Test 395,Imaging,Kidney,Pathogen detection,30 minutes,Avoid caffeine,2841.68,9018,5.00,0.00,true,Glucose#Cholesterol#Hemoglobin,mg/dL#mg/dL#g/dL,70-110#<200#12-16
+Platelet Count Test 396,Urine Tests,Chest,Hormonal level analysis,1 hour,Fasting required,1901.51,9014,5.00,0.00,true,Platelet Count#Glucose,cells/mcL#mg/dL,150000-450000#70-110
+Platelet Count Test 397,Hormone Tests,Chest,Routine diagnostic test,Overnight,Fasting required,4927.35,9014,12.00,0.00,true,Platelet Count#Glucose,cells/mcL#mg/dL,150000-450000#70-110
+Cholesterol Test 398,Blood Tests,Abdomen,Genetic screening,4 hours,No preparation needed,4052.69,9012,0.00,0.00,false,Cholesterol#Hemoglobin#Platelet Count,mg/dL#g/dL#cells/mcL,<200#12-16#150000-450000
+AST Test 399,Hormone Tests,Skin,Routine diagnostic test,3 hours,No preparation needed,3676.03,9003,12.00,0.00,true,AST#ALT#Creatinine,U/L#U/L#mg/dL,10-40#7-56#0.6-1.3
+Platelet Count Test 400,Urine Tests,Blood,Pathogen detection,4 hours,Hydration recommended,1620.66,9009,5.00,2.00,false,Platelet Count#TSH#Cholesterol,cells/mcL#uIU/mL#mg/dL,150000-450000#0.4-4.0#<200
+TSH Test 401,Genetic Tests,Blood,Pathogen detection,4 hours,No preparation needed,4701.79,9011,5.00,1.00,false,TSH#Platelet Count#ALT,uIU/mL#cells/mcL#U/L,0.4-4.0#150000-450000#7-56
+Hemoglobin Test 402,Pathology,Blood,Genetic screening,4 hours,No preparation needed,4976.50,9001,0.00,0.00,false,Hemoglobin#ALT#WBC Count,g/dL#U/L#cells/mcL,12-16#7-56#4000-11000
+ALT Test 403,Allergy Tests,Heart,Hormonal level analysis,4 hours,Hydration recommended,4888.22,9011,12.00,1.00,true,ALT#Creatinine,U/L#mg/dL,7-56#0.6-1.3
+Triglycerides Test 404,Blood Tests,Urine,Hormonal level analysis,3 hours,Hydration recommended,1402.87,9014,12.00,0.00,true,Triglycerides#WBC Count#AST,mg/dL#cells/mcL#U/L,<150#4000-11000#10-40
+Hemoglobin Test 405,Blood Tests,Blood,Routine diagnostic test,1 hour,Hydration recommended,4691.62,9011,5.00,0.00,false,Hemoglobin#Creatinine,g/dL#mg/dL,12-16#0.6-1.3
+Glucose Test 406,Urine Tests,Chest,Pathogen detection,1 hour,No preparation needed,4898.25,9011,0.00,0.00,true,Glucose#Platelet Count#ALT,mg/dL#cells/mcL#U/L,70-110#150000-450000#7-56
+WBC Count Test 407,Hormone Tests,Brain,Genetic screening,3 hours,Hydration recommended,1637.81,9015,0.00,0.00,false,WBC Count#Platelet Count#Cholesterol,cells/mcL#cells/mcL#mg/dL,4000-11000#150000-450000#<200
+Platelet Count Test 408,Cardiac Tests,Heart,Pathogen detection,4 hours,Hydration recommended,3587.43,9007,12.00,2.00,true,Platelet Count#AST,cells/mcL#U/L,150000-450000#10-40
+WBC Count Test 409,Genetic Tests,Skin,Hormonal level analysis,30 minutes,Avoid caffeine,2777.36,9001,12.00,1.00,true,WBC Count#Platelet Count,cells/mcL#cells/mcL,4000-11000#150000-450000
+Creatinine Test 410,Liver Function Tests,Kidney,Hormonal level analysis,Overnight,Hydration recommended,3188.62,9013,0.00,2.00,true,Creatinine#WBC Count,mg/dL#cells/mcL,0.6-1.3#4000-11000
+Platelet Count Test 411,Liver Function Tests,Brain,Genetic screening,30 minutes,Hydration recommended,992.04,9004,5.00,1.00,true,Platelet Count#Triglycerides#AST,cells/mcL#mg/dL#U/L,150000-450000#<150#10-40
+TSH Test 412,Urine Tests,Liver,Advanced imaging scan,3 hours,No preparation needed,3304.73,9017,12.00,2.00,false,TSH#Hemoglobin,uIU/mL#g/dL,0.4-4.0#12-16
+Hemoglobin Test 413,Pathology,Thyroid,Hormonal level analysis,3 hours,Fasting required,637.94,9018,12.00,1.00,true,Hemoglobin#Triglycerides,g/dL#mg/dL,12-16#<150
+Triglycerides Test 414,Hormone Tests,Heart,Advanced imaging scan,2 hours,Fasting required,3617.69,9011,12.00,0.00,true,Triglycerides#ALT,mg/dL#U/L,<150#7-56
+Triglycerides Test 415,Pathology,Skin,Genetic screening,30 minutes,No preparation needed,650.70,9020,0.00,0.00,true,Triglycerides#Cholesterol,mg/dL#mg/dL,<150#<200
+WBC Count Test 416,Liver Function Tests,Brain,Pathogen detection,1 hour,Fasting required,2710.58,9008,0.00,1.00,true,WBC Count#Creatinine#Platelet Count,cells/mcL#mg/dL#cells/mcL,4000-11000#0.6-1.3#150000-450000
+Cholesterol Test 417,Urine Tests,Urine,Hormonal level analysis,2 hours,No preparation needed,1733.19,9004,5.00,0.00,true,Cholesterol#Creatinine,mg/dL#mg/dL,<200#0.6-1.3
+Glucose Test 418,Urine Tests,Liver,Genetic screening,2 hours,No preparation needed,330.07,9005,12.00,0.00,true,Glucose#Platelet Count,mg/dL#cells/mcL,70-110#150000-450000
+TSH Test 419,Liver Function Tests,Skin,Genetic screening,4 hours,Avoid caffeine,235.24,9015,0.00,0.00,true,TSH#Platelet Count#Creatinine,uIU/mL#cells/mcL#mg/dL,0.4-4.0#150000-450000#0.6-1.3
+ALT Test 420,Infectious Disease Tests,Chest,Routine diagnostic test,3 hours,Hydration recommended,1509.56,9000,5.00,2.00,true,ALT#Hemoglobin#WBC Count,U/L#g/dL#cells/mcL,7-56#12-16#4000-11000
+Cholesterol Test 421,Urine Tests,Heart,Pathogen detection,1 hour,Hydration recommended,422.37,9000,0.00,0.00,false,Cholesterol#Creatinine,mg/dL#mg/dL,<200#0.6-1.3
+Hemoglobin Test 422,Genetic Tests,Heart,Organ function evaluation,3 hours,Hydration recommended,1008.49,9020,12.00,2.00,true,Hemoglobin#WBC Count,g/dL#cells/mcL,12-16#4000-11000
+Hemoglobin Test 423,Hormone Tests,Heart,Hormonal level analysis,Overnight,No preparation needed,1477.23,9002,12.00,1.00,true,Hemoglobin#Platelet Count#Creatinine,g/dL#cells/mcL#mg/dL,12-16#150000-450000#0.6-1.3
+AST Test 424,Pathology,Brain,Pathogen detection,4 hours,Fasting required,1170.96,9014,0.00,2.00,true,AST#Triglycerides,U/L#mg/dL,10-40#<150
+AST Test 425,Cardiac Tests,Liver,Organ function evaluation,30 minutes,Fasting required,2076.62,9000,12.00,2.00,false,AST#TSH#Creatinine,U/L#uIU/mL#mg/dL,10-40#0.4-4.0#0.6-1.3
+Creatinine Test 426,Genetic Tests,Urine,Genetic screening,3 hours,Avoid caffeine,4710.43,9002,12.00,1.00,true,Creatinine#ALT,mg/dL#U/L,0.6-1.3#7-56
+WBC Count Test 427,Urine Tests,Abdomen,Genetic screening,3 hours,Avoid caffeine,1505.36,9011,0.00,1.00,false,WBC Count#Platelet Count,cells/mcL#cells/mcL,4000-11000#150000-450000
+AST Test 428,Infectious Disease Tests,Kidney,Organ function evaluation,3 hours,Hydration recommended,4043.87,9020,0.00,0.00,true,AST#Glucose#Triglycerides,U/L#mg/dL#mg/dL,10-40#70-110#<150
+WBC Count Test 429,Pathology,Abdomen,Advanced imaging scan,1 hour,Avoid caffeine,4092.75,9016,5.00,1.00,true,WBC Count#Glucose#ALT,cells/mcL#mg/dL#U/L,4000-11000#70-110#7-56
+AST Test 430,Blood Tests,Abdomen,Routine diagnostic test,4 hours,Avoid caffeine,4866.68,9010,12.00,2.00,false,AST#WBC Count#Glucose,U/L#cells/mcL#mg/dL,10-40#4000-11000#70-110
+Creatinine Test 431,Imaging,Liver,Routine diagnostic test,3 hours,Fasting required,2172.82,9002,12.00,0.00,false,Creatinine#Triglycerides,mg/dL#mg/dL,0.6-1.3#<150
+Platelet Count Test 432,Hormone Tests,Thyroid,Advanced imaging scan,Overnight,No preparation needed,1416.31,9010,0.00,2.00,true,Platelet Count#ALT,cells/mcL#U/L,150000-450000#7-56
+Glucose Test 433,Cardiac Tests,Kidney,Routine diagnostic test,Overnight,Hydration recommended,3369.09,9007,5.00,1.00,false,Glucose#Hemoglobin#WBC Count,mg/dL#g/dL#cells/mcL,70-110#12-16#4000-11000
+TSH Test 434,Cardiac Tests,Thyroid,Genetic screening,2 hours,Fasting required,4476.70,9001,5.00,1.00,true,TSH#Glucose#Creatinine,uIU/mL#mg/dL#mg/dL,0.4-4.0#70-110#0.6-1.3
+WBC Count Test 435,Liver Function Tests,Heart,Organ function evaluation,2 hours,Hydration recommended,3748.45,9010,5.00,0.00,false,WBC Count#Cholesterol#AST,cells/mcL#mg/dL#U/L,4000-11000#<200#10-40
+Platelet Count Test 436,Liver Function Tests,Liver,Advanced imaging scan,4 hours,Avoid caffeine,2530.97,9020,0.00,0.00,true,Platelet Count#TSH,cells/mcL#uIU/mL,150000-450000#0.4-4.0
+TSH Test 437,Pathology,Brain,Advanced imaging scan,Overnight,Hydration recommended,3643.22,9012,5.00,0.00,true,TSH#AST#Triglycerides,uIU/mL#U/L#mg/dL,0.4-4.0#10-40#<150
+Glucose Test 438,Blood Tests,Liver,Routine diagnostic test,30 minutes,Avoid caffeine,4768.64,9003,12.00,1.00,false,Glucose#Creatinine,mg/dL#mg/dL,70-110#0.6-1.3
+Glucose Test 439,Genetic Tests,Abdomen,Advanced imaging scan,2 hours,Fasting required,3200.28,9006,5.00,1.00,false,Glucose#Cholesterol#Hemoglobin,mg/dL#mg/dL#g/dL,70-110#<200#12-16
+Glucose Test 440,Imaging,Abdomen,Hormonal level analysis,3 hours,Fasting required,442.27,9014,0.00,0.00,false,Glucose#WBC Count#Platelet Count,mg/dL#cells/mcL#cells/mcL,70-110#4000-11000#150000-450000
+TSH Test 441,Hormone Tests,Chest,Organ function evaluation,Overnight,Avoid caffeine,752.52,9003,12.00,1.00,false,TSH#Triglycerides,uIU/mL#mg/dL,0.4-4.0#<150
+Cholesterol Test 442,Infectious Disease Tests,Liver,Routine diagnostic test,Overnight,No preparation needed,3912.85,9004,12.00,0.00,true,Cholesterol#AST,mg/dL#U/L,<200#10-40
+ALT Test 443,Urine Tests,Thyroid,Routine diagnostic test,1 hour,Avoid caffeine,4398.96,9017,12.00,0.00,false,ALT#AST#Platelet Count,U/L#U/L#cells/mcL,7-56#10-40#150000-450000
+TSH Test 444,Genetic Tests,Thyroid,Organ function evaluation,3 hours,Fasting required,3585.35,9014,5.00,0.00,false,TSH#Hemoglobin#Glucose,uIU/mL#g/dL#mg/dL,0.4-4.0#12-16#70-110
+Cholesterol Test 445,Infectious Disease Tests,Skin,Organ function evaluation,4 hours,Avoid caffeine,2885.49,9012,12.00,1.00,true,Cholesterol#AST#TSH,mg/dL#U/L#uIU/mL,<200#10-40#0.4-4.0
+Platelet Count Test 446,Genetic Tests,Brain,Hormonal level analysis,Overnight,Hydration recommended,1855.96,9017,0.00,2.00,false,Platelet Count#WBC Count#AST,cells/mcL#cells/mcL#U/L,150000-450000#4000-11000#10-40
+Triglycerides Test 447,Cardiac Tests,Abdomen,Hormonal level analysis,3 hours,No preparation needed,447.87,9011,5.00,2.00,false,Triglycerides#Creatinine,mg/dL#mg/dL,<150#0.6-1.3
+Glucose Test 448,Allergy Tests,Blood,Hormonal level analysis,30 minutes,Fasting required,1048.73,9007,12.00,0.00,false,Glucose#AST,mg/dL#U/L,70-110#10-40
+Platelet Count Test 449,Blood Tests,Urine,Organ function evaluation,3 hours,Fasting required,3727.72,9020,5.00,1.00,false,Platelet Count#Cholesterol#TSH,cells/mcL#mg/dL#uIU/mL,150000-450000#<200#0.4-4.0
+Hemoglobin Test 450,Pathology,Heart,Routine diagnostic test,4 hours,Hydration recommended,1061.49,9019,12.00,0.00,false,Hemoglobin#TSH,g/dL#uIU/mL,12-16#0.4-4.0
+Platelet Count Test 451,Infectious Disease Tests,Brain,Organ function evaluation,30 minutes,Avoid caffeine,4660.87,9013,0.00,0.00,true,Platelet Count#ALT,cells/mcL#U/L,150000-450000#7-56
+AST Test 452,Hormone Tests,Chest,Organ function evaluation,Overnight,Avoid caffeine,2062.71,9019,5.00,0.00,false,AST#Glucose#TSH,U/L#mg/dL#uIU/mL,10-40#70-110#0.4-4.0
+Hemoglobin Test 453,Hormone Tests,Urine,Advanced imaging scan,3 hours,No preparation needed,1309.33,9011,5.00,1.00,true,Hemoglobin#AST#Creatinine,g/dL#U/L#mg/dL,12-16#10-40#0.6-1.3
+Cholesterol Test 454,Genetic Tests,Heart,Routine diagnostic test,1 hour,Avoid caffeine,1493.74,9009,12.00,0.00,false,Cholesterol#Triglycerides,mg/dL#mg/dL,<200#<150
+ALT Test 455,Genetic Tests,Liver,Genetic screening,1 hour,Avoid caffeine,4268.79,9003,12.00,0.00,true,ALT#Triglycerides#WBC Count,U/L#mg/dL#cells/mcL,7-56#<150#4000-11000
+Platelet Count Test 456,Pathology,Liver,Genetic screening,30 minutes,Hydration recommended,3658.35,9001,12.00,0.00,true,Platelet Count#Triglycerides,cells/mcL#mg/dL,150000-450000#<150
+AST Test 457,Pathology,Brain,Advanced imaging scan,1 hour,No preparation needed,3955.89,9003,5.00,0.00,true,AST#Glucose,U/L#mg/dL,10-40#70-110
+WBC Count Test 458,Cardiac Tests,Heart,Advanced imaging scan,30 minutes,Fasting required,1040.54,9020,5.00,2.00,true,WBC Count#ALT#Creatinine,cells/mcL#U/L#mg/dL,4000-11000#7-56#0.6-1.3
+TSH Test 459,Hormone Tests,Blood,Pathogen detection,1 hour,Avoid caffeine,391.29,9017,12.00,0.00,true,TSH#Glucose,uIU/mL#mg/dL,0.4-4.0#70-110
+WBC Count Test 460,Pathology,Chest,Organ function evaluation,30 minutes,Fasting required,2313.65,9014,5.00,0.00,false,WBC Count#Cholesterol,cells/mcL#mg/dL,4000-11000#<200
+TSH Test 461,Infectious Disease Tests,Heart,Routine diagnostic test,1 hour,No preparation needed,1428.67,9016,5.00,2.00,true,TSH#Creatinine#AST,uIU/mL#mg/dL#U/L,0.4-4.0#0.6-1.3#10-40
+Hemoglobin Test 462,Urine Tests,Blood,Hormonal level analysis,1 hour,Hydration recommended,1263.76,9008,12.00,1.00,false,Hemoglobin#Cholesterol,g/dL#mg/dL,12-16#<200
+Cholesterol Test 463,Hormone Tests,Kidney,Genetic screening,3 hours,Avoid caffeine,1236.94,9020,0.00,1.00,true,Cholesterol#WBC Count#Platelet Count,mg/dL#cells/mcL#cells/mcL,<200#4000-11000#150000-450000
+TSH Test 464,Pathology,Urine,Hormonal level analysis,4 hours,Avoid caffeine,3300.65,9013,12.00,0.00,true,TSH#Creatinine#ALT,uIU/mL#mg/dL#U/L,0.4-4.0#0.6-1.3#7-56
+AST Test 465,Cardiac Tests,Abdomen,Pathogen detection,30 minutes,Fasting required,2536.56,9014,0.00,2.00,true,AST#WBC Count#ALT,U/L#cells/mcL#U/L,10-40#4000-11000#7-56
+WBC Count Test 466,Infectious Disease Tests,Heart,Advanced imaging scan,1 hour,Fasting required,4902.67,9000,0.00,1.00,true,WBC Count#Glucose,cells/mcL#mg/dL,4000-11000#70-110
+TSH Test 467,Infectious Disease Tests,Kidney,Hormonal level analysis,3 hours,No preparation needed,2136.23,9014,12.00,1.00,true,TSH#Creatinine#Cholesterol,uIU/mL#mg/dL#mg/dL,0.4-4.0#0.6-1.3#<200
+Platelet Count Test 468,Liver Function Tests,Thyroid,Advanced imaging scan,3 hours,No preparation needed,2912.39,9005,5.00,1.00,false,Platelet Count#Hemoglobin#ALT,cells/mcL#g/dL#U/L,150000-450000#12-16#7-56
+Glucose Test 469,Pathology,Liver,Advanced imaging scan,1 hour,Fasting required,2353.07,9006,5.00,2.00,true,Glucose#TSH#ALT,mg/dL#uIU/mL#U/L,70-110#0.4-4.0#7-56
+Creatinine Test 470,Urine Tests,Blood,Organ function evaluation,3 hours,Avoid caffeine,2952.29,9004,5.00,2.00,true,Creatinine#TSH#Triglycerides,mg/dL#uIU/mL#mg/dL,0.6-1.3#0.4-4.0#<150
+WBC Count Test 471,Infectious Disease Tests,Skin,Hormonal level analysis,Overnight,Fasting required,687.00,9015,5.00,1.00,false,WBC Count#AST,cells/mcL#U/L,4000-11000#10-40
+AST Test 472,Allergy Tests,Thyroid,Hormonal level analysis,Overnight,Avoid caffeine,657.36,9013,5.00,1.00,true,AST#Glucose,U/L#mg/dL,10-40#70-110
+Cholesterol Test 473,Pathology,Abdomen,Genetic screening,1 hour,Fasting required,1103.74,9017,0.00,1.00,false,Cholesterol#Triglycerides,mg/dL#mg/dL,<200#<150
+WBC Count Test 474,Liver Function Tests,Brain,Advanced imaging scan,30 minutes,Fasting required,565.63,9008,12.00,1.00,true,WBC Count#Platelet Count,cells/mcL#cells/mcL,4000-11000#150000-450000
+Triglycerides Test 475,Blood Tests,Kidney,Routine diagnostic test,3 hours,No preparation needed,1450.73,9006,0.00,2.00,false,Triglycerides#ALT,mg/dL#U/L,<150#7-56
+Triglycerides Test 476,Hormone Tests,Abdomen,Advanced imaging scan,4 hours,Fasting required,3956.08,9005,5.00,2.00,true,Triglycerides#WBC Count#Glucose,mg/dL#cells/mcL#mg/dL,<150#4000-11000#70-110
+TSH Test 477,Allergy Tests,Urine,Genetic screening,3 hours,Fasting required,4934.25,9003,12.00,2.00,true,TSH#WBC Count#Hemoglobin,uIU/mL#cells/mcL#g/dL,0.4-4.0#4000-11000#12-16
+Triglycerides Test 478,Liver Function Tests,Kidney,Pathogen detection,30 minutes,Hydration recommended,2780.93,9003,12.00,2.00,false,Triglycerides#WBC Count,mg/dL#cells/mcL,<150#4000-11000
+Triglycerides Test 479,Infectious Disease Tests,Heart,Pathogen detection,30 minutes,Hydration recommended,1102.40,9001,12.00,2.00,false,Triglycerides#Creatinine,mg/dL#mg/dL,<150#0.6-1.3

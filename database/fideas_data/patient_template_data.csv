@@ -1,0 +1,296 @@
+first_name,last_name,email,phone,date_of_birth,gender,address,emergency_contact,emergency_phone,blood_group,allergies,medical_history
+Neelima,Madan,neelima.madan119@yahoo.com,+912299581917,1983-02-06,Male,"740, Batra Road, Sirsa 493936",Devansh Kumer,1446769656,A+,Penicillin,None
+Rajata,Khare,rajata.khare888@rediff.com,0046359969,2011-12-23,Male,"43/87, Vasa, Faridabad 912901",Ethan Sankar,03657310187,B+,Peanuts,Heart Disease
+Chanakya,Rama,chanakya.rama272@gmail.com,01778900301,1994-01-29,Female,"22, Barman, Muzaffarpur 834988",Thomas Bahri,03848793760,A+,Seafood,Asthma
+Siddharth,Sandal,siddharth.sandal718@gmail.com,8348390715,1948-04-25,Female,"56/617, Bahl Path, Bhusawal 793339",Nakul Tripathi,0941563398,B+,Seafood,Diabetes
+Robert,Batta,robert.batta201@yahoo.com,9948472531,1953-12-01,Male,"11/04, Borah Nagar, Bikaner 354633",Madhavi Narayanan,03843242915,A+,Penicillin,None
+Zinal,Chacko,zinal.chacko308@gmail.com,+917904009589,1982-04-11,Female,"021, Joshi Path, Ghaziabad-921704",Ishanvi Bajwa,7022826193,O-,Seafood,Thyroid
+Tanish,Puri,tanish.puri248@rediff.com,04687405642,1975-03-20,Male,"04/064, Taneja Path, Pune 717375",Anya Koshy,06012423788,B-,Seafood,Thyroid
+Sanaya,Mallick,sanaya.mallick984@yahoo.com,+912583666974,1967-08-16,Male,"76/95, Sem Circle, Medininagar-496289",Jalsa Kapoor,00001073918,AB-,Penicillin,Heart Disease
+Janani,Sem,janani.sem615@yahoo.com,07034991207,2006-11-06,Male,"27/520, Dave Road, Phusro-444228",Avi Dash,8515351408,A-,Pollen,Asthma
+Ishaan,Thaker,ishaan.thaker414@gmail.com,07957793592,2005-07-26,Female,"931, Amble, Vijayawada-269419",Mahika Varma,9604722909,O-,Peanuts,Thyroid
+William,Apte,william.apte545@gmail.com,08989177847,1998-02-01,Male,"69/703, Som Circle, Guwahati-119361",Hardik Kunda,+913115459330,O+,Seafood,None
+Ridhi,Bhat,ridhi.bhat731@gmail.com,2207236996,2023-03-30,Female,"94/383, Oza Circle, Mumbai 713614",Diya Barman,4071704783,B-,Seafood,Hypertension
+Shivansh,Borde,shivansh.borde326@yahoo.com,05534933247,1993-03-31,Female,"99/320, Dewan Zila, Satara 678903",Anay Kapur,+915792356209,O-,Peanuts,Asthma
+Vidhi,Bakshi,vidhi.bakshi818@rediff.com,0020916131,1996-02-05,Female,"43/269, Jain Nagar, Mahbubnagar-662907",Harish Loyal,09997266360,B+,Dust,Hypertension
+Max,Rajagopalan,max.rajagopalan111@gmail.com,2303634064,1984-11-14,Female,"922, Keer Road, Sambhal 919697",Nitesh Rajagopalan,00075630779,O+,Seafood,Asthma
+Maya,Konda,maya.konda374@gmail.com,02288148511,1945-07-21,Female,"30/267, Maharaj Ganj, Vasai-Virar-532280",Radhika Rout,07410272558,A+,Peanuts,Thyroid
+Wishi,Memon,wishi.memon467@gmail.com,9525715554,1938-12-13,Female,"58/41, Nayak Chowk, Kanpur-012754",Ishanvi Balay,4132561904,AB+,Pollen,Hypertension
+Kai,Chanda,kai.chanda252@rediff.com,+919144010283,1948-07-16,Female,"H.No. 095, Sandal Chowk, Dehri-683585",Gagan Panchal,0779271796,A+,None,Asthma
+Diya,Bhakta,diya.bhakta905@yahoo.com,07209599896,2001-04-09,Male,"70/604, Master, Bahraich-028952",Avi Varughese,5985734088,B-,Penicillin,Hypertension
+Yashawini,Dhawan,yashawini.dhawan462@gmail.com,03359025108,1989-02-05,Male,"H.No. 993, Edwin Street, Silchar-464288",Aarna Sibal,+914562460099,AB+,None,Heart Disease
+George,Cheema,george.cheema596@yahoo.com,01903789942,1961-01-28,Male,"20/71, Amble Nagar, Mau 979136",Rajeshri Jain,04338826745,B-,Dust,Thyroid
+Bhavani,Mitter,bhavani.mitter197@yahoo.com,+917197593551,1952-11-07,Female,"48/776, Pal Zila, Imphal 048498",Pooja Sawhney,+916503417392,AB+,None,Diabetes
+Rayaan,Sandhu,rayaan.sandhu485@gmail.com,4874297767,1984-07-25,Female,"01/738, Rege Chowk, Dindigul-097794",Baghyawati Manda,+915823236894,O+,Penicillin,None
+Odika,Yogi,odika.yogi507@rediff.com,07570918972,1979-06-01,Male,"500, Mukhopadhyay Ganj, Rewa 585940",Ishwar Rajan,03453465487,AB-,Penicillin,None
+Jason,Srivastava,jason.srivastava607@rediff.com,8119690134,1968-02-16,Female,"H.No. 657, Hayer Zila, Hindupur 695714",Vedhika Gaba,06322124676,AB-,Dust,Hypertension
+Nathaniel,Dewan,nathaniel.dewan481@rediff.com,+911270623378,1960-11-01,Female,"464, Baral Marg, Korba-490145",Falan Batra,3999808613,AB+,None,Heart Disease
+Zansi,Murthy,zansi.murthy782@rediff.com,07934749197,1962-12-26,Female,"H.No. 588, Dugar, Nagaon 589937",Qarin Sodhi,00211388205,AB-,Peanuts,Diabetes
+Ekani,Chana,ekani.chana582@yahoo.com,+919623185397,1948-01-08,Male,"71, Jaggi Path, Mysore 560066",Varenya Soni,4132055866,B+,Pollen,Heart Disease
+Yamini,Goel,yamini.goel822@yahoo.com,09026161628,2024-04-26,Female,"H.No. 936, Shere Road, Mahbubnagar-759277",Adweta Chandran,00872451609,A+,Seafood,Thyroid
+Mohammed,Lalla,mohammed.lalla599@rediff.com,+911641992940,2022-09-14,Male,"H.No. 74, Randhawa Nagar, Tumkur 873168",Karan Balan,06968514394,AB-,Pollen,Heart Disease
+Dipta,Mohanty,dipta.mohanty739@yahoo.com,6094673122,1985-02-19,Male,"01/46, Parekh Path, Mahbubnagar 284390",Urmi Pradhan,9545624016,A+,Pollen,Thyroid
+Aarna,Dar,aarna.dar198@yahoo.com,08317784665,1943-11-18,Female,"32/628, Srinivasan Street, Dibrugarh 219938",George Venkatesh,+916673039910,A+,None,None
+Andrew,Mohanty,andrew.mohanty774@gmail.com,+912695007560,1991-07-17,Male,"114, Barad Ganj, Chapra 842534",Yoshita Kannan,05184776495,B-,Seafood,Heart Disease
+Harita,Kala,harita.kala976@rediff.com,2300684707,2018-02-12,Male,"81/49, Bhat Zila, Coimbatore-621169",Sai Shenoy,07410528572,AB+,Penicillin,None
+Dominic,Saha,dominic.saha468@rediff.com,+918279159843,2010-09-07,Female,"17/70, Golla Circle, Naihati-201388",Ronith Setty,9877384589,A+,Penicillin,Diabetes
+Jackson,Sandal,jackson.sandal129@yahoo.com,+910316323970,2006-11-30,Male,"34/878, Bose Path, Aligarh 624668",Yasti Wali,1170560257,B-,Dust,Thyroid
+Anusha,D’Alia,anusha.d’alia579@gmail.com,+911222578634,2006-08-20,Male,"05/18, Tandon Street, Katihar 091963",Arin Pillay,03508706495,B+,Penicillin,Hypertension
+Qasim,Rajagopalan,qasim.rajagopalan913@yahoo.com,07885250967,1944-05-01,Male,"21, Thaman Zila, Rajpur Sonarpur-879444",Advika Ahluwalia,8573514802,B+,Seafood,Thyroid
+Nirja,Basak,nirja.basak251@rediff.com,6866211208,1992-09-14,Male,"96, Narasimhan Chowk, Sirsa-508381",Zashil Kota,6430139502,B+,Dust,Heart Disease
+Aarini,Kalla,aarini.kalla838@rediff.com,+919983118548,1994-10-14,Female,"38/07, Hora Marg, Karaikudi-905990",Zansi Dugar,+915332589678,B-,None,Heart Disease
+Brijesh,Bhardwaj,brijesh.bhardwaj863@yahoo.com,3902890992,1996-09-13,Female,"31, Patla Marg, Nangloi Jat 942950",Janya Mane,+914174852482,A-,Seafood,Hypertension
+Omya,Khatri,omya.khatri368@rediff.com,+915767206538,1945-08-21,Female,"932, Nanda Circle, Kottayam-074028",Hemang Devi,06067399339,A-,Pollen,Hypertension
+Gunbir,Uppal,gunbir.uppal130@gmail.com,09626466105,1985-09-19,Female,"62/41, Goyal Path, Malegaon-594996",Ati Mohan,+910137789752,A+,Peanuts,Hypertension
+Om,Shenoy,om.shenoy656@yahoo.com,+916827848046,1977-11-24,Male,"72/22, Bedi Circle, Phusro-828506",Simon Ganguly,08217968118,O-,None,Hypertension
+Pooja,Raman,pooja.raman331@gmail.com,+910403538770,2024-04-23,Female,"H.No. 364, Munshi Road, Vadodara 151456",Reva Hayre,3003082961,A+,None,Asthma
+Leela,Chada,leela.chada231@yahoo.com,+915762798714,1997-07-10,Female,"H.No. 45, Shukla Ganj, Lucknow-227609",Akshay Lanka,05702915694,B-,Penicillin,Diabetes
+Jagvi,Sunder,jagvi.sunder187@rediff.com,+914020300995,2010-03-06,Male,"23/643, Hans Marg, Bardhaman-179993",Aradhana Sangha,7628419650,AB-,Peanuts,None
+Wyatt,Jain,wyatt.jain511@gmail.com,02314483745,1960-07-30,Female,"20/289, Behl Zila, Kamarhati 136940",Rachana Majumdar,+915339751296,B+,Dust,Asthma
+Kabir,Deshmukh,kabir.deshmukh931@gmail.com,03992804502,2017-09-19,Female,"26/81, Vyas Zila, Deoghar-411221",Faqid Mall,9772863294,AB+,None,Heart Disease
+Vansha,Nanda,vansha.nanda363@gmail.com,1857958491,1935-07-01,Female,"951, Char Path, Chinsurah-339404",Charvi Venkataraman,6559177969,AB-,None,Diabetes
+Gunbir,Jayaraman,gunbir.jayaraman118@yahoo.com,6026415043,1997-01-09,Male,"H.No. 16, Mishra Road, Moradabad 805729",Luke Pathak,+915072683171,O+,Seafood,Asthma
+Advika,Hari,advika.hari616@yahoo.com,+919334440331,1978-01-13,Female,"H.No. 823, Singhal, Proddatur-252798",Udyati Prabhakar,00159073108,B-,Seafood,Diabetes
+Aishani,Jaggi,aishani.jaggi496@rediff.com,5306832468,2020-06-30,Female,"35, Barad Marg, Maheshtala 671559",Damyanti Maharaj,06133323580,B-,Seafood,None
+Avni,Mammen,avni.mammen998@gmail.com,+917851962124,1993-04-09,Female,"90/87, Rai Chowk, Davanagere 406964",Om Datta,09101957350,AB+,Penicillin,None
+Aarna,Lalla,aarna.lalla262@gmail.com,4989900121,2007-04-13,Female,"34, Rama Road, Kanpur 277665",Vinaya Swaminathan,00186548223,AB-,Peanuts,Asthma
+Rachana,Rastogi,rachana.rastogi249@gmail.com,+911955899930,2009-05-25,Male,"449, Khanna Path, Bijapur-567552",Kabir Konda,00102970783,O+,Seafood,Heart Disease
+Anita,Kakar,anita.kakar387@yahoo.com,4874253626,1988-03-01,Female,"925, Doctor Street, Pudukkottai-219192",Gabriel Edwin,3919645977,AB+,Peanuts,None
+Warda,Ravi,warda.ravi503@gmail.com,8733806668,2015-04-03,Male,"H.No. 304, Shanker Zila, Cuttack 531130",Rudra Rastogi,+914195565305,B+,None,Diabetes
+Nidhi,Nazareth,nidhi.nazareth611@yahoo.com,8211176872,1983-07-05,Male,"H.No. 98, Dara Path, Raiganj 392872",Vyanjana Mitra,+918855247513,AB-,Penicillin,Heart Disease
+Inaya,Sankar,inaya.sankar544@rediff.com,04511892878,1988-10-06,Female,"43/31, Bajaj Nagar, Salem 835406",Peter Pal,04126255513,AB+,Penicillin,Diabetes
+Lila,Mukhopadhyay,lila.mukhopadhyay650@gmail.com,05550005221,1999-04-22,Male,"71/127, Prasad Path, Amaravati 800671",Udant Varma,00550965772,B-,Seafood,Diabetes
+Laksh,Arya,laksh.arya636@yahoo.com,+913841389376,1951-05-11,Male,"H.No. 76, Jaggi Path, Ongole-989246",Chasmum Narayan,02018464533,O+,Penicillin,Asthma
+Lavanya,Sane,lavanya.sane543@yahoo.com,0173549807,2015-04-22,Female,"H.No. 452, Shetty Chowk, Jamshedpur 795083",Jatin Bahri,+912214467938,AB+,Dust,Asthma
+Matthew,Roy,matthew.roy452@rediff.com,+917782749579,2011-04-02,Male,"52, Badami Ganj, Ulhasnagar-028267",Aarna Dar,8797834420,B+,Pollen,Asthma
+Luke,Dhar,luke.dhar713@yahoo.com,1520546641,1980-04-10,Female,"H.No. 56, Kashyap Road, Jalna 991253",Balvan Dalal,+916281095633,AB-,Penicillin,Heart Disease
+Damyanti,Krishnamurthy,damyanti.krishnamurthy771@rediff.com,00514488179,1948-03-27,Female,"62, Venkatesh Zila, Mango 686152",Vaishnavi Saxena,+911663242770,B-,Peanuts,Heart Disease
+Pavani,Rana,pavani.rana262@rediff.com,+911575885795,1940-08-28,Male,"40, Chadha Road, Motihari 461339",Krish Sanghvi,+919985440293,AB-,Seafood,Hypertension
+Rachita,Wable,rachita.wable328@gmail.com,8945688613,2001-02-19,Female,"55, Issac Street, Howrah 087532",Watika Anne,+916923438475,A+,Pollen,Asthma
+Kiaan,Palla,kiaan.palla512@rediff.com,2250178873,1981-01-20,Female,"146, Goel Marg, Meerut-643324",Dalaja Halder,05683369727,A-,Peanuts,Asthma
+Aarini,Chawla,aarini.chawla739@rediff.com,0160170557,2004-11-15,Female,"77/58, Madan Nagar, Khammam 008258",Yamini Sawhney,3242559390,O-,Penicillin,None
+Dayita,Shenoy,dayita.shenoy494@rediff.com,03345877693,1937-08-22,Male,"H.No. 359, Dave Zila, Siliguri-970603",Amara Kala,+914621962213,A+,Penicillin,None
+Widisha,Sheth,widisha.sheth542@rediff.com,5090897343,1967-11-14,Male,"H.No. 50, Virk Path, Berhampore 313334",Dalbir Sundaram,02241126459,B+,None,Asthma
+Yashica,Kunda,yashica.kunda179@gmail.com,8309892983,1975-07-01,Male,"20, Oommen Street, Bharatpur 257667",Laban Patel,+917042637677,O+,Penicillin,Thyroid
+Yug,Hegde,yug.hegde385@rediff.com,05852767672,1937-01-13,Male,"488, Nayar Marg, Saharanpur-459596",Thomas Bains,04863074260,A+,Penicillin,Heart Disease
+Geetika,Bali,geetika.bali151@rediff.com,5169414526,1958-08-14,Male,"09, Sibal Road, Ujjain-729833",Samuel Chad,7045935551,AB+,Peanuts,Thyroid
+Jyoti,Luthra,jyoti.luthra269@rediff.com,1300880785,2012-08-25,Male,"82/88, Pillai Ganj, Ghaziabad 153083",Radhika Sanghvi,04721161463,A+,Pollen,Diabetes
+Turvi,Nagi,turvi.nagi549@yahoo.com,+917274322206,1965-06-07,Female,"11/48, Dixit Street, Nizamabad-837387",Nitara Sahni,+917757229166,AB+,None,Thyroid
+Mohini,Nori,mohini.nori804@yahoo.com,+912760677234,2015-06-04,Male,"56/51, Ben Nagar, Orai-841152",Jagat Bobal,+915244098496,A+,Peanuts,Hypertension
+Ishani,Sampath,ishani.sampath355@yahoo.com,04248060911,1983-08-11,Female,"H.No. 546, Kapur Nagar, Barasat-604572",Yauvani Varty,+919074129191,O-,Dust,Hypertension
+Devansh,Mannan,devansh.mannan625@yahoo.com,2065141013,1995-03-20,Male,"47, Jhaveri Marg, Jaunpur 721715",Chaitanya Chander,+918200289098,O+,Peanuts,Hypertension
+Devansh,Savant,devansh.savant639@gmail.com,09258367679,1998-12-20,Female,"52, Dani Chowk, Sasaram-782241",George Rastogi,07343813850,O+,Seafood,Diabetes
+Vanya,Aurora,vanya.aurora989@gmail.com,+919535622742,1958-03-24,Female,"91, Deshmukh Ganj, Morbi 272320",Chaman Karan,04767648286,O-,Penicillin,Hypertension
+Kalpit,Nazareth,kalpit.nazareth306@yahoo.com,02542473822,2014-08-19,Male,"H.No. 70, Talwar Nagar, Ambala-307919",Amruta Cherian,+911255902941,O+,None,Hypertension
+Owen,Dugar,owen.dugar913@rediff.com,2350755145,1996-12-13,Female,"180, Walla, Ichalkaranji-106098",Om Aurora,2301255722,AB-,Pollen,None
+Mitali,Mitter,mitali.mitter643@yahoo.com,09662387014,1971-01-22,Male,"484, Sarkar Circle, Chapra 598179",Saksham Mitter,07345571316,O+,Dust,Heart Disease
+Ishwar,Dani,ishwar.dani340@gmail.com,07991897879,1973-08-05,Male,"967, Rajagopal Nagar, Shimoga 215546",Raksha Upadhyay,6948416323,B-,Dust,None
+Manthan,Mahajan,manthan.mahajan600@rediff.com,+915355006180,1940-12-07,Male,"23/80, Palla Chowk, Rajkot 164760",Rushil Cheema,03358295852,O+,Peanuts,None
+Maanav,Pingle,maanav.pingle580@rediff.com,+914019029761,2013-12-19,Male,"70/535, Bala Road, Khora  341575",Michael Batra,+914228017900,AB-,Peanuts,Asthma
+Ishita,Kapur,ishita.kapur155@gmail.com,+914902697325,2002-06-24,Male,"247, Hegde Street, Karawal Nagar 411625",Fiyaz Uppal,02554416915,O-,Dust,Hypertension
+Kritika,Bandi,kritika.bandi113@yahoo.com,6729185674,1969-02-26,Male,"531, Sharaf Marg, Ghaziabad-071395",Krisha Krishnamurthy,+916824565832,O+,Penicillin,Hypertension
+Sara,Date,sara.date736@gmail.com,5809938311,2016-09-24,Male,"H.No. 31, Rege, Kulti 116962",Aadhya Malhotra,07945775076,AB+,None,Heart Disease
+Pratyush,Menon,pratyush.menon160@gmail.com,1313519569,1944-01-11,Male,"49, Kibe Zila, Sultan Pur Majra-050643",Inaya Garg,3385486522,A-,Penicillin,None
+Bhavini,Gera,bhavini.gera897@yahoo.com,+915208068894,1966-08-27,Male,"13/74, Sharma Circle, Sri Ganganagar 455628",Benjamin Pau,06946612470,B-,Peanuts,Asthma
+Ojas,Raja,ojas.raja510@rediff.com,+910698845958,1995-10-12,Male,"08/248, Nigam Ganj, Silchar 238768",Mitesh Shere,04116286165,O-,Seafood,Heart Disease
+Victor,Brar,victor.brar592@rediff.com,1187962609,2013-06-08,Female,"67/22, Chacko Zila, Howrah-276145",Sanaya Natarajan,08614804884,A+,Peanuts,Heart Disease
+Luke,Khare,luke.khare256@yahoo.com,+914078976874,1951-07-15,Male,"536, Comar Ganj, Hosur 101848",Azad Dua,7266534139,AB+,Penicillin,Hypertension
+Chakrika,Keer,chakrika.keer464@yahoo.com,09669284393,1992-11-03,Male,"H.No. 14, Chatterjee Street, Bhiwani 789276",Dominic Subramanian,+917714739314,O+,Peanuts,Hypertension
+Yuvraj,Tara,yuvraj.tara782@rediff.com,07011276649,1959-10-31,Male,"93/222, Sen Chowk, Srinagar 807886",Eiravati Kar,05352026384,B+,Peanuts,Heart Disease
+Aadi,Bhasin,aadi.bhasin516@gmail.com,09288944001,1985-05-20,Male,"21/263, Narula Ganj, Kalyan-Dombivli 195584",Vidhi Butala,2535960760,A-,None,Diabetes
+Zayyan,Mitter,zayyan.mitter273@gmail.com,+913188877880,1970-05-03,Female,"88/397, Modi Circle, Malegaon-369450",Parth Thakkar,03702430721,AB-,Peanuts,Hypertension
+Gautam,Vohra,gautam.vohra156@yahoo.com,+910263621187,2013-11-23,Male,"37/67, Goda Circle, Siwan 692174",Advika Ramakrishnan,2916116592,AB-,Dust,Asthma
+Mason,Ravel,mason.ravel414@rediff.com,+910636623385,1981-01-03,Female,"H.No. 54, Shetty Ganj, Khammam-375776",Vihaan Mahal,+910900891086,A+,Dust,Thyroid
+Vedant,Bal,vedant.bal359@rediff.com,9340600373,2001-02-05,Male,"79/928, Saini Marg, Kota-331158",Tanvi Magar,01258212597,B+,None,None
+Utkarsh,Mandal,utkarsh.mandal269@gmail.com,02608601266,1997-10-12,Male,"H.No. 44, Madan Zila, Moradabad 838985",Advik Dada,7846264982,AB-,Penicillin,Hypertension
+Ekani,Sodhi,ekani.sodhi255@rediff.com,+913120647047,1988-07-22,Male,"04, More Chowk, Kharagpur-310390",Hiral Seshadri,5249061327,B+,Seafood,Hypertension
+Aradhana,Sunder,aradhana.sunder249@rediff.com,05939701576,1947-07-01,Female,"41/760, Seshadri, Bhiwani 671164",Zinal Bahri,5130616553,O-,Penicillin,Heart Disease
+Jagdish,Upadhyay,jagdish.upadhyay814@rediff.com,05620289353,2001-01-21,Female,"83, Shenoy Ganj, Anantapuram 572164",Abdul Khosla,05232305398,A+,Pollen,Hypertension
+Bakhshi,Sibal,bakhshi.sibal199@yahoo.com,08148354848,1995-02-16,Male,"H.No. 824, Deo Marg, Sirsa-268844",Ati Kumer,+912125866912,O-,Dust,Diabetes
+Jagvi,Natarajan,jagvi.natarajan957@gmail.com,3005065390,1950-01-01,Female,"H.No. 81, Chokshi Zila, Panihati 199267",Jason Brar,6716758086,O-,Dust,Thyroid
+Ekani,Saini,ekani.saini663@rediff.com,01133082925,2020-09-07,Female,"H.No. 189, Tara Circle, Moradabad 278082",Max Kohli,0457801240,A+,Pollen,Thyroid
+Omya,Muni,omya.muni906@gmail.com,03871447431,1981-02-25,Female,"89/454, Garde Circle, Coimbatore-785308",Saanvi Sanghvi,01067419842,O-,Peanuts,Diabetes
+Krishna,Gala,krishna.gala783@yahoo.com,4686100309,1962-01-26,Female,"31/262, Majumdar Zila, Mau-077550",Girik Reddy,+911418626938,A+,Seafood,Thyroid
+Dayamai,Gaba,dayamai.gaba538@gmail.com,4649994555,2017-02-13,Male,"56/35, Boase Chowk, Medininagar 761951",Aarnav Garg,+913780659931,AB+,None,Heart Disease
+Xiti,Sami,xiti.sami508@rediff.com,08452456311,1967-06-10,Female,"901, Ram Nagar, Panvel-198608",Divya Kala,+913712638019,AB-,Peanuts,Thyroid
+Anvi,Barman,anvi.barman218@gmail.com,+916627887400,1984-01-15,Male,"641, Kant Circle, Hapur-989717",Henry Tata,7361724997,O-,Penicillin,Hypertension
+Farhan,Chakrabarti,farhan.chakrabarti389@gmail.com,0333190435,1997-05-14,Male,"728, Bahri, Nadiad-827913",Kala Bhavsar,+911093591283,A-,Dust,Diabetes
+Girik,Bera,girik.bera380@yahoo.com,+912204327444,1996-06-20,Female,"H.No. 461, Agarwal Marg, Kochi-299467",Jackson Varkey,7561391717,A+,Penicillin,Heart Disease
+Theodore,Bava,theodore.bava893@gmail.com,3457109919,1969-05-02,Male,"H.No. 061, Sridhar Nagar, Bhagalpur 889893",Ikbal Nigam,6619709891,O+,Seafood,Thyroid
+Vihaan,Chaudhry,vihaan.chaudhry934@yahoo.com,+917814633844,2002-01-10,Male,"H.No. 057, Ram Street, Sambhal-053498",Watika Lad,05584120310,B-,Pollen,Heart Disease
+Saanvi,Dash,saanvi.dash747@rediff.com,01904946544,1977-10-22,Female,"H.No. 08, Sabharwal Zila, Panipat-224078",Nitara Atwal,+917421663364,AB-,None,Asthma
+Jagvi,Batta,jagvi.batta698@gmail.com,02370768138,2010-08-19,Female,"H.No. 833, Bal Ganj, Surat 745785",Tripti Ganesan,+912489731493,O-,Pollen,Thyroid
+Chaman,Choudhary,chaman.choudhary855@rediff.com,+915594456736,1985-08-16,Male,"557, Jayaraman Chowk, Nangloi Jat-222003",Ekani Maharaj,+913963034957,O+,Penicillin,Asthma
+Madhav,Ahuja,madhav.ahuja362@yahoo.com,09433462889,2010-04-13,Male,"09/07, Bahri Circle, Noida 379768",Ishwar Bala,+917652534464,B+,Seafood,None
+Inaya,Wali,inaya.wali609@rediff.com,5152703149,2009-09-11,Female,"H.No. 097, Swaminathan Marg, Gandhidham 669353",Balhaar Dalal,09858889191,B-,Penicillin,Diabetes
+Darsh,Ramakrishnan,darsh.ramakrishnan182@yahoo.com,06846386267,2022-03-15,Female,"H.No. 928, Kaul Zila, Hubli–Dharwad 683961",Udant Dhaliwal,+918291771623,O+,Pollen,Asthma
+Saksham,Kade,saksham.kade791@rediff.com,+919064554239,1979-05-11,Male,"74/31, Choudhary Marg, New Delhi 753485",Jackson Mukhopadhyay,02905134094,AB+,Penicillin,Asthma
+Arin,Oak,arin.oak795@gmail.com,2945166031,1965-07-05,Female,"48, Edwin Path, Bilaspur 424254",Kai Sood,2878306176,B+,Peanuts,Diabetes
+Daksha,Saraf,daksha.saraf769@yahoo.com,8139559780,1998-04-29,Female,"32/361, Sankar Zila, Ulhasnagar-547914",Max Wadhwa,02056430622,AB-,Dust,None
+Tanvi,Issac,tanvi.issac230@yahoo.com,3740987763,1938-03-13,Male,"676, Buch Marg, Hubli–Dharwad 147539",Utkarsh Borra,5879468316,A+,Seafood,Hypertension
+Krishna,Sami,krishna.sami413@rediff.com,05337049662,2007-01-25,Female,"40, Khosla Chowk, Tirunelveli-310754",Lajita Soman,+910203469737,A-,Penicillin,Heart Disease
+Mekhala,Mohan,mekhala.mohan277@rediff.com,04939131987,1961-11-28,Female,"64, Nair Marg, Panchkula-455476",Zansi Tripathi,+915211813135,AB+,Penicillin,Diabetes
+Ekta,Apte,ekta.apte578@gmail.com,+915080533116,2018-12-08,Male,"H.No. 01, Sehgal Zila, Vasai-Virar 145262",Nicholas Bal,05750755378,O-,Dust,Asthma
+Forum,Nagar,forum.nagar512@rediff.com,0378196189,2011-08-03,Male,"59/133, Hari Ganj, Erode-665748",Bhavya Purohit,0720521263,A-,Dust,Asthma
+Oliver,Krishnan,oliver.krishnan988@rediff.com,4008705014,2000-08-11,Female,"60/86, Raj Circle, Firozabad-651443",Harita Kara,+918051410257,B+,Peanuts,Asthma
+Brinda,Bhat,brinda.bhat354@gmail.com,2231310762,1978-06-08,Male,"07, Kar, Medininagar-545602",Ethan Sethi,06321471215,O-,None,Diabetes
+Jasmit,Wagle,jasmit.wagle263@gmail.com,09245861029,1963-08-01,Female,"125, Subramanian Path, Patna-502130",Wyatt Vala,3619716032,AB-,Peanuts,Heart Disease
+Chakradhar,Ganesh,chakradhar.ganesh969@gmail.com,3779945011,1994-09-05,Male,"90/568, Modi Nagar, Phusro-006063",Arin Edwin,00552532744,B-,Penicillin,Hypertension
+Bahadurjit,Parsa,bahadurjit.parsa548@rediff.com,8870576372,1978-04-22,Female,"H.No. 704, Dhar Zila, Solapur-599188",Vasana Chaudhuri,+910863895893,B+,Peanuts,Hypertension
+Upadhriti,Sundaram,upadhriti.sundaram316@gmail.com,3944460155,1951-08-27,Female,"H.No. 365, Singhal Ganj, Anantapuram 343950",Ishanvi Panchal,01584604763,B+,Seafood,Thyroid
+Nicholas,Bhat,nicholas.bhat517@rediff.com,1544161287,1977-03-13,Female,"H.No. 117, Nazareth Zila, Meerut 450317",Zilmil Sinha,09966257716,AB-,Pollen,Hypertension
+Nathan,Vohra,nathan.vohra829@gmail.com,1437343018,1974-04-21,Female,"530, Dyal Nagar, Madanapalle-795491",Ishwar Gade,+915447160322,AB-,Dust,Thyroid
+Daniel,Sastry,daniel.sastry685@rediff.com,3429024726,1963-09-13,Female,"H.No. 06, Karnik Chowk, Raebareli-025929",Jeremiah Ramakrishnan,6783766506,B-,None,None
+Falak,Khosla,falak.khosla444@gmail.com,0394731483,2012-06-16,Female,"17, Nagar Ganj, Latur-209740",Vritti Manda,08468448326,A-,Seafood,Thyroid
+Inaya,Barad,inaya.barad618@rediff.com,+913977360810,1990-01-07,Female,"H.No. 72, Mahajan Nagar, Dhanbad-517891",Dayita Varma,+917118128730,AB-,Seafood,Heart Disease
+Lucky,Chakrabarti,lucky.chakrabarti976@gmail.com,4306960125,1975-10-02,Male,"H.No. 594, Bhat Street, Malda-318405",Andrew Brar,+912552074749,O+,Penicillin,Asthma
+Gaurika,Natt,gaurika.natt702@gmail.com,+919937359111,2020-07-04,Male,"517, Mohan Path, Alwar-097591",Daniel Ratta,4131611053,O-,Penicillin,Hypertension
+Warhi,Sampath,warhi.sampath664@gmail.com,02591014664,1966-02-18,Male,"H.No. 32, Dhar Street, Gudivada-482977",Bachittar Bobal,6412589650,O+,None,Asthma
+Kiaan,Ahuja,kiaan.ahuja288@gmail.com,+916374275560,1995-07-07,Male,"15, Rao Ganj, Bhimavaram 000959",Chanakya Pandey,+915754996828,AB-,Pollen,Thyroid
+Jatin,Naik,jatin.naik779@gmail.com,+919274627549,1992-08-04,Female,"34/792, Gupta Marg, Hapur 702231",Max Talwar,02324128287,B-,Seafood,None
+Vamakshi,Bumb,vamakshi.bumb303@yahoo.com,+914011300069,2003-07-14,Male,"115, Parsa Path, Orai 069849",Guneet Magar,+919149773655,B+,Pollen,None
+Ishwar,Halder,ishwar.halder232@rediff.com,08368920204,1958-10-04,Male,"696, Kaur Ganj, Thane 551264",Ayush Choudhary,+919819039069,A-,Peanuts,Heart Disease
+Ekbal,Pathak,ekbal.pathak113@gmail.com,+913225174421,1945-06-20,Male,"83/707, Gopal Marg, Rewa 214011",Omisha Srivastava,01527246175,O-,Dust,None
+Isaac,Deshpande,isaac.deshpande493@gmail.com,09792566310,1940-12-04,Female,"H.No. 301, Sandhu Zila, Kumbakonam-658945",Anvi Parsa,+910094450090,A-,Seafood,Asthma
+Devika,Karpe,devika.karpe663@gmail.com,+913639721931,1948-12-15,Male,"H.No. 698, Barad Ganj, Ambattur-032488",Ranveer Gola,4477759571,B-,Penicillin,Hypertension
+Faris,Sanghvi,faris.sanghvi570@yahoo.com,+916253112018,1968-08-19,Female,"150, Puri Chowk, Karaikudi-536601",Alka Tiwari,02555572777,O+,None,Thyroid
+Chasmum,Venkatesh,chasmum.venkatesh991@gmail.com,05628986550,1979-04-20,Male,"09/668, Mital Circle, Kishanganj-792221",Amrita Dani,8779458857,AB-,Seafood,Thyroid
+Anjali,Dar,anjali.dar626@gmail.com,+913209013898,1986-06-22,Female,"H.No. 865, Kala Zila, Pondicherry-010714",Ethan Sharma,+912950738500,O-,Dust,Thyroid
+Vedant,Dube,vedant.dube620@yahoo.com,+919400604587,2014-10-25,Male,"546, Goswami Chowk, Ajmer-941590",Eshana Golla,2479716611,B+,Seafood,Thyroid
+Azad,Mital,azad.mital367@yahoo.com,+917242314887,1952-06-25,Male,"50/764, Chatterjee Path, Chennai-035735",Girish Issac,+917522547288,B+,Seafood,Thyroid
+Janaki,Lal,janaki.lal879@yahoo.com,0941847478,1978-01-01,Female,"02/619, Sachdev Circle, Nashik 074529",Jagrati Vohra,8861806155,O+,Penicillin,Hypertension
+Vasana,Krishnan,vasana.krishnan760@rediff.com,03739950814,2020-12-07,Male,"H.No. 64, Bandi Path, Guntakal-528541",Laban Roy,02852283864,A-,Pollen,Heart Disease
+Jasmit,Varkey,jasmit.varkey250@rediff.com,+918222040408,1969-06-09,Female,"004, Rege Chowk, Naihati 979664",Sarthak Kade,+917491481803,AB+,Peanuts,None
+Ikbal,Venkataraman,ikbal.venkataraman259@yahoo.com,+916173729493,1942-01-02,Female,"40/96, Sankaran Road, Ramagundam 570746",Gunbir Dhawan,01990716603,A+,Peanuts,Diabetes
+Ekani,Virk,ekani.virk567@gmail.com,+912336145642,1950-04-21,Male,"H.No. 33, Grover, Rajpur Sonarpur-047851",Mitali Singh,1403072618,B-,Penicillin,Hypertension
+Meghana,Devan,meghana.devan267@gmail.com,7418623776,2005-11-13,Male,"15/31, Som, Nagpur 311492",Onkar Nagar,02949484626,B+,Dust,Hypertension
+Nidhi,Varughese,nidhi.varughese900@rediff.com,+912306754800,1970-02-07,Female,"H.No. 339, Vig Zila, Ambala 260024",Nachiket Acharya,+912525813509,O-,Seafood,Asthma
+Gopal,Pai,gopal.pai186@yahoo.com,06796097363,1966-07-02,Female,"H.No. 20, Vora Circle, Medininagar 578615",Harinakshi Prakash,5655215501,AB-,None,Diabetes
+Faraj,Barman,faraj.barman602@rediff.com,7434852210,1948-06-14,Male,"00/677, Bajaj Circle, Bhilai 808920",Prisha Khalsa,7447923859,A+,Peanuts,Hypertension
+Pooja,Sachdeva,pooja.sachdeva659@gmail.com,8757356573,2009-11-22,Male,"H.No. 59, Ahuja Circle, Jalandhar-247247",Rayaan Chauhan,3941196203,O+,Pollen,Hypertension
+Chaman,Mistry,chaman.mistry384@gmail.com,+913379967041,1960-03-01,Female,"31/556, Naidu Chowk, Dehradun-127940",Geetika Anand,00938714847,B-,Dust,Heart Disease
+Chakrika,Hayer,chakrika.hayer574@yahoo.com,+919856691791,1968-05-25,Female,"85, Sane Marg, Guntur-599590",Bhavini Oak,01505642729,AB-,Peanuts,Thyroid
+Aradhana,Iyer,aradhana.iyer779@yahoo.com,+915792622922,1991-09-30,Female,"H.No. 235, Sibal Path, Shahjahanpur 710093",Advika Suri,+919539629996,O+,Dust,Thyroid
+Rajeshri,Parikh,rajeshri.parikh287@yahoo.com,08529361164,1966-04-01,Male,"H.No. 65, Char Ganj, Lucknow-777440",Kalpit Shukla,7617933178,AB+,Peanuts,Diabetes
+Bhavika,Buch,bhavika.buch728@yahoo.com,5482042299,1940-02-08,Female,"52/364, Sibal Chowk, Miryalaguda-995687",Anmol Murty,06519196050,B-,Seafood,Asthma
+Radha,Parmar,radha.parmar869@yahoo.com,+911561849125,1986-02-28,Male,"H.No. 24, Wason Road, Jaipur 254821",Victor Kant,7640354939,O-,Seafood,Thyroid
+Gaurangi,Comar,gaurangi.comar147@gmail.com,09094984923,1942-07-14,Male,"251, Ravel Street, Vellore-319773",Veer Contractor,3160545678,AB-,Seafood,Heart Disease
+Vedika,Biswas,vedika.biswas416@yahoo.com,+916407981991,2001-01-31,Male,"48, Subramanian Circle, Amritsar-693564",Watika Sibal,2040002115,B-,Seafood,Asthma
+Chavvi,Sahota,chavvi.sahota447@gmail.com,4934938913,1987-02-02,Male,"03/57, Tak Street, Berhampore 106885",Ikbal Lad,02150769917,B+,Dust,Hypertension
+Ishanvi,Dayal,ishanvi.dayal278@gmail.com,3667843096,2013-09-22,Male,"54, Setty Road, Chandigarh-136507",Yashica Sandhu,03293696327,O-,None,None
+Vedhika,Soni,vedhika.soni868@yahoo.com,+913838124049,1990-11-27,Female,"192, Rajagopal Path, Bettiah 801454",Riya Mohanty,02855484940,AB+,None,Diabetes
+Krisha,Gandhi,krisha.gandhi449@gmail.com,4244855521,1979-09-16,Female,"17/931, Shetty Marg, Amroha-835026",Bhavya Setty,+915854968695,B-,Peanuts,Heart Disease
+Finn,Sarna,finn.sarna617@gmail.com,+913259846420,1987-12-12,Male,"194, Rai Street, Ghaziabad-643091",Chameli Bhagat,04376000857,AB+,Seafood,None
+Yatin,Deol,yatin.deol944@gmail.com,+916758613542,2000-10-09,Male,"65/510, Raju Street, Meerut-686773",Unnati Pillai,5581026618,O+,Seafood,Thyroid
+Janani,Bala,janani.bala917@rediff.com,+912664113615,2019-03-17,Male,"H.No. 107, Suresh, Bhalswa Jahangir Pur-305233",Upadhriti Bajwa,+912535949045,O-,None,Asthma
+Forum,Gulati,forum.gulati828@rediff.com,0402237387,2009-04-21,Male,"54/489, Dash Circle, Bareilly-789471",Frado Sem,0770275348,B+,Pollen,Asthma
+Mekhala,Gupta,mekhala.gupta763@rediff.com,02797161783,2017-06-18,Male,"H.No. 114, Venkataraman Road, Phusro-102413",Rayaan Master,7581663437,B+,Seafood,Diabetes
+Hemang,Savant,hemang.savant263@yahoo.com,06545595818,1982-04-23,Female,"47/05, Lad Ganj, Pudukkottai-812780",Unnati Radhakrishnan,9835599792,O+,Pollen,Asthma
+Yashoda,De,yashoda.de639@rediff.com,07682165667,1997-07-14,Female,"H.No. 26, Sem Nagar, Baranagar-939986",Maanas Guha,07195327408,AB+,Peanuts,Hypertension
+Ekaraj,Sandhu,ekaraj.sandhu298@gmail.com,01493744613,1993-04-15,Female,"14/461, Samra Ganj, Nagaon-195322",Bimala Kaur,00635681315,O-,Penicillin,Diabetes
+Shivansh,Kibe,shivansh.kibe342@yahoo.com,+918650893813,2001-10-12,Male,"H.No. 92, Uppal Road, Fatehpur 890015",Michael Ramanathan,5290455608,AB-,Dust,Hypertension
+Faraj,Dani,faraj.dani451@rediff.com,0759449268,1969-02-14,Male,"63, Magar Road, Kolhapur 556294",Atharv Jhaveri,+910552176521,B+,Pollen,Heart Disease
+William,Bumb,william.bumb654@gmail.com,+918346836373,1953-03-06,Female,"18/32, Taneja Marg, Durg-832709",Ethan Ben,03163842769,O-,Seafood,Asthma
+Gagan,Divan,gagan.divan695@rediff.com,1843406914,1977-07-12,Male,"41/74, Natarajan Circle, Indore-066691",Qarin Bath,04596931354,AB+,Seafood,Diabetes
+Sanya,Chowdhury,sanya.chowdhury267@gmail.com,+914184325309,1977-04-27,Male,"447, Nanda Road, Avadi-248877",Kevin Mann,+912780443496,O+,Dust,Asthma
+Anvi,Kumar,anvi.kumar652@rediff.com,+914125058350,2013-06-14,Female,"H.No. 186, Dey Road, Durgapur 276912",Manya Sawhney,+913248000302,O-,Seafood,None
+Anjali,Sur,anjali.sur408@rediff.com,+913235194712,1982-02-22,Male,"H.No. 39, Dhar Circle, Guwahati 682415",Aarna Sawhney,05393687940,A+,Seafood,Hypertension
+Gautami,Iyer,gautami.iyer855@rediff.com,00029436644,1998-11-12,Female,"H.No. 836, Bawa, Firozabad 362160",Lucky Dhar,3661126568,B+,Seafood,None
+Lohit,Sengupta,lohit.sengupta279@rediff.com,9022518039,1972-11-28,Male,"82, Kakar Road, Vadodara-998260",Vrishti Mutti,09543467034,B-,Pollen,Thyroid
+Nisha,Jaggi,nisha.jaggi464@rediff.com,6387965816,1997-04-12,Male,"51/175, Sha Chowk, Howrah 815555",Chasmum Tailor,+910845007968,A-,Pollen,Hypertension
+Ria,Shanker,ria.shanker174@yahoo.com,0959215859,1953-11-15,Female,"H.No. 69, Krish Zila, Rewa-468686",Sachi Bakshi,9025111243,O-,Pollen,None
+Jasmit,Dhingra,jasmit.dhingra123@yahoo.com,05262745727,2024-07-26,Male,"243, Iyer Street, Agra 466082",Nachiket Goda,5105500754,A+,Penicillin,Diabetes
+Shaurya,Mallick,shaurya.mallick539@yahoo.com,7026377770,1993-04-25,Male,"H.No. 505, Reddy Street, Kottayam-268557",Jacob Sur,+913318374331,B-,None,Hypertension
+Pooja,Behl,pooja.behl899@rediff.com,04324123867,2004-11-08,Male,"82, Khosla, Mau-106079",Netra Majumdar,+918000054025,B+,Peanuts,Heart Disease
+Hemal,Chakraborty,hemal.chakraborty656@gmail.com,+918388900988,1963-12-20,Male,"56/878, Puri Nagar, Ballia-431682",Zansi Reddy,+917613675588,O-,Penicillin,Heart Disease
+Akshay,Palla,akshay.palla271@rediff.com,+912275861227,1975-03-21,Female,"19/196, Raval, Raiganj 870819",Forum Balan,+914946606202,A+,Peanuts,Thyroid
+Ishaan,Gandhi,ishaan.gandhi631@gmail.com,1767246242,1976-04-24,Female,"H.No. 269, Chandra Nagar, Salem-619064",Jeremiah Buch,01990419345,O+,Dust,Hypertension
+Adweta,Badami,adweta.badami826@gmail.com,05977643842,1951-05-23,Female,"H.No. 91, Patel Circle, Karaikudi 381701",Lohit Ahluwalia,+912483554493,AB-,None,Heart Disease
+Avni,Vohra,avni.vohra131@yahoo.com,0722189504,1964-12-26,Female,"870, Bassi Marg, Satna 200915",Urvi Chand,+911574169760,B-,None,Thyroid
+Reyansh,Lata,reyansh.lata803@rediff.com,4038721292,1946-09-11,Female,"48/73, Handa Nagar, Hubli–Dharwad-720171",Ekaraj Sampath,05431580932,B-,Penicillin,Hypertension
+Hema,Dhar,hema.dhar128@gmail.com,+913545300395,2000-01-10,Male,"H.No. 047, Balasubramanian Road, Yamunanagar-211353",Ojasvi Prasad,03327236003,A+,Dust,Heart Disease
+Ridhi,Som,ridhi.som315@yahoo.com,08101798891,2018-02-05,Female,"081, Sha Road, Shimla 463819",Nilima Sura,4279606535,O-,Pollen,Diabetes
+Vinaya,Basak,vinaya.basak583@yahoo.com,+919801142199,1960-09-28,Female,"16/04, Mukhopadhyay, Unnao 024050",Faqid Dixit,+917778058147,B-,None,Hypertension
+Pahal,Singh,pahal.singh608@gmail.com,8023584374,1967-02-10,Female,"17/498, Ramachandran Circle, Panchkula 467667",Krishna Peri,+910083343577,B-,None,None
+Lajita,Choudhry,lajita.choudhry585@gmail.com,07035479561,1962-06-15,Female,"38, Patla, Aurangabad 177938",Rachana Sane,+915617157401,O-,Dust,Thyroid
+Vinaya,Shankar,vinaya.shankar404@yahoo.com,08757023561,1959-04-07,Female,"68/97, Banerjee Chowk, Srinagar-106885",Jai Srinivas,+914019135942,O-,None,None
+Wahab,Palla,wahab.palla816@rediff.com,02609478090,2002-01-18,Female,"H.No. 265, Ramaswamy Marg, Gandhidham 225860",Ikshita Borah,04429309981,O-,Dust,Diabetes
+Alexander,Padmanabhan,alexander.padmanabhan835@rediff.com,+911558352651,1990-08-03,Male,"H.No. 74, Gour Chowk, Rajpur Sonarpur-822075",Warinder Virk,05085948805,AB-,None,Hypertension
+Baghyawati,Yadav,baghyawati.yadav344@rediff.com,5364011134,1989-08-12,Female,"76, Sidhu Zila, Dibrugarh-234677",Naksh Behl,7764342108,A+,Penicillin,Asthma
+Urvi,Pant,urvi.pant210@yahoo.com,9970512006,1953-02-04,Female,"H.No. 990, Patil Zila, Srinagar-603161",Siddharth Yogi,+914017402092,O-,Penicillin,Thyroid
+Jeevika,Ganesan,jeevika.ganesan672@rediff.com,+915261520972,1979-02-27,Female,"63/044, Raj Zila, Jamalpur-580921",Shivani Kanda,1604550135,A-,Penicillin,Thyroid
+Hemang,Sandhu,hemang.sandhu934@gmail.com,01019071741,2024-09-25,Female,"61, Tripathi, Patiala 433343",Noah Kashyap,+916022752275,O+,Peanuts,Asthma
+Anamika,Sahota,anamika.sahota683@gmail.com,01097092090,1941-02-08,Female,"754, Dyal Zila, Jaunpur 972172",Urmi Nagar,+915044040067,A-,Seafood,None
+Ojasvi,Shanker,ojasvi.shanker226@yahoo.com,08090340094,1980-06-01,Female,"971, Chowdhury Road, Ballia-641305",Ansh Kapur,02313102351,B+,Seafood,None
+Ekalinga,Dar,ekalinga.dar458@yahoo.com,07167005035,1937-04-01,Male,"03, Borde Street, Haldia 952938",Rishi Nagar,+910571197017,AB+,Seafood,Asthma
+Ekbal,Modi,ekbal.modi842@gmail.com,+914822043914,2024-01-08,Female,"80, Puri Road, Baranagar-752081",Yauvani Sachdev,+919299575162,AB-,Dust,Asthma
+Sanaya,Dube,sanaya.dube310@yahoo.com,8824370672,1992-08-01,Female,"32/186, Bail Road, Bhind 514967",Arin Kannan,02081511937,AB-,Penicillin,None
+Shravya,Cherian,shravya.cherian948@yahoo.com,+916036713006,2020-05-19,Male,"H.No. 961, Misra Zila, Guwahati 086029",Vritti Vasa,+912217830009,O+,Peanuts,Diabetes
+Vansha,Sekhon,vansha.sekhon395@gmail.com,+918098053899,1988-08-07,Male,"52, Jaggi Chowk, Bokaro-007437",Owen Mitter,00167124100,AB+,Seafood,Heart Disease
+Vasana,Chokshi,vasana.chokshi532@rediff.com,8572633275,2017-03-16,Male,"16/00, Dar Marg, Hyderabad 614601",Shravya Saran,05258632111,A+,None,Hypertension
+Niharika,Cherian,niharika.cherian165@gmail.com,0322362363,2002-06-29,Female,"50/952, Kapur Nagar, Alwar-597319",Jonathan Bhagat,07231757840,B+,Pollen,Diabetes
+Yauvani,Krish,yauvani.krish497@rediff.com,04762902416,1938-12-27,Male,"27, Ramanathan, Orai-119581",Amruta Agate,01119035907,B-,Peanuts,Hypertension
+Rishi,Kapur,rishi.kapur694@yahoo.com,+914237906820,1958-12-01,Female,"56/86, Golla Road, Dibrugarh 493619",Panini Pathak,06001102967,AB+,Dust,Hypertension
+Darika,Ramesh,darika.ramesh673@gmail.com,0435830042,1961-03-19,Male,"01/898, Muni Path, Jamshedpur-725047",Yashvi Dutt,6511425669,O-,None,Hypertension
+Pallavi,Aggarwal,pallavi.aggarwal857@yahoo.com,2944823607,1979-05-27,Female,"H.No. 720, Mallick, Burhanpur-922085",Oliver Balan,05101506143,AB+,None,Diabetes
+Yashica,Shah,yashica.shah891@rediff.com,06891102929,1979-02-19,Male,"82/038, Sharma Chowk, Aligarh 596251",Tristan Ganesh,+915253912636,O+,None,Diabetes
+Ekapad,Dutta,ekapad.dutta514@yahoo.com,07645206201,1974-06-22,Male,"H.No. 38, Gupta Nagar, Panvel 962736",Ubika Singh,09972442657,O+,Seafood,Heart Disease
+Bakhshi,Pandya,bakhshi.pandya704@gmail.com,5743732141,1938-02-03,Male,"72/70, Chandra Path, Farrukhabad 202552",Indira More,3546673347,AB+,Pollen,Thyroid
+Vedant,Sabharwal,vedant.sabharwal581@gmail.com,1528564640,1986-02-07,Male,"37/45, Bajaj Chowk, Erode-609439",Samuel Bawa,+919205316211,AB+,None,Hypertension
+Ryan,Gopal,ryan.gopal918@rediff.com,4640020452,2010-04-14,Male,"40/70, Goel Ganj, Raiganj-344406",Zayyan Palla,+915912928745,AB-,None,Thyroid
+Naksh,Gupta,naksh.gupta181@yahoo.com,06090941568,1956-03-10,Male,"44, Naik Path, Khammam-487307",Radhika Rattan,2863336859,B+,Pollen,Heart Disease
+Ekansh,Cheema,ekansh.cheema134@yahoo.com,08178948005,2001-12-07,Male,"02, Ganguly, Ramgarh-901954",Aishani Kulkarni,07286000214,A-,None,Heart Disease
+Ojasvi,Naidu,ojasvi.naidu948@yahoo.com,+915626912650,1978-10-29,Male,"H.No. 97, Nagy Road, Arrah-506587",Dayita Aggarwal,5619656906,O-,Penicillin,None
+Yashvi,Madan,yashvi.madan623@gmail.com,03244419960,2021-09-24,Female,"73/706, Balay Street, Karnal 949716",Indrajit Bandi,1059133347,B+,Pollen,Diabetes
+Hamsini,Sankaran,hamsini.sankaran267@gmail.com,+914457480528,1950-12-16,Male,"26/596, Borra Nagar, Rewa 796691",Edhitha Murthy,+913319776803,A-,Pollen,Thyroid
+Krisha,Bhatt,krisha.bhatt419@rediff.com,01338798000,1941-06-19,Male,"80/409, Wadhwa, Panchkula 782778",Ronith Sachdeva,05584208998,B-,Dust,Thyroid
+Samaksh,Dash,samaksh.dash578@gmail.com,3318907860,1956-12-11,Male,"H.No. 96, Mohanty Path, Bhubaneswar 573058",Wazir Contractor,+916801031317,A+,Pollen,Asthma
+Tristan,Verma,tristan.verma294@yahoo.com,2983798156,2020-03-22,Male,"H.No. 36, Sahni, Shivpuri-301888",Hredhaan Gokhale,+912303382828,AB-,Penicillin,Diabetes
+Ira,Thaker,ira.thaker258@gmail.com,6387105975,1949-10-17,Male,"H.No. 90, Rajagopalan Zila, Eluru 491100",Ayaan Kara,+913500949469,AB+,Pollen,Asthma
+Yutika,Parekh,yutika.parekh848@yahoo.com,01852328022,2007-10-28,Female,"87, Lalla, Kulti-554400",Aachal Dubey,8942197821,AB-,Dust,None
+Zinal,Kannan,zinal.kannan749@yahoo.com,8556078707,1993-07-03,Female,"322, Dubey Nagar, Kanpur-009831",Samar Bains,08655686702,O-,Pollen,Asthma
+Manbir,Gole,manbir.gole733@yahoo.com,06768423583,2019-10-01,Female,"401, Saxena Path, Bhalswa Jahangir Pur 938867",Darpan Gopal,+912376617213,AB-,None,None
+Nicholas,Chaudhari,nicholas.chaudhari374@yahoo.com,6351928459,1967-04-14,Female,"49/70, Chatterjee, Nanded-176431",Varenya Pandya,09825023265,O-,Penicillin,Asthma
+Timothy,Srivastava,timothy.srivastava569@yahoo.com,00260738674,1954-08-13,Male,"H.No. 280, Hegde Ganj, Satara-384669",Sai Dada,+918661712205,B+,Seafood,None
+Anika,Sharaf,anika.sharaf622@yahoo.com,07945228205,2005-04-28,Male,"H.No. 62, Dewan Street, Rohtak-414269",Lajita Joshi,+913981245179,O-,Dust,Hypertension
+Irya,Goel,irya.goel865@rediff.com,8313465883,2002-06-12,Male,"08, Kapoor, Lucknow-400862",Qadim Comar,+910564417171,AB+,Seafood,Thyroid
+Rudra,Gour,rudra.gour675@rediff.com,08387241805,2020-03-01,Male,"51/52, Palla Road, Madanapalle-044002",Udant Savant,9620193892,O+,None,Asthma
+Vrinda,Shroff,vrinda.shroff702@yahoo.com,0948950576,1951-04-25,Male,"H.No. 699, Ganguly Circle, Kolkata-282704",Tanay Ganesan,+919516970060,AB-,Penicillin,Thyroid
+Rayaan,Soni,rayaan.soni587@gmail.com,02062360946,1942-12-02,Female,"H.No. 34, Bahri Zila, Miryalaguda 116851",Tristan Ramaswamy,+916755031754,B+,None,Hypertension
+Luke,Halder,luke.halder579@gmail.com,04139933311,2005-06-09,Male,"H.No. 070, Brahmbhatt Marg, Guwahati-749569",Kiaan Srinivas,03876108291,O+,Dust,None
+Aishani,Behl,aishani.behl540@rediff.com,+919845065828,1955-04-19,Female,"15/08, Chana Circle, Tumkur 614980",Vrishti Jha,03896690309,O+,Penicillin,Thyroid
+Wridesh,Verma,wridesh.verma755@rediff.com,06531612332,1936-07-22,Female,"085, Menon Marg, Ajmer-922201",Rudra Sur,01411131541,A-,Pollen,Diabetes
+Nakul,Bora,nakul.bora142@yahoo.com,8660670400,1945-04-21,Female,"93/65, Das Path, Maheshtala-615537",Wahab Bora,+918623670298,O-,Dust,Asthma
+Eshana,Contractor,eshana.contractor971@gmail.com,7021623820,1963-07-29,Female,"H.No. 612, Talwar Road, Karawal Nagar-688784",Rishi Srivastava,01955157596,O+,Penicillin,Thyroid
+Manya,Pillai,manya.pillai799@yahoo.com,5760297755,1948-12-04,Female,"H.No. 49, Batra Nagar, Mathura 131997",Chatura Deshpande,2243330603,AB+,Peanuts,Thyroid
+Hiral,Mitter,hiral.mitter145@yahoo.com,+918876942713,1957-05-05,Female,"135, Pillai Circle, Jaunpur 146566",Daksh Ganesh,06522186799,O+,Dust,Hypertension
+Frederick,Din,frederick.din321@gmail.com,06347780368,1998-02-09,Male,"959, Bassi Circle, Sangli-Miraj & Kupwad 762116",Robert Gera,05111463312,B+,Peanuts,Asthma
+Ethan,Shroff,ethan.shroff323@gmail.com,3910008620,1991-08-26,Male,"85/675, Bail Chowk, Bally-310381",Priya Raval,+911916984484,B+,Penicillin,Asthma
+Hitesh,Varty,hitesh.varty385@yahoo.com,05038077941,2014-05-13,Female,"87/12, Madan Nagar, Sambalpur 096451",Megha Issac,8330200033,AB+,Peanuts,None
+Ekapad,Verma,ekapad.verma368@yahoo.com,+913094147483,1949-08-28,Female,"H.No. 031, Dash Path, Thoothukudi 206128",Turvi Gokhale,7481640170,A+,Seafood,None
+Henry,Bhardwaj,henry.bhardwaj829@gmail.com,01547003416,1969-04-30,Male,"02/65, Konda Chowk, Bally-187974",Damini Toor,3815836556,A-,None,Heart Disease
+Quincy,Raval,quincy.raval763@rediff.com,06006397750,1983-11-03,Female,"97/964, Mane Zila, Rajpur Sonarpur-857968",Ayaan Narain,09843557885,B+,Dust,Hypertension
+Sathvik,Buch,sathvik.buch337@rediff.com,+916920914889,2003-02-13,Female,"07/788, Krish Path, Bhubaneswar-813846",Hamsini Bhatnagar,3859274358,B+,None,Thyroid
+Yashica,Gola,yashica.gola663@gmail.com,04667266720,2010-08-08,Male,"75, Vora Ganj, Bathinda-674853",Mohammed Goswami,+919073819740,B-,Penicillin,Heart Disease
+Zaid,Aggarwal,zaid.aggarwal928@gmail.com,+913040951033,1954-02-18,Male,"80/761, Sengupta Street, Dehri 031477",Chanakya Karan,+916640774195,B+,Seafood,None
+Chandani,Prakash,chandani.prakash424@yahoo.com,+914252814488,1961-03-06,Female,"72/752, Murthy Circle, Kamarhati-524339",Vivaan Peri,3872647807,B-,Penicillin,Heart Disease
+Yutika,Thaker,yutika.thaker752@yahoo.com,5361898771,2012-10-30,Male,"H.No. 93, Prashad Nagar, Aizawl 619365",Hamsini Vohra,2654207718,A+,Penicillin,Heart Disease
+Simon,Sabharwal,simon.sabharwal597@yahoo.com,+912204433113,1996-10-18,Male,"178, Kata, Phagwara 490956",Rehaan Nair,0251546985,A-,Peanuts,Thyroid
+Maanas,Reddy,maanas.reddy544@gmail.com,+915313945077,2003-12-27,Male,"H.No. 909, Dugar Chowk, Begusarai-300745",Yashodhara Lalla,+916767522559,O-,None,Diabetes
+Vasana,Divan,vasana.divan909@gmail.com,08569802608,2019-01-25,Male,"60/48, Dugar Nagar, Thanjavur-359355",Prisha Divan,+915893417818,B+,None,Heart Disease
+Januja,Reddy,januja.reddy588@rediff.com,+913728297266,1945-11-08,Female,"H.No. 86, Kohli Road, Jamnagar-536029",Karan Balasubramanian,6833365460,B+,Penicillin,None
+Yoshita,Sabharwal,yoshita.sabharwal351@rediff.com,+915578603640,2003-03-03,Male,"17, Narasimhan Circle, Solapur-961069",Balhaar Natarajan,+915582643551,A-,Dust,None
+Osha,Bakshi,osha.bakshi630@gmail.com,+917830261393,1970-07-06,Male,"H.No. 138, Bhavsar Circle, Faridabad 813440",Damini Sarin,00184555510,O+,Dust,Heart Disease
+Anika,Pradhan,anika.pradhan360@rediff.com,8673675814,1953-08-05,Female,"H.No. 399, Ganguly Street, Hazaribagh 388498",Nirja Wali,+910387032946,A+,Dust,Asthma
+Zilmil,Thakkar,zilmil.thakkar103@rediff.com,+911935605781,1943-10-02,Female,"45/097, Agate Zila, Bardhaman-248515",Vedant Morar,+910115908453,B+,Pollen,Heart Disease
+Ranbir,Palan,ranbir.palan183@rediff.com,+919933077773,1963-09-01,Male,"96/344, Rai, Kanpur-802788",Bachittar Bir,02858330853,O+,Peanuts,None
+Adweta,Kata,adweta.kata798@rediff.com,06090173901,1994-07-09,Male,"79/62, Master Chowk, Kochi-545482",Bhavani Prasad,+919868768007,O+,Dust,Heart Disease
+Maanav,Pall,maanav.pall783@rediff.com,+913635127008,1982-11-25,Female,"605, Sood Road, Satna-429647",Nicholas Rajan,+917196768803,O+,Penicillin,Asthma
+Vedhika,Menon,vedhika.menon611@gmail.com,+918824328065,1978-01-14,Male,"341, Ramakrishnan Circle, Guwahati 722220",Rehaan Taneja,6721222251,AB-,Penicillin,Hypertension
+Kabir,Kapadia,kabir.kapadia529@yahoo.com,06690228416,1956-05-28,Female,"26/34, Salvi Road, Jalandhar-634833",Zaitra Nazareth,3128996759,B-,Dust,Hypertension
+Praneel,Jha,praneel.jha406@yahoo.com,02255289474,1995-05-07,Female,"67/138, Varma Path, Aligarh-982513",Upasna Kothari,+918163222967,AB+,None,None
+Ekta,Naik,ekta.naik334@rediff.com,09164317267,2017-12-22,Female,"04/91, Banerjee Nagar, Sikar-371670",Bishakha Khanna,+913564751371,AB+,Peanuts,None
+Karan,Pall,karan.pall939@rediff.com,5833054351,2011-12-27,Male,"167, Mukherjee Road, Katni 250556",Janani Oommen,06756984728,AB-,Penicillin,Asthma
+Ekani,Dara,ekani.dara166@yahoo.com,+912129574183,1949-09-23,Male,"H.No. 211, Ghosh Marg, Etawah-958286",Faraj Kari,+910870246777,A+,Dust,Asthma
+Ekiya,Ahuja,ekiya.ahuja125@rediff.com,8967044409,1962-02-04,Female,"16, Karan Ganj, Udaipur 954108",Sara Rana,+918865379695,AB-,Seafood,Hypertension
+Chakrika,Mukherjee,chakrika.mukherjee357@gmail.com,05501574575,1991-03-27,Male,"42, Nori Road, Jammu-971627",Adweta Bava,+919961542042,A-,Penicillin,Diabetes

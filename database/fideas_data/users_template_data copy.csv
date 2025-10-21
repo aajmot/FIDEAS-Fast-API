@@ -1,0 +1,125 @@
+username,email,first_name,last_name,password,is_active,role_names
+lifecare_rabidas,rabidas@gmail.com,rabi,das,admin123,TRUE,Director
+lifecare_avasmith,ava.smith@gmail.com,Ava,Smith,admin123,TRUE,Director
+lifecare_liamjohnson,liam.johnson@gmail.com,Liam,Johnson,admin123,TRUE,Data Analyst
+lifecare_emmawilliams,emma.williams@gmail.com,Emma,Williams,admin123,TRUE,Project Coordinator
+lifecare_noahbrown,noah.brown@gmail.com,Noah,Brown,admin123,TRUE,DevOps Engineer
+lifecare_oliviajones,olivia.jones@gmail.com,Olivia,Jones,admin123,TRUE,Marketing Manager
+lifecare_elijahgarcia,elijah.garcia@gmail.com,Elijah,Garcia,admin123,TRUE,Security Analyst
+lifecare_sophiamiller,sophia.miller@gmail.com,Sophia,Miller,admin123,TRUE,Product Manager
+lifecare_lucasdavis,lucas.davis@gmail.com,Lucas,Davis,admin123,TRUE,UX Designer
+lifecare_isabellarodriguez,isabella.rodriguez@gmail.com,Isabella,Rodriguez,admin123,TRUE,AI Engineer
+lifecare_masonmartinez,mason.martinez@gmail.com,Mason,Martinez,admin123,TRUE,Finance Controller
+lifecare_miaherrandez,mia.hernandez@gmail.com,Mia,Hernandez,admin123,TRUE,Legal Advisor
+lifecare_loganlopez,logan.lopez@gmail.com,Logan,Lopez,admin123,TRUE,Frontend Developer
+lifecare_ameliagonzalez,amelia.gonzalez@gmail.com,Amelia,Gonzalez,admin123,TRUE,Backend Developer
+lifecare_jameswilson,james.wilson@gmail.com,James,Wilson,admin123,TRUE,Operations Manager
+lifecare_harperanderson,harper.anderson@gmail.com,Harper,Anderson,admin123,TRUE,Support Agent
+lifecare_benjaminthomas,benjamin.thomas@gmail.com,Benjamin,Thomas,admin123,TRUE,Auditor
+lifecare_evelyntaylor,evelyn.taylor@gmail.com,Evelyn,Taylor,admin123,TRUE,HR Executive
+lifecare_jacobmoore,jacob.moore@gmail.com,Jacob,Moore,admin123,TRUE,IT Administrator
+lifecare_abigailjackson,abigail.jackson@gmail.com,Abigail,Jackson,admin123,TRUE,Cloud Engineer
+lifecare_michaelmartin,michael.martin@gmail.com,Michael,Martin,admin123,TRUE,Database Administrator
+lifecare_emilylee,emily.lee@gmail.com,Emily,Lee,admin123,TRUE,Machine Learning Engineer
+lifecare_alexanderperez,alexander.perez@gmail.com,Alexander,Perez,admin123,TRUE,Data Scientist
+lifecare_charlottethompson,charlotte.thompson@gmail.com,Charlotte,Thompson,admin123,TRUE,Technical Lead
+lifecare_henrywhite,henry.white@gmail.com,Henry,White,admin123,TRUE,Release Manager
+lifecare_ellaharris,ella.harris@gmail.com,Ella,Harris,admin123,TRUE,Mobile Developer
+lifecare_danielsanchez,daniel.sanchez@gmail.com,Daniel,Sanchez,admin123,TRUE,Quality Assurance Engineer
+lifecare_scarlettclark,scarlett.clark@gmail.com,Scarlett,Clark,admin123,TRUE,Content Strategist
+lifecare_matthewramirez,matthew.ramirez@gmail.com,Matthew,Ramirez,admin123,TRUE,System Architect
+lifecare_gracelewis,grace.lewis@gmail.com,Grace,Lewis,admin123,TRUE,Billing Admin
+lifecare_jacksonrobinson,jackson.robinson@gmail.com,Jackson,Robinson,admin123,TRUE,Salesman
+username,email,first_name,last_name,password,is_active,role_names
+lifecare_aidenadams,aiden.adams@gmail.com,Aiden,Adams,admin123,TRUE,Innovation Manager
+lifecare_chloebaker,chloe.baker@gmail.com,Chloe,Baker,admin123,TRUE,Digital Transformation Lead
+lifecare_ethancarter,ethan.carter@gmail.com,Ethan,Carter,admin123,TRUE,IT Support Specialist
+lifecare_lilydavis,lily.davis@gmail.com,Lily,Davis,admin123,TRUE,Application Support Analyst
+lifecare_loganevans,logan.evans@gmail.com,Logan,Evans,admin123,TRUE,Business Development Executive
+lifecare_zoefoster,zoe.foster@gmail.com,Zoe,Foster,admin123,TRUE,Client Relationship Manager
+lifecare_lucasgarcia,lucas.garcia@gmail.com,Lucas,Garcia,admin123,TRUE,Knowledge Manager
+lifecare_norahughes,nora.hughes@gmail.com,Nora,Hughes,admin123,TRUE,Workforce Planner
+lifecare_masonirwin,mason.irwin@gmail.com,Mason,Irwin,admin123,TRUE,Sustainability Officer
+lifecare_ellajohnson,ella.johnson@gmail.com,Ella,Johnson,admin123,TRUE,Energy Manager
+lifecare_jacksonking,jackson.king@gmail.com,Jackson,King,admin123,TRUE,Logistics Coordinator
+lifecare_gracelewis,grace.lewis@gmail.com,Grace,Lewis,admin123,TRUE,Warehouse Supervisor
+lifecare_levimorris,levi.morris@gmail.com,Levi,Morris,admin123,TRUE,Fleet Manager
+lifecare_arianelson,aria.nelson@gmail.com,Aria,Nelson,admin123,TRUE,Contract Manager
+lifecare_sebastianowens,sebastian.owens@gmail.com,Sebastian,Owens,admin123,TRUE,Vendor Manager
+lifecare_hazelperez,hazel.perez@gmail.com,Hazel,Perez,admin123,TRUE,Technical Recruiter
+lifecare_mateoquinn,mateo.quinn@gmail.com,Mateo,Quinn,admin123,TRUE,IT Compliance Analyst
+lifecare_auroraroberts,aurora.roberts@gmail.com,Aurora,Roberts,admin123,TRUE,Digital Marketing Specialist
+lifecare_leoscott,leo.scott@gmail.com,Leo,Scott,admin123,TRUE,E-commerce Manager
+lifecare_violetturner,violet.turner@gmail.com,Violet,Turner,admin123,TRUE,Localization Specialist
+lifecare_julianunderwood,julian.underwood@gmail.com,Julian,Underwood,admin123,TRUE,Chief Technology Officer
+lifecare_stellavasquez,stella.vasquez@gmail.com,Stella,Vasquez,admin123,TRUE,Chief Financial Officer
+lifecare_wyattwalker,wyatt.walker@gmail.com,Wyatt,Walker,admin123,TRUE,Chief Operating Officer
+lifecare_lucyxavier,lucy.xavier@gmail.com,Lucy,Xavier,admin123,TRUE,Chief Marketing Officer
+lifecare_calebyoung,caleb.young@gmail.com,Caleb,Young,admin123,TRUE,Chief Human Resources Officer
+lifecare_savannahzimmerman,savannah.zimmerman@gmail.com,Savannah,Zimmerman,admin123,TRUE,Strategy Consultant
+lifecare_nathanbrooks,nathan.brooks@gmail.com,Nathan,Brooks,admin123,TRUE,Innovation Consultant
+lifecare_bellacampbell,bella.campbell@gmail.com,Bella,Campbell,admin123,TRUE,Digital Product Designer
+lifecare_isaacdiaz,isaac.diaz@gmail.com,Isaac,Diaz,admin123,TRUE,Cybersecurity Engineer
+lifecare_claireedwards,claire.edwards@gmail.com,Claire,Edwards,admin123,TRUE,Data Governance Analyst
+username,email,first_name,last_name,password,is_active,role_names
+lifecare_arianaanderson,ariana.anderson@gmail.com,Ariana,Anderson,admin123,TRUE,Innovation Manager
+lifecare_blakebennett,blake.bennett@gmail.com,Blake,Bennett,admin123,TRUE,Digital Transformation Lead
+lifecare_cameronclark,cameron.clark@gmail.com,Cameron,Clark,admin123,TRUE,IT Support Specialist
+lifecare_daisydiaz,daisy.diaz@gmail.com,Daisy,Diaz,admin123,TRUE,Application Support Analyst
+lifecare_ethanedwards,ethan.edwards@gmail.com,Ethan,Edwards,admin123,TRUE,Business Development Executive
+lifecare_fionafoster,fiona.foster@gmail.com,Fiona,Foster,admin123,TRUE,Client Relationship Manager
+lifecare_gavingriffin,gavin.griffin@gmail.com,Gavin,Griffin,admin123,TRUE,Knowledge Manager
+lifecare_haileyhughes,hailey.hughes@gmail.com,Hailey,Hughes,admin123,TRUE,Workforce Planner
+lifecare_ianirwin,ian.irwin@gmail.com,Ian,Irwin,admin123,TRUE,Sustainability Officer
+lifecare_jasminejacobs,jasmine.jacobs@gmail.com,Jasmine,Jacobs,admin123,TRUE,Energy Manager
+lifecare_kylekeller,kyle.keller@gmail.com,Kyle,Keller,admin123,TRUE,Logistics Coordinator
+lifecare_lunalawson,luna.lawson@gmail.com,Luna,Lawson,admin123,TRUE,Warehouse Supervisor
+lifecare_milesmorris,miles.morris@gmail.com,Miles,Morris,admin123,TRUE,Fleet Manager
+lifecare_ninanguyen,nina.nguyen@gmail.com,Nina,Nguyen,admin123,TRUE,Contract Manager
+lifecare_owenowens,owen.owens@gmail.com,Owen,Owens,admin123,TRUE,Vendor Manager
+lifecare_paigeparker,paige.parker@gmail.com,Paige,Parker,admin123,TRUE,Technical Recruiter
+lifecare_quinnquincy,quinn.quincy@gmail.com,Quinn,Quincy,admin123,TRUE,IT Compliance Analyst
+lifecare_rileyreed,riley.reed@gmail.com,Riley,Reed,admin123,TRUE,Digital Marketing Specialist
+lifecare_seansullivan,sean.sullivan@gmail.com,Sean,Sullivan,admin123,TRUE,E-commerce Manager
+lifecare_tessaturner,tessa.turner@gmail.com,Tessa,Turner,admin123,TRUE,Localization Specialist
+lifecare_umaunderwood,uma.underwood@gmail.com,Uma,Underwood,admin123,TRUE,Chief Technology Officer
+lifecare_victorvasquez,victor.vasquez@gmail.com,Victor,Vasquez,admin123,TRUE,Chief Financial Officer
+lifecare_wendywalker,wendy.walker@gmail.com,Wendy,Walker,admin123,TRUE,Chief Operating Officer
+lifecare_xanderxu,xander.xu@gmail.com,Xander,Xu,admin123,TRUE,Chief Marketing Officer
+lifecare_yarayoung,yara.young@gmail.com,Yara,Young,admin123,TRUE,Chief Human Resources Officer
+lifecare_zanezimmerman,zane.zimmerman@gmail.com,Zane,Zimmerman,admin123,TRUE,Strategy Consultant
+lifecare_ambercampbell,amber.campbell@gmail.com,Amber,Campbell,admin123,TRUE,Innovation Consultant
+lifecare_brycebrooks,bryce.brooks@gmail.com,Bryce,Brooks,admin123,TRUE,Digital Product Designer
+lifecare_celestechavez,celeste.chavez@gmail.com,Celeste,Chavez,admin123,TRUE,Cybersecurity Engineer
+lifecare_derekdoyle,derek.doyle@gmail.com,Derek,Doyle,admin123,TRUE,Data Governance Analyst
+username,email,first_name,last_name,password,is_active,role_names
+lifecare_adelinegriffin,adeline.griffin@gmail.com,Adeline,Griffin,admin123,TRUE,Enterprise Architect
+lifecare_briellexu,brielle.xu@gmail.com,Brielle,Xu,admin123,TRUE,Service Desk Analyst
+lifecare_cyruswalker,cyrus.walker@gmail.com,Cyrus,Walker,admin123,TRUE,Penetration Tester
+lifecare_dorianhayes,dorian.hayes@gmail.com,Dorian,Hayes,admin123,TRUE,Change Manager
+lifecare_elisapatel,elisa.patel@gmail.com,Eliza,Patel,admin123,TRUE,Incident Manager
+lifecare_finnzimmerman,finn.zimmerman@gmail.com,Finn,Zimmerman,admin123,TRUE,Release Engineer
+lifecare_gemmaabbott,gemma.abbott@gmail.com,Gemma,Abbott,admin123,TRUE,Test Engineer
+lifecare_holdenreed,holden.reed@gmail.com,Holden,Reed,admin123,TRUE,Automation Engineer
+lifecare_islaclark,isla.clark@gmail.com,Isla,Clark,admin123,TRUE,Integration Specialist
+lifecare_jasperbarnes,jasper.barnes@gmail.com,Jasper,Barnes,admin123,TRUE,CRM Administrator
+lifecare_kinsleydiaz,kinsley.diaz@gmail.com,Kinsley,Diaz,admin123,TRUE,ERP Consultant
+lifecare_landonquintana,landon.quintana@gmail.com,Landon,Quintana,admin123,TRUE,Talent Acquisition Specialist
+lifecare_maeveyoung,maeve.young@gmail.com,Maeve,Young,admin123,TRUE,Payroll Specialist
+lifecare_nolananderson,nolan.anderson@gmail.com,Nolan,Anderson,admin123,TRUE,Compensation Analyst
+lifecare_opheliamanning,ophelia.manning@gmail.com,Ophelia,Manning,admin123,TRUE,Learning & Development Manager
+lifecare_parkerellis,parker.ellis@gmail.com,Parker,Ellis,admin123,TRUE,Public Relations Officer
+lifecare_quinndixon,quinn.dixon@gmail.com,Quinn,Dixon,admin123,TRUE,Brand Manager
+lifecare_rowanlawson,rowan.lawson@gmail.com,Rowan,Lawson,admin123,TRUE,Account Manager
+lifecare_sadiegriffin,sadie.griffin@gmail.com,Sadie,Griffin,admin123,TRUE,Field Technician
+lifecare_theofoster,theo.foster@gmail.com,Theo,Foster,admin123,TRUE,Helpdesk Technician
+lifecare_umavasquez,uma.vasquez@gmail.com,Uma,Vasquez,admin123,TRUE,Cloud Solutions Architect
+lifecare_violetchavez,violet.chavez@gmail.com,Violet,Chavez,admin123,TRUE,AI Research Scientist
+lifecare_wesleybennett,wesley.bennett@gmail.com,Wesley,Bennett,admin123,TRUE,Ethical Hacker
+lifecare_ximenajennings,ximena.jennings@gmail.com,Ximena,Jennings,admin123,TRUE,IT Auditor
+lifecare_yaraingram,yara.ingram@gmail.com,Yara,Ingram,admin123,TRUE,Business Continuity Manager
+lifecare_zanegriffin,zane.griffin@gmail.com,Zane,Griffin,admin123,TRUE,Disaster Recovery Specialist
+lifecare_ariclark,ari.clark@gmail.com,Ari,Clark,admin123,TRUE,Technical Account Manager
+lifecare_briellehayes,brielle.hayes@gmail.com,Brielle,Hayes,admin123,TRUE,IT Project Manager
+lifecare_cyrusxu,cyrus.xu@gmail.com,Cyrus,Xu,admin123,TRUE,Software Architect
+lifecare_delilahreed,delilah.reed@gmail.com,Delilah,Reed,admin123,TRUE,Middleware Engineer

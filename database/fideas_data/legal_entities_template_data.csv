@@ -1,0 +1,213 @@
+name,code,registration_number,address,logo,admin_username,is_active
+Nova Health Group,LCB001,REG582394,456 Oak St,,lifecare_admin,TRUE
+Zenith Medicals,LCB002,REG103847,789 Maple Ave,,lifecare_admin,TRUE
+Lifeline Solutions,LCB003,REG948372,321 Pine Rd,,lifecare_admin,TRUE
+VitalCore Inc,LCB004,REG274839,654 Cedar Blvd,,lifecare_admin,TRUE
+PulsePoint Systems,LCB005,REG384756,198 Elm St,,lifecare_admin,TRUE
+CareBridge Ltd,LCB006,REG847362,237 Oak St,,lifecare_admin,TRUE
+MediSphere Corp,LCB007,REG928312,812 Maple Ave,,lifecare_admin,TRUE
+HealthNest Partners,LCB008,REG3748001,145 Pine Rd,,lifecare_admin,TRUE
+WellSpring Holdings,LCB009,REG58342012,963 Cedar Blvd,,lifecare_admin,TRUE
+PrimeCare Network,LCB010,REG10293821,376 Elm St,,lifecare_admin,TRUE
+TruHealth Services,LCB011,REG84739221,289 Oak St,,lifecare_admin,TRUE
+OptiMed Group,LCB012,REG928377,741 Maple Ave,,lifecare_admin,TRUE
+CuraWell Enterprises,LCB013,REG928377121,654 Pine Rd,,lifecare_admin,TRUE
+Healix Technologies,LCB014,REG374899,812 Cedar Blvd,,lifecare_admin,TRUE
+BioNova Clinics,LCB015,REG58392012,145 Elm St,,lifecare_admin,TRUE
+MediTrust Alliance,LCB016,REG1043938,963 Oak St,,lifecare_admin,TRUE
+WellPath Ventures,LCB017,REG847121392,376 Maple Ave,,lifecare_admin,TRUE
+HealthSync Ltd,LCB018,REG384212920,289 Pine Rd,,lifecare_admin,TRUE
+LifeSure Systems,LCB019,REG928374456,741 Cedar Blvd,,lifecare_admin,TRUE
+CareAxis Corp,LCB020,REG374890,654 Elm St,,lifecare_admin,TRUE
+MediQuest Solutions,LCB021,REG583920554,812 Oak St,,lifecare_admin,TRUE
+HealthEdge Partners,LCB022,REG1029382323,145 Maple Ave,,lifecare_admin,TRUE
+WellBridge Inc,LCB023,REG847392112,963 Pine Rd,,lifecare_admin,TRUE
+CurePoint Holdings,LCB024,REG38492034534,376 Cedar Blvd,,lifecare_admin,TRUE
+LifeTrack Group,LCB025,REG928374,289 Elm St,,lifecare_admin,TRUE
+MediCore Networks,LCB026,REG374829,741 Oak St,,lifecare_admin,TRUE
+HealthLink Systems,LCB027,REG583920,654 Maple Ave,,lifecare_admin,TRUE
+CareFusion Ltd,LCB028,REG102938,812 Pine Rd,,lifecare_admin,TRUE
+WellNova Group,LCB029,REG847392,145 Cedar Blvd,,lifecare_admin,TRUE
+TruMed Enterprises,LCB030,REG384920,963 Elm St,,lifecare_admin,TRUE
+name,code,registration_number,address,,admin_username,is_active
+Orion Health Systems,LCB061,REG61001,101 Galaxy Blvd,,lifecare_admin,TRUE
+Solstice Medical Group,LCB062,REG61002,202 Sunrise Ave,,lifecare_admin,TRUE
+Avalon Wellness Corp,LCB063,REG61003,303 Avalon Rd,,lifecare_admin,TRUE
+Elysian Care Partners,LCB064,REG61004,404 Elysium St,,lifecare_admin,TRUE
+Zephyr Health Network,LCB065,REG61005,505 Zephyr Ln,,lifecare_admin,TRUE
+Serenity Medical Holdings,LCB066,REG61006,606 Serenity Dr,,lifecare_admin,TRUE
+Horizon Life Sciences,LCB067,REG61007,707 Horizon Way,,lifecare_admin,TRUE
+Celestia Health Alliance,LCB068,REG61008,808 Celestia Ct,,lifecare_admin,TRUE
+TerraMed Solutions,LCB069,REG61009,909 Terra Ave,,lifecare_admin,TRUE
+Aether Wellness Group,LCB070,REG61010,100 Aether Blvd,,lifecare_admin,TRUE
+Lumina Health Partners,LCB071,REG61011,111 Lumina St,,lifecare_admin,TRUE
+Solara Medical Systems,LCB072,REG61012,222 Solara Rd,,lifecare_admin,TRUE
+VitaNova Clinics,LCB073,REG61013,333 VitaNova Ln,,lifecare_admin,TRUE
+Artemis Care Network,LCB074,REG61014,444 Artemis Dr,,lifecare_admin,TRUE
+Phoenix Health Ventures,LCB075,REG61015,555 Phoenix Way,,lifecare_admin,TRUE
+Gaia Medical Group,LCB076,REG61016,666 Gaia Ct,,lifecare_admin,TRUE
+Nimbus Wellness Inc,LCB077,REG61017,777 Nimbus Ave,,lifecare_admin,TRUE
+Helios Health Systems,LCB078,REG61018,888 Helios Blvd,,lifecare_admin,TRUE
+Thalassa Medical Corp,LCB079,REG61019,999 Thalassa St,,lifecare_admin,TRUE
+Aurora LifeCare Ltd,LCB080,REG61020,121 Aurora Rd,,lifecare_admin,TRUE
+Lyra Health Services,LCB081,REG61021,131 Lyra Ln,,lifecare_admin,TRUE
+Atlas Medical Holdings,LCB082,REG61022,141 Atlas Dr,,lifecare_admin,TRUE
+Selene Wellness Group,LCB083,REG61023,151 Selene Way,,lifecare_admin,TRUE
+Titan Health Alliance,LCB084,REG61024,161 Titan Ct,,lifecare_admin,TRUE
+Neptune Care Partners,LCB085,REG61025,171 Neptune Blvd,,lifecare_admin,TRUE
+Vega Medical Solutions,LCB086,REG61026,181 Vega St,,lifecare_admin,TRUE
+Andromeda Health Corp,LCB087,REG61027,191 Andromeda Rd,,lifecare_admin,TRUE
+Cosmos Wellness Ltd,LCB088,REG61028,201 Cosmos Ln,,lifecare_admin,TRUE
+NovaCare Systems,LCB089,REG61029,211 NovaCare Dr,,lifecare_admin,TRUE
+Stellar Health Group,LCB090,REG61030,221 Stellar Way,,lifecare_admin,TRUE
+name,code,registration_number,address,,admin_username,is_active
+Eclipse Health Group,LCB091,REG61031,231 Eclipse Blvd,,lifecare_admin,TRUE
+Mirage Medical Systems,LCB092,REG61032,241 Mirage Ave,,lifecare_admin,TRUE
+Zenith Wellness Corp,LCB093,REG61033,251 Zenith Rd,,lifecare_admin,TRUE
+Equinox Care Partners,LCB094,REG61034,261 Equinox St,,lifecare_admin,TRUE
+AuroraMed Holdings,LCB095,REG61035,271 Aurora Ln,,lifecare_admin,TRUE
+Solstice Life Sciences,LCB096,REG61036,281 Solstice Dr,,lifecare_admin,TRUE
+Harmonia Health Alliance,LCB097,REG61037,291 Harmonia Way,,lifecare_admin,TRUE
+Celestial Medical Group,LCB098,REG61038,301 Celestial Ct,,lifecare_admin,TRUE
+GaiaCare Solutions,LCB099,REG61039,311 Gaia Ave,,lifecare_admin,TRUE
+NovaSphere Clinics,LCB100,REG61040,321 NovaSphere Blvd,,lifecare_admin,TRUE
+Lyric Wellness Network,LCB101,REG61041,331 Lyric St,,lifecare_admin,TRUE
+Orenda Medical Partners,LCB102,REG61042,341 Orenda Rd,,lifecare_admin,TRUE
+Halcyon Health Systems,LCB103,REG61043,351 Halcyon Ln,,lifecare_admin,TRUE
+Veritas LifeCare Ltd,LCB104,REG61044,361 Veritas Dr,,lifecare_admin,TRUE
+NimbusCare Group,LCB105,REG61045,371 Nimbus Way,,lifecare_admin,TRUE
+Astra Wellness Inc,LCB106,REG61046,381 Astra Ct,,lifecare_admin,TRUE
+SolaraCare Holdings,LCB107,REG61047,391 Solara Blvd,,lifecare_admin,TRUE
+Thrive Medical Ventures,LCB108,REG61048,401 Thrive Ave,,lifecare_admin,TRUE
+VitaSphere Clinics,LCB109,REG61049,411 VitaSphere Rd,,lifecare_admin,TRUE
+Empyrean Health Group,LCB110,REG61050,421 Empyrean St,,lifecare_admin,TRUE
+Lunaris Medical Systems,LCB111,REG61051,431 Lunaris Ln,,lifecare_admin,TRUE
+Elysium Wellness Corp,LCB112,REG61052,441 Elysium Dr,,lifecare_admin,TRUE
+TerraNova Health Ltd,LCB113,REG61053,451 TerraNova Way,,lifecare_admin,TRUE
+AetherCare Partners,LCB114,REG61054,461 Aether Ct,,lifecare_admin,TRUE
+StellarMed Solutions,LCB115,REG61055,471 Stellar Blvd,,lifecare_admin,TRUE
+LyraCare Systems,LCB116,REG61056,481 Lyra Ave,,lifecare_admin,TRUE
+Phoenix Wellness Group,LCB117,REG61057,491 Phoenix Rd,,lifecare_admin,TRUE
+CosmosCare Holdings,LCB118,REG61058,501 Cosmos St,,lifecare_admin,TRUE
+Andromeda Life Sciences,LCB119,REG61059,511 Andromeda Ln,,lifecare_admin,TRUE
+VegaCare Network,LCB120,REG61060,521 Vega Dr,,lifecare_admin,TRUE
+HorizonCare Global,LCB121,REG61061,531 Horizon Blvd,,lifecare_admin,TRUE
+Solstice Therapeutics,LCB122,REG61062,541 Solstice Ave,,lifecare_admin,TRUE
+ZenithCare International,LCB123,REG61063,551 Zenith Rd,,lifecare_admin,TRUE
+Equinox Health Systems,LCB124,REG61064,561 Equinox St,,lifecare_admin,TRUE
+AuroraMed Global,LCB125,REG61065,571 Aurora Ln,,lifecare_admin,TRUE
+SerenityCare Worldwide,LCB126,REG61066,581 Serenity Dr,,lifecare_admin,TRUE
+Celestia Medical Group,LCB127,REG61067,591 Celestia Ct,,lifecare_admin,TRUE
+TerraWell Clinics,LCB128,REG61068,601 Terra Ave,,lifecare_admin,TRUE
+AetherCare Alliance,LCB129,REG61069,611 Aether Blvd,,lifecare_admin,TRUE
+Lumina Health Network,LCB130,REG61070,621 Lumina St,,lifecare_admin,TRUE
+SolaraCare International,LCB131,REG61071,631 Solara Rd,,lifecare_admin,TRUE
+VitaNova Global,LCB132,REG61072,641 VitaNova Ln,,lifecare_admin,TRUE
+Artemis Wellness Group,LCB133,REG61073,651 Artemis Dr,,lifecare_admin,TRUE
+PhoenixCare Systems,LCB134,REG61074,661 Phoenix Way,,lifecare_admin,TRUE
+Gaia Health Alliance,LCB135,REG61075,671 Gaia Ct,,lifecare_admin,TRUE
+NimbusCare International,LCB136,REG61076,681 Nimbus Ave,,lifecare_admin,TRUE
+Helios Medical Holdings,LCB137,REG61077,691 Helios Blvd,,lifecare_admin,TRUE
+ThalassaCare Group,LCB138,REG61078,701 Thalassa St,,lifecare_admin,TRUE
+AuroraLife Systems,LCB139,REG61079,711 Aurora Rd,,lifecare_admin,TRUE
+LyraCare Global,LCB140,REG61080,721 Lyra Ln,,lifecare_admin,TRUE
+Atlas Wellness Corp,LCB141,REG61081,731 Atlas Dr,,lifecare_admin,TRUE
+SeleneCare Partners,LCB142,REG61082,741 Selene Way,,lifecare_admin,TRUE
+Titan Medical Group,LCB143,REG61083,751 Titan Ct,,lifecare_admin,TRUE
+NeptuneCare Systems,LCB144,REG61084,761 Neptune Blvd,,lifecare_admin,TRUE
+Vega Wellness Alliance,LCB145,REG61085,771 Vega St,,lifecare_admin,TRUE
+AndromedaCare Global,LCB146,REG61086,781 Andromeda Rd,,lifecare_admin,TRUE
+CosmosCare International,LCB147,REG61087,791 Cosmos Ln,,lifecare_admin,TRUE
+NovaCare Global,LCB148,REG61088,801 NovaCare Dr,,lifecare_admin,TRUE
+StellarCare Systems,LCB149,REG61089,811 Stellar Way,,lifecare_admin,TRUE
+Empyrean Health Corp,LCB150,REG61090,821 Empyrean Blvd,,lifecare_admin,TRUE
+Astralis Health Group,LCB151,REG61091,831 Astralis Blvd,,lifecare_admin,TRUE
+Ecliptica Medical Systems,LCB152,REG61092,841 Ecliptica Ave,,lifecare_admin,TRUE
+SolaraCare International,LCB153,REG61093,851 Solara Rd,,lifecare_admin,TRUE
+Zenith Wellness Alliance,LCB154,REG61094,861 Zenith St,,lifecare_admin,TRUE
+EquinoxCare Global,LCB155,REG61095,871 Equinox Ln,,lifecare_admin,TRUE
+AuroraMed Solutions,LCB156,REG61096,881 Aurora Dr,,lifecare_admin,TRUE
+SerenityCare Network,LCB157,REG61097,891 Serenity Way,,lifecare_admin,TRUE
+CelestiaCare Partners,LCB158,REG61098,901 Celestia Ct,,lifecare_admin,TRUE
+TerraNova Health Group,LCB159,REG61099,911 TerraNova Ave,,lifecare_admin,TRUE
+AetherMed Holdings,LCB160,REG61100,921 Aether Blvd,,lifecare_admin,TRUE
+LuminaCare Systems,LCB161,REG61101,931 Lumina St,,lifecare_admin,TRUE
+SolsticeCare Ventures,LCB162,REG61102,941 Solstice Rd,,lifecare_admin,TRUE
+VitaNovaCare Ltd,LCB163,REG61103,951 VitaNova Ln,,lifecare_admin,TRUE
+ArtemisCare Global,LCB164,REG61104,961 Artemis Dr,,lifecare_admin,TRUE
+PhoenixCare Alliance,LCB165,REG61105,971 Phoenix Way,,lifecare_admin,TRUE
+GaiaCare International,LCB166,REG61106,981 Gaia Ct,,lifecare_admin,TRUE
+NimbusCare Systems,LCB167,REG61107,991 Nimbus Ave,,lifecare_admin,TRUE
+HeliosCare Network,LCB168,REG61108,1001 Helios Blvd,,lifecare_admin,TRUE
+ThalassaCare Holdings,LCB169,REG61109,1011 Thalassa St,,lifecare_admin,TRUE
+AuroraLife Global,LCB170,REG61110,1021 Aurora Rd,,lifecare_admin,TRUE
+LyraCare Ventures,LCB171,REG61111,1031 Lyra Ln,,lifecare_admin,TRUE
+AtlasCare Partners,LCB172,REG61112,1041 Atlas Dr,,lifecare_admin,TRUE
+SeleneCare Systems,LCB173,REG61113,1051 Selene Way,,lifecare_admin,TRUE
+TitanCare International,LCB174,REG61114,1061 Titan Ct,,lifecare_admin,TRUE
+NeptuneCare Global,LCB175,REG61115,1071 Neptune Blvd,,lifecare_admin,TRUE
+VegaCare Holdings,LCB176,REG61116,1081 Vega St,,lifecare_admin,TRUE
+AndromedaCare Systems,LCB177,REG61117,1091 Andromeda Rd,,lifecare_admin,TRUE
+CosmosCare Ventures,LCB178,REG61118,1101 Cosmos Ln,,lifecare_admin,TRUE
+NovaCare International,LCB179,REG61119,1111 NovaCare Dr,,lifecare_admin,TRUE
+StellarCare Group,LCB180,REG61120,1121 Stellar Way,,lifecare_admin,TRUE
+Altair Health Systems,LCB181,REG61121,1131 Altair Blvd,,lifecare_admin,TRUE
+OrionCare Global,LCB182,REG61122,1141 Orion Ave,,lifecare_admin,TRUE
+SolsticeCare Network,LCB183,REG61123,1151 Solstice Rd,,lifecare_admin,TRUE
+ZenithCare Partners,LCB184,REG61124,1161 Zenith St,,lifecare_admin,TRUE
+EquinoxCare Holdings,LCB185,REG61125,1171 Equinox Ln,,lifecare_admin,TRUE
+AuroraMed Alliance,LCB186,REG61126,1181 Aurora Dr,,lifecare_admin,TRUE
+SerenityCare Global,LCB187,REG61127,1191 Serenity Way,,lifecare_admin,TRUE
+CelestiaCare Systems,LCB188,REG61128,1201 Celestia Ct,,lifecare_admin,TRUE
+TerraNovaCare Ltd,LCB189,REG61129,1211 TerraNova Ave,,lifecare_admin,TRUE
+AetherCare International,LCB190,REG61130,1221 Aether Blvd,,lifecare_admin,TRUE
+LuminaCare Ventures,LCB191,REG61131,1231 Lumina St,,lifecare_admin,TRUE
+SolaraCare Group,LCB192,REG61132,1241 Solara Rd,,lifecare_admin,TRUE
+VitaNovaCare Global,LCB193,REG61133,1251 VitaNova Ln,,lifecare_admin,TRUE
+ArtemisCare Systems,LCB194,REG61134,1261 Artemis Dr,,lifecare_admin,TRUE
+PhoenixCare International,LCB195,REG61135,1271 Phoenix Way,,lifecare_admin,TRUE
+GaiaCare Holdings,LCB196,REG61136,1281 Gaia Ct,,lifecare_admin,TRUE
+NimbusCare Ventures,LCB197,REG61137,1291 Nimbus Ave,,lifecare_admin,TRUE
+HeliosCare Global,LCB198,REG61138,1301 Helios Blvd,,lifecare_admin,TRUE
+ThalassaCare Network,LCB199,REG61139,1311 Thalassa St,,lifecare_admin,TRUE
+AuroraLifeCare Ltd,LCB200,REG61140,1321 Aurora Rd,,lifecare_admin,TRUE
+LyraCare Alliance,LCB201,REG61141,1331 Lyra Ln,,lifecare_admin,TRUE
+AtlasCare Global,LCB202,REG61142,1341 Atlas Dr,,lifecare_admin,TRUE
+SeleneCare International,LCB203,REG61143,1351 Selene Way,,lifecare_admin,TRUE
+TitanCare Systems,LCB204,REG61144,1361 Titan Ct,,lifecare_admin,TRUE
+NeptuneCare Ventures,LCB205,REG61145,1371 Neptune Blvd,,lifecare_admin,TRUE
+VegaCare International,LCB206,REG61146,1381 Vega St,,lifecare_admin,TRUE
+AndromedaCare Holdings,LCB207,REG61147,1391 Andromeda Rd,,lifecare_admin,TRUE
+CosmosCare Global,LCB208,REG61148,1401 Cosmos Ln,,lifecare_admin,TRUE
+NovaCare Alliance,LCB209,REG61149,1411 NovaCare Dr,,lifecare_admin,TRUE
+StellarCare International,LCB210,REG61150,1421 Stellar Way,,lifecare_admin,TRUE
+Astrum Health Alliance,LCB211,REG61151,1431 Astrum Blvd,,lifecare_admin,TRUE
+ElysiumCare Global,LCB212,REG61152,1441 Elysium Ave,,lifecare_admin,TRUE
+SolaraMed Partners,LCB213,REG61153,1451 Solara Rd,,lifecare_admin,TRUE
+ZenithCare Systems,LCB214,REG61154,1461 Zenith St,,lifecare_admin,TRUE
+EquinoxCare Network,LCB215,REG61155,1471 Equinox Ln,,lifecare_admin,TRUE
+AuroraMed Group,LCB216,REG61156,1481 Aurora Dr,,lifecare_admin,TRUE
+SerenityCare Holdings,LCB217,REG61157,1491 Serenity Way,,lifecare_admin,TRUE
+CelestiaCare International,LCB218,REG61158,1501 Celestia Ct,,lifecare_admin,TRUE
+TerraNovaCare Systems,LCB219,REG61159,1511 TerraNova Ave,,lifecare_admin,TRUE
+AetherCare Global,LCB220,REG61160,1521 Aether Blvd,,lifecare_admin,TRUE
+LuminaCare Alliance,LCB221,REG61161,1531 Lumina St,,lifecare_admin,TRUE
+SolsticeCare Group,LCB222,REG61162,1541 Solstice Rd,,lifecare_admin,TRUE
+VitaNovaCare Partners,LCB223,REG61163,1551 VitaNova Ln,,lifecare_admin,TRUE
+ArtemisCare Holdings,LCB224,REG61164,1561 Artemis Dr,,lifecare_admin,TRUE
+PhoenixCare Global,LCB225,REG61165,1571 Phoenix Way,,lifecare_admin,TRUE
+GaiaCare Systems,LCB226,REG61166,1581 Gaia Ct,,lifecare_admin,TRUE
+NimbusCare Alliance,LCB227,REG61167,1591 Nimbus Ave,,lifecare_admin,TRUE
+HeliosCare International,LCB228,REG61168,1601 Helios Blvd,,lifecare_admin,TRUE
+ThalassaCare Ventures,LCB229,REG61169,1611 Thalassa St,,lifecare_admin,TRUE
+AuroraLifeCare Group,LCB230,REG61170,1621 Aurora Rd,,lifecare_admin,TRUE
+LyraCare Systems,LCB231,REG61171,1631 Lyra Ln,,lifecare_admin,TRUE
+AtlasCare International,LCB232,REG61172,1641 Atlas Dr,,lifecare_admin,TRUE
+SeleneCare Global,LCB233,REG61173,1651 Selene Way,,lifecare_admin,TRUE
+TitanCare Holdings,LCB234,REG61174,1661 Titan Ct,,lifecare_admin,TRUE
+NeptuneCare Systems,LCB235,REG61175,1671 Neptune Blvd,,lifecare_admin,TRUE
+VegaCare Group,LCB236,REG61176,1681 Vega St,,lifecare_admin,TRUE
+AndromedaCare International,LCB237,REG61177,1691 Andromeda Rd,,lifecare_admin,TRUE
+CosmosCare Partners,LCB238,REG61178,1701 Cosmos Ln,,lifecare_admin,TRUE
+NovaCare Systems,LCB239,REG61179,1711 NovaCare Dr,,lifecare_admin,TRUE
+StellarCare Global,LCB240,REG61180,1721 Stellar Way,,lifecare_admin,TRUE

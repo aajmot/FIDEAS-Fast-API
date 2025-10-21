@@ -1,0 +1,122 @@
+name,symbol,description,is_active
+Kilogram,kg,Weight unit,TRUE
+Gram,g,Weight unit,TRUE
+Milligram,mg,Weight unit,TRUE
+Microgram,mcg,Weight unit,TRUE
+Liter,l,Volume unit,TRUE
+Milliliter,ml,Volume unit,TRUE
+Tablet,tab,Unit for solid dosage,TRUE
+Capsule,cap,Unit for encapsulated dosage,TRUE
+Bottle,btl,Packaging unit,TRUE
+Vial,vial,Small container for liquid medicine,TRUE
+Ampoule,amp,Sealed glass container for injection,TRUE
+Drop,drop,Liquid dosage unit,TRUE
+Tube,tube,Packaging for ointments and creams,TRUE
+Pack,pack,General packaging unit,TRUE
+Box,box,Bulk packaging unit,TRUE
+Piece,pc,Individual item unit,TRUE
+Sachet,sach,Small packet unit,TRUE
+Can,can,Container unit,TRUE
+Jar,jar,Container for creams or powders,TRUE
+Strip of 3 tablets,str3,Strip containing 3 tablets,TRUE
+Strip of 5 tablets,str5,Strip containing 5 tablets,TRUE
+Strip of 6 tablets,str6,Strip containing 6 tablets,TRUE
+Strip of 10 tablets,str10,Strip containing 10 tablets,TRUE
+Strip of 12 tablets,str12,Strip containing 12 tablets,TRUE
+Strip of 15 tablets,str15,Strip containing 15 tablets,TRUE
+Blister pack of 4,bp4,Blister pack with 4 units,TRUE
+Blister pack of 6,bp6,Blister pack with 6 units,TRUE
+Blister pack of 10,bp10,Blister pack with 10 units,TRUE
+Syringe,syr,Unit for injectable dosage,TRUE
+Dropper,drp,Unit for liquid dispensing,TRUE
+Inhaler,inh,Unit for respiratory dosage,TRUE
+Patch,ptc,Transdermal delivery unit,TRUE
+Spray,spr,Unit for aerosol medicines,TRUE
+Dose,dose,Single administration unit,TRUE
+Kit,kit,Combination of multiple items,TRUE
+Roll,roll,Packaging for bandages or gauze,TRUE
+Metered Dose Inhaler,mdi,Inhaler with fixed dose,TRUE
+Pen,pen,Pre-filled injection pen,TRUE
+Applicator,app,Tool for applying medicine,TRUE
+Pellet,plt,Small solid dosage unit,TRUE
+Granule,grn,Loose solid dosage unit,TRUE
+Cream,crm,Topical semi-solid dosage,TRUE
+Ointment,ont,Thicker topical dosage,TRUE
+Lotion,lot,Liquid topical dosage,TRUE
+Gel,gel,Topical semi-solid dosage,TRUE
+Swab,swb,Pre-moistened cleaning unit,TRUE
+Disk,dsk,Unit for diagnostic or topical use,TRUE
+Film,flm,Thin layer for oral/topical use,TRUE
+Chewable Tablet,cht,Tablet designed to be chewed,TRUE
+Effervescent Tablet,eft,Tablet that dissolves in water,TRUE
+Extended Release Tablet,ert,Tablet with prolonged effect,TRUE
+Sustained Release Capsule,src,Capsule with slow release,TRUE
+Oral Suspension,ors,Liquid medicine for oral use,TRUE
+Oral Solution,orl,Liquid medicine ready to use,TRUE
+Powder,pwd,Dry medicine for mixing,TRUE
+Reconstitution Pack,rcp,Pack for mixing before use,TRUE
+Infusion,inf,Unit for IV administration,TRUE
+Nebule,neb,Unit for nebulizer use,TRUE
+Suppository,sup,Solid unit for rectal/vaginal use,TRUE
+Enema,enm,Liquid unit for rectal administration,TRUE
+Lozenge,loz,Unit for slow oral dissolution,TRUE
+Oral Dropper Bottle,odb,Small bottle with dropper for oral liquids,TRUE
+Pre-filled Syringe,pfs,Ready-to-use syringe unit,TRUE
+Multi-dose Vial,mdv,Vial containing multiple doses,TRUE
+Single-dose Vial,sdv,Vial containing one dose,TRUE
+Oral Disintegrating Tablet,odt,Tablet that dissolves in mouth,TRUE
+Transdermal Patch,tp,Patch for skin absorption,TRUE
+Nasal Spray,nsp,Spray for nasal administration,TRUE
+Buccal Film,bf,Film placed inside cheek,TRUE
+Oral Strip,ostr,Thin strip for oral absorption,TRUE
+Topical Pad,tpd,Pad for applying topical medication,TRUE
+Metered Nasal Spray,mns,Nasal spray with fixed dose,TRUE
+Oral Granules,ogrn,Granules for oral suspension,TRUE
+Oral Powder,opwd,Powder for oral reconstitution,TRUE
+Topical Solution,tsol,Liquid for skin application,TRUE
+Topical Suspension,tsus,Suspension for skin application,TRUE
+Topical Emulsion,temu,Emulsion for skin application,TRUE
+Oral Emulsion,oemu,Emulsion for oral use,TRUE
+Oral Gel,ogel,Gel for oral administration,TRUE
+Oral Paste,opst,Paste for oral application,TRUE
+Rectal Suppository,rsup,Suppository for rectal use,TRUE
+Vaginal Suppository,vsup,Suppository for vaginal use,TRUE
+Vaginal Tablet,vtab,Tablet for vaginal use,TRUE
+Vaginal Cream,vcrm,Cream for vaginal application,TRUE
+Vaginal Gel,vgel,Gel for vaginal application,TRUE
+Vaginal Ring,vrng,Device for vaginal drug delivery,TRUE
+Intrauterine Device,iud,Device for uterine drug delivery,TRUE
+Implant,impl,Subdermal drug delivery device,TRUE
+Infusion Bag,ibag,Bag for IV infusion,TRUE
+Oral Capsule with Pellets,ocp,Capsule containing pellets,TRUE
+Oral Liquid Concentrate,olc,Concentrated liquid for dilution,TRUE
+Oral Capsule,ocap,Capsule for oral administration,TRUE
+Extended Release Capsule,ercap,Capsule with extended release,TRUE
+Oral Suspension Bottle,osb,Bottle containing oral suspension,TRUE
+Oral Solution Bottle,osol,Bottle containing oral solution,TRUE
+Topical Spray,tsp,Spray for skin application,TRUE
+Nasal Dropper Bottle,ndb,Bottle with dropper for nasal use,TRUE
+Eye Dropper Bottle,edb,Bottle with dropper for eye use,TRUE
+Ear Dropper Bottle,earb,Bottle with dropper for ear use,TRUE
+Pre-filled Pen,pfp,Injection pen with fixed dose,TRUE
+Auto-injector,autoinj,Device for automatic injection,TRUE
+Infusion Set,infset,Set for IV infusion,TRUE
+IV Bag,ivbag,Bag for intravenous fluids,TRUE
+IV Bottle,ivbtl,Bottle for intravenous fluids,TRUE
+Oral Rehydration Salt Sachet,orss,Sachet for oral rehydration,TRUE
+Oral Rehydration Salt Pack,orsp,Pack of ORS sachets,TRUE
+Topical Patch Pack,tpp,Pack of transdermal patches,TRUE
+Inhalation Capsule,inhcap,Capsule for inhalation device,TRUE
+Nebulizer Solution,nebs,Liquid for nebulizer use,TRUE
+Nebulizer Ampoule,nebamp,Ampoule for nebulizer,TRUE
+Metered Dose Spray,mdspr,Spray with metered dose,TRUE
+Topical Roll-on,tro,Roll-on applicator for topical use,TRUE
+Topical Stick,tstk,Stick form for topical application,TRUE
+Oral Dispersible Tablet,odtab,Tablet that disperses in mouth,TRUE
+Oral Effervescent Granules,oeg,Granules that fizz in water,TRUE
+Oral Drops,odrp,Drops for oral administration,TRUE
+Oral Pipette,opip,Pipette for oral liquids,TRUE
+Oral Syrup Bottle,osyr,Bottle containing syrup,TRUE
+Oral Tonic Bottle,oton,Bottle containing tonic,TRUE
+Oral Elixir Bottle,oelx,Bottle containing elixir,TRUE
+Oral Emulsion Bottle,oemb,Bottle containing oral emulsion,TRUE
