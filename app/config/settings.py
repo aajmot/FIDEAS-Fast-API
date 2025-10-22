@@ -5,7 +5,7 @@ import os
 
 class Settings(BaseSettings):
     # App Configuration
-    APP_NAME: str = "FIDEAS Enterprise Management System"
+    APP_NAME: str = "FIDEAS - Enterprise Management System"
     VERSION: str = "1.0.0"
     DEBUG: bool = False
     

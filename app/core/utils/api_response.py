@@ -1,6 +1,7 @@
-from typing import Any, Optional, Dict
+from typing import Any, Optional, Dict, List
 from fastapi import status
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
 
 class APIResponse:
@@ -51,3 +52,20 @@ class APIResponse:
     def forbidden(message: str = "Forbidden") -> JSONResponse:
         """Create 403 Forbidden response"""
         return APIResponse.error(message, status_code=status.HTTP_403_FORBIDDEN)
+
+
+class BaseResponse(BaseModel):
+    success: bool
+    message: str
+    data: Any = None
+
+
+class PaginatedResponse(BaseModel):
+    success: bool
+    message: str
+    data: List[Any]
+    total: int
+    page: int
+    per_page: int
+    total_pages: int
+    

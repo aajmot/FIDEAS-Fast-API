@@ -7,16 +7,11 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.db.base import get_db
-from app.core.utils.api_response import APIResponse
+from app.core.utils.api_response import APIResponse, BaseResponse
 
 class LoginRequest(BaseModel):
     username: str
     password: str
-
-class BaseResponse(BaseModel):
-    success: bool
-    message: str
-    data: Dict[str, Any] = None
 
 router = APIRouter()
 
@@ -98,9 +93,11 @@ async def login(login_data: LoginRequest, db: Session = Depends(get_db)):
         # Create access token
         token_data = {
             "sub": str(user_data['id']),
+            "user_id": int(user_data['id']),
             "username": user_data['username'],
-            "tenant_id": user_data['tenant_id'],
-            "roles": role_names
+            "tenant_id": int(user_data['tenant_id']),
+            "roles": role_names,
+            "is_tenant_admin": user_data.get('is_tenant_admin', False)
         }
         access_token = create_access_token(token_data)
         

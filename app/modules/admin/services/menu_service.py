@@ -1,54 +1,51 @@
 from typing import List, Dict, Any
 from sqlalchemy.orm import Session
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from app.db.models.admin_models.menu_model import MenuMaster, RoleMenuMapping
 from app.db.models.admin_models.role_model import Role
+from app.db.models.admin_models.user_model import User
+from app.db.models.admin_models.user_role_model import UserRole
 
 class MenuService:
     def __init__(self, db: Session):
         self.db = db
     
     def get_user_menus(self, user_id: int, tenant_id: int):
-        # Sample menu structure - in real implementation, this would be based on user roles
-        sample_menus = [
-            {
-                "id": 1,
-                "menu_name": "Dashboard",
-                "menu_code": "DASHBOARD",
-                "route": "/dashboard",
-                "icon": "dashboard",
-                "parent_menu_id": None,
-                "sort_order": 1
-            },
-            {
-                "id": 2,
-                "menu_name": "Admin",
-                "menu_code": "ADMIN",
-                "route": "/admin",
-                "icon": "admin_panel_settings",
-                "parent_menu_id": None,
-                "sort_order": 2
-            },
-            {
-                "id": 3,
-                "menu_name": "Users",
-                "menu_code": "ADMIN_USERS",
-                "route": "/admin/users",
-                "icon": "people",
-                "parent_menu_id": 2,
-                "sort_order": 1
-            },
-            {
-                "id": 4,
-                "menu_name": "Roles",
-                "menu_code": "ADMIN_ROLES",
-                "route": "/admin/roles",
-                "icon": "security",
-                "parent_menu_id": 2,
-                "sort_order": 2
-            }
-        ]
-        return sample_menus
+        # Get user details
+        user = self.db.query(User).filter(
+            User.id == user_id,
+            User.tenant_id == tenant_id,
+            User.is_active == True
+        ).first()
+        
+        if not user:
+            return []
+        
+        # Check if user is tenant admin
+        if user.is_tenant_admin:
+            # Tenant admin gets all active menus
+            menus = self.db.query(MenuMaster).filter(
+                MenuMaster.is_active == True
+            ).order_by(MenuMaster.sort_order).all()
+        else:
+            # Regular user gets menus based on assigned roles (union of all role permissions)
+            menus = self.db.query(MenuMaster).join(
+                RoleMenuMapping, MenuMaster.id == RoleMenuMapping.menu_id
+            ).join(
+                UserRole, RoleMenuMapping.role_id == UserRole.role_id
+            ).filter(
+                and_(
+                    UserRole.user_id == user_id,
+                    UserRole.tenant_id == tenant_id,
+                    RoleMenuMapping.tenant_id == tenant_id,
+                    MenuMaster.is_active == True
+                )
+            ).distinct().order_by(MenuMaster.sort_order).all()
+        
+
+
+        # Convert to dict format
+        return MenuService._build_menu_tree(menus, user_id)
     
     def get_role_menu_mappings_paginated(self, tenant_id: int, search: str = None, offset: int = 0, limit: int = 10):
         query = self.db.query(Role).join(RoleMenuMapping).filter(
@@ -150,3 +147,42 @@ class MenuService:
                 self.db.add(role_menu)
         
         self.db.commit()
+
+    @staticmethod
+    def _build_menu_tree(menus: List[MenuMaster], user_id: int, tenant_id: int, session: Session) -> List[Dict]:
+        """Build menu tree from database hierarchy"""
+        menu_dict = {}
+        
+        # Convert to dict
+        for menu in menus:
+            menu_dict[menu.id] = {
+                'id': menu.id,
+                'name': menu.menu_name,
+                'code': menu.menu_code,
+                'module_code': menu.module_code,
+                'icon': menu.icon,
+                'route': menu.route,
+                'parent_menu_id': menu.parent_menu_id,
+                'sort_order': menu.sort_order,
+                'children': []
+            }
+        
+        # Build parent-child relationships
+        for menu_data in menu_dict.values():
+            if menu_data['parent_menu_id'] and menu_data['parent_menu_id'] in menu_dict:
+                menu_dict[menu_data['parent_menu_id']]['children'].append(menu_data)
+        
+        # Get root menus and sort
+        root_menus = [menu_data for menu_data in menu_dict.values() if not menu_data['parent_menu_id']]
+        
+        # Sort children recursively
+        def sort_children(menu):
+            menu['children'] = sorted(menu['children'], key=lambda x: x['sort_order'])
+            for child in menu['children']:
+                sort_children(child)
+        
+        for root in root_menus:
+            sort_children(root)
+        
+        return sorted(root_menus, key=lambda x: x['sort_order'])
+    

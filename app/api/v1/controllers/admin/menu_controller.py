@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.db.base import get_db
 from app.core.auth.oauth2_scheme import get_current_user
 from app.core.utils.api_response import APIResponse
+from app.modules.admin.services.menu_service import MenuService
 
 router = APIRouter()
 
@@ -14,28 +15,9 @@ async def get_user_menus(
     db: Session = Depends(get_db)
 ):
     """Get menus accessible to the current user based on roles"""
-    sample_menus = [
-        {
-            "id": 1,
-            "menu_name": "Dashboard",
-            "menu_code": "DASHBOARD",
-            "route": "/dashboard",
-            "icon": "dashboard",
-            "parent_menu_id": None,
-            "sort_order": 1
-        },
-        {
-            "id": 2,
-            "menu_name": "Admin",
-            "menu_code": "ADMIN",
-            "route": "/admin",
-            "icon": "admin_panel_settings",
-            "parent_menu_id": None,
-            "sort_order": 2
-        }
-    ]
-    
-    return APIResponse.success(sample_menus)
+    menu_service = MenuService(db)
+    menus = menu_service.get_user_menus(current_user["user_id"], current_user["tenant_id"])
+    return APIResponse.success(menus)
 
 @router.get("/role-menu-mappings")
 async def get_role_menu_mappings(

@@ -6,12 +6,12 @@ T = TypeVar('T')
 
 class PaginationParams(BaseModel):
     page: int = 1
-    size: int = 10
+    per_page: int = 10
     search: Optional[str] = None
     
     @property
     def offset(self) -> int:
-        return (self.page - 1) * self.size
+        return (self.page - 1) * self.per_page
 
 
 class PaginatedResponse(BaseModel, Generic[T]):

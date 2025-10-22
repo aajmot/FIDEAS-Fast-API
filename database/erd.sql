@@ -3,346 +3,6 @@
 BEGIN;
 
 
-ALTER TABLE IF EXISTS public.account_groups DROP CONSTRAINT IF EXISTS account_groups_parent_id_fkey;
-
-ALTER TABLE IF EXISTS public.account_groups DROP CONSTRAINT IF EXISTS account_groups_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.account_masters DROP CONSTRAINT IF EXISTS account_masters_account_group_id_fkey;
-
-ALTER TABLE IF EXISTS public.account_masters DROP CONSTRAINT IF EXISTS account_masters_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.account_type_mappings DROP CONSTRAINT IF EXISTS account_type_mappings_account_id_fkey;
-
-ALTER TABLE IF EXISTS public.account_type_mappings DROP CONSTRAINT IF EXISTS account_type_mappings_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.agencies DROP CONSTRAINT IF EXISTS agencies_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.agency_commissions DROP CONSTRAINT IF EXISTS agency_commissions_agency_id_fkey;
-
-ALTER TABLE IF EXISTS public.agency_commissions DROP CONSTRAINT IF EXISTS agency_commissions_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.appointments DROP CONSTRAINT IF EXISTS appointments_agency_id_fkey;
-
-ALTER TABLE IF EXISTS public.appointments DROP CONSTRAINT IF EXISTS appointments_doctor_id_fkey;
-
-ALTER TABLE IF EXISTS public.appointments DROP CONSTRAINT IF EXISTS appointments_patient_id_fkey;
-
-ALTER TABLE IF EXISTS public.appointments DROP CONSTRAINT IF EXISTS appointments_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.approval_history DROP CONSTRAINT IF EXISTS approval_history_request_id_fkey;
-
-ALTER TABLE IF EXISTS public.approval_levels DROP CONSTRAINT IF EXISTS approval_levels_workflow_id_fkey;
-
-ALTER TABLE IF EXISTS public.audit_trail DROP CONSTRAINT IF EXISTS audit_trail_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.audit_trail DROP CONSTRAINT IF EXISTS audit_trail_user_id_fkey;
-
-ALTER TABLE IF EXISTS public.bank_reconciliation_items DROP CONSTRAINT IF EXISTS bank_reconciliation_items_ledger_id_fkey;
-
-ALTER TABLE IF EXISTS public.bank_reconciliation_items DROP CONSTRAINT IF EXISTS bank_reconciliation_items_reconciliation_id_fkey;
-
-ALTER TABLE IF EXISTS public.bank_reconciliation_items DROP CONSTRAINT IF EXISTS bank_reconciliation_items_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.bank_reconciliations DROP CONSTRAINT IF EXISTS bank_reconciliations_bank_account_id_fkey;
-
-ALTER TABLE IF EXISTS public.bank_reconciliations DROP CONSTRAINT IF EXISTS bank_reconciliations_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.budgets DROP CONSTRAINT IF EXISTS budgets_account_id_fkey;
-
-ALTER TABLE IF EXISTS public.budgets DROP CONSTRAINT IF EXISTS budgets_cost_center_id_fkey;
-
-ALTER TABLE IF EXISTS public.budgets DROP CONSTRAINT IF EXISTS budgets_fiscal_year_id_fkey;
-
-ALTER TABLE IF EXISTS public.budgets DROP CONSTRAINT IF EXISTS budgets_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.categories DROP CONSTRAINT IF EXISTS categories_parent_id_fkey;
-
-ALTER TABLE IF EXISTS public.categories DROP CONSTRAINT IF EXISTS categories_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.clinic_billing_master DROP CONSTRAINT IF EXISTS clinic_billing_master_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.clinic_employees DROP CONSTRAINT IF EXISTS clinic_employees_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.clinic_invoice_items DROP CONSTRAINT IF EXISTS clinic_invoice_items_invoice_id_fkey;
-
-ALTER TABLE IF EXISTS public.clinic_invoice_items DROP CONSTRAINT IF EXISTS clinic_invoice_items_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.clinic_invoices DROP CONSTRAINT IF EXISTS clinic_invoices_patient_id_fkey;
-
-ALTER TABLE IF EXISTS public.clinic_invoices DROP CONSTRAINT IF EXISTS clinic_invoices_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.clinic_invoices DROP CONSTRAINT IF EXISTS clinic_invoices_voucher_id_fkey;
-
-ALTER TABLE IF EXISTS public.clinic_invoices DROP CONSTRAINT IF EXISTS fk_clinic_invoices_appointment_id;
-
-ALTER TABLE IF EXISTS public.cost_centers DROP CONSTRAINT IF EXISTS cost_centers_parent_id_fkey;
-
-ALTER TABLE IF EXISTS public.cost_centers DROP CONSTRAINT IF EXISTS cost_centers_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.credit_note_items DROP CONSTRAINT IF EXISTS credit_note_items_credit_note_id_fkey;
-
-ALTER TABLE IF EXISTS public.credit_note_items DROP CONSTRAINT IF EXISTS credit_note_items_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.credit_note_items DROP CONSTRAINT IF EXISTS credit_note_items_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.credit_notes DROP CONSTRAINT IF EXISTS credit_notes_customer_id_fkey;
-
-ALTER TABLE IF EXISTS public.credit_notes DROP CONSTRAINT IF EXISTS credit_notes_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.credit_notes DROP CONSTRAINT IF EXISTS credit_notes_voucher_id_fkey;
-
-ALTER TABLE IF EXISTS public.customers DROP CONSTRAINT IF EXISTS customers_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.debit_note_items DROP CONSTRAINT IF EXISTS debit_note_items_debit_note_id_fkey;
-
-ALTER TABLE IF EXISTS public.debit_note_items DROP CONSTRAINT IF EXISTS debit_note_items_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.debit_note_items DROP CONSTRAINT IF EXISTS debit_note_items_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.debit_notes DROP CONSTRAINT IF EXISTS debit_notes_supplier_id_fkey;
-
-ALTER TABLE IF EXISTS public.debit_notes DROP CONSTRAINT IF EXISTS debit_notes_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.debit_notes DROP CONSTRAINT IF EXISTS debit_notes_voucher_id_fkey;
-
-ALTER TABLE IF EXISTS public.depreciation_schedule DROP CONSTRAINT IF EXISTS depreciation_schedule_asset_id_fkey;
-
-ALTER TABLE IF EXISTS public.doctors DROP CONSTRAINT IF EXISTS doctors_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.exchange_rates DROP CONSTRAINT IF EXISTS exchange_rates_from_currency_id_fkey;
-
-ALTER TABLE IF EXISTS public.exchange_rates DROP CONSTRAINT IF EXISTS exchange_rates_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.exchange_rates DROP CONSTRAINT IF EXISTS exchange_rates_to_currency_id_fkey;
-
-ALTER TABLE IF EXISTS public.integrations DROP CONSTRAINT IF EXISTS integrations_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.inventory DROP CONSTRAINT IF EXISTS inventory_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.journal_details DROP CONSTRAINT IF EXISTS journal_details_account_id_fkey;
-
-ALTER TABLE IF EXISTS public.journal_details DROP CONSTRAINT IF EXISTS journal_details_cost_center_id_fkey;
-
-ALTER TABLE IF EXISTS public.journal_details DROP CONSTRAINT IF EXISTS journal_details_journal_id_fkey;
-
-ALTER TABLE IF EXISTS public.journal_details DROP CONSTRAINT IF EXISTS journal_details_tax_id_fkey;
-
-ALTER TABLE IF EXISTS public.journal_details DROP CONSTRAINT IF EXISTS journal_details_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.journals DROP CONSTRAINT IF EXISTS journals_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.journals DROP CONSTRAINT IF EXISTS journals_voucher_id_fkey;
-
-ALTER TABLE IF EXISTS public.ledgers DROP CONSTRAINT IF EXISTS ledgers_account_id_fkey;
-
-ALTER TABLE IF EXISTS public.ledgers DROP CONSTRAINT IF EXISTS ledgers_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.ledgers DROP CONSTRAINT IF EXISTS ledgers_voucher_id_fkey;
-
-ALTER TABLE IF EXISTS public.legal_entities DROP CONSTRAINT IF EXISTS legal_entities_admin_user_id_fkey;
-
-ALTER TABLE IF EXISTS public.legal_entities DROP CONSTRAINT IF EXISTS legal_entities_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.medical_records DROP CONSTRAINT IF EXISTS medical_records_appointment_id_fkey;
-
-ALTER TABLE IF EXISTS public.medical_records DROP CONSTRAINT IF EXISTS medical_records_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.menu_master DROP CONSTRAINT IF EXISTS menu_master_parent_menu_id_fkey;
-
-ALTER TABLE IF EXISTS public.order_commission_items DROP CONSTRAINT IF EXISTS order_commission_items_order_commission_id_fkey;
-
-ALTER TABLE IF EXISTS public.order_commission_items DROP CONSTRAINT IF EXISTS order_commission_items_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.order_commissions DROP CONSTRAINT IF EXISTS order_commissions_agency_id_fkey;
-
-ALTER TABLE IF EXISTS public.order_commissions DROP CONSTRAINT IF EXISTS order_commissions_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.patients DROP CONSTRAINT IF EXISTS patients_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.payments DROP CONSTRAINT IF EXISTS payments_account_id_fkey;
-
-ALTER TABLE IF EXISTS public.payments DROP CONSTRAINT IF EXISTS payments_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.payments DROP CONSTRAINT IF EXISTS payments_voucher_id_fkey;
-
-ALTER TABLE IF EXISTS public.prescription_items DROP CONSTRAINT IF EXISTS prescription_items_prescription_id_fkey;
-
-ALTER TABLE IF EXISTS public.prescription_items DROP CONSTRAINT IF EXISTS prescription_items_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.prescription_test_items DROP CONSTRAINT IF EXISTS prescription_test_items_prescription_id_fkey;
-
-ALTER TABLE IF EXISTS public.prescription_test_items DROP CONSTRAINT IF EXISTS prescription_test_items_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.prescription_test_items DROP CONSTRAINT IF EXISTS prescription_test_items_test_id_fkey;
-
-ALTER TABLE IF EXISTS public.prescriptions DROP CONSTRAINT IF EXISTS prescriptions_appointment_id_fkey;
-
-ALTER TABLE IF EXISTS public.prescriptions DROP CONSTRAINT IF EXISTS prescriptions_doctor_id_fkey;
-
-ALTER TABLE IF EXISTS public.prescriptions DROP CONSTRAINT IF EXISTS prescriptions_patient_id_fkey;
-
-ALTER TABLE IF EXISTS public.prescriptions DROP CONSTRAINT IF EXISTS prescriptions_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.product_batches DROP CONSTRAINT IF EXISTS product_batches_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.product_batches DROP CONSTRAINT IF EXISTS product_batches_supplier_id_fkey;
-
-ALTER TABLE IF EXISTS public.product_batches DROP CONSTRAINT IF EXISTS product_batches_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.product_waste DROP CONSTRAINT IF EXISTS product_waste_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.product_waste DROP CONSTRAINT IF EXISTS product_waste_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.products DROP CONSTRAINT IF EXISTS products_category_id_fkey;
-
-ALTER TABLE IF EXISTS public.products DROP CONSTRAINT IF EXISTS products_subcategory_id_fkey;
-
-ALTER TABLE IF EXISTS public.products DROP CONSTRAINT IF EXISTS products_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.products DROP CONSTRAINT IF EXISTS products_unit_id_fkey;
-
-ALTER TABLE IF EXISTS public.purchase_invoice_items DROP CONSTRAINT IF EXISTS purchase_invoice_items_invoice_id_fkey;
-
-ALTER TABLE IF EXISTS public.purchase_order_items DROP CONSTRAINT IF EXISTS purchase_order_items_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.purchase_order_items DROP CONSTRAINT IF EXISTS purchase_order_items_purchase_order_id_fkey;
-
-ALTER TABLE IF EXISTS public.purchase_orders DROP CONSTRAINT IF EXISTS purchase_orders_supplier_id_fkey;
-
-ALTER TABLE IF EXISTS public.purchase_orders DROP CONSTRAINT IF EXISTS purchase_orders_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.recurring_vouchers DROP CONSTRAINT IF EXISTS recurring_vouchers_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.role_menu_mapping DROP CONSTRAINT IF EXISTS role_menu_mapping_menu_id_fkey;
-
-ALTER TABLE IF EXISTS public.role_menu_mapping DROP CONSTRAINT IF EXISTS role_menu_mapping_role_id_fkey;
-
-ALTER TABLE IF EXISTS public.role_menu_mapping DROP CONSTRAINT IF EXISTS role_menu_mapping_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.roles DROP CONSTRAINT IF EXISTS roles_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.sales_invoice_items DROP CONSTRAINT IF EXISTS sales_invoice_items_invoice_id_fkey;
-
-ALTER TABLE IF EXISTS public.sales_order_items DROP CONSTRAINT IF EXISTS sales_order_items_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.sales_order_items DROP CONSTRAINT IF EXISTS sales_order_items_sales_order_id_fkey;
-
-ALTER TABLE IF EXISTS public.sales_orders DROP CONSTRAINT IF EXISTS sales_orders_agency_id_fkey;
-
-ALTER TABLE IF EXISTS public.sales_orders DROP CONSTRAINT IF EXISTS sales_orders_customer_id_fkey;
-
-ALTER TABLE IF EXISTS public.sales_orders DROP CONSTRAINT IF EXISTS sales_orders_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.stock_balances DROP CONSTRAINT IF EXISTS stock_balances_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.stock_meter DROP CONSTRAINT IF EXISTS stock_meter_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.stock_transactions DROP CONSTRAINT IF EXISTS stock_transactions_product_id_fkey;
-
-ALTER TABLE IF EXISTS public.stock_transfer_items DROP CONSTRAINT IF EXISTS stock_transfer_items_transfer_id_fkey;
-
-ALTER TABLE IF EXISTS public.subcategories DROP CONSTRAINT IF EXISTS subcategories_category_id_fkey;
-
-ALTER TABLE IF EXISTS public.suppliers DROP CONSTRAINT IF EXISTS suppliers_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.tax_masters DROP CONSTRAINT IF EXISTS tax_masters_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.tds_sections DROP CONSTRAINT IF EXISTS tds_sections_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.tenant_module_mapping DROP CONSTRAINT IF EXISTS tenant_module_mapping_module_id_fkey;
-
-ALTER TABLE IF EXISTS public.tenant_module_mapping DROP CONSTRAINT IF EXISTS tenant_module_mapping_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.tenant_settings DROP CONSTRAINT IF EXISTS tenant_settings_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_categories DROP CONSTRAINT IF EXISTS test_categories_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_order_items DROP CONSTRAINT IF EXISTS test_order_items_panel_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_order_items DROP CONSTRAINT IF EXISTS test_order_items_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_order_items DROP CONSTRAINT IF EXISTS test_order_items_test_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_order_items DROP CONSTRAINT IF EXISTS test_order_items_test_order_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_orders DROP CONSTRAINT IF EXISTS test_orders_agency_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_orders DROP CONSTRAINT IF EXISTS test_orders_appointment_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_orders DROP CONSTRAINT IF EXISTS test_orders_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_panel_items DROP CONSTRAINT IF EXISTS test_panel_items_panel_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_panel_items DROP CONSTRAINT IF EXISTS test_panel_items_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_panel_items DROP CONSTRAINT IF EXISTS test_panel_items_test_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_panels DROP CONSTRAINT IF EXISTS test_panels_category_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_panels DROP CONSTRAINT IF EXISTS test_panels_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_parameters DROP CONSTRAINT IF EXISTS test_parameters_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_parameters DROP CONSTRAINT IF EXISTS test_parameters_test_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_result_details DROP CONSTRAINT IF EXISTS test_result_details_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_result_details DROP CONSTRAINT IF EXISTS test_result_details_test_result_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_result_files DROP CONSTRAINT IF EXISTS test_result_files_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_result_files DROP CONSTRAINT IF EXISTS test_result_files_test_result_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_results DROP CONSTRAINT IF EXISTS test_results_doctor_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_results DROP CONSTRAINT IF EXISTS test_results_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.test_results DROP CONSTRAINT IF EXISTS test_results_test_order_id_fkey;
-
-ALTER TABLE IF EXISTS public.tests DROP CONSTRAINT IF EXISTS tests_category_id_fkey;
-
-ALTER TABLE IF EXISTS public.tests DROP CONSTRAINT IF EXISTS tests_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.transaction_template_rules DROP CONSTRAINT IF EXISTS transaction_template_rules_account_id_fkey;
-
-ALTER TABLE IF EXISTS public.transaction_template_rules DROP CONSTRAINT IF EXISTS transaction_template_rules_template_id_fkey;
-
-ALTER TABLE IF EXISTS public.transaction_template_rules DROP CONSTRAINT IF EXISTS transaction_template_rules_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.transaction_templates DROP CONSTRAINT IF EXISTS transaction_templates_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.transactions DROP CONSTRAINT IF EXISTS transactions_account_id_fkey;
-
-ALTER TABLE IF EXISTS public.units DROP CONSTRAINT IF EXISTS units_parent_id_fkey;
-
-ALTER TABLE IF EXISTS public.units DROP CONSTRAINT IF EXISTS units_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.user_roles DROP CONSTRAINT IF EXISTS user_roles_assigned_by_fkey;
-
-ALTER TABLE IF EXISTS public.user_roles DROP CONSTRAINT IF EXISTS user_roles_role_id_fkey;
-
-ALTER TABLE IF EXISTS public.user_roles DROP CONSTRAINT IF EXISTS user_roles_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.user_roles DROP CONSTRAINT IF EXISTS user_roles_user_id_fkey;
-
-ALTER TABLE IF EXISTS public.users DROP CONSTRAINT IF EXISTS users_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.voucher_types DROP CONSTRAINT IF EXISTS voucher_types_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.vouchers DROP CONSTRAINT IF EXISTS vouchers_currency_id_fkey;
-
-ALTER TABLE IF EXISTS public.vouchers DROP CONSTRAINT IF EXISTS vouchers_reversal_voucher_id_fkey;
-
-ALTER TABLE IF EXISTS public.vouchers DROP CONSTRAINT IF EXISTS vouchers_reversed_voucher_id_fkey;
-
-ALTER TABLE IF EXISTS public.vouchers DROP CONSTRAINT IF EXISTS vouchers_tenant_id_fkey;
-
-ALTER TABLE IF EXISTS public.vouchers DROP CONSTRAINT IF EXISTS vouchers_voucher_type_id_fkey;
-
-
-
-DROP TABLE IF EXISTS public.account_groups;
-
 CREATE TABLE IF NOT EXISTS public.account_groups
 (
     id serial NOT NULL,
@@ -356,8 +16,6 @@ CREATE TABLE IF NOT EXISTS public.account_groups
     CONSTRAINT account_groups_pkey PRIMARY KEY (id),
     CONSTRAINT uq_account_group_code_tenant UNIQUE (code, tenant_id)
 );
-
-DROP TABLE IF EXISTS public.account_masters;
 
 CREATE TABLE IF NOT EXISTS public.account_masters
 (
@@ -375,8 +33,6 @@ CREATE TABLE IF NOT EXISTS public.account_masters
     CONSTRAINT uq_account_master_code_tenant UNIQUE (code, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.account_type_mappings;
-
 CREATE TABLE IF NOT EXISTS public.account_type_mappings
 (
     id serial NOT NULL,
@@ -388,8 +44,6 @@ CREATE TABLE IF NOT EXISTS public.account_type_mappings
     CONSTRAINT account_type_mappings_pkey PRIMARY KEY (id),
     CONSTRAINT account_type_mappings_account_type_tenant_id_key UNIQUE (account_type, tenant_id)
 );
-
-DROP TABLE IF EXISTS public.accounts;
 
 CREATE TABLE IF NOT EXISTS public.accounts
 (
@@ -404,10 +58,9 @@ CREATE TABLE IF NOT EXISTS public.accounts
     updated_by text COLLATE pg_catalog."default",
     is_active boolean,
     is_deleted boolean,
+    tenant_id integer,
     CONSTRAINT accounts_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.agencies;
 
 CREATE TABLE IF NOT EXISTS public.agencies
 (
@@ -426,8 +79,6 @@ CREATE TABLE IF NOT EXISTS public.agencies
     CONSTRAINT agencies_pkey PRIMARY KEY (id),
     CONSTRAINT unique_agency_phone_per_tenant UNIQUE (tenant_id, phone)
 );
-
-DROP TABLE IF EXISTS public.agency_commissions;
 
 CREATE TABLE IF NOT EXISTS public.agency_commissions
 (
@@ -451,8 +102,6 @@ CREATE TABLE IF NOT EXISTS public.agency_commissions
     CONSTRAINT agency_commissions_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.appointments;
-
 CREATE TABLE IF NOT EXISTS public.appointments
 (
     id serial NOT NULL,
@@ -469,11 +118,12 @@ CREATE TABLE IF NOT EXISTS public.appointments
     created_at timestamp without time zone,
     created_by character varying(100) COLLATE pg_catalog."default",
     agency_id integer,
+    is_deleted boolean DEFAULT false,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT appointments_pkey PRIMARY KEY (id),
     CONSTRAINT appointments_appointment_number_key UNIQUE (appointment_number)
 );
-
-DROP TABLE IF EXISTS public.approval_history;
 
 CREATE TABLE IF NOT EXISTS public.approval_history
 (
@@ -488,8 +138,6 @@ CREATE TABLE IF NOT EXISTS public.approval_history
     CONSTRAINT approval_history_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.approval_levels;
-
 CREATE TABLE IF NOT EXISTS public.approval_levels
 (
     id serial NOT NULL,
@@ -501,8 +149,6 @@ CREATE TABLE IF NOT EXISTS public.approval_levels
     tenant_id integer NOT NULL,
     CONSTRAINT approval_levels_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.approval_requests;
 
 CREATE TABLE IF NOT EXISTS public.approval_requests
 (
@@ -521,8 +167,6 @@ CREATE TABLE IF NOT EXISTS public.approval_requests
     CONSTRAINT approval_requests_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.approval_workflows;
-
 CREATE TABLE IF NOT EXISTS public.approval_workflows
 (
     id serial NOT NULL,
@@ -536,8 +180,6 @@ CREATE TABLE IF NOT EXISTS public.approval_workflows
     created_by character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT approval_workflows_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.asset_categories;
 
 CREATE TABLE IF NOT EXISTS public.asset_categories
 (
@@ -554,8 +196,6 @@ CREATE TABLE IF NOT EXISTS public.asset_categories
     CONSTRAINT asset_categories_pkey PRIMARY KEY (id),
     CONSTRAINT asset_categories_code_tenant_id_key UNIQUE (code, tenant_id)
 );
-
-DROP TABLE IF EXISTS public.audit_trail;
 
 CREATE TABLE IF NOT EXISTS public.audit_trail
 (
@@ -574,8 +214,6 @@ CREATE TABLE IF NOT EXISTS public.audit_trail
     CONSTRAINT audit_trail_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.bank_reconciliation_items;
-
 CREATE TABLE IF NOT EXISTS public.bank_reconciliation_items
 (
     id serial NOT NULL,
@@ -589,8 +227,6 @@ CREATE TABLE IF NOT EXISTS public.bank_reconciliation_items
     tenant_id integer NOT NULL,
     CONSTRAINT bank_reconciliation_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.bank_reconciliations;
 
 CREATE TABLE IF NOT EXISTS public.bank_reconciliations
 (
@@ -606,8 +242,6 @@ CREATE TABLE IF NOT EXISTS public.bank_reconciliations
     created_by character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT bank_reconciliations_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.bank_statements;
 
 CREATE TABLE IF NOT EXISTS public.bank_statements
 (
@@ -625,8 +259,6 @@ CREATE TABLE IF NOT EXISTS public.bank_statements
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT bank_statements_pkey PRIMARY KEY (statement_id)
 );
-
-DROP TABLE IF EXISTS public.budgets;
 
 CREATE TABLE IF NOT EXISTS public.budgets
 (
@@ -646,8 +278,6 @@ CREATE TABLE IF NOT EXISTS public.budgets
     CONSTRAINT uq_budget UNIQUE (fiscal_year_id, account_id, cost_center_id, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.categories;
-
 CREATE TABLE IF NOT EXISTS public.categories
 (
     id serial NOT NULL,
@@ -659,10 +289,10 @@ CREATE TABLE IF NOT EXISTS public.categories
     created_at timestamp without time zone,
     created_by character varying(100) COLLATE pg_catalog."default",
     updated_by character varying(100) COLLATE pg_catalog."default",
+    is_deleted boolean DEFAULT false,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT categories_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.clinic_billing_master;
 
 CREATE TABLE IF NOT EXISTS public.clinic_billing_master
 (
@@ -681,8 +311,6 @@ CREATE TABLE IF NOT EXISTS public.clinic_billing_master
     gst_percentage numeric(5, 2) NOT NULL DEFAULT 0.00,
     CONSTRAINT clinic_billing_master_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.clinic_employees;
 
 CREATE TABLE IF NOT EXISTS public.clinic_employees
 (
@@ -704,8 +332,6 @@ CREATE TABLE IF NOT EXISTS public.clinic_employees
     CONSTRAINT clinic_employees_employee_number_key UNIQUE (employee_number)
 );
 
-DROP TABLE IF EXISTS public.clinic_invoice_items;
-
 CREATE TABLE IF NOT EXISTS public.clinic_invoice_items
 (
     id serial NOT NULL,
@@ -718,8 +344,6 @@ CREATE TABLE IF NOT EXISTS public.clinic_invoice_items
     total_price numeric(10, 2) NOT NULL,
     CONSTRAINT clinic_invoice_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.clinic_invoices;
 
 CREATE TABLE IF NOT EXISTS public.clinic_invoices
 (
@@ -745,8 +369,6 @@ CREATE TABLE IF NOT EXISTS public.clinic_invoices
     CONSTRAINT clinic_invoices_invoice_number_key UNIQUE (invoice_number)
 );
 
-DROP TABLE IF EXISTS public.cost_centers;
-
 CREATE TABLE IF NOT EXISTS public.cost_centers
 (
     id serial NOT NULL,
@@ -759,8 +381,6 @@ CREATE TABLE IF NOT EXISTS public.cost_centers
     CONSTRAINT cost_centers_pkey PRIMARY KEY (id),
     CONSTRAINT uq_cost_center_code_tenant UNIQUE (code, tenant_id)
 );
-
-DROP TABLE IF EXISTS public.credit_note_items;
 
 CREATE TABLE IF NOT EXISTS public.credit_note_items
 (
@@ -776,8 +396,6 @@ CREATE TABLE IF NOT EXISTS public.credit_note_items
     tenant_id integer NOT NULL,
     CONSTRAINT credit_note_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.credit_notes;
 
 CREATE TABLE IF NOT EXISTS public.credit_notes
 (
@@ -802,8 +420,6 @@ CREATE TABLE IF NOT EXISTS public.credit_notes
     CONSTRAINT credit_notes_note_number_tenant_id_key UNIQUE (note_number, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.currencies;
-
 CREATE TABLE IF NOT EXISTS public.currencies
 (
     id serial NOT NULL,
@@ -816,8 +432,6 @@ CREATE TABLE IF NOT EXISTS public.currencies
     CONSTRAINT currencies_pkey PRIMARY KEY (id),
     CONSTRAINT currencies_code_key UNIQUE (code)
 );
-
-DROP TABLE IF EXISTS public.custom_reports;
 
 CREATE TABLE IF NOT EXISTS public.custom_reports
 (
@@ -833,8 +447,6 @@ CREATE TABLE IF NOT EXISTS public.custom_reports
     created_by character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT custom_reports_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.customers;
 
 CREATE TABLE IF NOT EXISTS public.customers
 (
@@ -854,10 +466,10 @@ CREATE TABLE IF NOT EXISTS public.customers
     payment_term_id integer,
     credit_hold boolean DEFAULT false,
     outstanding_balance numeric(15, 2) DEFAULT 0,
+    is_deleted boolean DEFAULT false,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT customers_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.dashboard_widgets;
 
 CREATE TABLE IF NOT EXISTS public.dashboard_widgets
 (
@@ -875,8 +487,6 @@ CREATE TABLE IF NOT EXISTS public.dashboard_widgets
     CONSTRAINT dashboard_widgets_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.debit_note_items;
-
 CREATE TABLE IF NOT EXISTS public.debit_note_items
 (
     id serial NOT NULL,
@@ -891,8 +501,6 @@ CREATE TABLE IF NOT EXISTS public.debit_note_items
     tenant_id integer NOT NULL,
     CONSTRAINT debit_note_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.debit_notes;
 
 CREATE TABLE IF NOT EXISTS public.debit_notes
 (
@@ -917,8 +525,6 @@ CREATE TABLE IF NOT EXISTS public.debit_notes
     CONSTRAINT debit_notes_note_number_tenant_id_key UNIQUE (note_number, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.depreciation_schedule;
-
 CREATE TABLE IF NOT EXISTS public.depreciation_schedule
 (
     id serial NOT NULL,
@@ -933,8 +539,6 @@ CREATE TABLE IF NOT EXISTS public.depreciation_schedule
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT depreciation_schedule_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.doctors;
 
 CREATE TABLE IF NOT EXISTS public.doctors
 (
@@ -952,11 +556,12 @@ CREATE TABLE IF NOT EXISTS public.doctors
     tenant_id integer NOT NULL,
     is_active boolean,
     created_at timestamp without time zone,
+    is_deleted boolean DEFAULT false,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT doctors_pkey PRIMARY KEY (id),
     CONSTRAINT doctors_employee_id_key UNIQUE (employee_id)
 );
-
-DROP TABLE IF EXISTS public.document_attachments;
 
 CREATE TABLE IF NOT EXISTS public.document_attachments
 (
@@ -975,8 +580,6 @@ CREATE TABLE IF NOT EXISTS public.document_attachments
     CONSTRAINT document_attachments_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.document_templates;
-
 CREATE TABLE IF NOT EXISTS public.document_templates
 (
     id serial NOT NULL,
@@ -990,8 +593,6 @@ CREATE TABLE IF NOT EXISTS public.document_templates
     created_by character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT document_templates_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.eway_bills;
 
 CREATE TABLE IF NOT EXISTS public.eway_bills
 (
@@ -1010,8 +611,6 @@ CREATE TABLE IF NOT EXISTS public.eway_bills
     CONSTRAINT eway_bills_eway_bill_no_tenant_id_key UNIQUE (eway_bill_no, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.exchange_rates;
-
 CREATE TABLE IF NOT EXISTS public.exchange_rates
 (
     id serial NOT NULL,
@@ -1025,7 +624,21 @@ CREATE TABLE IF NOT EXISTS public.exchange_rates
     CONSTRAINT uq_exchange_rate UNIQUE (from_currency_id, to_currency_id, effective_date, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.fiscal_years;
+CREATE TABLE IF NOT EXISTS public.financial_years
+(
+    name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    start_date timestamp without time zone,
+    end_date timestamp without time zone,
+    tenant_id integer NOT NULL,
+    is_closed boolean,
+    created_by character varying(100) COLLATE pg_catalog."default",
+    updated_by character varying(100) COLLATE pg_catalog."default",
+    id serial NOT NULL,
+    is_active boolean,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    CONSTRAINT financial_years_pkey PRIMARY KEY (id)
+);
 
 CREATE TABLE IF NOT EXISTS public.fiscal_years
 (
@@ -1044,8 +657,6 @@ CREATE TABLE IF NOT EXISTS public.fiscal_years
     CONSTRAINT fiscal_years_pkey PRIMARY KEY (id),
     CONSTRAINT fiscal_years_tenant_id_name_key UNIQUE (tenant_id, name)
 );
-
-DROP TABLE IF EXISTS public.fixed_assets;
 
 CREATE TABLE IF NOT EXISTS public.fixed_assets
 (
@@ -1077,8 +688,6 @@ CREATE TABLE IF NOT EXISTS public.fixed_assets
     CONSTRAINT fixed_assets_asset_number_tenant_id_key UNIQUE (asset_number, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.gst_configuration;
-
 CREATE TABLE IF NOT EXISTS public.gst_configuration
 (
     id serial NOT NULL,
@@ -1096,8 +705,6 @@ CREATE TABLE IF NOT EXISTS public.gst_configuration
     CONSTRAINT gst_configuration_pkey PRIMARY KEY (id),
     CONSTRAINT gst_configuration_tenant_id_key UNIQUE (tenant_id)
 );
-
-DROP TABLE IF EXISTS public.gstr1_data;
 
 CREATE TABLE IF NOT EXISTS public.gstr1_data
 (
@@ -1118,8 +725,6 @@ CREATE TABLE IF NOT EXISTS public.gstr1_data
     CONSTRAINT gstr1_data_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.integrations;
-
 CREATE TABLE IF NOT EXISTS public.integrations
 (
     id serial NOT NULL,
@@ -1137,8 +742,6 @@ CREATE TABLE IF NOT EXISTS public.integrations
     CONSTRAINT uq_integration UNIQUE (integration_type, provider, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.inventory;
-
 CREATE TABLE IF NOT EXISTS public.inventory
 (
     id serial NOT NULL,
@@ -1148,8 +751,6 @@ CREATE TABLE IF NOT EXISTS public.inventory
     updated_at timestamp without time zone,
     CONSTRAINT inventory_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.journal_details;
 
 CREATE TABLE IF NOT EXISTS public.journal_details
 (
@@ -1167,8 +768,6 @@ CREATE TABLE IF NOT EXISTS public.journal_details
     CONSTRAINT journal_details_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.journals;
-
 CREATE TABLE IF NOT EXISTS public.journals
 (
     id serial NOT NULL,
@@ -1181,8 +780,6 @@ CREATE TABLE IF NOT EXISTS public.journals
     created_at timestamp without time zone,
     CONSTRAINT journals_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.ledgers;
 
 CREATE TABLE IF NOT EXISTS public.ledgers
 (
@@ -1198,8 +795,6 @@ CREATE TABLE IF NOT EXISTS public.ledgers
     created_at timestamp without time zone,
     CONSTRAINT ledgers_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.legal_entities;
 
 CREATE TABLE IF NOT EXISTS public.legal_entities
 (
@@ -1221,8 +816,6 @@ CREATE TABLE IF NOT EXISTS public.legal_entities
     CONSTRAINT uq_legal_entity_code_tenant UNIQUE (code, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.medical_records;
-
 CREATE TABLE IF NOT EXISTS public.medical_records
 (
     id serial NOT NULL,
@@ -1241,8 +834,6 @@ CREATE TABLE IF NOT EXISTS public.medical_records
     CONSTRAINT medical_records_record_number_key UNIQUE (record_number)
 );
 
-DROP TABLE IF EXISTS public.menu_master;
-
 CREATE TABLE IF NOT EXISTS public.menu_master
 (
     id serial NOT NULL,
@@ -1260,8 +851,6 @@ CREATE TABLE IF NOT EXISTS public.menu_master
     CONSTRAINT menu_master_menu_code_key UNIQUE (menu_code)
 );
 
-DROP TABLE IF EXISTS public.module_master;
-
 CREATE TABLE IF NOT EXISTS public.module_master
 (
     id serial NOT NULL,
@@ -1276,8 +865,6 @@ CREATE TABLE IF NOT EXISTS public.module_master
     CONSTRAINT module_master_module_name_key UNIQUE (module_name)
 );
 
-DROP TABLE IF EXISTS public.notification_logs;
-
 CREATE TABLE IF NOT EXISTS public.notification_logs
 (
     log_id serial NOT NULL,
@@ -1290,8 +877,6 @@ CREATE TABLE IF NOT EXISTS public.notification_logs
     sent_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT notification_logs_pkey PRIMARY KEY (log_id)
 );
-
-DROP TABLE IF EXISTS public.order_commission_items;
 
 CREATE TABLE IF NOT EXISTS public.order_commission_items
 (
@@ -1321,8 +906,6 @@ CREATE TABLE IF NOT EXISTS public.order_commission_items
     CONSTRAINT order_commission_items_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.order_commissions;
-
 CREATE TABLE IF NOT EXISTS public.order_commissions
 (
     id serial NOT NULL,
@@ -1348,8 +931,6 @@ CREATE TABLE IF NOT EXISTS public.order_commissions
     CONSTRAINT order_commissions_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.patients;
-
 CREATE TABLE IF NOT EXISTS public.patients
 (
     id serial NOT NULL,
@@ -1370,11 +951,12 @@ CREATE TABLE IF NOT EXISTS public.patients
     is_active boolean,
     created_at timestamp without time zone,
     created_by character varying(100) COLLATE pg_catalog."default",
+    is_deleted boolean DEFAULT false,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_by character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT patients_pkey PRIMARY KEY (id),
     CONSTRAINT patients_patient_number_key UNIQUE (patient_number)
 );
-
-DROP TABLE IF EXISTS public.payment_terms;
 
 CREATE TABLE IF NOT EXISTS public.payment_terms
 (
@@ -1390,8 +972,6 @@ CREATE TABLE IF NOT EXISTS public.payment_terms
     CONSTRAINT payment_terms_pkey PRIMARY KEY (id),
     CONSTRAINT payment_terms_code_tenant_id_key UNIQUE (code, tenant_id)
 );
-
-DROP TABLE IF EXISTS public.payments;
 
 CREATE TABLE IF NOT EXISTS public.payments
 (
@@ -1414,8 +994,6 @@ CREATE TABLE IF NOT EXISTS public.payments
     CONSTRAINT payments_payment_number_key UNIQUE (payment_number)
 );
 
-DROP TABLE IF EXISTS public.prescription_items;
-
 CREATE TABLE IF NOT EXISTS public.prescription_items
 (
     id serial NOT NULL,
@@ -1435,8 +1013,6 @@ CREATE TABLE IF NOT EXISTS public.prescription_items
     CONSTRAINT prescription_items_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.prescription_test_items;
-
 CREATE TABLE IF NOT EXISTS public.prescription_test_items
 (
     id serial NOT NULL,
@@ -1453,8 +1029,6 @@ CREATE TABLE IF NOT EXISTS public.prescription_test_items
     CONSTRAINT prescription_test_items_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.prescriptions;
-
 CREATE TABLE IF NOT EXISTS public.prescriptions
 (
     id serial NOT NULL,
@@ -1469,8 +1043,6 @@ CREATE TABLE IF NOT EXISTS public.prescriptions
     CONSTRAINT prescriptions_pkey PRIMARY KEY (id),
     CONSTRAINT prescriptions_prescription_number_key UNIQUE (prescription_number)
 );
-
-DROP TABLE IF EXISTS public.product_batches;
 
 CREATE TABLE IF NOT EXISTS public.product_batches
 (
@@ -1491,8 +1063,6 @@ CREATE TABLE IF NOT EXISTS public.product_batches
     CONSTRAINT product_batches_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.product_waste;
-
 CREATE TABLE IF NOT EXISTS public.product_waste
 (
     id serial NOT NULL,
@@ -1510,8 +1080,6 @@ CREATE TABLE IF NOT EXISTS public.product_waste
     CONSTRAINT product_waste_pkey PRIMARY KEY (id),
     CONSTRAINT product_waste_waste_number_key UNIQUE (waste_number)
 );
-
-DROP TABLE IF EXISTS public.products;
 
 CREATE TABLE IF NOT EXISTS public.products
 (
@@ -1545,11 +1113,11 @@ CREATE TABLE IF NOT EXISTS public.products
     barcode character varying(100) COLLATE pg_catalog."default",
     is_serialized boolean DEFAULT false,
     warranty_months integer DEFAULT 0,
+    is_deleted boolean DEFAULT false,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT products_pkey PRIMARY KEY (id),
     CONSTRAINT products_code_key UNIQUE (code)
 );
-
-DROP TABLE IF EXISTS public.purchase_invoice_items;
 
 CREATE TABLE IF NOT EXISTS public.purchase_invoice_items
 (
@@ -1575,8 +1143,6 @@ CREATE TABLE IF NOT EXISTS public.purchase_invoice_items
     tenant_id integer NOT NULL,
     CONSTRAINT purchase_invoice_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.purchase_invoices;
 
 CREATE TABLE IF NOT EXISTS public.purchase_invoices
 (
@@ -1606,8 +1172,6 @@ CREATE TABLE IF NOT EXISTS public.purchase_invoices
     CONSTRAINT purchase_invoices_invoice_number_tenant_id_key UNIQUE (invoice_number, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.purchase_order_items;
-
 CREATE TABLE IF NOT EXISTS public.purchase_order_items
 (
     id serial NOT NULL,
@@ -1626,8 +1190,6 @@ CREATE TABLE IF NOT EXISTS public.purchase_order_items
     sgst_rate numeric(5, 2) DEFAULT 0,
     CONSTRAINT purchase_order_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.purchase_orders;
 
 CREATE TABLE IF NOT EXISTS public.purchase_orders
 (
@@ -1654,8 +1216,6 @@ CREATE TABLE IF NOT EXISTS public.purchase_orders
     CONSTRAINT purchase_orders_po_number_key UNIQUE (po_number)
 );
 
-DROP TABLE IF EXISTS public.recurring_vouchers;
-
 CREATE TABLE IF NOT EXISTS public.recurring_vouchers
 (
     id serial NOT NULL,
@@ -1675,8 +1235,6 @@ CREATE TABLE IF NOT EXISTS public.recurring_vouchers
     CONSTRAINT uq_recurring_voucher UNIQUE (name, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.role_menu_mapping;
-
 CREATE TABLE IF NOT EXISTS public.role_menu_mapping
 (
     id serial NOT NULL,
@@ -1695,8 +1253,6 @@ CREATE TABLE IF NOT EXISTS public.role_menu_mapping
     CONSTRAINT uq_role_menu_mapping UNIQUE (role_id, menu_id)
 );
 
-DROP TABLE IF EXISTS public.roles;
-
 CREATE TABLE IF NOT EXISTS public.roles
 (
     id serial NOT NULL,
@@ -1710,8 +1266,6 @@ CREATE TABLE IF NOT EXISTS public.roles
     updated_by character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT roles_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.sales_invoice_items;
 
 CREATE TABLE IF NOT EXISTS public.sales_invoice_items
 (
@@ -1737,8 +1291,6 @@ CREATE TABLE IF NOT EXISTS public.sales_invoice_items
     tenant_id integer NOT NULL,
     CONSTRAINT sales_invoice_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.sales_invoices;
 
 CREATE TABLE IF NOT EXISTS public.sales_invoices
 (
@@ -1776,8 +1328,6 @@ CREATE TABLE IF NOT EXISTS public.sales_invoices
     CONSTRAINT sales_invoices_invoice_number_tenant_id_key UNIQUE (invoice_number, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.sales_order_items;
-
 CREATE TABLE IF NOT EXISTS public.sales_order_items
 (
     id serial NOT NULL,
@@ -1795,8 +1345,6 @@ CREATE TABLE IF NOT EXISTS public.sales_order_items
     sgst_rate numeric(5, 2) DEFAULT 0,
     CONSTRAINT sales_order_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.sales_orders;
 
 CREATE TABLE IF NOT EXISTS public.sales_orders
 (
@@ -1822,8 +1370,6 @@ CREATE TABLE IF NOT EXISTS public.sales_orders
     CONSTRAINT sales_orders_order_number_key UNIQUE (order_number)
 );
 
-DROP TABLE IF EXISTS public.scheduled_reports;
-
 CREATE TABLE IF NOT EXISTS public.scheduled_reports
 (
     id serial NOT NULL,
@@ -1839,8 +1385,6 @@ CREATE TABLE IF NOT EXISTS public.scheduled_reports
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT scheduled_reports_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.serial_numbers;
 
 CREATE TABLE IF NOT EXISTS public.serial_numbers
 (
@@ -1860,8 +1404,6 @@ CREATE TABLE IF NOT EXISTS public.serial_numbers
     CONSTRAINT serial_numbers_serial_number_tenant_id_key UNIQUE (serial_number, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.stock_balances;
-
 CREATE TABLE IF NOT EXISTS public.stock_balances
 (
     id serial NOT NULL,
@@ -1875,8 +1417,6 @@ CREATE TABLE IF NOT EXISTS public.stock_balances
     tenant_id integer NOT NULL,
     CONSTRAINT stock_balances_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.stock_by_location;
 
 CREATE TABLE IF NOT EXISTS public.stock_by_location
 (
@@ -1893,8 +1433,6 @@ CREATE TABLE IF NOT EXISTS public.stock_by_location
     CONSTRAINT stock_by_location_product_id_warehouse_id_batch_number_tena_key UNIQUE (product_id, warehouse_id, batch_number, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.stock_meter;
-
 CREATE TABLE IF NOT EXISTS public.stock_meter
 (
     id serial NOT NULL,
@@ -1905,8 +1443,6 @@ CREATE TABLE IF NOT EXISTS public.stock_meter
     created_at timestamp without time zone,
     CONSTRAINT stock_meter_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.stock_transactions;
 
 CREATE TABLE IF NOT EXISTS public.stock_transactions
 (
@@ -1929,8 +1465,6 @@ CREATE TABLE IF NOT EXISTS public.stock_transactions
     CONSTRAINT stock_transactions_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.stock_transfer_items;
-
 CREATE TABLE IF NOT EXISTS public.stock_transfer_items
 (
     id serial NOT NULL,
@@ -1942,8 +1476,6 @@ CREATE TABLE IF NOT EXISTS public.stock_transfer_items
     tenant_id integer NOT NULL,
     CONSTRAINT stock_transfer_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.stock_transfers;
 
 CREATE TABLE IF NOT EXISTS public.stock_transfers
 (
@@ -1964,8 +1496,6 @@ CREATE TABLE IF NOT EXISTS public.stock_transfers
     CONSTRAINT stock_transfers_transfer_number_tenant_id_key UNIQUE (transfer_number, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.subcategories;
-
 CREATE TABLE IF NOT EXISTS public.subcategories
 (
     id serial NOT NULL,
@@ -1976,8 +1506,6 @@ CREATE TABLE IF NOT EXISTS public.subcategories
     created_at timestamp without time zone,
     CONSTRAINT subcategories_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.suppliers;
 
 CREATE TABLE IF NOT EXISTS public.suppliers
 (
@@ -1993,10 +1521,10 @@ CREATE TABLE IF NOT EXISTS public.suppliers
     created_at timestamp without time zone,
     created_by character varying(100) COLLATE pg_catalog."default",
     updated_by character varying(100) COLLATE pg_catalog."default",
+    is_deleted boolean DEFAULT false,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT suppliers_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.tax_masters;
 
 CREATE TABLE IF NOT EXISTS public.tax_masters
 (
@@ -2010,8 +1538,6 @@ CREATE TABLE IF NOT EXISTS public.tax_masters
     CONSTRAINT tax_masters_pkey PRIMARY KEY (id),
     CONSTRAINT uq_tax_master_name_tenant UNIQUE (name, tenant_id)
 );
-
-DROP TABLE IF EXISTS public.tds_deductions;
 
 CREATE TABLE IF NOT EXISTS public.tds_deductions
 (
@@ -2030,8 +1556,6 @@ CREATE TABLE IF NOT EXISTS public.tds_deductions
     CONSTRAINT tds_deductions_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.tds_rates;
-
 CREATE TABLE IF NOT EXISTS public.tds_rates
 (
     id serial NOT NULL,
@@ -2044,8 +1568,6 @@ CREATE TABLE IF NOT EXISTS public.tds_rates
     created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT tds_rates_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.tds_sections;
 
 CREATE TABLE IF NOT EXISTS public.tds_sections
 (
@@ -2062,8 +1584,6 @@ CREATE TABLE IF NOT EXISTS public.tds_sections
     CONSTRAINT tds_sections_section_code_tenant_id_key UNIQUE (section_code, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.tenant_module_mapping;
-
 CREATE TABLE IF NOT EXISTS public.tenant_module_mapping
 (
     id serial NOT NULL,
@@ -2077,8 +1597,6 @@ CREATE TABLE IF NOT EXISTS public.tenant_module_mapping
     CONSTRAINT tenant_module_mapping_pkey PRIMARY KEY (id),
     CONSTRAINT uq_tenant_module_mapping UNIQUE (tenant_id, module_id)
 );
-
-DROP TABLE IF EXISTS public.tenant_settings;
 
 CREATE TABLE IF NOT EXISTS public.tenant_settings
 (
@@ -2095,8 +1613,6 @@ CREATE TABLE IF NOT EXISTS public.tenant_settings
     CONSTRAINT tenant_settings_pkey PRIMARY KEY (id),
     CONSTRAINT tenant_settings_tenant_id_setting_key UNIQUE (tenant_id, setting)
 );
-
-DROP TABLE IF EXISTS public.tenants;
 
 CREATE TABLE IF NOT EXISTS public.tenants
 (
@@ -2115,8 +1631,6 @@ CREATE TABLE IF NOT EXISTS public.tenants
     CONSTRAINT tenants_code_key UNIQUE (code)
 );
 
-DROP TABLE IF EXISTS public.test_categories;
-
 CREATE TABLE IF NOT EXISTS public.test_categories
 (
     id serial NOT NULL,
@@ -2131,8 +1645,6 @@ CREATE TABLE IF NOT EXISTS public.test_categories
     is_deleted boolean DEFAULT false,
     CONSTRAINT test_categories_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.test_order_items;
 
 CREATE TABLE IF NOT EXISTS public.test_order_items
 (
@@ -2156,8 +1668,6 @@ CREATE TABLE IF NOT EXISTS public.test_order_items
     is_deleted boolean DEFAULT false,
     CONSTRAINT test_order_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.test_orders;
 
 CREATE TABLE IF NOT EXISTS public.test_orders
 (
@@ -2189,8 +1699,6 @@ CREATE TABLE IF NOT EXISTS public.test_orders
     CONSTRAINT test_orders_test_order_number_key UNIQUE (test_order_number)
 );
 
-DROP TABLE IF EXISTS public.test_panel_items;
-
 CREATE TABLE IF NOT EXISTS public.test_panel_items
 (
     id serial NOT NULL,
@@ -2205,8 +1713,6 @@ CREATE TABLE IF NOT EXISTS public.test_panel_items
     is_deleted boolean DEFAULT false,
     CONSTRAINT test_panel_items_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.test_panels;
 
 CREATE TABLE IF NOT EXISTS public.test_panels
 (
@@ -2228,8 +1734,6 @@ CREATE TABLE IF NOT EXISTS public.test_panels
     CONSTRAINT test_panels_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.test_parameters;
-
 CREATE TABLE IF NOT EXISTS public.test_parameters
 (
     id serial NOT NULL,
@@ -2246,8 +1750,6 @@ CREATE TABLE IF NOT EXISTS public.test_parameters
     is_deleted boolean DEFAULT false,
     CONSTRAINT test_parameters_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.test_result_details;
 
 CREATE TABLE IF NOT EXISTS public.test_result_details
 (
@@ -2269,8 +1771,6 @@ CREATE TABLE IF NOT EXISTS public.test_result_details
     CONSTRAINT test_result_details_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.test_result_files;
-
 CREATE TABLE IF NOT EXISTS public.test_result_files
 (
     id serial NOT NULL,
@@ -2290,8 +1790,6 @@ CREATE TABLE IF NOT EXISTS public.test_result_files
     is_deleted boolean DEFAULT false,
     CONSTRAINT test_result_files_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.test_results;
 
 CREATE TABLE IF NOT EXISTS public.test_results
 (
@@ -2314,8 +1812,6 @@ CREATE TABLE IF NOT EXISTS public.test_results
     CONSTRAINT test_results_pkey PRIMARY KEY (id),
     CONSTRAINT test_results_result_number_key UNIQUE (result_number)
 );
-
-DROP TABLE IF EXISTS public.tests;
 
 CREATE TABLE IF NOT EXISTS public.tests
 (
@@ -2342,8 +1838,6 @@ CREATE TABLE IF NOT EXISTS public.tests
     CONSTRAINT tests_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.transaction_template_rules;
-
 CREATE TABLE IF NOT EXISTS public.transaction_template_rules
 (
     id serial NOT NULL,
@@ -2360,8 +1854,6 @@ CREATE TABLE IF NOT EXISTS public.transaction_template_rules
     CONSTRAINT transaction_template_rules_pkey PRIMARY KEY (id),
     CONSTRAINT transaction_template_rules_template_id_line_number_key UNIQUE (template_id, line_number)
 );
-
-DROP TABLE IF EXISTS public.transaction_templates;
 
 CREATE TABLE IF NOT EXISTS public.transaction_templates
 (
@@ -2380,8 +1872,6 @@ CREATE TABLE IF NOT EXISTS public.transaction_templates
     CONSTRAINT transaction_templates_code_tenant_id_key UNIQUE (code, tenant_id)
 );
 
-DROP TABLE IF EXISTS public.transactions;
-
 CREATE TABLE IF NOT EXISTS public.transactions
 (
     description character varying(255) COLLATE pg_catalog."default" NOT NULL,
@@ -2396,10 +1886,9 @@ CREATE TABLE IF NOT EXISTS public.transactions
     updated_by text COLLATE pg_catalog."default",
     is_active boolean,
     is_deleted boolean,
+    tenant_id integer,
     CONSTRAINT transactions_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.units;
 
 CREATE TABLE IF NOT EXISTS public.units
 (
@@ -2418,8 +1907,6 @@ CREATE TABLE IF NOT EXISTS public.units
     CONSTRAINT units_pkey PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS public.user_roles;
-
 CREATE TABLE IF NOT EXISTS public.user_roles
 (
     id serial NOT NULL,
@@ -2431,8 +1918,6 @@ CREATE TABLE IF NOT EXISTS public.user_roles
     created_by character varying(100) COLLATE pg_catalog."default",
     CONSTRAINT user_roles_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.users;
 
 CREATE TABLE IF NOT EXISTS public.users
 (
@@ -2449,10 +1934,9 @@ CREATE TABLE IF NOT EXISTS public.users
     updated_at timestamp without time zone,
     created_by character varying(100) COLLATE pg_catalog."default",
     updated_by character varying(100) COLLATE pg_catalog."default",
+    is_deleted boolean DEFAULT false,
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
-
-DROP TABLE IF EXISTS public.voucher_types;
 
 CREATE TABLE IF NOT EXISTS public.voucher_types
 (
@@ -2465,8 +1949,6 @@ CREATE TABLE IF NOT EXISTS public.voucher_types
     CONSTRAINT voucher_types_pkey PRIMARY KEY (id),
     CONSTRAINT uq_voucher_type_code_tenant UNIQUE (code, tenant_id)
 );
-
-DROP TABLE IF EXISTS public.vouchers;
 
 CREATE TABLE IF NOT EXISTS public.vouchers
 (
@@ -2495,8 +1977,6 @@ CREATE TABLE IF NOT EXISTS public.vouchers
     CONSTRAINT vouchers_pkey PRIMARY KEY (id),
     CONSTRAINT vouchers_voucher_number_key UNIQUE (voucher_number)
 );
-
-DROP TABLE IF EXISTS public.warehouses;
 
 CREATE TABLE IF NOT EXISTS public.warehouses
 (
@@ -2559,6 +2039,13 @@ ALTER TABLE IF EXISTS public.account_type_mappings
     REFERENCES public.tenants (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.accounts
+    ADD CONSTRAINT accounts_tenant_id_fkey FOREIGN KEY (tenant_id)
+    REFERENCES public.tenants (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
 
 
 ALTER TABLE IF EXISTS public.agencies
@@ -3664,6 +3151,13 @@ ALTER TABLE IF EXISTS public.transaction_templates
 ALTER TABLE IF EXISTS public.transactions
     ADD CONSTRAINT transactions_account_id_fkey FOREIGN KEY (account_id)
     REFERENCES public.accounts (id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public.transactions
+    ADD CONSTRAINT transactions_tenant_id_fkey FOREIGN KEY (tenant_id)
+    REFERENCES public.tenants (id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION;
 
