@@ -16,7 +16,7 @@ class UserService:
             User.is_deleted == False
         ).first()
         
-        if user and verify_password(password, user.password_hash):
+        if user and verify_password(password, user.hashed_password):
             return {
                 'id': user.id,
                 'username': user.username,
@@ -34,12 +34,12 @@ class UserService:
     
     def create(self, data):
         if 'password' in data:
-            data['password_hash'] = hash_password(data.pop('password'))
+            data['hashed_password'] = hash_password(data.pop('password'))
         return self.repository.create(data)
     
     def update(self, entity_id, data):
         if 'password' in data:
-            data['password_hash'] = hash_password(data.pop('password'))
+            data['hashed_password'] = hash_password(data.pop('password'))
         return self.repository.update(entity_id, data)
     
     def get_by_id(self, user_id):
