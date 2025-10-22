@@ -1,15 +1,31 @@
-fastapi
-uvicorn
+# Core dependencies
 psycopg[binary]==3.2.9
 SQLAlchemy>=2.0.35
 alembic>=1.12.0
 python-dotenv>=1.0.0
 bcrypt>=4.0.1
 psycopg2==2.9.10
-PyJWT
-passlib
-python-multipart
-pydantic
-pydantic-settings
-pytest
-httpx
+
+# UI dependencies
+customtkinter>=5.2.2
+Pillow>=10.0.0
+
+# Data processing
+pandas>=2.0.0
+openpyxl>=3.1.0
+
+# Report generation
+reportlab>=4.0.0
+
+# API dependencies
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pyjwt>=2.8.0
+python-multipart>=0.0.6
+requests>=2.31.0
+
+# Test dependencies
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+coverage>=7.2.0

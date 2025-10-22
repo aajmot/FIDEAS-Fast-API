@@ -1,0 +1,276 @@
+name,parent_id,description,is_active
+Pharmacy,,Medicinal drugs and pharmaceutical products,TRUE
+Surgical Equipment,,Tools and instruments used in surgeries,TRUE
+Diagnostics,,Medical testing and diagnostic tools,TRUE
+Medical Imaging,,Equipment for X-ray,TRUE
+Laboratory Equipment,,Devices used in medical labs,TRUE
+OT Equipment,,Operating theatre tools and machines,TRUE
+Cardiology,,Heart-related medical devices and supplies,TRUE
+Orthopedics,,Bone and joint care products,TRUE
+Pediatrics,,Medical supplies for child healthcare,TRUE
+Oncology,,Cancer treatment and related medical products,TRUE
+Consumables,,Single-use medical items like gloves,TRUE
+Medical Furniture,,Hospital beds,TRUE
+Rehabilitation,,Products for physical therapy and recovery,TRUE
+Dental,,Dental care equipment and supplies,TRUE
+Veterinary,,Medical supplies for animal healthcare,TRUE
+Nephrology,,Kidney-related medical equipment and supplies,TRUE
+Pulmonology,,Respiratory care devices and products,TRUE
+Endoscopy,,Devices used for internal visual examination,TRUE
+Anesthesiology,,Anesthesia machines and related supplies,TRUE
+Emergency Medicine,,Medical supplies for emergency and trauma care,TRUE
+ICU Equipment,,Intensive care unit devices,TRUE
+Neurology,,Brain and nervous system-related medical products,TRUE
+Gynecology,,Women's health and maternity care equipment,TRUE
+Urology,,Urinary tract and male reproductive system equipment,TRUE
+ENT,,Ear,TRUE
+Pathology,,Tools for disease diagnosis through tissue and blood analysis,TRUE
+Radiology,,Imaging techniques for diagnosis and treatment,TRUE
+Telemedicine,,Remote healthcare and consultation tools,TRUE
+Medical Software,,Healthcare management and diagnostic software,TRUE
+Sterilization Equipment,,Devices for sterilizing medical tools,TRUE
+Wound Care,,Products for treating and dressing wounds,TRUE
+IV Therapy,,Intravenous therapy supplies,TRUE
+Mobility Aids,,Wheelchairs,TRUE
+Nutrition & Supplements,,Medical-grade nutritional products,TRUE
+Clinical Trials,,Equipment and supplies for research and testing,TRUE
+Biotechnology,,Products and tools related to biological research and innovation,TRUE
+Medical Waste Management,,Systems for handling and disposing medical waste,TRUE
+Infection Control,,Products for preventing and controlling infections,TRUE
+Clinical Chemistry,,Analyzers and reagents for chemical analysis of body fluids,TRUE
+Hematology,,Equipment for blood analysis,TRUE
+Histopathology,,Tools for microscopic examination of tissues,TRUE
+Genetics & Genomics,,Tools for DNA/RNA analysis and genetic testing,TRUE
+Medical Education,,Training tools and simulators for medical professionals,TRUE
+Healthcare IT,,Software for hospital and patient management,TRUE
+Patient Monitoring,,Devices for tracking patient vitals,TRUE
+Respiratory Therapy,,Ventilators and oxygen therapy equipment,TRUE
+Medical Records Management,,Systems for storing and accessing patient records,TRUE
+Pharmacovigilance,,Monitoring and reporting adverse drug reactions,TRUE
+Clinical Nutrition,,Specialized dietary products for patients,TRUE
+Medical Logistics,,Supply chain and inventory systems for medical products,TRUE
+Healthcare Infrastructure,,Planning and construction of medical facilities,TRUE
+Medical Robotics,,Robotic systems for precision surgeries,TRUE
+Wearable Health Tech,,Smart devices for health tracking,TRUE
+Medical Packaging,,Packaging solutions for medicines and medical devices,TRUE
+Healthcare Compliance,,Regulatory and safety standards management,TRUE
+Clinical Engineering,,Maintenance and management of medical equipment,TRUE
+Medical Simulation,,Training using simulated clinical scenarios,TRUE
+Healthcare Analytics,,Data analysis for improving healthcare outcomes,TRUE
+Medical Supply Chain,,Distribution and tracking of medical goods,TRUE
+Pharmaceutical R&D,,Research and development of new drugs,TRUE
+Regenerative Medicine,,Tissue engineering and stem cell therapies,TRUE
+Medical Accreditation,,Certification and quality assurance,TRUE
+Healthcare Finance,,Billing,TRUE
+Medical Translation Services,,Language services for medical documentation,TRUE
+Healthcare Marketing,,Promotion and outreach for medical services,TRUE
+Medical Tourism,,Cross-border healthcare services,TRUE
+Geriatrics,,Medical care for elderly patients,TRUE
+Sleep Medicine,,Diagnosis and treatment of sleep disorders,TRUE
+Pain Management,,Therapies and devices for managing chronic pain,TRUE
+Occupational Health,,Workplace-related medical services,TRUE
+Hyperbaric Medicine,,Treatment using high-pressure oxygen,TRUE
+Toxicology,,Study and analysis of toxins and poisons,TRUE
+Forensic Medicine,,Medical investigation in legal contexts,TRUE
+Healthcare Architecture,,Design of hospitals and clinics,TRUE
+Medical Ethics,,Study and application of ethical principles in medicine,TRUE
+Biomedical Engineering,,Design and development of medical devices,TRUE
+Healthcare Quality Assurance,,Ensuring standards in healthcare delivery,TRUE
+Clinical Informatics,,Integration of IT with clinical workflows,TRUE
+Medical Device Testing,,Validation and safety checks for medical devices,TRUE
+Healthcare Risk Management,,Identifying and mitigating risks in healthcare settings,TRUE
+Medical Licensing,,Regulatory approval for medical professionals,TRUE
+Healthcare Policy & Planning,,Strategic development of healthcare systems,TRUE
+Medical Grants & Funding,,Financial support for medical research,TRUE
+Healthcare Supply Forecasting,,Predicting demand for medical products,TRUE
+Medical Crowdsourcing,,Collaborative research and data collection,TRUE
+Healthcare Cybersecurity,,Protecting patient data and hospital systems,TRUE
+Medical Blockchain,,Secure and decentralized health data management,TRUE
+Clinical Workflow Automation,,Streamlining hospital operations,TRUE
+Medical AI & ML,,Artificial intelligence in diagnostics and treatment,TRUE
+Healthcare Wearables,,Smart devices for continuous health monitoring,TRUE
+Medical IoT,,Connected devices for real-time health data,TRUE
+Healthcare CRM,,Customer relationship management in healthcare,TRUE
+Medical HR Management,,Staffing and personnel systems,TRUE
+Healthcare Procurement,,Acquisition of medical goods and services,TRUE
+Medical Compliance Auditing,,Reviewing adherence to medical regulations,TRUE
+Medical Nanotechnology,,Nano-scale technologies for diagnostics and treatment,TRUE
+Healthcare Interoperability,,Integration of systems across healthcare providers,TRUE
+Clinical Documentation,,Accurate recording of patient interactions,TRUE
+Medical Call Centers,,Support centers for remote patient assistance,TRUE
+Healthcare Logistics Automation,,Automated systems for supply chain management,TRUE
+Medical Drones,,Use of drones for delivery of medical supplies,TRUE
+Healthcare Sustainability,,Environmentally responsible healthcare practices,TRUE
+Medical Disaster Response,,Preparedness and response to medical emergencies,TRUE
+Healthcare Workforce Analytics,,Data-driven insights into staffing and performance,TRUE
+Medical Credentialing,,Verification of qualifications and licenses,TRUE
+Healthcare Interventions,,Programs aimed at improving public health,TRUE
+Medical Outreach Programs,,Community-based health awareness initiatives,TRUE
+Healthcare Wearable Integration,,Connecting wearables with hospital systems,TRUE
+Medical App Development,,Creation of mobile applications for healthcare,TRUE
+Healthcare Chatbots,,AI-powered assistants for patient interaction,TRUE
+Medical Data Warehousing,,Centralized storage of healthcare data,TRUE
+Healthcare Robotics Maintenance,,Servicing and upkeep of robotic systems,TRUE
+Medical Cyber-Physical Systems,,Integration of physical devices with digital systems,TRUE
+Healthcare Digital Twins,,Virtual replicas of patients for simulation,TRUE
+Medical Voice Technology,,Voice-enabled tools for clinical documentation,TRUE
+Healthcare Interventions Research,,Study of effectiveness of health programs,TRUE
+Medical Biostatistics,,Statistical analysis in medical studies,TRUE
+Healthcare Accessibility,,Ensuring equitable access to medical services,TRUE
+Medical Supply Chain Security,,Protection against counterfeit and theft,TRUE
+Healthcare Facility Management,,Operations and maintenance of medical buildings,TRUE
+Medical Equipment Leasing,,Rental services for medical devices,TRUE
+Healthcare Vendor Management,,Coordination with suppliers and service providers,TRUE
+Medical Compliance Training,,Education on regulatory standards,TRUE
+Healthcare Fraud Detection,,Identifying and preventing financial fraud,TRUE
+Medical Billing Automation,,Automated systems for billing and claims,TRUE
+Healthcare Data Governance,,Policies for managing health data,TRUE
+Medical Cloud Infrastructure,,Cloud-based systems for hospitals,TRUE
+Healthcare API Integration,,Connecting third-party services with hospital systems,TRUE
+Medical UX Design,,User experience design for healthcare apps,TRUE
+Healthcare Gamification,,Using game elements for training and engagement,TRUE
+Medical AR/VR,,Augmented and virtual reality in medical training,TRUE
+Healthcare Digital Marketing,,Online promotion of medical services,TRUE
+Medical SEO,,Search engine optimization for healthcare websites,TRUE
+Healthcare Influencer Outreach,,Engaging influencers for health awareness,TRUE
+Medical Podcasting,,Audio content for medical learning,TRUE
+Healthcare Interdisciplinary Research,,Collaborative studies across medical domains,TRUE
+Medical Crowdfunding,,Public funding for patient treatments and research,TRUE
+Healthcare Accessibility Tech,,Assistive technologies for differently-abled patients,TRUE
+Medical Data Visualization,,Graphical representation of health data,TRUE
+Healthcare NLP,,Natural language processing for clinical documentation,TRUE
+Medical Edge Computing,,Real-time data processing at the device level,TRUE
+Healthcare DevOps,,Development and operations for healthcare applications,TRUE
+Medical SaaS Platforms,,Software-as-a-Service solutions for hospitals,TRUE
+Healthcare ERP Systems,,Enterprise resource planning for healthcare,TRUE
+Medical CRM Analytics,,Data insights from patient relationship systems,TRUE
+Healthcare Loyalty Programs,,Reward systems for patient engagement,TRUE
+Medical Affiliate Networks,,Partner programs for healthcare services,TRUE
+Healthcare Podcast Networks,,Platforms for distributing medical audio content,TRUE
+Medical Webinar Platforms,,Online seminar tools for medical training,TRUE
+Healthcare Virtual Assistants,,AI-powered assistants for patient support,TRUE
+Medical Chat Interfaces,,Conversational UI for healthcare apps,TRUE
+Healthcare Biometric Systems,,Authentication and monitoring using biometrics,TRUE
+Medical Consent Management,,Systems for managing patient consent,TRUE
+Healthcare Interoperability Standards,,Protocols for system integration,TRUE
+Medical Open Data Platforms,,Public access to anonymized health datasets,TRUE
+Homeopathy,,Alternative medicine based on natural remedies,TRUE
+Homeopathic Pharmacy,,Dispensing and preparation of homeopathic medicines,TRUE
+Homeopathic Research,,Scientific studies on homeopathic treatments,TRUE
+Homeopathic Education,,Training and certification in homeopathy,TRUE
+Homeopathic Clinics,,Healthcare centers offering homeopathic treatment,TRUE
+Homeopathic Materia Medica,,Reference texts for homeopathic remedies,TRUE
+Homeopathic Repertory,,Symptom-based guide for remedy selection,TRUE
+Homeopathic Software,,Digital tools for homeopathic practitioners,TRUE
+Homeopathic Case Management,,Systems for tracking patient cases,TRUE
+Homeopathic Remedy Manufacturing,,Production of homeopathic medicines,TRUE
+Homeopathic Toxicology,,Study of adverse effects of homeopathic substances,TRUE
+Homeopathic Pediatrics,,Homeopathic care for children,TRUE
+Homeopathic Dermatology,,Skin-related treatments using homeopathy,TRUE
+Homeopathic Veterinary,,Homeopathic treatment for animals,TRUE
+Homeopathic Counseling,,Patient guidance and lifestyle advice,TRUE
+Homeopathic Teleconsultation,,Remote consultations for homeopathic care,TRUE
+Homeopathic Nutraceuticals,,Natural supplements used in homeopathy,TRUE
+Homeopathic Regulatory Affairs,,Regulations and standards for homeopathic products,TRUE
+Homeopathic Clinical Trials,,Testing efficacy of homeopathic remedies,TRUE
+Homeopathic Product Packaging,,Packaging solutions for homeopathic medicines,TRUE
+Homeopathic Psychiatry,,Mental health treatments using homeopathic remedies,TRUE
+Homeopathic Geriatrics,,Homeopathic care for elderly patients,TRUE
+Homeopathic Immunology,,Immune system support through homeopathy,TRUE
+Homeopathic Pain Relief,,Natural remedies for pain management,TRUE
+Homeopathic ENT,,Treatment of ear,TRUE
+Homeopathic Gastroenterology,,Homeopathic solutions for digestive disorders,TRUE
+Homeopathic Ophthalmology,,Eye care using homeopathic methods,TRUE
+Homeopathic Women's Health,,Homeopathic treatments for female health issues,TRUE
+Homeopathic Sports Medicine,,Injury recovery and performance support,TRUE
+Homeopathic Preventive Care,,Remedies for disease prevention,TRUE
+Ayurveda,,Traditional Indian medicine based on natural healing,TRUE
+Ayurvedic Pharmacy,,Preparation and dispensing of Ayurvedic medicines,TRUE
+Ayurvedic Nutrition,,Diet and lifestyle based on Ayurvedic principles,TRUE
+Ayurvedic Panchakarma,,Detoxification and rejuvenation therapies,TRUE
+Ayurvedic Dermatology,,Skin treatments using Ayurvedic methods,TRUE
+Ayurvedic Pediatrics,,Child healthcare through Ayurveda,TRUE
+Ayurvedic Research,,Scientific studies on Ayurvedic practices,TRUE
+Ayurvedic Education,,Training and certification in Ayurveda,TRUE
+Ayurvedic Teleconsultation,,Remote consultations for Ayurvedic care,TRUE
+Ayurvedic Product Manufacturing,,Production of Ayurvedic medicines,TRUE
+Homeopathic Oncology,,Cancer care using homeopathic approaches,TRUE
+Homeopathic Cardiology,,Heart-related treatments using homeopathy,TRUE
+Homeopathic Endocrinology,,Treatment of hormonal disorders,TRUE
+Homeopathic Rheumatology,,Joint and autoimmune conditions,TRUE
+Unani Medicine,,Traditional Greco-Arabic system of medicine,TRUE
+Unani Pharmacy,,Preparation and dispensing of Unani medicines,TRUE
+Unani Research,,Scientific studies on Unani treatments,TRUE
+Unani Education,,Training and certification in Unani medicine,TRUE
+Unani Clinics,,Healthcare centers offering Unani treatment,TRUE
+Unani Nutrition,,Dietary guidance based on Unani principles,TRUE
+Siddha Medicine,,Ancient South Indian system of medicine,TRUE
+Siddha Pharmacy,,Preparation and dispensing of Siddha medicines,TRUE
+Siddha Research,,Scientific studies on Siddha treatments,TRUE
+Siddha Education,,Training and certification in Siddha medicine,TRUE
+Siddha Clinics,,Healthcare centers offering Siddha treatment,TRUE
+Naturopathy,,Natural healing through lifestyle and non-invasive methods,TRUE
+Naturopathic Nutrition,,Diet and supplements for holistic health,TRUE
+Naturopathic Detox,,Cleansing therapies for body purification,TRUE
+Naturopathic Counseling,,Lifestyle and mental wellness guidance,TRUE
+Naturopathic Research,,Scientific studies on naturopathic practices,TRUE
+Homeopathic Lifestyle Management,,Guidance on daily habits and routines,TRUE
+Homeopathic Gynaecology,,Female reproductive health using homeopathy,TRUE
+Ayurvedic Oncology,,Cancer care through Ayurvedic therapies,TRUE
+Ayurvedic Cardiology,,Heart health using Ayurvedic methods,TRUE
+Ayurvedic Mental Health,,Treatment of psychological disorders,TRUE
+Unani Dermatology,,Skin care using Unani principles,TRUE
+Unani Gynaecology,,Female health and fertility treatments,TRUE
+Unani Pediatrics,,Child healthcare using Unani methods,TRUE
+Siddha Toxicology,,Study of poisons and detoxification,TRUE
+Siddha Dermatology,,Skin treatments using Siddha medicine,TRUE
+Siddha Geriatrics,,Elderly care through Siddha practices,TRUE
+Naturopathic Mental Wellness,,Holistic approaches to mental health,TRUE
+Naturopathic Women's Health,,Female health and hormonal balance,TRUE
+Naturopathic Fitness,,Exercise and movement therapies,TRUE
+Integrative Medicine,,Combining conventional and alternative therapies,TRUE
+Functional Medicine,,Root-cause approach to chronic illness,TRUE
+Holistic Wellness,,Whole-body health including mind,TRUE
+Mind-Body Medicine,,Healing through meditation,TRUE
+Traditional Chinese Medicine,,Ancient Chinese healing practices,TRUE
+TCM Acupuncture,,Treatment using needles at specific points,TRUE
+Homeopathic Allergy Care,,Treatment of allergies using homeopathic remedies,TRUE
+Ayurvedic Immunology,,Boosting immunity through Ayurvedic practices,TRUE
+Unani Cardiology,,Heart-related treatments using Unani methods,TRUE
+Siddha Neurology,,Nervous system care using Siddha principles,TRUE
+Naturopathic Oncology,,Cancer support through natural therapies,TRUE
+TCM Herbal Medicine,,Use of herbs in Chinese healing,TRUE
+TCM Moxibustion,,Therapy using heat from burning herbs,TRUE
+TCM Cupping Therapy,,Vacuum therapy for pain and circulation,TRUE
+TCM Nutrition Therapy,,Dietary guidance based on TCM,TRUE
+TCM Pulse Diagnosis,,Health assessment through pulse reading,TRUE
+Chiropractic Care,,Spinal adjustments and musculoskeletal treatments,TRUE
+Chiropractic Pediatrics,,Spinal care for children,TRUE
+Chiropractic Sports Medicine,,Injury prevention and recovery,TRUE
+Energy Medicine,,Healing through manipulation of energy fields,TRUE
+Reiki Healing,,Japanese technique for stress reduction and healing,TRUE
+Pranic Healing,,Energy-based therapy for physical and emotional wellness,TRUE
+Crystal Healing,,Use of crystals for energy balancing,TRUE
+Spiritual Healing,,Healing through spiritual practices and beliefs,TRUE
+Meditative Therapy,,Healing through guided meditation,TRUE
+Sound Healing,,Use of sound frequencies for therapeutic effects,TRUE
+Homeopathic Wellness Programs,,Structured programs for holistic health,TRUE
+Ayurvedic Beauty Care,,Natural skincare and cosmetic treatments,TRUE
+Unani Wellness Therapy,,Preventive and rejuvenation therapies,TRUE
+Siddha Spiritual Healing,,Healing through spiritual Siddha practices,TRUE
+Naturopathic Sleep Therapy,,Natural methods for improving sleep,TRUE
+TCM Emotional Balance,,Treatments for emotional well-being,TRUE
+Chiropractic Wellness Plans,,Preventive care and lifestyle alignment,TRUE
+Energy Balancing Therapy,,Techniques to harmonize body energy,TRUE
+Aura Cleansing,,Removal of negative energy from the aura,TRUE
+Spiritual Detox,,Cleansing of emotional and spiritual blockages,TRUE
+Therapeutic Art Programs,,Healing through creative expression,TRUE
+Music Therapy,,Use of music for emotional and physical healing,TRUE
+Dance Movement Therapy,,Healing through expressive movement,TRUE
+Forest Therapy,,Healing through immersion in nature,TRUE
+Hydrotherapy,,Therapeutic use of water,TRUE
+Aromatherapy,,Healing through essential oils,TRUE
+Color Therapy,,Use of colors to influence mood and health,TRUE
+Biofeedback Therapy,,Monitoring body functions to improve health,TRUE
+Wellness Retreats,,Residential programs for rejuvenation,TRUE
+Lifestyle Medicine,,Health improvement through lifestyle changes,TRUE

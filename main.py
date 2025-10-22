@@ -25,7 +25,7 @@ def main():
     print(f"API Documentation: http://{host}:{port}/docs")
     
     uvicorn.run(
-        "app.main:app",
+        "api.main:app",
         host=host,
         port=port,
         reload=reload,
