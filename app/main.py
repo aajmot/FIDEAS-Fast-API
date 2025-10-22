@@ -21,8 +21,12 @@ def create_app() -> FastAPI:
     
     # Initialize database on startup
     @app.on_event("startup")
-    def startup_event():
-        init_db()
+    async def startup_event():
+        try:
+            init_db()
+        except Exception as e:
+            print(f"Database initialization failed: {e}")
+            # Continue without database - app will still start
     
     # Setup middleware
     app.add_middleware(LoggingMiddleware)

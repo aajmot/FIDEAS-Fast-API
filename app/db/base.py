@@ -57,13 +57,25 @@ def get_db():
 def init_db():
     """Initialize database tables"""
     try:
-        # Import all models here to ensure they are registered with SQLAlchemy
+        logger.info("Starting database initialization...")
+        
+        # Import models one by one to identify which one causes issues
+        logger.info("Importing admin models...")
         from app.db.models.admin_models import user_model, role_model, tenant_model, legal_entity_model, financial_year_model, menu_model, user_role_model
+        
+        logger.info("Importing inventory models...")
         from app.db.models.inventory_models import product_model, category_model, unit_model, customer_model, supplier_model
+        
+        logger.info("Importing clinic models...")
         from app.db.models.clinic_models import patient_model, appointment_model
+        
+        logger.info("Importing diagnostics models...")
         from app.db.models.diagnostics_models import test_model
+        
+        logger.info("Importing accounting models...")
         from app.db.models.accounting_models import account_model, accounting_model, journal_model, voucher_model
         
+        logger.info("Creating database tables...")
         # Create all tables
         Base.metadata.create_all(bind=engine)
         logger.info("Database tables initialized successfully")

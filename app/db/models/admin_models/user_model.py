@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, Boolean
 from app.db.models.base_model import BaseModel
 
 
@@ -7,6 +7,8 @@ class User(BaseModel):
     
     username = Column(String(50), unique=True, index=True, nullable=False)
     email = Column(String(100), unique=True, index=True, nullable=False)
-    hashed_password = Column(String(255), nullable=False)
-    full_name = Column(String(100))
+    password_hash = Column(String(255), nullable=False)
+    first_name = Column(String(50))
+    last_name = Column(String(50))
     tenant_id = Column(Integer, nullable=False)
+    is_tenant_admin = Column(Boolean, default=False)
