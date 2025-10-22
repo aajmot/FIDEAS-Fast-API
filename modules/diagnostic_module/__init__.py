@@ -1,3 +1,0 @@
-"""
-Diagnostic Module
-"""

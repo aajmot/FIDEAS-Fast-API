@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+psycopg[binary]==3.2.9
+SQLAlchemy>=2.0.35
+alembic>=1.12.0
+python-dotenv>=1.0.0
+bcrypt>=4.0.1
+psycopg2==2.9.10
+PyJWT
+passlib
+python-multipart
+pydantic
+pydantic-settings
+pytest
+httpx

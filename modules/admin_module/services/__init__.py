@@ -1,2 +1,0 @@
-# Admin module services initialization
-from .order_commission_service import OrderCommissionService
