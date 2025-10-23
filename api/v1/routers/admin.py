@@ -1109,7 +1109,7 @@ async def get_agencies(pagination: PaginationParams = Depends(), current_user: d
     with db_manager.get_session() as session:
         query = session.query(Agency).filter(
             Agency.tenant_id == current_user['tenant_id'],
-            Agency.is_delete == False
+            Agency.is_deleted == False
         )
         
         if pagination.search:
@@ -1131,8 +1131,8 @@ async def get_agencies(pagination: PaginationParams = Depends(), current_user: d
             "tax_id": agency.tax_id,
             "created_at": agency.created_at.isoformat() if agency.created_at else None,
             "created_by": agency.created_by,
-            "modified_at": agency.modified_at.isoformat() if agency.modified_at else None,
-            "modified_by": agency.modified_by
+            "updated_at": agency.updated_at.isoformat() if agency.updated_at else None,
+            "updated_by": agency.updated_by
         } for agency in agencies]
     
     return PaginatedResponse(

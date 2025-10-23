@@ -1,5 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
-from typing import Dict, Any
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from typing import Dict, Any, List
+import csv
+import io
 from api.middleware.auth_middleware import get_current_user
 from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from core.database.connection import db_manager
@@ -32,13 +34,85 @@ async def get_warehouses(pagination: PaginationParams = Depends(), current_user:
 @router.post("/warehouses", response_model=BaseResponse)
 async def create_warehouse(data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
     with db_manager.get_session() as session:
+        params = {
+            "name": data.get("name"),
+            "code": data.get("code"),
+            "address": data.get("address"),
+            "contact_person": data.get("contact_person"),
+            "phone": data.get("phone"),
+            "email": data.get("email"),
+            "tenant_id": current_user['tenant_id'],
+            "created_by": current_user['username']
+        }
         result = session.execute(text("""
             INSERT INTO warehouses (name, code, address, contact_person, phone, email, tenant_id, created_by)
             VALUES (:name, :code, :address, :contact_person, :phone, :email, :tenant_id, :created_by)
             RETURNING id
-        """), {**data, "tenant_id": current_user['tenant_id'], "created_by": current_user['username']})
+        """), params)
         session.commit()
         return BaseResponse(success=True, message="Warehouse created", data={"id": result.scalar()})
+
+@router.put("/warehouses/{warehouse_id}", response_model=BaseResponse)
+async def update_warehouse(warehouse_id: int, data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
+    with db_manager.get_session() as session:
+        session.execute(text("""
+            UPDATE warehouses SET name = :name, code = :code, address = :address, 
+                   contact_person = :contact_person, phone = :phone, email = :email, updated_by = :updated_by
+            WHERE id = :id AND tenant_id = :tenant_id
+        """), {**data, "id": warehouse_id, "tenant_id": current_user['tenant_id'], "updated_by": current_user['username']})
+        session.commit()
+        return BaseResponse(success=True, message="Warehouse updated")
+
+@router.delete("/warehouses/{warehouse_id}", response_model=BaseResponse)
+async def delete_warehouse(warehouse_id: int, current_user: dict = Depends(get_current_user)):
+    with db_manager.get_session() as session:
+        session.execute(text("""
+            DELETE FROM warehouses WHERE id = :id AND tenant_id = :tenant_id
+        """), {"id": warehouse_id, "tenant_id": current_user['tenant_id']})
+        session.commit()
+        return BaseResponse(success=True, message="Warehouse deleted")
+
+@router.get("/warehouses/template", response_model=BaseResponse)
+async def get_warehouse_template():
+    template = [
+        {"code": "WH001", "name": "Main Warehouse", "contact_person": "John Doe", "phone": "1234567890", "email": "warehouse@company.com", "address": "123 Main St, City, State"},
+        {"code": "WH002", "name": "Secondary Warehouse", "contact_person": "Jane Smith", "phone": "0987654321", "email": "warehouse2@company.com", "address": "456 Oak Ave, City, State"}
+    ]
+    return BaseResponse(success=True, message="Warehouse template retrieved", data=template)
+
+@router.post("/warehouses/import", response_model=BaseResponse)
+async def import_warehouses(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
+    if not file.filename.endswith('.csv'):
+        raise HTTPException(400, "Only CSV files are allowed")
+    
+    with db_manager.get_session() as session:
+        try:
+            content = await file.read()
+            csv_data = csv.DictReader(io.StringIO(content.decode('utf-8')))
+            created_count = 0
+            
+            for row in csv_data:
+                params = {
+                    "name": row.get("name"),
+                    "code": row.get("code"),
+                    "address": row.get("address"),
+                    "contact_person": row.get("contact_person"),
+                    "phone": row.get("phone"),
+                    "email": row.get("email"),
+                    "tenant_id": current_user['tenant_id'],
+                    "created_by": current_user['username']
+                }
+                session.execute(text("""
+                    INSERT INTO warehouses (name, code, address, contact_person, phone, email, tenant_id, created_by)
+                    VALUES (:name, :code, :address, :contact_person, :phone, :email, :tenant_id, :created_by)
+                """), params)
+                created_count += 1
+            
+            session.commit()
+            return BaseResponse(success=True, message=f"{created_count} warehouses imported successfully")
+        except Exception as e:
+            session.rollback()
+            raise HTTPException(400, str(e))
 
 @router.get("/stock-by-location", response_model=BaseResponse)
 async def get_stock_by_location(product_id: int = None, warehouse_id: int = None, current_user: dict = Depends(get_current_user)):
