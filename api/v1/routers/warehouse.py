@@ -6,6 +6,9 @@ from api.middleware.auth_middleware import get_current_user
 from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from core.database.connection import db_manager
 from sqlalchemy import text
+from sqlalchemy.orm import joinedload
+from modules.inventory_module.models.warehouse_entities import Warehouse, StockByLocation, StockTransfer, StockTransferItem
+from modules.inventory_module.models.entities import Product
 import math
 
 router = APIRouter()
@@ -13,19 +16,20 @@ router = APIRouter()
 @router.get("/warehouses", response_model=PaginatedResponse)
 async def get_warehouses(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     with db_manager.get_session() as session:
-        query = "SELECT * FROM warehouses WHERE tenant_id = :tenant_id"
-        params = {"tenant_id": current_user['tenant_id']}
+        query = session.query(Warehouse).filter(Warehouse.tenant_id == current_user['tenant_id'])
         
         if pagination.search:
-            query += " AND name ILIKE :search"
-            params["search"] = f"%{pagination.search}%"
+            query = query.filter(Warehouse.name.ilike(f"%{pagination.search}%"))
         
-        total = session.execute(text(query.replace("*", "COUNT(*)")), params).scalar()
-        query += f" ORDER BY name LIMIT :limit OFFSET :offset"
-        params.update({"limit": pagination.per_page, "offset": pagination.offset})
+        total = query.count()
+        warehouses = query.order_by(Warehouse.name).offset(pagination.offset).limit(pagination.per_page).all()
         
-        result = session.execute(text(query), params)
-        data = [dict(row._mapping) for row in result]
+        data = [{
+            "id": w.id, "name": w.name, "code": w.code, "address": w.address,
+            "contact_person": w.contact_person, "phone": w.phone, "email": w.email,
+            "is_active": w.is_active, "created_at": w.created_at, "updated_at": w.updated_at,
+            "created_by": w.created_by, "updated_by": w.updated_by
+        } for w in warehouses]
     
     return PaginatedResponse(success=True, message="Warehouses retrieved", data=data,
                            total=total, page=pagination.page, per_page=pagination.per_page,
@@ -34,41 +38,50 @@ async def get_warehouses(pagination: PaginationParams = Depends(), current_user:
 @router.post("/warehouses", response_model=BaseResponse)
 async def create_warehouse(data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
     with db_manager.get_session() as session:
-        params = {
-            "name": data.get("name"),
-            "code": data.get("code"),
-            "address": data.get("address"),
-            "contact_person": data.get("contact_person"),
-            "phone": data.get("phone"),
-            "email": data.get("email"),
-            "tenant_id": current_user['tenant_id'],
-            "created_by": current_user['username']
-        }
-        result = session.execute(text("""
-            INSERT INTO warehouses (name, code, address, contact_person, phone, email, tenant_id, created_by)
-            VALUES (:name, :code, :address, :contact_person, :phone, :email, :tenant_id, :created_by)
-            RETURNING id
-        """), params)
+        warehouse = Warehouse(
+            name=data.get("name"),
+            code=data.get("code"),
+            address=data.get("address"),
+            contact_person=data.get("contact_person"),
+            phone=data.get("phone"),
+            email=data.get("email"),
+            tenant_id=current_user['tenant_id'],
+            created_by=current_user['username']
+        )
+        session.add(warehouse)
         session.commit()
-        return BaseResponse(success=True, message="Warehouse created", data={"id": result.scalar()})
+        return BaseResponse(success=True, message="Warehouse created", data={"id": warehouse.id})
 
 @router.put("/warehouses/{warehouse_id}", response_model=BaseResponse)
 async def update_warehouse(warehouse_id: int, data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
     with db_manager.get_session() as session:
-        session.execute(text("""
-            UPDATE warehouses SET name = :name, code = :code, address = :address, 
-                   contact_person = :contact_person, phone = :phone, email = :email, updated_by = :updated_by
-            WHERE id = :id AND tenant_id = :tenant_id
-        """), {**data, "id": warehouse_id, "tenant_id": current_user['tenant_id'], "updated_by": current_user['username']})
+        warehouse = session.query(Warehouse).filter(
+            Warehouse.id == warehouse_id,
+            Warehouse.tenant_id == current_user['tenant_id']
+        ).first()
+        
+        if not warehouse:
+            raise HTTPException(404, "Warehouse not found")
+        
+        for key, value in data.items():
+            if hasattr(warehouse, key):
+                setattr(warehouse, key, value)
+        warehouse.updated_by = current_user['username']
+        
         session.commit()
         return BaseResponse(success=True, message="Warehouse updated")
 
 @router.delete("/warehouses/{warehouse_id}", response_model=BaseResponse)
 async def delete_warehouse(warehouse_id: int, current_user: dict = Depends(get_current_user)):
     with db_manager.get_session() as session:
-        session.execute(text("""
-            DELETE FROM warehouses WHERE id = :id AND tenant_id = :tenant_id
-        """), {"id": warehouse_id, "tenant_id": current_user['tenant_id']})
+        deleted = session.query(Warehouse).filter(
+            Warehouse.id == warehouse_id,
+            Warehouse.tenant_id == current_user['tenant_id']
+        ).delete()
+        
+        if not deleted:
+            raise HTTPException(404, "Warehouse not found")
+        
         session.commit()
         return BaseResponse(success=True, message="Warehouse deleted")
 
@@ -89,27 +102,24 @@ async def import_warehouses(file: UploadFile = File(...), current_user: dict = D
         try:
             content = await file.read()
             csv_data = csv.DictReader(io.StringIO(content.decode('utf-8')))
-            created_count = 0
+            warehouses = []
             
             for row in csv_data:
-                params = {
-                    "name": row.get("name"),
-                    "code": row.get("code"),
-                    "address": row.get("address"),
-                    "contact_person": row.get("contact_person"),
-                    "phone": row.get("phone"),
-                    "email": row.get("email"),
-                    "tenant_id": current_user['tenant_id'],
-                    "created_by": current_user['username']
-                }
-                session.execute(text("""
-                    INSERT INTO warehouses (name, code, address, contact_person, phone, email, tenant_id, created_by)
-                    VALUES (:name, :code, :address, :contact_person, :phone, :email, :tenant_id, :created_by)
-                """), params)
-                created_count += 1
+                warehouse = Warehouse(
+                    name=row.get("name"),
+                    code=row.get("code"),
+                    address=row.get("address"),
+                    contact_person=row.get("contact_person"),
+                    phone=row.get("phone"),
+                    email=row.get("email"),
+                    tenant_id=current_user['tenant_id'],
+                    created_by=current_user['username']
+                )
+                warehouses.append(warehouse)
             
+            session.add_all(warehouses)
             session.commit()
-            return BaseResponse(success=True, message=f"{created_count} warehouses imported successfully")
+            return BaseResponse(success=True, message=f"{len(warehouses)} warehouses imported successfully")
         except Exception as e:
             session.rollback()
             raise HTTPException(400, str(e))
@@ -117,76 +127,189 @@ async def import_warehouses(file: UploadFile = File(...), current_user: dict = D
 @router.get("/stock-by-location", response_model=BaseResponse)
 async def get_stock_by_location(product_id: int = None, warehouse_id: int = None, current_user: dict = Depends(get_current_user)):
     with db_manager.get_session() as session:
-        query = """
-            SELECT sbl.*, p.name as product_name, w.name as warehouse_name
-            FROM stock_by_location sbl
-            JOIN products p ON sbl.product_id = p.id
-            JOIN warehouses w ON sbl.warehouse_id = w.id
-            WHERE sbl.tenant_id = :tenant_id
-        """
-        params = {"tenant_id": current_user['tenant_id']}
+        query = session.query(StockByLocation).options(
+            joinedload(StockByLocation.product),
+            joinedload(StockByLocation.warehouse)
+        ).filter(StockByLocation.tenant_id == current_user['tenant_id'])
         
         if product_id:
-            query += " AND sbl.product_id = :product_id"
-            params["product_id"] = product_id
+            query = query.filter(StockByLocation.product_id == product_id)
         
         if warehouse_id:
-            query += " AND sbl.warehouse_id = :warehouse_id"
-            params["warehouse_id"] = warehouse_id
+            query = query.filter(StockByLocation.warehouse_id == warehouse_id)
         
-        result = session.execute(text(query), params)
-        data = [dict(row._mapping) for row in result]
+        stock_locations = query.all()
+        
+        data = [{
+            "id": sbl.id,
+            "product_id": sbl.product_id,
+            "warehouse_id": sbl.warehouse_id,
+            "quantity": float(sbl.quantity),
+            "available_quantity": float(sbl.available_quantity),
+            "reserved_quantity": float(sbl.reserved_quantity or 0),
+            "updated_at": sbl.updated_at,
+            "product_name": sbl.product.name,
+            "warehouse_name": sbl.warehouse.name
+        } for sbl in stock_locations]
         
         return BaseResponse(success=True, message="Stock by location retrieved", data=data)
 
 @router.get("/stock-transfers", response_model=PaginatedResponse)
 async def get_stock_transfers(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     with db_manager.get_session() as session:
-        query = """
-            SELECT st.*, wf.name as from_warehouse, wt.name as to_warehouse
-            FROM stock_transfers st
-            JOIN warehouses wf ON st.from_warehouse_id = wf.id
-            JOIN warehouses wt ON st.to_warehouse_id = wt.id
-            WHERE st.tenant_id = :tenant_id
-        """
-        params = {"tenant_id": current_user['tenant_id']}
+        query = session.query(StockTransfer).options(
+            joinedload(StockTransfer.from_warehouse),
+            joinedload(StockTransfer.to_warehouse)
+        ).filter(StockTransfer.tenant_id == current_user['tenant_id'])
         
-        total = session.execute(text(query.replace("st.*, wf.name as from_warehouse, wt.name as to_warehouse", "COUNT(*)")), params).scalar()
-        query += f" ORDER BY st.transfer_date DESC LIMIT :limit OFFSET :offset"
-        params.update({"limit": pagination.per_page, "offset": pagination.offset})
+        total = query.count()
+        transfers = query.order_by(StockTransfer.transfer_date.desc()).offset(pagination.offset).limit(pagination.per_page).all()
         
-        result = session.execute(text(query), params)
-        data = [dict(row._mapping) for row in result]
+        data = [{
+            "id": st.id,
+            "transfer_number": st.transfer_number,
+            "transfer_date": st.transfer_date,
+            "from_warehouse_id": st.from_warehouse_id,
+            "to_warehouse_id": st.to_warehouse_id,
+            "status": st.status,
+            "notes": st.notes,
+            "created_at": st.created_at,
+            "created_by": st.created_by,
+            "from_warehouse": st.from_warehouse.name,
+            "to_warehouse": st.to_warehouse.name
+        } for st in transfers]
     
     return PaginatedResponse(success=True, message="Stock transfers retrieved", data=data,
                            total=total, page=pagination.page, per_page=pagination.per_page,
                            total_pages=math.ceil(total / pagination.per_page))
 
+@router.get("/stock-transfers/{transfer_id}", response_model=BaseResponse)
+async def get_stock_transfer(transfer_id: int, current_user: dict = Depends(get_current_user)):
+    with db_manager.get_session() as session:
+        transfer = session.query(StockTransfer).options(
+            joinedload(StockTransfer.from_warehouse),
+            joinedload(StockTransfer.to_warehouse),
+            joinedload(StockTransfer.items).joinedload(StockTransferItem.product)
+        ).filter(
+            StockTransfer.id == transfer_id,
+            StockTransfer.tenant_id == current_user['tenant_id']
+        ).first()
+        
+        if not transfer:
+            raise HTTPException(404, "Stock transfer not found")
+        
+        data = {
+            "id": transfer.id,
+            "transfer_number": transfer.transfer_number,
+            "transfer_date": transfer.transfer_date,
+            "from_warehouse_id": transfer.from_warehouse_id,
+            "to_warehouse_id": transfer.to_warehouse_id,
+            "status": transfer.status,
+            "notes": transfer.notes,
+            "created_at": transfer.created_at,
+            "created_by": transfer.created_by,
+            "from_warehouse": transfer.from_warehouse.name,
+            "to_warehouse": transfer.to_warehouse.name,
+            "items": [{
+                "id": item.id,
+                "product_id": item.product_id,
+                "product_name": item.product.name,
+                "batch_number": item.batch_number,
+                "quantity": float(item.quantity),
+                "serial_numbers": item.serial_numbers
+            } for item in transfer.items]
+        }
+        
+        return BaseResponse(success=True, message="Stock transfer retrieved", data=data)
+
 @router.post("/stock-transfers", response_model=BaseResponse)
 async def create_stock_transfer(data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
     with db_manager.get_session() as session:
         try:
-            result = session.execute(text("""
-                INSERT INTO stock_transfers (transfer_number, transfer_date, from_warehouse_id, 
-                    to_warehouse_id, status, notes, tenant_id, created_by)
-                VALUES (:transfer_number, :transfer_date, :from_warehouse_id, :to_warehouse_id,
-                    :status, :notes, :tenant_id, :created_by)
-                RETURNING id
-            """), {**data, "tenant_id": current_user['tenant_id'], "created_by": current_user['username']})
-            transfer_id = result.scalar()
+            transfer = StockTransfer(
+                transfer_number=data.get("transfer_number"),
+                transfer_date=data.get("transfer_date"),
+                from_warehouse_id=data.get("from_warehouse_id"),
+                to_warehouse_id=data.get("to_warehouse_id"),
+                status="Created",  # Default status
+                notes=data.get("notes"),
+                tenant_id=current_user['tenant_id'],
+                created_by=current_user['username']
+            )
+            session.add(transfer)
+            session.flush()
             
-            for item in data['items']:
-                session.execute(text("""
-                    INSERT INTO stock_transfer_items (transfer_id, product_id, batch_number, 
-                        quantity, serial_numbers, tenant_id)
-                    VALUES (:transfer_id, :product_id, :batch_number, :quantity, :serial_numbers, :tenant_id)
-                """), {**item, "transfer_id": transfer_id, "tenant_id": current_user['tenant_id']})
+            for item in data.get('items', []):
+                transfer_item = StockTransferItem(
+                    transfer_id=transfer.id,
+                    product_id=item.get("product_id"),
+                    batch_number=item.get("batch_number"),
+                    quantity=item.get("quantity"),
+                    serial_numbers=item.get("serial_numbers"),
+                    tenant_id=current_user['tenant_id']
+                )
+                session.add(transfer_item)
             
             session.commit()
-            return BaseResponse(success=True, message="Stock transfer created", data={"id": transfer_id})
+            return BaseResponse(success=True, message="Stock transfer created", data={"id": transfer.id})
         except Exception as e:
             session.rollback()
             raise HTTPException(400, str(e))
+
+@router.put("/stock-transfers/{transfer_id}", response_model=BaseResponse)
+async def update_stock_transfer(transfer_id: int, data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
+    with db_manager.get_session() as session:
+        transfer = session.query(StockTransfer).filter(
+            StockTransfer.id == transfer_id,
+            StockTransfer.tenant_id == current_user['tenant_id']
+        ).first()
+        
+        if not transfer:
+            raise HTTPException(404, "Stock transfer not found")
+        
+        # Update basic fields
+        for key, value in data.items():
+            if hasattr(transfer, key) and key not in ['id', 'tenant_id', 'created_at', 'created_by', 'items']:
+                setattr(transfer, key, value)
+        transfer.updated_by = current_user['username']
+        
+        # Handle items separately if provided
+        if 'items' in data:
+            # Delete existing items
+            session.query(StockTransferItem).filter(StockTransferItem.transfer_id == transfer_id).delete()
+            
+            # Add new items
+            for item_data in data['items']:
+                item = StockTransferItem(
+                    transfer_id=transfer_id,
+                    product_id=item_data.get('product_id'),
+                    batch_number=item_data.get('batch_number'),
+                    quantity=item_data.get('quantity'),
+                    serial_numbers=item_data.get('serial_numbers'),
+                    tenant_id=current_user['tenant_id']
+                )
+                session.add(item)
+        
+        session.commit()
+        return BaseResponse(success=True, message="Stock transfer updated")
+
+@router.get("/batches/near-expiry", response_model=BaseResponse)
+async def get_near_expiry_batches(days: int = 30, current_user: dict = Depends(get_current_user)):
+    with db_manager.get_session() as session:
+        query = text(f"""
+            SELECT pb.*, p.name as product_name
+            FROM product_batches pb
+            JOIN products p ON pb.product_id = p.id
+            WHERE pb.tenant_id = :tenant_id 
+            AND pb.expiry_date <= CURRENT_DATE + INTERVAL '{days} days'
+            AND pb.quantity > 0
+            ORDER BY pb.expiry_date ASC
+        """)
+        
+        result = session.execute(query, {"tenant_id": current_user['tenant_id']})
+        data = [dict(row._mapping) for row in result]
+        
+        return BaseResponse(success=True, message="Near expiry batches retrieved", data=data)
 
 @router.post("/stock-transfers/{transfer_id}/approve", response_model=BaseResponse)
 async def approve_stock_transfer(transfer_id: int, current_user: dict = Depends(get_current_user)):
