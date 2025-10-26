@@ -375,8 +375,8 @@ async def create_journal_entry(entry_data: Dict[str, Any], current_user: dict = 
     
     with db_manager.get_session() as session:
         try:
-            # Validate fiscal year
-            ValidationService.validate_fiscal_year(
+            # Validate financial year
+            ValidationService.validate_financial_year(
                 session, 
                 datetime.fromisoformat(entry_data['date']), 
                 current_user['tenant_id']
@@ -701,9 +701,9 @@ async def create_voucher(voucher_data: Dict[str, Any], current_user: dict = Depe
     
     with db_manager.get_session() as session:
         try:
-            # Validate fiscal year (prevent posting to closed periods)
+            # Validate financial year (prevent posting to closed periods)
             from modules.account_module.services.validation_service import ValidationService
-            ValidationService.validate_fiscal_year(
+            ValidationService.validate_financial_year(
                 session, 
                 datetime.fromisoformat(voucher_data['date']), 
                 current_user['tenant_id']
@@ -2693,7 +2693,8 @@ async def delete_budget(budget_id: int, current_user: dict = Depends(get_current
 @router.post("/budgets/import", response_model=BaseResponse)
 async def import_budgets(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.account_module.models.entities import Budget, FiscalYear, AccountMaster, CostCenter
+    from modules.account_module.models.entities import Budget, AccountMaster, CostCenter
+    from modules.admin_module.models.entities import FinancialYear
     
     content = await file.read()
     csv_data = csv.DictReader(io.StringIO(content.decode()))
@@ -2702,9 +2703,9 @@ async def import_budgets(file: UploadFile = File(...), current_user: dict = Depe
     with db_manager.get_session() as session:
         try:
             for row in csv_data:
-                fiscal_year = session.query(FiscalYear).filter(
-                    FiscalYear.name == row['fiscal_year'],
-                    FiscalYear.tenant_id == current_user['tenant_id']
+                financial_year = session.query(FinancialYear).filter(
+                    FinancialYear.name == row['fiscal_year'],
+                    FinancialYear.tenant_id == current_user['tenant_id']
                 ).first()
                 
                 account = session.query(AccountMaster).filter(
@@ -2712,7 +2713,7 @@ async def import_budgets(file: UploadFile = File(...), current_user: dict = Depe
                     AccountMaster.tenant_id == current_user['tenant_id']
                 ).first()
                 
-                if not fiscal_year or not account:
+                if not financial_year or not account:
                     continue
                 
                 cost_center_id = None
@@ -2726,7 +2727,7 @@ async def import_budgets(file: UploadFile = File(...), current_user: dict = Depe
                 
                 budget = Budget(
                     name=row['name'],
-                    fiscal_year_id=fiscal_year.id,
+                    fiscal_year_id=financial_year.id,
                     account_id=account.id,
                     cost_center_id=cost_center_id,
                     budget_amount=float(row['budget_amount']),
@@ -2761,27 +2762,29 @@ async def export_budgets_template(current_user: dict = Depends(get_current_user)
         headers={"Content-Disposition": "attachment; filename=budgets_template.csv"}
     )
 
-# Fiscal Year endpoints
-@router.get("/fiscal-years", response_model=PaginatedResponse)
-async def get_fiscal_years(current_user: dict = Depends(get_current_user)):
-    from modules.account_module.services.fiscal_year_service import FiscalYearService
+# Financial Year endpoints
+@router.get("/financial-years", response_model=PaginatedResponse)
+async def get_financial_years(current_user: dict = Depends(get_current_user)):
+    from modules.admin_module.services.financial_year_service import FinancialYearService
     
     try:
-        fiscal_year_service = FiscalYearService()
-        fiscal_years = fiscal_year_service.get_all()
+        financial_year_service = FinancialYearService()
+        financial_year = financial_year_service.get_all()
         
         fiscal_year_data = [{
             "id": fy.id,
             "name": fy.name,
+            "code": fy.code,
             "start_date": fy.start_date.isoformat(),
             "end_date": fy.end_date.isoformat(),
             "is_active": fy.is_active,
+            "is_current": fy.is_current,
             "is_closed": fy.is_closed
-        } for fy in fiscal_years]
+        } for fy in financial_year]
         
         return PaginatedResponse(
             success=True,
-            message="Fiscal years retrieved successfully",
+            message="Financial years retrieved successfully",
             data=fiscal_year_data,
             total=len(fiscal_year_data),
             page=1,
@@ -2791,64 +2794,64 @@ async def get_fiscal_years(current_user: dict = Depends(get_current_user)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.post("/fiscal-years", response_model=BaseResponse)
-async def create_fiscal_year(fiscal_year_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.account_module.services.fiscal_year_service import FiscalYearService
+@router.post("/financial-years", response_model=BaseResponse)
+async def create_financial_year(fiscal_year_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
+    from modules.admin_module.services.financial_year_service import FinancialYearService
     
     try:
-        fiscal_year_service = FiscalYearService()
-        fiscal_year = fiscal_year_service.create(fiscal_year_data)
+        financial_year_service = FinancialYearService()
+        fiscal_year = financial_year_service.create(fiscal_year_data)
         
         return BaseResponse(
             success=True,
-            message="Fiscal year created successfully",
+            message="Financial year created successfully",
             data={"id": fiscal_year.id}
         )
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.put("/fiscal-years/{fiscal_year_id}", response_model=BaseResponse)
-async def update_fiscal_year(fiscal_year_id: int, fiscal_year_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.account_module.services.fiscal_year_service import FiscalYearService
+@router.put("/financial-years/{fiscal_year_id}", response_model=BaseResponse)
+async def update_financial_year(fiscal_year_id: int, fiscal_year_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
+    from modules.admin_module.services.financial_year_service import FinancialYearService
     
     try:
-        fiscal_year_service = FiscalYearService()
-        fiscal_year = fiscal_year_service.update(fiscal_year_id, fiscal_year_data)
+        financial_year_service = FinancialYearService()
+        fiscal_year = financial_year_service.update(fiscal_year_id, fiscal_year_data)
         
         return BaseResponse(
             success=True,
-            message="Fiscal year updated successfully",
+            message="Financial year updated successfully",
             data={"id": fiscal_year.id}
         )
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.delete("/fiscal-years/{fiscal_year_id}", response_model=BaseResponse)
-async def delete_fiscal_year(fiscal_year_id: int, current_user: dict = Depends(get_current_user)):
-    from modules.account_module.services.fiscal_year_service import FiscalYearService
+@router.delete("/financial-years/{fiscal_year_id}", response_model=BaseResponse)
+async def delete_financial_year(fiscal_year_id: int, current_user: dict = Depends(get_current_user)):
+    from modules.admin_module.services.financial_year_service import FinancialYearService
     
     try:
-        fiscal_year_service = FiscalYearService()
-        fiscal_year_service.soft_delete(fiscal_year_id)
+        financial_year_service = FinancialYearService()
+        financial_year_service.delete(fiscal_year_id)
         
         return BaseResponse(
             success=True,
-            message="Fiscal year deleted successfully"
+            message="Financial year deleted successfully"
         )
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.post("/fiscal-years/{fiscal_year_id}/close", response_model=BaseResponse)
-async def close_fiscal_year(fiscal_year_id: int, current_user: dict = Depends(get_current_user)):
-    from modules.account_module.services.fiscal_year_service import FiscalYearService
+@router.post("/financial-years/{fiscal_year_id}/close", response_model=BaseResponse)
+async def close_financial_year(fiscal_year_id: int, current_user: dict = Depends(get_current_user)):
+    from modules.admin_module.services.financial_year_service import FinancialYearService
     
     try:
-        fiscal_year_service = FiscalYearService()
-        fiscal_year = fiscal_year_service.close_fiscal_year(fiscal_year_id)
+        financial_year_service = FinancialYearService()
+        fiscal_year = financial_year_service.update(fiscal_year_id, {'is_closed': True, 'is_active': False})
         
         return BaseResponse(
             success=True,
-            message="Fiscal year closed successfully",
+            message="Financial year closed successfully",
             data={"id": fiscal_year.id}
         )
     except Exception as e:

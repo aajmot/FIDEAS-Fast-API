@@ -108,8 +108,27 @@ class UserRole(Base):
     role = relationship("Role", back_populates="user_roles")
     assigner = relationship("User", foreign_keys=[assigned_by])
 
-# FinancialYear moved to account_module as FiscalYear
-# Import from there if needed: from modules.account_module.models.entities import FiscalYear
+class FinancialYear(Base):
+    __tablename__ = 'financial_years'
+    
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False)
+    code = Column(String(20), nullable=False)
+    start_date = Column(DateTime, nullable=False)
+    end_date = Column(DateTime, nullable=False)
+    is_active = Column(Boolean, default=False)
+    is_current = Column(Boolean, default=False)
+    is_closed = Column(Boolean, default=False)
+    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(100))
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_by = Column(String(100))
+    
+    __table_args__ = (
+        UniqueConstraint('tenant_id', 'name', name='uq_financial_year_tenant_name'),
+        UniqueConstraint('tenant_id', 'code', name='uq_financial_year_tenant_code'),
+    )
 
 class ModuleMaster(Base):
     __tablename__ = 'module_master'

@@ -907,7 +907,7 @@ async def import_legal_entities(file: UploadFile = File(...), current_user: dict
 @router.get("/financial-years", response_model=PaginatedResponse)
 async def get_financial_years(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.account_module.models.entities import FiscalYear as FinancialYear
+    from modules.admin_module.models.entities import FinancialYear
     
     with db_manager.get_session() as session:
         query = session.query(FinancialYear).filter(FinancialYear.tenant_id == current_user["tenant_id"])
@@ -944,7 +944,7 @@ async def get_financial_years(pagination: PaginationParams = Depends(), current_
 @router.post("/financial-years", response_model=BaseResponse)
 async def create_financial_year(year_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.account_module.models.entities import FiscalYear as FinancialYear
+    from modules.admin_module.models.entities import FinancialYear
     from datetime import datetime
     
     with db_manager.get_session() as session:
@@ -984,7 +984,7 @@ async def create_financial_year(year_data: Dict[str, Any], current_user: dict = 
 @router.put("/financial-years/{year_id}", response_model=BaseResponse)
 async def update_financial_year(year_id: int, year_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.account_module.models.entities import FiscalYear as FinancialYear
+    from modules.admin_module.models.entities import FinancialYear
     from datetime import datetime
     
     with db_manager.get_session() as session:
@@ -1029,7 +1029,7 @@ async def update_financial_year(year_id: int, year_data: Dict[str, Any], current
 @router.delete("/financial-years/{year_id}", response_model=BaseResponse)
 async def delete_financial_year(year_id: int, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.account_module.models.entities import FiscalYear as FinancialYear
+    from modules.admin_module.models.entities import FinancialYear
     
     with db_manager.get_session() as session:
         year = session.query(FinancialYear).filter(
@@ -1062,7 +1062,7 @@ async def export_financial_years_template(current_user: dict = Depends(get_curre
 @router.post("/financial-years/import", response_model=BaseResponse)
 async def import_financial_years(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.account_module.models.entities import FiscalYear as FinancialYear
+    from modules.admin_module.models.entities import FinancialYear
     from datetime import datetime
     
     content = await file.read()

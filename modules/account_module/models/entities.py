@@ -165,25 +165,7 @@ class Payment(Base):
     account = relationship("AccountMaster")
     voucher = relationship("Voucher")
 
-class FiscalYear(Base):
-    __tablename__ = 'fiscal_years'
-    
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
-    start_date = Column(Date, nullable=False)
-    end_date = Column(Date, nullable=False)
-    is_active = Column(Boolean, default=False)
-    is_closed = Column(Boolean, default=False)
-    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    created_by = Column(String(100))
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    updated_by = Column(String(100))
-    is_deleted = Column(Boolean, default=False)
-    
-    __table_args__ = (
-        UniqueConstraint('tenant_id', 'name', name='uq_fiscal_year_tenant_name'),
-    )
+
 
 class Currency(Base):
     __tablename__ = 'currencies'
@@ -285,7 +267,7 @@ class Budget(Base):
     
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
-    fiscal_year_id = Column(Integer, ForeignKey('fiscal_years.id'), nullable=False)
+    fiscal_year_id = Column(Integer, ForeignKey('financial_years.id'), nullable=False)
     account_id = Column(Integer, ForeignKey('account_masters.id'), nullable=False)
     cost_center_id = Column(Integer, ForeignKey('cost_centers.id'))
     budget_amount = Column(Numeric(15, 2), nullable=False)
@@ -296,7 +278,7 @@ class Budget(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     created_by = Column(String(100))
     
-    fiscal_year = relationship("FiscalYear")
+    # fiscal_year relationship removed - import from admin module if needed
     account = relationship("AccountMaster")
     cost_center = relationship("CostCenter")
     

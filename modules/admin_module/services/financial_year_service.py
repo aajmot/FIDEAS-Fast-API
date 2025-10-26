@@ -1,5 +1,5 @@
 from core.database.connection import db_manager
-from modules.account_module.models.entities import FiscalYear as FinancialYear
+from modules.admin_module.models.entities import FinancialYear
 from core.shared.utils.session_manager import session_manager
 from core.shared.middleware.exception_handler import ExceptionMiddleware
 

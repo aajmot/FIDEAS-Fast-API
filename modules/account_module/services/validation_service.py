@@ -4,14 +4,15 @@ Validation Service for Accounting Module
 from datetime import datetime
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from modules.account_module.models.entities import FiscalYear, AccountMaster, Ledger
+from modules.admin_module.models.entities import FinancialYear
+from modules.account_module.models.entities import AccountMaster, Ledger
 from decimal import Decimal
 
 class ValidationService:
     """Service for accounting validations"""
     
     @staticmethod
-    def validate_fiscal_year(session: Session, transaction_date: datetime, tenant_id: int) -> FiscalYear:
+    def validate_financial_year(session: Session, transaction_date: datetime, tenant_id: int) -> FinancialYear:
         """
         Validate that transaction date falls within an active fiscal year
         
@@ -21,32 +22,31 @@ class ValidationService:
             tenant_id: Tenant ID
             
         Returns:
-            FiscalYear: Active fiscal year
+            FinancialYear: Active financial year
             
         Raises:
             ValueError: If no active fiscal year found or fiscal year is closed
         """
-        fiscal_year = session.query(FiscalYear).filter(
-            FiscalYear.tenant_id == tenant_id,
-            FiscalYear.is_active == True,
-            FiscalYear.start_date <= transaction_date.date(),
-            FiscalYear.end_date >= transaction_date.date(),
-            FiscalYear.is_deleted == False
+        financial_year = session.query(FinancialYear).filter(
+            FinancialYear.tenant_id == tenant_id,
+            FinancialYear.is_active == True,
+            FinancialYear.start_date <= transaction_date,
+            FinancialYear.end_date >= transaction_date
         ).first()
         
-        if not fiscal_year:
+        if not financial_year:
             raise ValueError(
-                f"No active fiscal year found for date {transaction_date.date()}. "
-                "Please create a fiscal year covering this period."
+                f"No active financial year found for date {transaction_date.date()}. "
+                "Please create a financial year covering this period."
             )
         
-        if fiscal_year.is_closed:
+        if financial_year.is_closed:
             raise ValueError(
-                f"Fiscal year '{fiscal_year.name}' is closed. "
+                f"Financial year '{financial_year.name}' is closed. "
                 "Cannot post transactions to a closed period."
             )
         
-        return fiscal_year
+        return financial_year
     
     @staticmethod
     def validate_debit_credit_balance(debit_total: float, credit_total: float, tolerance: float = 0.01) -> bool:

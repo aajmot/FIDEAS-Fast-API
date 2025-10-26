@@ -4,7 +4,8 @@ from datetime import datetime
 from api.schemas.common import BaseResponse
 from api.middleware.auth_middleware import get_current_user
 from core.database.connection import db_manager
-from modules.account_module.models.entities import AccountMaster, AccountGroup, Ledger, Budget, FiscalYear
+from modules.account_module.models.entities import AccountMaster, AccountGroup, Ledger, Budget
+from modules.admin_module.models.entities import FinancialYear
 from sqlalchemy import func, and_
 
 router = APIRouter()
@@ -72,9 +73,9 @@ async def get_budget_vs_actual(
             Budget.name,
             AccountMaster.name.label('account_name'),
             Budget.budget_amount,
-            FiscalYear.start_date,
-            FiscalYear.end_date
-        ).join(AccountMaster).join(FiscalYear).filter(
+            FinancialYear.start_date,
+            FinancialYear.end_date
+        ).join(AccountMaster).join(FinancialYear).filter(
             Budget.tenant_id == current_user['tenant_id']
         )
         
