@@ -40,6 +40,7 @@ ENV/
 .venv/
 # .env/
 .fideas/
+.fideas*/
 
 # IDE
 .vscode/
@@ -67,7 +68,7 @@ coverage.xml
 *.cover
 
 # Environment
-.env
+# .env
 .env.*
 !.env.example
 

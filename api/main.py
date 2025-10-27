@@ -53,7 +53,7 @@ app.include_router(comparative_reports.router, prefix="/api/v1/comparative-repor
 app.include_router(gst_reports.router, prefix="/api/v1/gst", tags=["GST Reports v1"], dependencies=[Depends(get_current_user)])
 app.include_router(inventory_extensions.router, prefix="/api/v1/inventory", tags=["Inventory Extensions v1"], dependencies=[Depends(get_current_user)])
 app.include_router(batch_management.router, prefix="/api/v1/batch", tags=["Batch Management v1"], dependencies=[Depends(get_current_user)])
-app.include_router(currency.router, prefix="/api/v1/currency", tags=["Multi-Currency v1"], dependencies=[Depends(get_current_user)])
+app.include_router(currency.router, prefix="/api/v1/currency", tags=["Admin - Currency Management v1"], dependencies=[Depends(get_current_user)])
 app.include_router(reconciliation.router, prefix="/api/v1/reconciliation", tags=["Reconciliation v1"], dependencies=[Depends(get_current_user)])
 app.include_router(notifications.router, prefix="/api/v1/notifications", tags=["Notifications v1"], dependencies=[Depends(get_current_user)])
 app.include_router(invoice.router, prefix="/api/v1/invoice", tags=["Invoice v1"], dependencies=[Depends(get_current_user)])

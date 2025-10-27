@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends
 from typing import List, Dict
 from pydantic import BaseModel
 from api.middleware.auth_middleware import get_current_user
-from modules.account_module.services.currency_service import CurrencyService
+from modules.admin_module.services.currency_service import CurrencyService
 
-router = APIRouter(prefix="/currency", tags=["Multi-Currency"])
+router = APIRouter(prefix="/currency")
 
 class ExchangeRateUpdate(BaseModel):
     currency_id: int
