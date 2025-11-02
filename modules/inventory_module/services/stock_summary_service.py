@@ -1,5 +1,5 @@
 from core.database.connection import db_manager
-from modules.inventory_module.models.stock_entities import StockBalance
+from modules.inventory_module.models.stock_entity import StockBalance
 from modules.inventory_module.models.entities import Product
 from sqlalchemy import func, case, or_
 from core.shared.utils.session_manager import session_manager
@@ -153,7 +153,7 @@ class StockSummaryService:
     def get_stock_tracking_summary(self, product_id=None, movement_type=None, reference_type=None, from_date=None, to_date=None):
         """Get stock tracking summary with efficient calculation"""
         with db_manager.get_session() as session:
-            from modules.inventory_module.models.stock_entities import StockTransaction
+            from modules.inventory_module.models.stock_entity import StockTransaction
             from datetime import datetime
             
             tenant_id = session_manager.get_current_tenant_id()

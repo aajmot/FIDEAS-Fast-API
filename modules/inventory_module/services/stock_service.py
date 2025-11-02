@@ -1,5 +1,5 @@
 from core.database.connection import db_manager
-from modules.inventory_module.models.stock_entities import StockTransaction, StockBalance
+from modules.inventory_module.models.stock_entity import StockTransaction, StockBalance
 from modules.inventory_module.models.entities import Product
 from core.shared.utils.session_manager import session_manager
 from core.shared.middleware.exception_handler import ExceptionMiddleware

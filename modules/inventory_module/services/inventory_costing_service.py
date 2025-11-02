@@ -51,7 +51,7 @@ class InventoryCostingService:
     def calculate_cogs(product_id: int, quantity: Decimal, method: str = 'FIFO') -> Decimal:
         """Calculate Cost of Goods Sold"""
         from core.database.connection import db_manager
-        from modules.inventory_module.models.stock_entities import StockTransaction
+        from modules.inventory_module.models.stock_entity import StockTransaction
         
         with db_manager.get_session() as session:
             txns = session.query(StockTransaction).filter(
