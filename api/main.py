@@ -167,10 +167,22 @@ app = FastAPI(
 )
 
 # CORS middleware
+# CORS middleware
+# Configure allowed origins via ALLOWED_ORIGINS environment variable (comma-separated).
+# If ALLOWED_ORIGINS is '*' we must NOT set allow_credentials=True because browsers
+# block '*' with credentials. When specific origins are provided, credentials are allowed.
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "*")
+if allowed_origins_env and allowed_origins_env.strip() != "*":
+    allow_origins = [o.strip() for o in allowed_origins_env.split(",") if o.strip()]
+    allow_credentials = True
+else:
+    allow_origins = ["*"]
+    allow_credentials = False
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=allow_origins,
+    allow_credentials=allow_credentials,
     allow_methods=["*"],
     allow_headers=["*"]
 )

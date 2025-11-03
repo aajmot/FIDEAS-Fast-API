@@ -39,9 +39,11 @@ async def get_suppliers(pagination: PaginationParams = Depends(), current_user: 
             "phone": supplier.phone,
             "email": supplier.email,
             "tax_id": supplier.tax_id,
-            "contact_person": supplier.contact_person,
             "address": supplier.address,
-            "is_active": supplier.is_active
+            "contact_person": supplier.contact_person,
+            "is_active": supplier.is_active,
+            "updated_at": supplier.updated_at.isoformat() if supplier.updated_at else None,
+            "created_at": supplier.created_at.isoformat() if supplier.created_at else None
         } for supplier in suppliers]
 
     return PaginatedResponse(
@@ -86,12 +88,46 @@ async def delete_supplier(supplier_id: int, current_user: dict = Depends(get_cur
     return BaseResponse(success=True, message="Supplier deleted successfully")
 
 
+@router.get("/suppliers/{supplier_id}", response_model=BaseResponse)
+async def get_supplier(supplier_id: int, current_user: dict = Depends(get_current_user)):
+    from core.database.connection import db_manager
+    from modules.inventory_module.models.entities import Supplier
+
+    with db_manager.get_session() as session:
+        supplier = session.query(Supplier).filter(
+            Supplier.id == supplier_id,
+            Supplier.tenant_id == current_user['tenant_id']
+        ).first()
+        
+        if not supplier:
+            raise HTTPException(status_code=404, detail="Supplier not found")
+
+        supplier_data = {
+            "id": supplier.id,
+            "name": supplier.name,
+            "phone": supplier.phone,
+            "email": supplier.email,
+            "tax_id": supplier.tax_id,
+            "address": supplier.address,
+            "contact_person": supplier.contact_person,
+            "is_active": supplier.is_active,
+            "updated_at": supplier.updated_at.isoformat() if supplier.updated_at else None,
+            "created_at": supplier.created_at.isoformat() if supplier.created_at else None
+        }
+
+        return BaseResponse(
+            success=True,
+            message="Supplier retrieved successfully",
+            data=supplier_data
+        )
+
+
 @router.get("/suppliers/export-template")
 async def export_suppliers_template(current_user: dict = Depends(get_current_user)):
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["name", "phone", "email", "tax_id", "contact_person", "address", "is_active"])
-    writer.writerow(["ABC Supplier", "123-456-7890", "abc@supplier.com", "TAX001", "John Doe", "456 Supply St", "true"])
+    writer.writerow(["name", "phone", "email", "tax_id", "address", "contact_person", "is_active"])
+    writer.writerow(["ABC Supplier", "123-456-7890", "abc@supplier.com", "TAX001", "456 Supply St", "John Doe", "true"])
 
     output.seek(0)
     return StreamingResponse(
@@ -116,8 +152,8 @@ async def import_suppliers(file: UploadFile = File(...), current_user: dict = De
                 "phone": row["phone"],
                 "email": row.get("email", ""),
                 "tax_id": row.get("tax_id", ""),
-                "contact_person": row.get("contact_person", ""),
                 "address": row.get("address", ""),
+                "contact_person": row.get("contact_person", ""),
                 "is_active": row["is_active"].lower() == "true"
             }
 

@@ -1,5 +1,6 @@
 -- Table: public.transaction_templates
 
+DROP TABLE IF EXISTS public.transaction_templates_rules;
 DROP TABLE IF EXISTS public.transaction_templates;
 
 CREATE TABLE IF NOT EXISTS public.transaction_templates
@@ -38,7 +39,6 @@ CREATE TABLE IF NOT EXISTS public.transaction_templates
 
 -- Table: public.transaction_template_rules
 
-DROP TABLE IF EXISTS public.transaction_template_rules;
 CREATE TABLE IF NOT EXISTS public.transaction_template_rules
 (
     id SERIAL NOT NULL,

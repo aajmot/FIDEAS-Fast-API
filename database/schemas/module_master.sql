@@ -20,3 +20,4 @@ CREATE TABLE IF NOT EXISTS public.module_master
     CONSTRAINT module_master_module_code_key UNIQUE (module_code),
     CONSTRAINT module_master_module_name_key UNIQUE (module_name)
 );
+

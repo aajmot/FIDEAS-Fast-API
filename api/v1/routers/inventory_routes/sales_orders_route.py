@@ -23,7 +23,7 @@ async def get_sales_orders(pagination: PaginationParams = Depends(), current_use
         "agency_id": getattr(order, 'agency_id', None),
         "agency_name": getattr(order, 'agency_name', None),
         "order_date": order.order_date.isoformat() if order.order_date else None,
-        "total_amount": float(order.total_amount),
+        "net_amount": float(order.net_amount),
         "status": order.status
     } for order in orders]
 
@@ -54,7 +54,7 @@ async def create_sales_order(order_data: Dict[str, Any], current_user: dict = De
                 'reference_type': 'SALES_ORDER',
                 'reference_id': order_id,
                 'reference_number': order_data['order'].get('order_number'),
-                'total_amount': order_data['order'].get('total_amount'),
+                'total_amount': order_data['order'].get('net_amount'),
                 'transaction_date': order_data['order'].get('order_date'),
                 'created_by': current_user['username']
             }
@@ -99,35 +99,75 @@ async def get_sales_order(order_id: int, current_user: dict = Depends(get_curren
         order_data = {
             "id": order.id,
             "so_number": order.order_number,
+            "reference_number": order.reference_number,
             "customer_id": order.customer_id,
-            "customer_name": customer.name if customer else "",
+            "customer_name": customer.name if customer else order.customer_name,
+            "customer_phone": order.customer_phone,
             "agency_id": order.agency_id,
             "agency_name": agency_name,
             "order_date": order.order_date.isoformat() if order.order_date else None,
-            "total_amount": float(order.total_amount),
-            "discount_percent": float(order.discount_percent) if hasattr(order, 'discount_percent') else 0,
-            "discount_amount": float(order.discount_amount) if hasattr(order, 'discount_amount') else 0,
-            "roundoff": float(order.roundoff) if hasattr(order, 'roundoff') else 0,
+            
+            # Amount breakdown
+            "subtotal_amount": float(order.subtotal_amount),
+            "header_discount_percent": float(order.header_discount_percent) if order.header_discount_percent else 0,
+            "header_discount_amount": float(order.header_discount_amount) if order.header_discount_amount else 0,
+            "taxable_amount": float(order.taxable_amount),
+            
+            # Tax breakdown
+            "cgst_amount": float(order.cgst_amount) if order.cgst_amount else 0,
+            "sgst_amount": float(order.sgst_amount) if order.sgst_amount else 0,
+            "igst_amount": float(order.igst_amount) if order.igst_amount else 0,
+            "utgst_amount": float(order.utgst_amount) if order.utgst_amount else 0,
+            "total_tax_amount": float(order.total_tax_amount) if order.total_tax_amount else 0,
+            
+            # Agent commission
+            "agent_commission_percent": float(order.agent_commission_percent) if order.agent_commission_percent else None,
+            "agent_commission_amount": float(order.agent_commission_amount) if order.agent_commission_amount else 0,
+            
+            "roundoff": float(order.roundoff) if order.roundoff else 0,
+            "net_amount": float(order.net_amount),
+            
+            # Currency
+            "currency_id": order.currency_id,
+            "exchange_rate": float(order.exchange_rate) if order.exchange_rate else 1,
+            "net_amount_base": float(order.net_amount_base) if order.net_amount_base else float(order.net_amount),
+            
+            # Status & Reversal
             "status": order.status,
+            "reversal_reason": order.reversal_reason,
+            "reversed_at": order.reversed_at.isoformat() if order.reversed_at else None,
+            "reversed_by": order.reversed_by,
+            
             "items": [{
                 "id": item.id,
                 "product_id": item.product_id,
                 "product_name": product.name,
+                "batch_number": item.batch_number,
+                "expiry_date": item.expiry_date.isoformat() if item.expiry_date else None,
                 "quantity": float(item.quantity),
-                "free_quantity": float(getattr(item, 'free_quantity', 0)),
-                "unit_price": float(item.unit_price) if getattr(item, 'unit_price', None) is not None else None,
-                "mrp": float(item.mrp) if getattr(item, 'mrp', None) is not None else None,
-                "gst_rate": float(item.gst_rate) if getattr(item, 'gst_rate', None) is not None else 0,
-                "gst_amount": float(item.gst_amount) if getattr(item, 'gst_amount', None) is not None else None,
-                "cgst_amount": float(item.cgst_amount) if getattr(item, 'cgst_amount', None) is not None else None,
-                "sgst_amount": float(item.sgst_amount) if getattr(item, 'sgst_amount', None) is not None else None,
-                "cgst_rate": float(item.cgst_rate) if getattr(item, 'cgst_rate', None) is not None else 0,
-                "sgst_rate": float(item.sgst_rate) if getattr(item, 'sgst_rate', None) is not None else 0,
-                "discount_percent": float(item.discount_percent) if getattr(item, 'discount_percent', None) is not None else 0,
-                "discount_amount": float(item.discount_amount) if getattr(item, 'discount_amount', None) is not None else 0,
-                "total_amount": float(item.total_price) if getattr(item, 'total_price', None) is not None else None,
-                "description": getattr(item, 'description', None),
-                "batch_number": getattr(item, 'batch_number', '')
+                "free_quantity": float(item.free_quantity) if item.free_quantity else 0,
+                "mrp_price": float(item.mrp_price) if item.mrp_price else None,
+                "unit_price": float(item.unit_price),
+                "line_discount_percent": float(item.line_discount_percent) if item.line_discount_percent else 0,
+                "line_discount_amount": float(item.line_discount_amount) if item.line_discount_amount else 0,
+                
+                # Tax breakdown per line
+                "taxable_amount": float(item.taxable_amount),
+                "cgst_rate": float(item.cgst_rate) if item.cgst_rate else 0,
+                "cgst_amount": float(item.cgst_amount) if item.cgst_amount else 0,
+                "sgst_rate": float(item.sgst_rate) if item.sgst_rate else 0,
+                "sgst_amount": float(item.sgst_amount) if item.sgst_amount else 0,
+                "igst_rate": float(item.igst_rate) if item.igst_rate else 0,
+                "igst_amount": float(item.igst_amount) if item.igst_amount else 0,
+                "utgst_rate": float(item.utgst_rate) if item.utgst_rate else 0,
+                "utgst_amount": float(item.utgst_amount) if item.utgst_amount else 0,
+                
+                # Agent commission per line
+                "agent_commission_percent": float(item.agent_commission_percent) if item.agent_commission_percent else None,
+                "agent_commission_amount": float(item.agent_commission_amount) if item.agent_commission_amount else 0,
+                
+                "total_price": float(item.total_price),
+                "narration": item.narration
             } for item, product in items]
         }
 

@@ -12,6 +12,20 @@ class SalesOrderService:
                 # Add tenant_id and audit fields to order
                 order_data['tenant_id'] = session_manager.get_current_tenant_id()
                 order_data['created_by'] = session_manager.get_current_username()
+                order_data['updated_by'] = session_manager.get_current_username()
+                
+                # Calculate tax totals if not provided
+                if 'total_tax_amount' not in order_data:
+                    order_data['total_tax_amount'] = (
+                        order_data.get('cgst_amount', 0) + 
+                        order_data.get('sgst_amount', 0) + 
+                        order_data.get('igst_amount', 0) + 
+                        order_data.get('utgst_amount', 0)
+                    )
+                
+                # Calculate net_amount_base if currency is provided
+                if 'net_amount_base' not in order_data and 'exchange_rate' in order_data:
+                    order_data['net_amount_base'] = order_data.get('net_amount', 0) * order_data.get('exchange_rate', 1)
                 
                 # Create sales order
                 sales_order = SalesOrder(**order_data)
@@ -20,8 +34,14 @@ class SalesOrderService:
                 
                 # Create order items
                 order_items = []
+                tenant_id = session_manager.get_current_tenant_id()
+                username = session_manager.get_current_username()
+                
                 for item_data in items_data:
                     item_data['sales_order_id'] = sales_order.id
+                    item_data['tenant_id'] = tenant_id
+                    item_data['created_by'] = username
+                    item_data['updated_by'] = username
                     order_item = SalesOrderItem(**item_data)
                     session.add(order_item)
                     order_items.append(order_item)
@@ -40,13 +60,13 @@ class SalesOrderService:
                     payment_service = PaymentService()
                     
                     # Calculate COGS from order items
-                    cogs_amount = sum(float(item.quantity * (item.cost_price or 0)) for item in order_items)
+                    cogs_amount = sum(float(item.quantity * (getattr(item, 'cost_price', None) or 0)) for item in order_items)
                     
                     payment_service.record_sales_transaction_in_session(
                         session,
                         sales_order.id, 
                         sales_order.order_number, 
-                        float(sales_order.total_amount),
+                        float(sales_order.net_amount),
                         sales_order.order_date,
                         cogs_amount
                     )
@@ -92,10 +112,10 @@ class SalesOrderService:
                 order_dict = {
                     'id': order.id,
                     'order_number': order.order_number,
-                    'total_amount': order.total_amount,
+                    'net_amount': order.net_amount,
                     'status': order.status,
                     'order_date': order.order_date,
-                    'customer_name': order.customer.name if order.customer else '',
+                    'customer_name': order.customer.name if order.customer else order.customer_name or '',
                     'agency_id': order.agency_id,
                     'agency_name': agency_name
                 }
@@ -140,26 +160,32 @@ class SalesOrderService:
                 if not order:
                     raise ValueError("Order not found")
                 
-                if order.status == 'reversed':
+                if order.status == 'REVERSED':
                     raise ValueError("Order is already reversed")
                 
                 # Get order items
                 items = session.query(SalesOrderItem).filter(SalesOrderItem.sales_order_id == order_id).all()
                 
                 # Reverse stock transactions
-                from modules.inventory_module.services.stock_service import StockService
-                stock_service = StockService()
-                stock_service.reverse_sales_transaction_in_session(session, order, items)
+                try:
+                    from modules.inventory_module.services.stock_service import StockService
+                    stock_service = StockService()
+                    stock_service.reverse_sales_transaction_in_session(session, order, items)
+                except (ImportError, AttributeError):
+                    pass  # Stock service not available
                 
                 # Reverse accounting transactions
-                from modules.account_module.services.payment_service import PaymentService
-                payment_service = PaymentService()
-                payment_service.reverse_sales_transaction_in_session(
-                    session, order.id, order.order_number, float(order.total_amount), order.order_date
-                )
+                try:
+                    from modules.account_module.services.payment_service import PaymentService
+                    payment_service = PaymentService()
+                    payment_service.reverse_sales_transaction_in_session(
+                        session, order.id, order.order_number, float(order.net_amount), order.order_date
+                    )
+                except (ImportError, AttributeError):
+                    pass  # Payment service not available
                 
                 # Update order status and reason
-                order.status = 'reversed'
+                order.status = 'REVERSED'
                 order.reversal_reason = reason
                 order.reversed_at = datetime.now()
                 order.reversed_by = session_manager.get_current_username()

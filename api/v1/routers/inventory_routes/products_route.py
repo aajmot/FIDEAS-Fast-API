@@ -12,95 +12,6 @@ from core.database.connection import db_manager
 
 router = APIRouter()
 
-
-@router.get("/products/export-template", response_class=StreamingResponse)
-async def export_products_template(current_user: dict = Depends(get_current_user)):
-    output = io.StringIO()
-    writer = csv.writer(output)
-    writer.writerow(["name", "code", "category", "unit", "mrp_price", "selling_price", "gst_rate", "tags", "composition", "hsn_id", "schedule", "manufacturer"])
-    writer.writerow(["Paracetamol 500mg", "PAR500", "Pharmacy", "Tablet", "30.00", "25.50", "12.0", "#fever #pain", "Paracetamol 500mg", "1", "OTC", "ABC Pharma"])
-    writer.writerow(["Vitamin C Tablets", "VITC100", "Nutrition & Supplements", "Tablet", "160.00", "150.00", "18.0", "#vitamin #immunity", "Ascorbic Acid 100mg", "2", "OTC", "XYZ Health"])
-    writer.writerow(["Cough Syrup", "COUGH250", "Pharmacy", "Bottle", "90.00", "85.00", "12.0", "#cough #cold", "Dextromethorphan 15mg", "1", "Schedule H", "MediCorp"])
-    
-    content = output.getvalue()
-    return StreamingResponse(
-        io.BytesIO(content.encode('utf-8')),
-        media_type="application/octet-stream",
-        headers={"Content-Disposition": "attachment; filename=products_import_template.csv"}
-    )
-
-
-@router.post("/products/import", response_model=BaseResponse)
-async def import_products(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
-    content = await file.read()
-    csv_data = csv.DictReader(io.StringIO(content.decode()))
-
-    from modules.inventory_module.models.entities import Category, Unit
-
-    product_service = ProductService()
-    imported_count = 0
-    errors = []
-
-    for row_num, row in enumerate(csv_data, start=2):
-        try:
-            name = str(row.get('name', '')).strip()
-            category_name = str(row.get('category', '')).strip()
-            unit_name = str(row.get('unit', '')).strip()
-            price = row.get('price', '')
-            
-            if not name or not category_name or not unit_name or not price:
-                errors.append(f"Row {row_num}: Missing required fields")
-                continue
-            
-            # Find category and unit by name
-            with db_manager.get_session() as session:
-                tenant_id = session_manager.get_current_tenant_id()
-                category = session.query(Category).filter(
-                    Category.name == category_name,
-                    Category.tenant_id == tenant_id
-                ).first()
-                
-                if not category:
-                    errors.append(f"Row {row_num}: Category '{category_name}' not found")
-                    continue
-                
-                unit = session.query(Unit).filter(
-                    Unit.name == unit_name
-                ).first()
-                
-                if not unit:
-                    errors.append(f"Row {row_num}: Unit '{unit_name}' not found")
-                    continue
-                
-                product_data = {
-                    'name': name,
-                    'code': str(row.get('code', '')).strip(),
-                    'category_id': category.id,
-                    'unit_id': unit.id,
-                    'mrp_price': float(row.get('mrp_price', price)),
-                    'selling_price': float(row.get('selling_price', price)),
-                    'gst_rate': float(row.get('gst_rate', row.get('gst_percentage', 0))),
-                    'tags': str(row.get('tags', '')).strip(),
-                    'composition': str(row.get('composition', '')).strip(),
-                    'hsn_id': int(row.get('hsn_id')) if row.get('hsn_id') and row.get('hsn_id').strip().isdigit() else None,
-                    'schedule': str(row.get('schedule', 'OTC')).strip(),
-                    'manufacturer': str(row.get('manufacturer', '')).strip()
-                }
-                
-                product_service.create(product_data)
-                imported_count += 1
-        except Exception as e:
-            errors.append(f"Row {row_num}: {str(e)}")
-            continue
-    
-    message = f"Imported {imported_count} products successfully"
-    if errors:
-        message += f". {len(errors)} errors occurred"
-    
-    return BaseResponse(
-        success=True,
-        message=message
-    )
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
 from fastapi.responses import StreamingResponse
 from typing import Dict, Any
@@ -144,6 +55,9 @@ async def get_products(pagination: PaginationParams = Depends(), current_user: d
                 Product.hsn_code.ilike(search_term)
             ))
 
+        # Order by id desc so most recent products appear first
+        query = query.order_by(Product.id.desc())
+
         total = query.count()
         products = query.offset(pagination.offset).limit(pagination.per_page).all()
 
@@ -164,14 +78,26 @@ async def get_products(pagination: PaginationParams = Depends(), current_user: d
             "cost_price": float(product.cost_price) if getattr(product, 'cost_price', None) is not None else 0,
             "is_tax_inclusive": bool(getattr(product, 'is_tax_inclusive', False)),
             "hsn_id": getattr(product, 'hsn_id', None),
+            "hsn_code": getattr(product, 'hsn_code', None),
             "gst_rate": float(product.gst_rate) if getattr(product, 'gst_rate', None) is not None else 0,
             "igst_rate": float(product.igst_rate) if getattr(product, 'igst_rate', None) is not None else 0,
             "cgst_rate": float(product.cgst_rate) if getattr(product, 'cgst_rate', None) is not None else 0,
             "sgst_rate": float(product.sgst_rate) if getattr(product, 'sgst_rate', None) is not None else 0,
+            "cess_rate": float(product.cess_rate) if getattr(product, 'cess_rate', None) is not None else 0,
             "commission_type": product.commission_type,
             "commission_value": float(product.commission_value) if product.commission_value else None,
             "description": product.description,
-            "is_active": product.is_active
+            "is_active": product.is_active,
+            # Inventory stock level fields
+            "is_inventory_item": bool(getattr(product, 'is_inventory_item', True)),
+            "reorder_level": float(product.reorder_level) if getattr(product, 'reorder_level', None) is not None else 0,
+            "danger_level": float(product.danger_level) if getattr(product, 'danger_level', None) is not None else 0,
+            "min_stock": float(product.min_stock) if getattr(product, 'min_stock', None) is not None else 0,
+            "max_stock": float(product.max_stock) if getattr(product, 'max_stock', None) is not None else 0,
+            # Additional tracking fields
+            "barcode": getattr(product, 'barcode', None),
+            "is_serialized": bool(getattr(product, 'is_serialized', False)),
+            "warranty_months": getattr(product, 'warranty_months', None)
         } for product in products]
 
     return PaginatedResponse(
@@ -220,6 +146,7 @@ async def get_product(product_id: int, current_user: dict = Depends(get_current_
             "code": product.code,
             "composition": product.composition,
             "tags": product.tags,
+            "hsn_code": getattr(product, 'hsn_code', None),
             "schedule": product.schedule,
             "manufacturer": product.manufacturer,
             "is_discontinued": product.is_discontinued,
@@ -234,10 +161,21 @@ async def get_product(product_id: int, current_user: dict = Depends(get_current_
             "igst_rate": float(product.igst_rate) if getattr(product, 'igst_rate', None) is not None else 0,
             "cgst_rate": float(product.cgst_rate) if getattr(product, 'cgst_rate', None) is not None else 0,
             "sgst_rate": float(product.sgst_rate) if getattr(product, 'sgst_rate', None) is not None else 0,
+            "cess_rate": float(product.cess_rate) if getattr(product, 'cess_rate', None) is not None else 0,
             "commission_type": product.commission_type,
             "commission_value": float(product.commission_value) if product.commission_value else None,
             "description": product.description,
-            "is_active": product.is_active
+            "is_active": product.is_active,
+            # Inventory stock level fields
+            "is_inventory_item": bool(getattr(product, 'is_inventory_item', True)),
+            "reorder_level": float(product.reorder_level) if getattr(product, 'reorder_level', None) is not None else 0,
+            "danger_level": float(product.danger_level) if getattr(product, 'danger_level', None) is not None else 0,
+            "min_stock": float(product.min_stock) if getattr(product, 'min_stock', None) is not None else 0,
+            "max_stock": float(product.max_stock) if getattr(product, 'max_stock', None) is not None else 0,
+            # Additional tracking fields
+            "barcode": getattr(product, 'barcode', None),
+            "is_serialized": bool(getattr(product, 'is_serialized', False)),
+            "warranty_months": getattr(product, 'warranty_months', None)
         }
     )
 
@@ -278,10 +216,10 @@ async def delete_product(product_id: int, current_user: dict = Depends(get_curre
 async def export_products_template(current_user: dict = Depends(get_current_user)):
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["name", "code", "category", "unit", "mrp_price", "selling_price", "gst_rate", "tags", "composition", "hsn_id", "schedule", "manufacturer"])
-    writer.writerow(["Paracetamol 500mg", "PAR500", "Pharmacy", "Tablet", "30.00", "25.50", "12.0", "#fever #pain", "Paracetamol 500mg", "1", "OTC", "ABC Pharma"])
-    writer.writerow(["Vitamin C Tablets", "VITC100", "Nutrition & Supplements", "Tablet", "160.00", "150.00", "18.0", "#vitamin #immunity", "Ascorbic Acid 100mg", "2", "OTC", "XYZ Health"])
-    writer.writerow(["Cough Syrup", "COUGH250", "Pharmacy", "Bottle", "90.00", "85.00", "12.0", "#cough #cold", "Dextromethorphan 15mg", "1", "Schedule H", "MediCorp"])
+    writer.writerow(["name", "code", "category", "unit", "mrp_price", "selling_price", "gst_rate", "cess_rate", "reorder_level", "danger_level", "min_stock", "max_stock", "tags", "composition", "hsn_code", "hsn_id", "schedule", "manufacturer"])
+    writer.writerow(["Paracetamol 500mg", "PAR500", "Pharmacy", "Tablet", "30.00", "25.50", "12.0", "0.0", "10", "5", "0", "100", "#fever #pain", "Paracetamol 500mg", "H1234", "1", "OTC", "ABC Pharma"])
+    writer.writerow(["Vitamin C Tablets", "VITC100", "Nutrition & Supplements", "Tablet", "160.00", "150.00", "18.0", "0.0", "20", "10", "0", "200", "#vitamin #immunity", "Ascorbic Acid 100mg", "H2345", "2", "OTC", "XYZ Health"])
+    writer.writerow(["Cough Syrup", "COUGH250", "Pharmacy", "Bottle", "90.00", "85.00", "12.0", "0.0", "15", "7", "0", "150", "#cough #cold", "Dextromethorphan 15mg", "H3456", "1", "Schedule H", "MediCorp"])
 
     content = output.getvalue()
     return StreamingResponse(
@@ -297,11 +235,15 @@ async def import_products(file: UploadFile = File(...), current_user: dict = Dep
     content = await file.read()
     csv_data = csv.DictReader(io.StringIO(content.decode()))
 
-    from core.database.connection import db_manager
-    from modules.inventory_module.models.entities import Category, Unit
     from core.shared.utils.session_manager import session_manager
+    from modules.inventory_module.services.category_service import CategoryService
+    from modules.inventory_module.services.unit_service import UnitService
 
     product_service = ProductService()
+    category_service = CategoryService()
+    unit_service = UnitService()
+    from core.shared.utils.logger import logger
+
     imported_count = 0
     errors = []
 
@@ -310,51 +252,70 @@ async def import_products(file: UploadFile = File(...), current_user: dict = Dep
             name = str(row.get('name', '')).strip()
             category_name = str(row.get('category', '')).strip()
             unit_name = str(row.get('unit', '')).strip()
-            price = row.get('price', '')
+            price = row.get('mrp_price', '') or row.get('price', '')
 
             if not name or not category_name or not unit_name or not price:
                 errors.append(f"Row {row_num}: Missing required fields")
                 continue
 
-            # Find category and unit by name
+            # Lookup/create category and unit inside a session to avoid detached-instance issues
+            from core.database.connection import db_manager
+            from modules.inventory_module.models.entities import Category, Unit
             with db_manager.get_session() as session:
                 tenant_id = session_manager.get_current_tenant_id()
+
                 category = session.query(Category).filter(
-                    Category.name == category_name,
+                    Category.name.ilike(category_name),
                     Category.tenant_id == tenant_id
                 ).first()
-
                 if not category:
-                    errors.append(f"Row {row_num}: Category '{category_name}' not found")
-                    continue
+                    category = Category(name=category_name, tenant_id=tenant_id)
+                    session.add(category)
+                    session.flush()
+                    session.refresh(category)
 
-                unit = session.query(Unit).filter(
-                    Unit.name == unit_name
-                ).first()
-
+                unit = session.query(Unit).filter(Unit.name.ilike(unit_name)).first()
                 if not unit:
-                    errors.append(f"Row {row_num}: Unit '{unit_name}' not found")
-                    continue
+                    unit = Unit(name=unit_name)
+                    session.add(unit)
+                    session.flush()
+                    session.refresh(unit)
 
-                product_data = {
-                    'name': name,
-                    'code': str(row.get('code', '')).strip(),
-                    'category_id': category.id,
-                    'unit_id': unit.id,
-                    'mrp_price': float(row.get('mrp_price', price)),
-                    'selling_price': float(row.get('selling_price', price)),
-                    'gst_rate': float(row.get('gst_rate', row.get('gst_percentage', 0))),
-                    'tags': str(row.get('tags', '')).strip(),
-                    'composition': str(row.get('composition', '')).strip(),
-                    'hsn_id': int(row.get('hsn_id')) if row.get('hsn_id') and row.get('hsn_id').strip().isdigit() else None,
-                    'schedule': str(row.get('schedule', 'OTC')).strip(),
-                    'manufacturer': str(row.get('manufacturer', '')).strip()
-                }
+                category_id = category.id
+                unit_id = unit.id
 
-                product_service.create(product_data)
-                imported_count += 1
+            product_data = {
+                'name': name,
+                'code': str(row.get('code', '')).strip(),
+                'category_id': category_id,
+                'unit_id': unit_id,
+                'mrp_price': float(row.get('mrp_price', price)),
+                'selling_price': float(row.get('selling_price', price)),
+                'gst_rate': float(row.get('gst_rate', row.get('gst_percentage', 0))) if row.get('gst_rate') not in (None, '') else float(row.get('gst_percentage', 0)),
+                'cess_rate': float(row.get('cess_rate', 0)) if row.get('cess_rate') not in (None, '') else 0,
+                'reorder_level': float(row.get('reorder_level', 0)) if row.get('reorder_level') not in (None, '') else 0,
+                'danger_level': float(row.get('danger_level', 0)) if row.get('danger_level') not in (None, '') else 0,
+                'min_stock': float(row.get('min_stock', 0)) if row.get('min_stock') not in (None, '') else 0,
+                'max_stock': float(row.get('max_stock', 0)) if row.get('max_stock') not in (None, '') else 0,
+                'tags': str(row.get('tags', '')).strip(),
+                'composition': str(row.get('composition', '')).strip(),
+                # Accept either hsn_id (numeric) or hsn_code (string); service will resolve hsn_code -> hsn_id
+                'hsn_id': int(row.get('hsn_id')) if row.get('hsn_id') and str(row.get('hsn_id')).strip().isdigit() else None,
+                'hsn_code': str(row.get('hsn_code', '')).strip() if row.get('hsn_code') else None,
+                'schedule': str(row.get('schedule', 'OTC')).strip(),
+                'manufacturer': str(row.get('manufacturer', '')).strip()
+            }
+
+            product_service.create(product_data)
+            imported_count += 1
         except Exception as e:
-            errors.append(f"Row {row_num}: {str(e)}")
+            err_msg = f"Row {row_num}: {str(e)}"
+            # Log error with row context for easier debugging
+            try:
+                logger.error(err_msg, "ProductsImport", exc_info=True)
+            except Exception:
+                pass
+            errors.append(err_msg)
             continue
 
     message = f"Imported {imported_count} products successfully"
@@ -363,5 +324,9 @@ async def import_products(file: UploadFile = File(...), current_user: dict = Dep
 
     return BaseResponse(
         success=True,
-        message=message
+        message=message,
+        data={
+            'imported_count': imported_count,
+            'errors': errors[:200]  # include first 200 errors to avoid huge responses
+        }
     )

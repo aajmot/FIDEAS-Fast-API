@@ -49,5 +49,6 @@ from .product_waste_entity import ProductWaste
 from .stock_meter_entity import StockMeter
 from .category_entity import Category
 from .unit_entity import Unit
+from .hsn_entity import HsnCode
 from .stock_entity import StockTransaction, StockBalance
 from .warehouse_entity import Warehouse, StockByLocation, StockTransfer, StockTransferItem

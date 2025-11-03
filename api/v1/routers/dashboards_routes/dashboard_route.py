@@ -17,34 +17,35 @@ async def get_dashboard_kpis(current_user: dict = Depends(get_current_user)):
         year_start = today.replace(month=1, day=1)
         
         # Revenue (from sales orders)
+        # sales_orders schema uses 'net_amount' as final payable
         revenue_today = session.execute(text("""
-            SELECT COALESCE(SUM(total_amount), 0) FROM sales_orders 
+            SELECT COALESCE(SUM(net_amount), 0) FROM sales_orders 
             WHERE tenant_id = :tenant_id AND order_date = :today AND is_deleted = FALSE
         """), {"tenant_id": current_user['tenant_id'], "today": today}).scalar() or 0
         
         revenue_month = session.execute(text("""
-            SELECT COALESCE(SUM(total_amount), 0) FROM sales_orders 
+            SELECT COALESCE(SUM(net_amount), 0) FROM sales_orders 
             WHERE tenant_id = :tenant_id AND order_date >= :month_start AND is_deleted = FALSE
         """), {"tenant_id": current_user['tenant_id'], "month_start": month_start}).scalar() or 0
         
         revenue_year = session.execute(text("""
-            SELECT COALESCE(SUM(total_amount), 0) FROM sales_orders 
+            SELECT COALESCE(SUM(net_amount), 0) FROM sales_orders 
             WHERE tenant_id = :tenant_id AND order_date >= :year_start AND is_deleted = FALSE
         """), {"tenant_id": current_user['tenant_id'], "year_start": year_start}).scalar() or 0
         
         # Expenses (from purchase orders)
         expense_today = session.execute(text("""
-            SELECT COALESCE(SUM(total_amount), 0) FROM purchase_orders 
+            SELECT COALESCE(SUM(net_amount), 0) FROM purchase_orders 
             WHERE tenant_id = :tenant_id AND order_date = :today AND is_deleted = FALSE
         """), {"tenant_id": current_user['tenant_id'], "today": today}).scalar() or 0
         
         expense_month = session.execute(text("""
-            SELECT COALESCE(SUM(total_amount), 0) FROM purchase_orders 
+            SELECT COALESCE(SUM(net_amount), 0) FROM purchase_orders 
             WHERE tenant_id = :tenant_id AND order_date >= :month_start AND is_deleted = FALSE
         """), {"tenant_id": current_user['tenant_id'], "month_start": month_start}).scalar() or 0
         
         expense_year = session.execute(text("""
-            SELECT COALESCE(SUM(total_amount), 0) FROM purchase_orders 
+            SELECT COALESCE(SUM(net_amount), 0) FROM purchase_orders 
             WHERE tenant_id = :tenant_id AND order_date >= :year_start AND is_deleted = FALSE
         """), {"tenant_id": current_user['tenant_id'], "year_start": year_start}).scalar() or 0
         
@@ -99,7 +100,7 @@ async def get_revenue_trend(current_user: dict = Depends(get_current_user)):
         result = session.execute(text("""
             SELECT 
                 TO_CHAR(order_date, 'Mon YYYY') as month,
-                SUM(total_amount) as revenue
+                SUM(net_amount) as revenue
             FROM sales_orders
             WHERE tenant_id = :tenant_id 
                 AND order_date >= CURRENT_DATE - INTERVAL '12 months'

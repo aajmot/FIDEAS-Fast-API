@@ -1,3 +1,4 @@
+from typing import List
 from core.database.connection import db_manager
 from modules.inventory_module.models.entities import PurchaseOrder, PurchaseOrderItem
 from core.shared.utils.session_manager import session_manager
@@ -6,55 +7,73 @@ from datetime import datetime
 
 class PurchaseOrderService:
     @ExceptionMiddleware.handle_exceptions("PurchaseOrderService")
-    def create_with_items(self, order_data: dict, items_data: list):
+    def create_with_items(self, order_data: dict, items_data: List[dict]):
+        """Create a purchase order with its items"""
         with db_manager.get_session() as session:
+            # Remove generated columns from order_data - these are calculated by the database
+            generated_columns = ['total_tax_amount', 'net_amount_base']
+            for col in generated_columns:
+                order_data.pop(col, None)
+            
+            # Add tenant_id from session manager
+            tenant_id = session_manager.get_current_tenant_id()
+            if tenant_id:
+                order_data['tenant_id'] = tenant_id
+            
+            # Add audit fields
+            username = session_manager.get_current_username()
+            if username:
+                order_data['created_by'] = username
+                order_data['updated_by'] = username
+            
+            # Calculate order totals from items if not provided
+            if 'subtotal_amount' not in order_data:
+                subtotal = sum(float(item.get('taxable_amount', 0)) for item in items_data)
+                order_data['subtotal_amount'] = subtotal
+            
+            if 'net_amount' not in order_data:
+                # Calculate net amount: taxable + taxes - discount + roundoff
+                discount = float(order_data.get('header_discount_amount', 0))
+                roundoff = float(order_data.get('roundoff', 0))
+                cgst = float(order_data.get('cgst_amount', 0))
+                sgst = float(order_data.get('sgst_amount', 0))
+                igst = float(order_data.get('igst_amount', 0))
+                cess = float(order_data.get('cess_amount', 0))
+                
+                taxable = float(order_data.get('taxable_amount', 0))
+                net = taxable + cgst + sgst + igst + cess - discount + roundoff
+                order_data['net_amount'] = net
+            
+            # Create order
+            order = PurchaseOrder(**order_data)
+            session.add(order)
+            session.flush()  # This will populate the order.id
+
+            # Create items and collect ORM instances
+            created_items = []
+            for item_data in items_data:
+                item_data['purchase_order_id'] = order.id
+                item_data['tenant_id'] = tenant_id
+                if username:
+                    item_data['created_by'] = username
+                    item_data['updated_by'] = username
+                item = PurchaseOrderItem(**item_data)
+                session.add(item)
+                created_items.append(item)
+
+            # Record stock transactions in the same DB session
             try:
-                # Add tenant_id and audit fields to order
-                order_data['tenant_id'] = session_manager.get_current_tenant_id()
-                order_data['created_by'] = session_manager.get_current_username()
-                
-                # Create purchase order
-                purchase_order = PurchaseOrder(**order_data)
-                session.add(purchase_order)
-                session.flush()  # Get the order ID
-                
-                # Create order items
-                order_items = []
-                for item_data in items_data:
-                    item_data['purchase_order_id'] = purchase_order.id
-                    order_item = PurchaseOrderItem(**item_data)
-                    session.add(order_item)
-                    order_items.append(order_item)
-                
-                # Record stock transactions in same session (optional)
-                try:
-                    from modules.inventory_module.services.stock_service import StockService
-                    stock_service = StockService()
-                    stock_service.record_purchase_transaction_in_session(session, purchase_order, order_items)
-                except (ImportError, AttributeError):
-                    pass  # Stock service not available
-                
-                # Record accounting transaction in same session (optional)
-                try:
-                    from modules.account_module.services.payment_service import PaymentService
-                    payment_service = PaymentService()
-                    payment_service.record_purchase_transaction_in_session(
-                        session,
-                        purchase_order.id,
-                        purchase_order.po_number,
-                        float(purchase_order.total_amount),
-                        purchase_order.order_date
-                    )
-                except (ImportError, AttributeError):
-                    pass  # Payment service not available
-                
-                # Commit all operations together
-                session.commit()
-                return purchase_order.id
-                
-            except Exception as e:
+                from modules.inventory_module.services.stock_service import StockService
+                stock_service = StockService()
+                # Use the in-session method to avoid opening a new session
+                stock_service.record_purchase_transaction_in_session(session, order, created_items)
+            except Exception:
+                # If stock recording fails, rollback the session and re-raise
                 session.rollback()
-                raise e
+                raise
+
+            session.commit()
+            return order.id
     
     @ExceptionMiddleware.handle_exceptions("PurchaseOrderService")
     def get_all(self, page=1, page_size=100):
@@ -74,16 +93,43 @@ class PurchaseOrderService:
             offset = (page - 1) * page_size
             orders = query.offset(offset).limit(page_size).all()
             
-            # Convert to dict to avoid DetachedInstanceError
+            # Convert to dict to avoid DetachedInstanceError and include all fields
             result = []
             for order in orders:
                 order_dict = {
                     'id': order.id,
                     'po_number': order.po_number,
-                    'total_amount': order.total_amount,
-                    'status': order.status,
+                    'reference_number': order.reference_number,
+                    'supplier_id': order.supplier_id,
+                    'supplier_name': order.supplier.name if order.supplier else order.supplier_name or '',
+                    'supplier_gstin': order.supplier_gstin,
                     'order_date': order.order_date,
-                    'supplier_name': order.supplier.name if order.supplier else ''
+                    'subtotal_amount': order.subtotal_amount,
+                    'header_discount_percent': order.header_discount_percent,
+                    'header_discount_amount': order.header_discount_amount,
+                    'taxable_amount': order.taxable_amount,
+                    'cgst_amount': order.cgst_amount,
+                    'sgst_amount': order.sgst_amount,
+                    'igst_amount': order.igst_amount,
+                    'cess_amount': order.cess_amount,
+                    'total_tax_amount': order.total_tax_amount,
+                    'roundoff': order.roundoff,
+                    'net_amount': order.net_amount,
+                    'currency_id': order.currency_id,
+                    'exchange_rate': order.exchange_rate,
+                    'net_amount_base': order.net_amount_base,
+                    'is_reverse_charge': order.is_reverse_charge,
+                    'is_tax_inclusive': order.is_tax_inclusive,
+                    'status': order.status,
+                    'approval_status': order.approval_status,
+                    'approval_request_id': order.approval_request_id,
+                    'reversal_reason': order.reversal_reason,
+                    'reversed_at': order.reversed_at,
+                    'reversed_by': order.reversed_by,
+                    'created_at': order.created_at,
+                    'created_by': order.created_by,
+                    'updated_at': order.updated_at,
+                    'updated_by': order.updated_by,
                 }
                 result.append(type('PurchaseOrder', (), order_dict)())
             
@@ -126,26 +172,32 @@ class PurchaseOrderService:
                 if not order:
                     raise ValueError("Order not found")
                 
-                if order.status == 'reversed':
+                if order.status == 'REVERSED':
                     raise ValueError("Order is already reversed")
                 
                 # Get order items
                 items = session.query(PurchaseOrderItem).filter(PurchaseOrderItem.purchase_order_id == order_id).all()
                 
                 # Reverse stock transactions
-                from modules.inventory_module.services.stock_service import StockService
-                stock_service = StockService()
-                stock_service.reverse_purchase_transaction_in_session(session, order, items)
+                try:
+                    from modules.inventory_module.services.stock_service import StockService
+                    stock_service = StockService()
+                    stock_service.reverse_purchase_transaction_in_session(session, order, items)
+                except (ImportError, AttributeError):
+                    pass  # Stock service not available
                 
                 # Reverse accounting transactions
-                from modules.account_module.services.payment_service import PaymentService
-                payment_service = PaymentService()
-                payment_service.reverse_purchase_transaction_in_session(
-                    session, order.id, order.po_number, float(order.total_amount), order.order_date
-                )
+                try:
+                    from modules.account_module.services.payment_service import PaymentService
+                    payment_service = PaymentService()
+                    payment_service.reverse_purchase_transaction_in_session(
+                        session, order.id, order.po_number, float(order.net_amount), order.order_date
+                    )
+                except (ImportError, AttributeError):
+                    pass  # Payment service not available
                 
                 # Update order status and reason
-                order.status = 'reversed'
+                order.status = 'REVERSED'
                 order.reversal_reason = reason
                 order.reversed_at = datetime.now()
                 order.reversed_by = session_manager.get_current_username()

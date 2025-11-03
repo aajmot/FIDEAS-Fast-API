@@ -1,3 +1,4 @@
+TRUNCATE TABLE account_masters;
 -- === account_masters (enhanced) ===
 INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, opening_balance, current_balance, is_system_assigned) 
 VALUES
@@ -46,3 +47,23 @@ VALUES
 
 -- 3. Diagnostic Agent Commission
 (1, (SELECT id FROM account_groups WHERE code='EXPN'), 'COMM_DIAGN', 'Agent Commission - Diagnostics', 'Commission paid to agents on diagnostic services', 0, 0, TRUE);
+
+
+-- =====================================================
+-- 2. PRE-REQUISITES: Add Missing Accounts (Safe Insert)
+-- =====================================================
+INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, opening_balance, current_balance, is_system_assigned)
+SELECT 1, (SELECT id FROM account_groups WHERE code = 'INCM'), 'DISC_RECEIVED', 'Discount Received', 'Discounts received from suppliers', 0, 0, TRUE
+WHERE NOT EXISTS (SELECT 1 FROM account_masters WHERE code = 'DISC_RECEIVED' AND tenant_id = 1);
+
+INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, opening_balance, current_balance, is_system_assigned)
+SELECT 1, (SELECT id FROM account_groups WHERE code = 'EXPN'), 'COMM_SALES', 'Agent Commission - Sales', 'Commission on product sales', 0, 0, TRUE
+WHERE NOT EXISTS (SELECT 1 FROM account_masters WHERE code = 'COMM_SALES' AND tenant_id = 1);
+
+INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, opening_balance, current_balance, is_system_assigned)
+SELECT 1, (SELECT id FROM account_groups WHERE code = 'EXPN'), 'COMM_CLINIC', 'Agent Commission - Clinic', 'Commission on clinic services', 0, 0, TRUE
+WHERE NOT EXISTS (SELECT 1 FROM account_masters WHERE code = 'COMM_CLINIC' AND tenant_id = 1);
+
+INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, opening_balance, current_balance, is_system_assigned)
+SELECT 1, (SELECT id FROM account_groups WHERE code = 'EXPN'), 'COMM_DIAGN', 'Agent Commission - Diagnostics', 'Commission on diagnostic services', 0, 0, TRUE
+WHERE NOT EXISTS (SELECT 1 FROM account_masters WHERE code = 'COMM_DIAGN' AND tenant_id = 1);

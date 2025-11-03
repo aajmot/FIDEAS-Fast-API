@@ -1,201 +1,201 @@
-name,code,category,unit,price,gst_percentage,tags,composition,hsn_code,schedule,manufacturer
-Augmentin 625 Duo Tablet,AUG625DUO,Healthcare Analytics,Strip of 10 tablets,223.42,0,"Augmentin,625,Duo,Amoxycillin,500mg,Glaxo",Amoxycillin  (500mg) + Clavulanic Acid (125mg),3004,,Glaxo SmithKline Pharmaceuticals Ltd
-Azithral 500 Tablet,AZI500TAB,Healthcare Data Governance,Strip of 5 tablets,132.36,5,"Azithral,500,Tablet,Azithromycin,500mg,Alembic",Azithromycin (500mg),3002,,Alembic Pharmaceuticals Ltd
-Ascoril LS Syrup,ASCLSSYR,Patient Monitoring,Bottle,118,5,"Ascoril,Syrup,Ambroxol,30mg,Glenmark,bottle",Ambroxol (30mg/5ml) + Levosalbutamol (1mg/5ml),3002,,Glenmark Pharmaceuticals Ltd
-Allegra 120mg Tablet,ALL120TAB,Nephrology,Strip of 10 tablets,218.81,0,"Allegra,120mg,Tablet,Fexofenadine,Sanofi,strip",Fexofenadine (120mg),3003,,Sanofi India  Ltd
-Avil 25 Tablet,AVI25TAB,Siddha Spiritual Healing,Strip of 15 tablets,10.96,5,"Avil,Tablet,Pheniramine,25mg,Sanofi,strip",Pheniramine (25mg),3006,,Sanofi India  Ltd
-Allegra-M Tablet,ALLTAB,Healthcare Sustainability,Strip of 10 tablets,241.48,5,"Allegra,Tablet,Montelukast,10mg,Sanofi,strip",Montelukast (10mg) + Fexofenadine (120mg),3006,,Sanofi India  Ltd
-Amoxyclav 625 Tablet,AMO625TAB,Naturopathic Research,Strip of 10 tablets,223.27,5,"Amoxyclav,625,Tablet,Amoxycillin,500mg,Abbott",Amoxycillin  (500mg) + Clavulanic Acid (125mg),3006,,Abbott
-Azee 500 Tablet,AZE500TAB,Medical SaaS Platforms,Strip of 5 tablets,132.38,5,"Azee,500,Tablet,Azithromycin,500mg,Cipla",Azithromycin (500mg),3002,,Cipla Ltd
-Atarax 25mg Tablet,ATA25MTAB,Healthcare Policy & Planning,Strip of 15 tablets,85.5,5,"Atarax,25mg,Tablet,Hydroxyzine,Reddys,strip",Hydroxyzine (25mg),3004,,Dr Reddy's Laboratories Ltd
-Ascoril D Plus Syrup Sugar Free,ASCDPLU,Medical SaaS Platforms,Bottle,129,5,"Ascoril,Plus,Syrup,Phenylephrine,5mg,Glenmark",Phenylephrine (5mg) + Chlorpheniramine Maleate (2mg),3004,,Glenmark Pharmaceuticals Ltd
-Aciloc 150 Tablet,ACI150TAB,Wearable Health Tech,Tablet,40.94,0,"Aciloc,150,Tablet,Ranitidine,150mg,Cadila",Ranitidine (150mg),3002,,Cadila Pharmaceuticals Ltd
-Alex Syrup,ALESYR,Homeopathic Sports Medicine,Bottle,129,5,"Alex,Syrup,Phenylephrine,5mg,Glenmark,bottle",Phenylephrine (5mg/5ml) + Chlorpheniramine Maleate (2mg/5ml),3006,,Glenmark Pharmaceuticals Ltd
-Anovate Cream,ANOCRE,Healthcare Interdisciplinary Research,Cream,134.2,5,"Anovate,Cream,Phenylephrine,010,USV,tube",Phenylephrine (0.10% w/w) + Beclometasone (0.025% w/w),3005,,USV Ltd
-Augmentin Duo Oral Suspension,AUGDUOORA,Lifestyle Medicine,Oral Suspension,67.2,5,"Augmentin,Duo,Oral,Amoxycillin,200mg,Glaxo",Amoxycillin  (200mg) + Clavulanic Acid (28.5mg),3005,,Glaxo SmithKline Pharmaceuticals Ltd
-Ambrodil-S Syrup,AMBSYR,Histopathology,Bottle,30.2,5,"Ambrodil,Syrup,Ambroxol,15mg,Aristo,bottle",Ambroxol (15mg/5ml) + Salbutamol (1mg/5ml),3006,,Aristo Pharmaceuticals Pvt Ltd
-Arkamin Tablet,ARKTAB,Ayurveda,Tablet,72.65,5,"Arkamin,Tablet,Clonidine,100mcg,Torrent,strip",Clonidine (100mcg),3002,,Torrent Pharmaceuticals Ltd
-Avomine Tablet,AVOTAB,Urology,Strip of 10 tablets,55.98,5,"Avomine,Tablet,Promethazine,25mg,Abbott,strip",Promethazine (25mg),3004,,Abbott
-Asthakind-DX Syrup Sugar Free,ASTSYRSUG,Histopathology,Bottle,70.4,5,"Asthakind,Syrup,Sugar,Phenylephrine,5mg,Mankind",Phenylephrine (5mg/5ml) + Chlorpheniramine Maleate (2mg/5ml),3002,,Mankind Pharma Ltd
-Allegra 180mg Tablet,ALL180TAB,Ayurvedic Product Manufacturing,Strip of 10 tablets,251.2,5,"Allegra,180mg,Tablet,Fexofenadine,Sanofi,strip",Fexofenadine (180mg),3004,,Sanofi India  Ltd
-Albendazole 400mg Tablet,ALB400TAB,Healthcare Supply Forecasting,Tablet,9.58,5,"Albendazole,400mg,Tablet,Cadila,strip",Albendazole (400mg),3003,,Cadila Pharmaceuticals Ltd
-Asthalin Syrup,ASTSYR,Medical Crowdfunding,Bottle,19.04,5,"Asthalin,Syrup,Salbutamol,2mg,Cipla,bottle",Salbutamol (2mg/5ml),3002,,Cipla Ltd
-Alprax 0.25 Tablet,ALP025TAB,Clinical Workflow Automation,Strip of 15 tablets,29,5,"Alprax,025,Tablet,Alprazolam,025mg,Torrent",Alprazolam (0.25mg),3003,,Torrent Pharmaceuticals Ltd
-Altraday Capsule SR,ALTCAPSR,Healthcare Supply Forecasting,Capsule,128,5,"Altraday,Capsule,Aceclofenac,200mg,Sun,strip",Aceclofenac (200mg) + Rabeprazole (20mg),3004,,Sun Pharmaceutical Industries Ltd
-Ativan 2mg Tablet,ATI2MGTAB,Medical Cyber-Physical Systems,Tablet,91.87,5,"Ativan,2mg,Tablet,Lorazepam,Pfizer,strip",Lorazepam (2mg),3002,,Pfizer Ltd
-Ascoril LS Junior Syrup,ASCLSJUN,Healthcare Accessibility,Bottle,96,5,"Ascoril,Junior,Syrup,Ambroxol,15mg,Glenmark",Ambroxol (15mg/5ml) + Levosalbutamol (0.5mg/5ml),3004,,Glenmark Pharmaceuticals Ltd
-Asthalin 100mcg Inhaler,AST100INH,Siddha Medicine,Inhaler,157.85,5,"Asthalin,100mcg,Inhaler,Salbutamol,Cipla,packet",Salbutamol (100mcg),3003,,Cipla Ltd
-Almox 500 Capsule,ALM500CAP,Homeopathic Repertory,Capsule,80.26,5,"Almox,500,Capsule,Amoxycillin,500mg,Alkem",Amoxycillin (500mg),3005,,Alkem Laboratories Ltd
-Atarax 10mg Tablet,ATA10MTAB,Unani Education,Strip of 15 tablets,47.91,5,"Atarax,10mg,Tablet,Hydroxyzine,Reddys,strip",Hydroxyzine (10mg),3005,,Dr Reddy's Laboratories Ltd
-Aciloc RD 20 Tablet,ACIRD20,Healthcare Architecture,Strip of 15 tablets,77,5,"Aciloc,Tablet,Domperidone,10mg,Cadila,strip",Domperidone (10mg) + Omeprazole (20mg),3003,,Cadila Pharmaceuticals Ltd
-Aldactone Tablet,ALDTAB,Medical Podcasting,Strip of 15 tablets,35.35,5,"Aldactone,Tablet,Spironolactone,25mg,RPG,strip",Spironolactone (25mg),3005,,RPG Life Sciences Ltd
-Allegra Suspension Raspberry & Vanilla,ALLSUSRAS,Unani Nutrition,Oral Suspension,188.78,5,"Allegra,Suspension,Raspberry,Fexofenadine,30mg,Sanofi",Fexofenadine (30mg/5ml),3003,,Sanofi India  Ltd
-Atarax Syrup,ATASYR,TCM Emotional Balance,Bottle,110.25,5,"Atarax,Syrup,Hydroxyzine,10mg,Reddys,bottle",Hydroxyzine (10mg),3002,,Dr Reddy's Laboratories Ltd
-Amlokind-AT Tablet,AMLTAB,Medical Simulation,Strip of 15 tablets,44.7,5,"Amlokind,Tablet,Amlodipine,5mg,Mankind,strip",Amlodipine (5mg) + Atenolol (50mg),3003,,Mankind Pharma Ltd
-Axcer  90mg Tablet,AXC90MTAB,Homeopathic Gynaecology,Tablet,420,5,"Axcer,90mg,Tablet,Ticagrelor,Sun,strip",Ticagrelor (90mg),3005,,Sun Pharmaceutical Industries Ltd
-Ativan 1mg Tablet,ATI1MGTAB,Homeopathic Oncology,Tablet,75.67,5,"Ativan,1mg,Tablet,Lorazepam,Pfizer,strip",Lorazepam (1mg),3005,,Pfizer Ltd
-Alkasol Oral Solution,ALKORASOL,Aromatherapy,Oral Solution,122.05,5,"Alkasol,Oral,Solution,Disodium,Hydrogen,Stadmed",Disodium Hydrogen Citrate (1.4gm/5ml),3006,,Stadmed Pvt Ltd
-Aldigesic P 100mg/325mg Tablet,ALDP100,OT Equipment,Strip of 15 tablets,110,5,"Aldigesic,100mg,325mg,Aceclofenac,Alkem,strip",Aceclofenac (100mg) + Paracetamol (325mg),3002,,Alkem Laboratories Ltd
-Alfoo 10mg Tablet PR,ALF10MTAB,Lifestyle Medicine,Tablet,687.75,5,"Alfoo,10mg,Tablet,Alfuzosin,Reddys,strip",Alfuzosin (10mg),3004,,Dr Reddy's Laboratories Ltd
-Alprax 0.5mg Tablet,ALP05MTAB,Healthcare Analytics,Strip of 15 tablets,66.9,5,"Alprax,05mg,Tablet,Alprazolam,Torrent,strip",Alprazolam (0.5mg),3003,,Torrent Pharmaceuticals Ltd
-Arachitol 6L Injection,ARA6LINJ,Mind-Body Medicine,Pack,407.76,0,"Arachitol,Injection,Vitamin,600000IU,Abbott,packet",Vitamin D3 (600000IU),3004,,Abbott
-Anafortan 25 mg/300 mg Tablet,ANA25MG3,Ayurvedic Beauty Care,Strip of 15 tablets,124.56,5,"Anafortan,300,Tablet,Camylofin,25mg,Abbott",Camylofin (25mg) + Paracetamol (300mg),3006,,Abbott
-Alex Junior Syrup,ALEJUNSYR,Healthcare Compliance,Bottle,95,5,"Alex,Junior,Syrup,Chlorpheniramine,Maleate,Glenmark",Chlorpheniramine Maleate (2mg/5ml) + Dextromethorphan Hydrobromide (5mg/5ml),3004,,Glenmark Pharmaceuticals Ltd
-Azithral 200 Liquid,AZI200LIQ,Naturopathic Sleep Therapy,Oral Suspension,57.25,5,"Azithral,200,Liquid,Azithromycin,200mg,Alembic",Azithromycin (200mg/5ml),3003,,Alembic Pharmaceuticals Ltd
-AB Phylline Capsule,ABPHYCAP,Ayurvedic Research,Capsule,162,5,"Phylline,Capsule,Acebrophylline,100mg,Sun,strip",Acebrophylline (100mg),3006,,Sun Pharmaceutical Industries Ltd
-Althrocin 500 Tablet,ALT500TAB,Color Therapy,Strip of 10 tablets,110.3,18,"Althrocin,500,Tablet,Erythromycin,500mg,Alembic",Erythromycin (500mg),3006,,Alembic Pharmaceuticals Ltd
-Augmentin DDS Suspension,AUGDDSSUS,Homeopathic Toxicology,Oral Suspension,173,5,"Augmentin,DDS,Suspension,Amoxycillin,400mg,Glaxo",Amoxycillin  (400mg/5ml) + Clavulanic Acid (57mg/5ml),3002,,Glaxo SmithKline Pharmaceuticals Ltd
-Azicip 500 Tablet,AZI500TAB,Ayurveda,Strip of 3 tablets,79.43,5,"Azicip,500,Tablet,Azithromycin,500mg,Cipla",Azithromycin (500mg),3004,,Cipla Ltd
-Aldigesic-SP Tablet,ALDTAB,Medical Compliance Training,Strip of 10 tablets,120,0,"Aldigesic,Tablet,Aceclofenac,100mg,Alkem,strip",Aceclofenac (100mg) + Paracetamol (325mg),3006,,Alkem Laboratories Ltd
-Amoxycillin 500mg Capsule,AMO500CAP,Histopathology,Capsule,31.9,0,"Amoxycillin,500mg,Capsule,Jagsonpal,strip",Amoxycillin (500mg),3005,,Jagsonpal Pharmaceuticals Ltd
-Asthakind Expectorant Sugar Free,ASTEXPSUG,Biotechnology,Bottle,64.22,18,"Asthakind,Expectorant,Sugar,Guaifenesin,50mg,Mankind",Guaifenesin (50mg) + Terbutaline (1.25mg),3006,,Mankind Pharma Ltd
-Acemiz Plus Tablet,ACEPLUTAB,Healthcare Marketing,Strip of 10 tablets,99.5,5,"Acemiz,Plus,Tablet,Aceclofenac,100mg,Lupin",Aceclofenac (100mg) + Paracetamol (325mg),3005,,Lupin Ltd
-Aceclo Plus Tablet,ACEPLUTAB,Medical Crowdsourcing,Strip of 15 tablets,90.85,5,"Aceclo,Plus,Tablet,Aceclofenac,100mg,Aristo",Aceclofenac (100mg) + Paracetamol (325mg),3006,,Aristo Pharmaceuticals Pvt Ltd
-Anobliss Cream,ANOCRE,Homeopathic Gynaecology,Cream,136.68,18,"Anobliss,Cream,Lidocaine,Samarth,tube",Lidocaine (1.5% w/w) + Nifedipine (0.3% w/w),3006,,Samarth Life Sciences Pvt Ltd
-Alex Cough Lozenges Lemon Ginger,ALECOULOZ,Medical Disaster Response,Lozenge,108,5,"Alex,Cough,Lozenges,Dextromethorphan,Hydrobromide,Glenmark",Dextromethorphan Hydrobromide (5mg),3005,,Glenmark Pharmaceuticals Ltd
-Asthalin Respules,ASTRES,Ayurvedic Research,Strip of 5 tablets,7.07,5,"Asthalin,Respules,Salbutamol,25mg,Cipla,packet",Salbutamol (2.5mg),3006,,Cipla Ltd
-Avil Injection,AVIINJ,Holistic Wellness,Strip of 10 tablets,21.17,5,"Avil,Injection,Pheniramine,2275mg,Sanofi,vial",Pheniramine (22.75mg),3003,,Sanofi India  Ltd
-Azee 200mg Dry Syrup,AZE200DRY,Mobility Aids,Oral Suspension,52.31,5,"Azee,200mg,Dry,Azithromycin,Cipla,bottle",Azithromycin (200mg/5ml),3006,,Cipla Ltd
-Atorva Tablet,ATOTAB,Healthcare Accessibility,Strip of 15 tablets,102.31,5,"Atorva,Tablet,Atorvastatin,10mg,Zydus,strip",Atorvastatin (10mg),3002,,Zydus Cadila
-Asthakind-LS Expectorant Cola Sugar Free,ASTEXPCOL,Medical Waste Management,Bottle,93.5,5,"Asthakind,Expectorant,Cola,Ambroxol,30mg,Mankind",Ambroxol (30mg/5ml) + Levosalbutamol (1mg/5ml),3002,,Mankind Pharma Ltd
-Ascoril LS Drops,ASCLSDRO,Healthcare Accessibility,Oral Drops,72,0,"Ascoril,Drops,Ambroxol,75mg,Glenmark,bottle",Ambroxol (7.5mg/ml) + Levosalbutamol (0.25mg/ml),3002,,Glenmark Pharmaceuticals Ltd
-Azmarda 50mg Tablet,AZM50MTAB,Homeopathic Counseling,Tablet,1092.03,0,"Azmarda,50mg,Tablet,Sacubitril,24mg,Chemicals",Sacubitril (24mg) + Valsartan (26mg),3003,,J B Chemicals and Pharmaceuticals Ltd
-Amixide-H Tablet,AMITAB,Medical SaaS Platforms,Strip of 10 tablets,51,5,"Amixide,Tablet,Amitriptyline,125mg,Sun,strip",Amitriptyline (12.5mg) + Chlordiazepoxide (5mg),3003,,Sun Pharmaceutical Industries Ltd
-AB-Flo-N Tablet,ABFTAB,Sleep Medicine,Strip of 10 tablets,207.25,5,"Flo,Tablet,Acebrophylline,100mg,Lupin,strip",Acebrophylline (100mg) + Acetylcysteine (600mg),3006,,Lupin Ltd
-AF Kit Tablet,AFKITTAB,TCM Cupping Therapy,Tablet,110,5,"Kit,Tablet,Azithromycin,1000mg,Systopic,strip",Azithromycin (1000mg) + Ornidazole (750mg),3005,,Systopic Laboratories Pvt Ltd
-Amlokind 5 Tablet,AML5TAB,Siddha Education,Strip of 15 tablets,22.15,5,"Amlokind,Tablet,Amlodipine,5mg,Mankind,strip",Amlodipine (5mg),3002,,Mankind Pharma Ltd
-Amlong Tablet,AMLTAB,Unani Dermatology,Strip of 15 tablets,48.55,5,"Amlong,Tablet,Amlodipine,5mg,Micro,strip",Amlodipine (5mg),3005,,Micro Labs Ltd
-Akt 4 Kit,AKT4KIT,Naturopathic Oncology,Pack,24.7,5,"Akt,Kit,Isoniazid,300mg,Lupin,packet",Isoniazid (300mg) + Rifampicin (450mg),3002,,Lupin Ltd
-Ascoril D Junior Cough Syrup,ASCDJUN,Healthcare Infrastructure,Bottle,98,0,"Ascoril,Junior,Cough,Phenylephrine,5mg,Glenmark",Phenylephrine (5mg/5ml) + Chlorpheniramine Maleate (2mg/5ml),3004,,Glenmark Pharmaceuticals Ltd
-Amitone 10mg Tablet,AMI10MTAB,Clinical Engineering,Strip of 10 tablets,19.15,5,"Amitone,10mg,Tablet,Amitriptyline,Intas,strip",Amitriptyline (10mg),3003,,Intas Pharmaceuticals Ltd
-Aulin 100mg Tablet,AUL100TAB,Lifestyle Medicine,Strip of 10 tablets,50.56,5,"Aulin,100mg,Tablet,Nimesulide,Elder,strip",Nimesulide (100mg),3005,,Elder Pharmaceuticals Ltd
-Amikacin Sulphate 500mg Injection,AMISUL500,Healthcare Procurement,Vial,11.87,5,"Amikacin,Sulphate,500mg,Sun,vial",Amikacin (500mg),3003,,Sun Pharmaceutical Industries Ltd
-Ambrodil-LX Syrup,AMBSYR,Clinical Chemistry,Bottle,90.85,5,"Ambrodil,Syrup,Ambroxol,30mg,Aristo,bottle",Ambroxol (30mg/5ml) + Levosalbutamol (1mg/5ml),3006,,Aristo Pharmaceuticals Pvt Ltd
-Aquasol A Capsule,AQUACAP,Healthcare Infrastructure,Capsule,29.6,0,"Aquasol,Capsule,Vitamin,25000IU,USV,bottle",Vitamin A (25000IU),3006,,USV Ltd
-AB Phylline SR 200 Tablet,ABPHYSR,Orthopedics,Tablet,252,18,"Phylline,200,Tablet,Acebrophylline,200mg,Sun",Acebrophylline (200mg),3003,,Sun Pharmaceutical Industries Ltd
-Azoran Tablet,AZOTAB,Healthcare Cybersecurity,Strip of 10 tablets,106.65,5,"Azoran,Tablet,Azathioprine,50mg,RPG,strip",Azathioprine (50mg),3005,,RPG Life Sciences Ltd
-Amaryl 1mg Tablet,AMA1MGTAB,Healthcare Chatbots,Tablet,133.81,5,"Amaryl,1mg,Tablet,Glimepiride,Sanofi,strip",Glimepiride (1mg),3002,,Sanofi India  Ltd
-Aztor 10 Tablet,AZT10TAB,Medical Crowdsourcing,Strip of 15 tablets,102.25,5,"Aztor,Tablet,Atorvastatin,10mg,Sun,strip",Atorvastatin (10mg),3005,,Sun Pharmaceutical Industries Ltd
-Atorva 40 Tablet,ATO40TAB,Healthcare Interdisciplinary Research,Strip of 10 tablets,239.89,18,"Atorva,Tablet,Atorvastatin,40mg,Zydus,strip",Atorvastatin (40mg),3005,,Zydus Cadila
-Azax 500 Tablet,AZA500TAB,Medical Affiliate Networks,Strip of 3 tablets,79.3,5,"Azax,500,Tablet,Azithromycin,500mg,Sun",Azithromycin (500mg),3006,,Sun Pharmaceutical Industries Ltd
-Alex Syrup Sugar Free,ALESYRSUG,Reiki Healing,Bottle,129,5,"Alex,Syrup,Sugar,Phenylephrine,5mg,Glenmark",Phenylephrine (5mg/5ml) + Chlorpheniramine Maleate (2mg/5ml),3004,,Glenmark Pharmaceuticals Ltd
-Anxit 0.5 Tablet,ANX05TAB,Healthcare Robotics Maintenance,Strip of 15 tablets,47,18,"Anxit,Tablet,Alprazolam,05mg,Micro,strip",Alprazolam (0.5mg),3006,,Micro Labs Ltd
-Anxit 0.25mg Tablet,ANX025TAB,IV Therapy,Strip of 15 tablets,20.5,5,"Anxit,025mg,Tablet,Alprazolam,Micro,strip",Alprazolam (0.25mg),3002,,Micro Labs Ltd
-Acitrom 2 Tablet,ACI2TAB,Pathology,Tablet,414.65,5,"Acitrom,Tablet,Acenocoumarol,2mg,Abbott,strip",Acenocoumarol (2mg),3006,,Abbott
-Angispan - TR 2.5mg Capsule,ANGTR25M,Color Therapy,Capsule,198,5,"Angispan,25mg,Capsule,Nitroglycerin,USV,bottle",Nitroglycerin (2.5mg),3006,,USV Ltd
-Azeflo Nasal Spray,AZENASSPR,Genetics & Genomics,Nasal Spray,420.1,5,"Azeflo,Nasal,Spray,Fluticasone,Propionate,Lupin",Fluticasone Propionate (50mcg) + Azelastine (140mcg),3002,,Lupin Ltd
-Acemiz -MR Tablet,ACEMRTAB,Clinical Trials,Strip of 10 tablets,99.5,5,"Acemiz,Tablet,Aceclofenac,100mg,Lupin,strip",Aceclofenac (100mg) + Paracetamol (325mg),3003,,Lupin Ltd
-Akurit 4 Tablet,AKU4TAB,Siddha Pharmacy,Strip of 10 tablets,82.6,5,"Akurit,Tablet,Isoniazid,75mg,Lupin,strip",Isoniazid (75mg) + Rifampicin (150mg),3006,,Lupin Ltd
-Aerocort Inhaler,AERINH,Medical Cloud Infrastructure,Inhaler,273.77,5,"Aerocort,Inhaler,Levosalbutamol,50mcg,Cipla,packet",Levosalbutamol (50mcg) + Beclometasone (50mcg),3002,,Cipla Ltd
-Adaferin Gel,ADAGEL,Genetics & Genomics,Tube,284,5,"Adaferin,Gel,Adapalene,Galderma,tube",Adapalene (0.1% w/w),3006,,Galderma India Pvt Ltd
-Acivir 400 DT Tablet,ACI400DT,Dance Movement Therapy,Tablet,76.55,5,"Acivir,400,Tablet,Acyclovir,400mg,Cipla",Acyclovir (400mg),3004,,Cipla Ltd
-Aptimust Syrup,APTSYR,Medical Credentialing,Bottle,129.9,5,"Aptimust,Syrup,Cyproheptadine,2mg,Mankind,bottle",Cyproheptadine (2mg/5ml) + Tricholine Citrate (275mg/5ml),3004,,Mankind Pharma Ltd
-Augmentin 1000 Duo Tablet,AUG100DUO,Medical Compliance Training,Strip of 10 tablets,601.45,5,"Augmentin,1000,Duo,Amoxycillin,875mg,Glaxo",Amoxycillin  (875mg) + Clavulanic Acid (125mg),3003,,Glaxo SmithKline Pharmaceuticals Ltd
-Ambrodil Syrup,AMBSYR,Healthcare Interoperability Standards,Bottle,69.75,5,"Ambrodil,Syrup,Ambroxol,30mg,Aristo,bottle",Ambroxol (30mg/5ml),3002,,Aristo Pharmaceuticals Pvt Ltd
-Acogut Tablet,ACOTAB,Laboratory Equipment,Strip of 15 tablets,239.4,5,"Acogut,Tablet,Acotiamide,100mg,Lupin,strip",Acotiamide (100mg),3006,,Lupin Ltd
-Atarax Drops,ATADRO,Medical Robotics,Bottle,69.75,0,"Atarax,Drops,Hydroxyzine,6mg,Reddys,bottle",Hydroxyzine (6mg),3003,,Dr Reddy's Laboratories Ltd
-Amlip 5 Tablet,AML5TAB,Naturopathic Sleep Therapy,Strip of 10 tablets,32.36,5,"Amlip,Tablet,Amlodipine,5mg,Cipla,strip",Amlodipine (5mg),3004,,Cipla Ltd
-AntiD 300mcg/ml Injection,ANT300INJ,Biotechnology,Vial,3039.42,5,"AntiD,300mcg,Injection,Anti,Immunoglobulin,Bharat",Anti Rh D Immunoglobulin (300mcg/ml),3004,,Bharat Serums & Vaccines Ltd
-Alerid Syrup,ALESYR,Healthcare Loyalty Programs,Bottle,21.84,5,"Alerid,Syrup,Cetirizine,5mg,Cipla,bottle",Cetirizine (5mg/5ml),3006,,Cipla Ltd
-Aldactone 50 Tablet,ALD50TAB,Medical Open Data Platforms,Strip of 15 tablets,70.6,5,"Aldactone,Tablet,Spironolactone,50mg,RPG,strip",Spironolactone (50mg),3006,,RPG Life Sciences Ltd
-Ampoxin 500 Capsule,AMP500CAP,Laboratory Equipment,Capsule,88.9,5,"Ampoxin,500,Capsule,Ampicillin,250mg,Torrent",Ampicillin (250mg) + Cloxacillin (250mg),3006,,Torrent Pharmaceuticals Ltd
-Azee 250 Tablet,AZE250TAB,Healthcare Interoperability Standards,Strip of 10 tablets,118.49,18,"Azee,250,Tablet,Azithromycin,250mg,Cipla",Azithromycin (250mg),3002,,Cipla Ltd
-Alerid Tablet,ALETAB,Pain Management,Strip of 10 tablets,20.48,5,"Alerid,Tablet,Cetirizine,10mg,Cipla,strip",Cetirizine (10mg),3002,,Cipla Ltd
-Augmentin 375 Tablet,AUG375TAB,Healthcare Risk Management,Strip of 10 tablets,229,5,"Augmentin,375,Tablet,Amoxycillin,250mg,Glaxo",Amoxycillin  (250mg) + Clavulanic Acid (125mg),3006,,Glaxo SmithKline Pharmaceuticals Ltd
-Acenac-P  Tablet,ACETAB,Healthcare Wearable Integration,Strip of 10 tablets,61,5,"Acenac,Tablet,Aceclofenac,100mg,Medley,strip",Aceclofenac (100mg) + Paracetamol (325mg),3003,,Medley Pharmaceuticals
-Acivir Cream,ACICRE,Healthcare Interdisciplinary Research,Cream,72.53,5,"Acivir,Cream,Acyclovir,Cipla,tube",Acyclovir (5% w/w),3004,,Cipla Ltd
-AB-Flo Capsule,ABFCAP,Radiology,Capsule,156.6,0,"Flo,Capsule,Acebrophylline,100mg,Lupin,strip",Acebrophylline (100mg),3005,,Lupin Ltd
-AB Phylline N Tablet,ABPHYN,Healthcare DevOps,Strip of 10 tablets,209,0,"Phylline,Tablet,Acebrophylline,100mg,Sun,strip",Acebrophylline (100mg) + Acetylcysteine (600mg),3004,,Sun Pharmaceutical Industries Ltd
-Amifru 40 Tablet,AMI40TAB,Geriatrics,Strip of 10 tablets,11.25,5,"Amifru,Tablet,Furosemide,40mg,Torrent,strip",Furosemide (40mg) + Amiloride (5mg),3004,,Torrent Pharmaceuticals Ltd
-Avamys Nasal Spray,AVANASSPR,Medical Grants & Funding,Nasal Spray,404.5,5,"Avamys,Nasal,Spray,Fluticasone,Furoate,Glaxo",Fluticasone Furoate (0.05% w/w),3006,,Glaxo SmithKline Pharmaceuticals Ltd
-Alkasol Oral Solution Sugar Free,ALKORASOL,Ayurvedic Cardiology,Oral Solution,122.05,5,"Alkasol,Oral,Solution,Disodium,Hydrogen,Stadmed",Disodium Hydrogen Citrate (1.4gm/5ml),3002,,Stadmed Pvt Ltd
-Aciloc 300 Tablet,ACI300TAB,Clinical Chemistry,Tablet,50,18,"Aciloc,300,Tablet,Ranitidine,300mg,Cadila",Ranitidine (300mg),3003,,Cadila Pharmaceuticals Ltd
-Aziderm 20% Cream,AZI20CRE,Anesthesiology,Cream,285,5,"Aziderm,Cream,Azelaic,Acid,Micro,tube",Azelaic Acid (20% w/w),3006,,Micro Labs Ltd
-Ace Proxyvon Tablet,ACEPROTAB,Biomedical Engineering,Strip of 10 tablets,72.5,5,"Ace,Proxyvon,Tablet,Aceclofenac,100mg,Reddys",Aceclofenac (100mg) + Paracetamol (325mg),3002,,Dr Reddy's Laboratories Ltd
-Avil Injection,AVIINJ,Homeopathic Research,Vial,5.66,5,"Avil,Injection,Pheniramine,2275mg,Sanofi,vial",Pheniramine (22.75mg),3002,,Sanofi India  Ltd
-Ano Metrogyl Cream,ANOMETCRE,Homeopathic Sports Medicine,Cream,121.41,5,"Ano,Metrogyl,Cream,Lidocaine,Lekar,tube",Lidocaine (4% w/w) + Metronidazole (1% w/w),3003,,Lekar Pharma Ltd
-Admenta 5 Tablet,ADM5TAB,Wearable Health Tech,Strip of 10 tablets,119,5,"Admenta,Tablet,Memantine,5mg,Sun,strip",Memantine (5mg),3006,,Sun Pharmaceutical Industries Ltd
-Aceclo-MR Tablet,ACETAB,Siddha Education,Strip of 10 tablets,88.65,18,"Aceclo,Tablet,Aceclofenac,100mg,Aristo,strip",Aceclofenac (100mg) + Paracetamol (325mg),3003,,Aristo Pharmaceuticals Pvt Ltd
-Alerid-D Tablet,ALETAB,Healthcare Vendor Management,Strip of 10 tablets,57.97,5,"Alerid,Tablet,Cetirizine,5mg,Cipla,strip",Cetirizine (5mg) + Phenylephrine (10mg),3003,,Cipla Ltd
-Acemiz-S Tablet,ACETAB,Naturopathic Nutrition,Strip of 10 tablets,115.44,0,"Acemiz,Tablet,Aceclofenac,100mg,Lupin,strip",Aceclofenac (100mg) + Paracetamol (325mg),3004,,Lupin Ltd
-Allercet-DC Tablet,ALLTAB,Naturopathy,Strip of 10 tablets,80,5,"Allercet,Tablet,Cetirizine,10mg,Micro,strip",Cetirizine (10mg) + Phenylephrine (10mg),3003,,Micro Labs Ltd
-Aztolet  10 Tablet,AZT10TAB,Medical Crowdfunding,Strip of 10 tablets,170,5,"Aztolet,Tablet,Atorvastatin,10mg,Sun,strip",Atorvastatin (10mg) + Clopidogrel (75mg),3002,,Sun Pharmaceutical Industries Ltd
-Amaryl 2mg Tablet,AMA2MGTAB,Homeopathic Oncology,Tablet,212.65,5,"Amaryl,2mg,Tablet,Glimepiride,Sanofi,strip",Glimepiride (2mg),3005,,Sanofi India  Ltd
-Augmentin 1.2gm Injection,AUG12GINJ,Healthcare Digital Twins,Powder,156.14,5,"Augmentin,12gm,Injection,Amoxycillin,1000mg,Glaxo",Amoxycillin  (1000mg) + Clavulanic Acid (200mg),3005,,Glaxo SmithKline Pharmaceuticals Ltd
-Ambrodil-Plus RF Syrup,AMBRFSYR,Homeopathic ENT,Bottle,89.75,5,"Ambrodil,Plus,Syrup,Ambroxol,15mg,Aristo",Ambroxol (15mg/5ml) + Pseudoephedrine (30mg/5ml),3003,,Aristo Pharmaceuticals Pvt Ltd
-Amlopres-AT Tablet,AMLTAB,Medical Voice Technology,Strip of 15 tablets,148.59,0,"Amlopres,Tablet,Amlodipine,5mg,Cipla,strip",Amlodipine (5mg) + Atenolol (50mg),3003,,Cipla Ltd
-Ajaduo 25mg/5mg Tablet,AJA25MTAB,Unani Nutrition,Strip of 10 tablets,820,5,"Ajaduo,25mg,5mg,Empagliflozin,Lupin,strip",Empagliflozin (25mg) + Linagliptin (5mg),3002,,Lupin Ltd
-Avanair 100 Tablet,AVA100TAB,Medical SaaS Platforms,Tablet,220,5,"Avanair,100,Tablet,Avanafil,100mg,Cipla",Avanafil (100mg),3006,,Cipla Ltd
-Acton-OR Tablet SR,ACTTABSR,Unani Nutrition,Tablet,50.55,5,"Acton,Tablet,Paracetamol,300mg,Apex,strip",Paracetamol (300mg) + Paracetamol (700mg),3006,,Apex Laboratories Pvt Ltd
-Aquazide 12.5 Tablet,AQU125TAB,Homeopathic Counseling,Strip of 10 tablets,12.15,18,"Aquazide,125,Tablet,Hydrochlorothiazide,125mg,Sun",Hydrochlorothiazide (12.5mg),3002,,Sun Pharmaceutical Industries Ltd
-Alaspan AM Tablet,ALAAMTAB,Healthcare Influencer Outreach,Strip of 10 tablets,98.8,5,"Alaspan,Tablet,Ambroxol,60mg,Bayer,strip",Ambroxol (60mg) + Loratadine (5mg),3004,,Bayer Pharmaceuticals Pvt Ltd
-Althrocin 250 Tablet,ALT250TAB,Emergency Medicine,Strip of 10 tablets,56.6,5,"Althrocin,250,Tablet,Erythromycin,250mg,Alembic",Erythromycin (250mg),3005,,Alembic Pharmaceuticals Ltd
-Azikem 500mg Tablet,AZI500TAB,Homeopathic Geriatrics,Strip of 3 tablets,71.7,5,"Azikem,500mg,Tablet,Azithromycin,Alkem,strip",Azithromycin (500mg),3004,,Alkem Laboratories Ltd
-Aldosmin 500mg Tablet,ALD500TAB,Siddha Toxicology,Strip of 10 tablets,137,5,"Aldosmin,500mg,Tablet,Diosmin,450mg,Sun",Diosmin (450mg) + Hesperidin (50mg),3006,,Sun Pharmaceutical Industries Ltd
-Amlovas 5 Tablet,AML5TAB,Pharmaceutical R&D,Strip of 15 tablets,48.55,5,"Amlovas,Tablet,Amlodipine,5mg,Macleods,strip",Amlodipine (5mg),3006,,Macleods Pharmaceuticals Pvt Ltd
-Acitrom 1 Tablet,ACI1TAB,Clinical Documentation,Tablet,264.74,5,"Acitrom,Tablet,Acenocoumarol,1mg,Abbott,strip",Acenocoumarol (1mg),3005,,Abbott
-AF 150 Tablet DT,AF150TAB,Pharmacy,Tablet,11.45,5,"150,Tablet,Fluconazole,150mg,Systopic,strip",Fluconazole (150mg),3006,,Systopic Laboratories Pvt Ltd
-Ascoril SF Expectorant,ASCSFEXP,Medical Drones,Bottle,135,5,"Ascoril,Expectorant,Guaifenesin,50mg,Glenmark,bottle",Guaifenesin (50mg) + Terbutaline (1.25mg),3002,,Glenmark Pharmaceuticals Ltd
-Amaryl M  1mg Tablet PR,AMAM1MG,Homeopathic Counseling,Tablet,242.84,5,"Amaryl,1mg,Tablet,Glimepiride,Sanofi,strip",Glimepiride (1mg) + Metformin (500mg),3002,,Sanofi India  Ltd
-Azithral XL 200 Liquid,AZIXL200,Healthcare Interoperability Standards,Oral Suspension,114.56,5,"Azithral,200,Liquid,Azithromycin,200mg,Alembic",Azithromycin (200mg/5ml),3005,,Alembic Pharmaceuticals Ltd
-AF 400 Tablet,AF400TAB,Homeopathic Dermatology,Tablet,25.6,5,"400,Tablet,Fluconazole,400mg,Systopic,strip",Fluconazole (400mg),3004,,Systopic Laboratories Pvt Ltd
-Amantrel Tablet,AMATAB,Medical Tourism,Strip of 15 tablets,222.27,5,"Amantrel,Tablet,Amantadine,100mg,Cipla,strip",Amantadine (100mg),3005,,Cipla Ltd
-Atorva 20 Tablet,ATO20TAB,Healthcare Wearables,Strip of 15 tablets,247.78,5,"Atorva,Tablet,Atorvastatin,20mg,Zydus,strip",Atorvastatin (20mg),3004,,Zydus Cadila
-Acenac-MR Tablet,ACETAB,Siddha Research,Strip of 10 tablets,218,5,"Acenac,Tablet,Thiocolchicoside,4mg,Medley,strip",Thiocolchicoside (4mg) + Aceclofenac (100mg),3002,,Medley Pharmaceuticals
-Ambrolite-S Expectorant,AMBEXP,Homeopathy,Bottle,106,5,"Ambrolite,Expectorant,Ambroxol,30mg,Tablets,bottle",Ambroxol (30mg) + Guaifenesin (50mg),3005,,Tablets India Limited
-Asthalin 4 Tablet,AST4TAB,Homeopathic Remedy Manufacturing,Tablet,9.06,5,"Asthalin,Tablet,Salbutamol,4mg,Cipla,strip",Salbutamol (4mg),3005,,Cipla Ltd
-Abiways Tablet,ABITAB,Healthcare Chatbots,Strip of 10 tablets,167.5,5,"Abiways,Tablet,Acebrophylline,100mg,Mankind,strip",Acebrophylline (100mg) + Acetylcysteine (600mg),3003,,Mankind Pharma Ltd
-Amaryl M  2mg Tablet PR,AMAM2MG,Healthcare IT,Tablet,363.34,5,"Amaryl,2mg,Tablet,Glimepiride,Sanofi,strip",Glimepiride (2mg) + Metformin (500mg),3006,,Sanofi India  Ltd
-Azoran Tablet,AZOTAB,Homeopathic Nutraceuticals,Tablet,236.25,0,"Azoran,Tablet,Azathioprine,50mg,RPG,strip",Azathioprine (50mg),3003,,RPG Life Sciences Ltd
-Ampilox Capsule,AMPCAP,Homeopathic Education,Capsule,151.35,5,"Ampilox,Capsule,Ampicillin,250mg,Biochem,strip",Ampicillin (250mg) + Dicloxacillin (250mg),3003,,Biochem Pharmaceutical Industries
-Adrenaline Tartrate Injection,ADRTARINJ,Biomedical Engineering,Vial,14.52,0,"Adrenaline,Tartrate,Injection,Harson,vial",Adrenaline (NA),3003,,Harson Laboratories
-Acogut 300 ER Tablet,ACO300ER,TCM Nutrition Therapy,Tablet,384.8,5,"Acogut,300,Tablet,Acotiamide,300mg,Lupin",Acotiamide (300mg),3002,,Lupin Ltd
-Acuvin Tablet,ACUTAB,Traditional Chinese Medicine,Strip of 15 tablets,227.66,5,"Acuvin,Tablet,Paracetamol,Acetaminophen,Abbott,strip",Paracetamol/Acetaminophen  (325mg) + Tramadol (37.5mg),3006,,Abbott
-AB-Flo SR Tablet,ABFSRTAB,Healthcare Logistics Automation,Tablet,238.5,5,"Flo,Tablet,Acebrophylline,200mg,Lupin,strip",Acebrophylline (200mg),3005,,Lupin Ltd
-Air-M Tablet,AIRTAB,Meditative Therapy,Strip of 10 tablets,69,5,"Air,Tablet,Montelukast,10mg,Systopic,strip",Montelukast (10mg) + Fexofenadine (120mg),3003,,Systopic Laboratories Pvt Ltd
-Atorlip-F Tablet,ATOTAB,Diagnostics,Strip of 15 tablets,366.75,5,"Atorlip,Tablet,Atorvastatin,10mg,Cipla,strip",Atorvastatin (10mg) + Fenofibrate (145mg),3002,,Cipla Ltd
-Advent Forte 457mg Syrup Tangy Orange,ADVFOR457,Ayurvedic Oncology,Bottle,193.74,5,"Advent,Forte,457mg,Amoxycillin,400mg,Cipla",Amoxycillin  (400mg/5ml) + Clavulanic Acid (57mg/5ml),3006,,Cipla Ltd
-Amlodac 5 Tablet,AML5TAB,Unani Cardiology,Tablet,97.1,0,"Amlodac,Tablet,Amlodipine,5mg,Zydus,strip",Amlodipine (5mg),3003,,Zydus Cadila
-Aztor 40 Tablet,AZT40TAB,Healthcare Finance,Strip of 15 tablets,359.8,5,"Aztor,Tablet,Atorvastatin,40mg,Sun,strip",Atorvastatin (40mg),3005,,Sun Pharmaceutical Industries Ltd
-Ascoril Plus Expectorant,ASCPLUEXP,Color Therapy,Bottle,182,18,"Ascoril,Plus,Expectorant,Bromhexine,2mg,Glenmark",Bromhexine (2mg/5ml) + Guaifenesin (50mg/5ml),3006,,Glenmark Pharmaceuticals Ltd
-Alupent 10mg Tablet,ALU10MTAB,Homeopathic Software,Strip of 10 tablets,52.5,18,"Alupent,10mg,Tablet,Orciprenaline,Zydus,strip",Orciprenaline (10mg),3005,,Zydus Cadila
-Amlip AT Tablet,AMLATTAB,Siddha Spiritual Healing,Strip of 10 tablets,72.6,5,"Amlip,Tablet,Amlodipine,5mg,Cipla,strip",Amlodipine (5mg) + Atenolol (50mg),3006,,Cipla Ltd
-Asthakind-P Drops,ASTDRO,Naturopathic Fitness,Oral Drops,62,5,"Asthakind,Drops,Ambroxol,75mg,Mankind,packet",Ambroxol (7.5mg) + Guaifenesin (12.5mg),3005,,Mankind Pharma Ltd
-Allegra Nasal Spray,ALLNASSPR,Functional Medicine,Nasal Spray,361,5,"Allegra,Nasal,Spray,Fluticasone,Furoate,Sanofi",Fluticasone Furoate (27.5mcg),3003,,Sanofi India  Ltd
-Addnok 0.2mg Tablet,ADD02MTAB,Healthcare DevOps,Tablet,76.6,5,"Addnok,02mg,Tablet,Buprenorphine,Rusan,strip",Buprenorphine (0.2mg),3006,,Rusan Pharma Ltd
-Aldosmin 1000mg Tablet,ALD100TAB,Energy Medicine,Strip of 10 tablets,238,5,"Aldosmin,1000mg,Tablet,Diosmin,900mg,Sun",Diosmin (900mg) + Hesperidin (100mg),3004,,Sun Pharmaceutical Industries Ltd
-Andre I-Kul Eye Drop,ANDIKUEYE,Siddha Geriatrics,Blister pack of 10,73.5,0,"Andre,Kul,Eye,Camphor,001,Intas",Camphor (0.01% w/v) + Menthol (0.005% w/v),3004,,Intas Pharmaceuticals Ltd
-Antiflu 75mg Capsule,ANT75MCAP,Medical Equipment Leasing,Capsule,726.72,5,"Antiflu,75mg,Capsule,Oseltamivir,Phosphate,Cipla",Oseltamivir Phosphate (75mg),3004,,Cipla Ltd
-Alerfix Total Tablet SR,ALETOTTAB,Genetics & Genomics,Tablet,262.02,5,"Alerfix,Total,Tablet,Ambroxol,75mg,Eris",Ambroxol (75mg) + Levocetirizine (5mg),3003,,Eris Lifesciences Ltd
-Alex-L Cough Syrup Mango,ALECOUSYR,Homeopathic Cardiology,Oral Suspension,129,5,"Alex,Cough,Syrup,Levocloperastine,20mg,Glenmark",Levocloperastine (20mg/5ml),3003,,Glenmark Pharmaceuticals Ltd
-Atropine Sulphate Injection,ATRSULINJ,Mobility Aids,Strip of 10 tablets,11.25,5,"Atropine,Sulphate,Injection,06mg,Samarth,vial",Atropine (0.6mg),3004,,Samarth Life Sciences Pvt Ltd
-Aquaviron Injection 1ml,AQUINJ1ML,Siddha Neurology,Vial,194.49,5,"Aquaviron,Injection,1ml,Testosterone,25mg,Abbott",Testosterone (25mg),3003,,Abbott
-Aciclovir 400 Tablet,ACI400TAB,Homeopathic Lifestyle Management,Strip of 5 tablets,67.42,5,"Aciclovir,400,Tablet,Acyclovir,400mg,Care",Acyclovir (400mg),3006,,Care Formulation Labs Pvt Ltd
-Alkof DX Syrup,ALKDXSYR,Consumables,Bottle,110,5,"Alkof,Syrup,Chlorpheniramine,Maleate,Alkem,bottle",Chlorpheniramine Maleate (4mg) + Dextromethorphan Hydrobromide (10mg),3006,,Alkem Laboratories Ltd
-ATM 500 Tablet,ATM500TAB,Ayurvedic Product Manufacturing,Strip of 5 tablets,132.38,5,"ATM,500,Tablet,Azithromycin,500mg,Indoco",Azithromycin (500mg),3004,,Indoco Remedies Ltd
-Assurans Tablet,ASSTAB,Medical Consent Management,Strip of 10 tablets,200,5,"Assurans,Tablet,Sildenafil,20mg,Cipla,strip",Sildenafil (20mg),3005,,Cipla Ltd
-Ambrolite D Syrup,AMBDSYR,Medical Cyber-Physical Systems,Bottle,118,5,"Ambrolite,Syrup,Phenylephrine,5mg,Tablets,bottle",Phenylephrine (5mg/5ml) + Chlorpheniramine Maleate (2mg/5ml),3004,,Tablets India Limited
-Actrapid HM 100IU/ml Penfill,ACTHM100,Siddha Toxicology,Oral Solution Bottle,350.9,5,"Actrapid,100IU,Penfill,Human,insulin,Novo",Human insulin (100IU),3005,,Novo Nordisk India Pvt Ltd
-Aten 50 Tablet,ATE50TAB,Homeopathic Regulatory Affairs,Tablet,31.04,5,"Aten,Tablet,Atenolol,50mg,Zydus,strip",Atenolol (50mg),3005,,Zydus Cadila
-Azmarda 100mg Tablet,AZM100TAB,Medical Crowdsourcing,Tablet,1169.05,5,"Azmarda,100mg,Tablet,Sacubitril,49mg,Chemicals",Sacubitril (49mg) + Valsartan (51mg),3003,,J B Chemicals and Pharmaceuticals Ltd
-Asthalin AX Syrup,ASTAXSYR,Wellness Retreats,Bottle,104.67,0,"Asthalin,Syrup,Ambroxol,30mg,Cipla,bottle",Ambroxol (30mg/5ml) + Levosalbutamol (1mg/5ml),3005,,Cipla Ltd
-Alzolam 0.5mg Tablet,ALZ05MTAB,Dental,Strip of 10 tablets,36.5,0,"Alzolam,05mg,Tablet,Alprazolam,Sun,strip",Alprazolam (0.5mg),3005,,Sun Pharmaceutical Industries Ltd
-A Kare Combipack,AKARCOM,Occupational Health,Pack,595,5,"Kare,Combipack,Mifepristone,200mg,DKT,packet",Mifepristone (200mg) + Misoprostol (200mcg),3003,,DKT India Ltd
-Ambulax Tablet,AMBTAB,Pathology,Strip of 15 tablets,101.25,5,"Ambulax,Tablet,Alprazolam,025mg,Unimarck,strip",Alprazolam (0.25mg) + Propranolol (20mg),3004,,Unimarck Pharma India Ltd
-Amlovas-AT Tablet,AMLTAB,Medical App Development,Strip of 15 tablets,106,5,"Amlovas,Tablet,Amlodipine,5mg,Macleods,strip",Amlodipine (5mg) + Atenolol (50mg),3004,,Macleods Pharmaceuticals Pvt Ltd
-Asthakind-DX Junior Syrup Cherry,ASTJUNSYR,Ayurvedic Product Manufacturing,Bottle,60.5,5,"Asthakind,Junior,Syrup,Phenylephrine,25mg,Mankind",Phenylephrine (2.5mg/5ml) + Chlorpheniramine Maleate (1mg/5ml),3005,,Mankind Pharma Ltd
-Advent 228.5mg Dry Syrup,ADV228DRY,Healthcare Gamification,Bottle,67.2,5,"Advent,2285mg,Dry,Amoxycillin,200mg,Cipla",Amoxycillin  (200mg/5ml) + Clavulanic Acid (28.5mg/5ml),3005,,Cipla Ltd
-Acivir 800 DT Tablet,ACI800DT,Oncology,Tablet,246.23,5,"Acivir,800,Tablet,Acyclovir,800mg,Cipla",Acyclovir (800mg),3002,,Cipla Ltd
-Alfusin Tablet PR,ALFTABPR,Homeopathic ENT,Tablet,298.67,5,"Alfusin,Tablet,Alfuzosin,10mg,Cipla,strip",Alfuzosin (10mg),3002,,Cipla Ltd
-Aziwok 500 Tablet,AZI500TAB,ICU Equipment,Strip of 5 tablets,132.36,5,"Aziwok,500,Tablet,Azithromycin,500mg,Reddys",Azithromycin (500mg),3003,,Dr Reddy's Laboratories Ltd
-Alkacitral Liquid,ALKLIQ,Medical Disaster Response,Bottle,111.35,5,"Alkacitral,Liquid,Disodium,Hydrogen,Alembic,bottle",Disodium Hydrogen Citrate (1.25gm/5ml),3006,,Alembic Pharmaceuticals Ltd
-Almox-CV 625 Tablet,ALM625TAB,Medical Device Testing,Strip of 6 tablets,116.51,5,"Almox,625,Tablet,Amoxycillin,500mg,Cachet",Amoxycillin  (500mg) + Clavulanic Acid (125mg),3005,,Cachet Pharmaceuticals Pvt Ltd
-Azithral 100 Liquid,AZI100LIQ,Medical Supply Chain,Oral Suspension,46.3,5,"Azithral,100,Liquid,Azithromycin,20mg,Alembic",Azithromycin (20mg/ml),3003,,Alembic Pharmaceuticals Ltd
-Azee 100mg Dry Syrup Peppermint,AZE100DRY,Siddha Neurology,Bottle,45.88,5,"Azee,100mg,Dry,Azithromycin,Cipla,bottle",Azithromycin (100mg/5ml),3004,,Cipla Ltd
-Ace-Proxyvon CR Tablet,ACECRTAB,Healthcare Cybersecurity,Tablet,143.25,5,"Ace,Proxyvon,Tablet,Aceclofenac,200mg,Reddys",Aceclofenac (200mg) + Rabeprazole (20mg),3002,,Dr Reddy's Laboratories Ltd
-Ascoril C  Syrup,ASCCSYR,Healthcare Supply Forecasting,Bottle,174,18,"Ascoril,Syrup,Chlorpheniramine,Maleate,Glenmark,bottle",Chlorpheniramine Maleate (4mg) + Codeine (10mg),3002,,Glenmark Pharmaceuticals Ltd
-Aprezo 30mg Tablet,APR30MTAB,Dental,Strip of 10 tablets,295.5,18,"Aprezo,30mg,Tablet,Apremilast,Glenmark,strip",Apremilast (30mg),3006,,Glenmark Pharmaceuticals Ltd
-Apidra 100IU Cartridge,API100CAR,Ayurvedic Education,Oral Solution Bottle,761,5,"Apidra,100IU,Cartridge,Insulin,Glulisine,Sanofi",Insulin Glulisine (100IU),3003,,Sanofi India  Ltd
-Amlosafe 3D Tablet,AML3DTAB,Clinical Chemistry,Tablet,67.2,5,"Amlosafe,Tablet,Telmisartan,40mg,Aristo,strip",Telmisartan (40mg) + Amlodipine (5mg),3003,,Aristo Pharmaceuticals Pvt Ltd
-Andial 2mg Tablet,AND2MGTAB,Wearable Health Tech,Strip of 10 tablets,24.5,5,"Andial,2mg,Tablet,Loperamide,Veritaz,strip",Loperamide (2mg),3004,,Veritaz Healthcare Ltd
-Acenext P 100mg/325mg Tablet,ACEP100,Medical Accreditation,Strip of 10 tablets,58,5,"Acenext,100mg,325mg,Aceclofenac,Cadila,strip",Aceclofenac (100mg) + Paracetamol (325mg),3006,,Cadila Pharmaceuticals Ltd
+name,code,category,unit,mrp_price,selling_price,gst_rate,cess_rate,reorder_level,danger_level,min_stock,max_stock,tags,composition,hsn_code,hsn_id,schedule,manufacturer
+Augmentin 625 Duo Tablet,AUG625DUO,Healthcare Analytics,Strip of 10 tablets,223.42,223.42,0,0,50,10,20,500,"Augmentin,625,Duo,Amoxycillin,500mg,Glaxo",Amoxycillin (500mg) + Clavulanic Acid (125mg),3004,,,"Glaxo SmithKline Pharmaceuticals Ltd"
+Azithral 500 Tablet,AZI500TAB,Healthcare Data Governance,Strip of 5 tablets,132.36,132.36,5,0,50,10,20,500,"Azithral,500,Tablet,Azithromycin,500mg,Alembic",Azithromycin (500mg),3002,,,"Alembic Pharmaceuticals Ltd"
+Ascoril LS Syrup,ASCLSSYR,Patient Monitoring,Bottle,118,118,5,0,50,10,20,500,"Ascoril,Syrup,Ambroxol,30mg,Glenmark,bottle",Ambroxol (30mg/5ml) + Levosalbutamol (1mg/5ml),3002,,,"Glenmark Pharmaceuticals Ltd"
+Allegra 120mg Tablet,ALL120TAB,Nephrology,Strip of 10 tablets,218.81,218.81,0,0,50,10,20,500,"Allegra,120mg,Tablet,Fexofenadine,Sanofi,strip",Fexofenadine (120mg),3003,,,"Sanofi India Ltd"
+Avil 25 Tablet,AVI25TAB,Siddha Spiritual Healing,Strip of 15 tablets,10.96,10.96,5,0,50,10,20,500,"Avil,Tablet,Pheniramine,25mg,Sanofi,strip",Pheniramine (25mg),3006,,,"Sanofi India Ltd"
+Allegra-M Tablet,ALLTAB,Healthcare Sustainability,Strip of 10 tablets,241.48,241.48,5,0,50,10,20,500,"Allegra,Tablet,Montelukast,10mg,Sanofi,strip",Montelukast (10mg) + Fexofenadine (120mg),3006,,,"Sanofi India Ltd"
+Amoxyclav 625 Tablet,AMO625TAB,Naturopathic Research,Strip of 10 tablets,223.27,223.27,5,0,50,10,20,500,"Amoxyclav,625,Tablet,Amoxycillin,500mg,Abbott",Amoxycillin (500mg) + Clavulanic Acid (125mg),3006,,,"Abbott"
+Azee 500 Tablet,AZE500TAB,Medical SaaS Platforms,Strip of 5 tablets,132.38,132.38,5,0,50,10,20,500,"Azee,500,Tablet,Azithromycin,500mg,Cipla",Azithromycin (500mg),3002,,,"Cipla Ltd"
+Atarax 25mg Tablet,ATA25MTAB,Healthcare Policy & Planning,Strip of 15 tablets,85.5,85.5,5,0,50,10,20,500,"Atarax,25mg,Tablet,Hydroxyzine,Reddys,strip",Hydroxyzine (25mg),3004,,,"Dr Reddy's Laboratories Ltd"
+Ascoril D Plus Syrup Sugar Free,ASCDPLU,Medical SaaS Platforms,Bottle,129,129,5,0,50,10,20,500,"Ascoril,Plus,Syrup,Phenylephrine,5mg,Glenmark",Phenylephrine (5mg) + Chlorpheniramine Maleate (2mg),3004,,,"Glenmark Pharmaceuticals Ltd"
+Aciloc 150 Tablet,ACI150TAB,Wearable Health Tech,Tablet,40.94,40.94,0,0,50,10,20,500,"Aciloc,150,Tablet,Ranitidine,150mg,Cadila",Ranitidine (150mg),3002,,,"Cadila Pharmaceuticals Ltd"
+Alex Syrup,ALESYR,Homeopathic Sports Medicine,Bottle,129,129,5,0,50,10,20,500,"Alex,Syrup,Phenylephrine,5mg,Glenmark,bottle",Phenylephrine (5mg/5ml) + Chlorpheniramine Maleate (2mg/5ml),3006,,,"Glenmark Pharmaceuticals Ltd"
+Anovate Cream,ANOCRE,Healthcare Interdisciplinary Research,Cream,134.2,134.2,5,0,50,10,20,500,"Anovate,Cream,Phenylephrine,010,USV,tube",Phenylephrine (0.10% w/w) + Beclometasone (0.025% w/w),3005,,,"USV Ltd"
+Augmentin Duo Oral Suspension,AUGDUOORA,Lifestyle Medicine,Oral Suspension,67.2,67.2,5,0,50,10,20,500,"Augmentin,Duo,Oral,Amoxycillin,200mg,Glaxo",Amoxycillin (200mg) + Clavulanic Acid (28.5mg),3005,,,"Glaxo SmithKline Pharmaceuticals Ltd"
+Ambrodil-S Syrup,AMBSYR,Histopathology,Bottle,30.2,30.2,5,0,50,10,20,500,"Ambrodil,Syrup,Ambroxol,15mg,Aristo,bottle",Ambroxol (15mg/5ml) + Salbutamol (1mg/5ml),3006,,,"Aristo Pharmaceuticals Pvt Ltd"
+Arkamin Tablet,ARKTAB,Ayurveda,Tablet,72.65,72.65,5,0,50,10,20,500,"Arkamin,Tablet,Clonidine,100mcg,Torrent,strip",Clonidine (100mcg),3002,,,"Torrent Pharmaceuticals Ltd"
+Avomine Tablet,AVOTAB,Urology,Strip of 10 tablets,55.98,55.98,5,0,50,10,20,500,"Avomine,Tablet,Promethazine,25mg,Abbott,strip",Promethazine (25mg),3004,,,"Abbott"
+Asthakind-DX Syrup Sugar Free,ASTSYRSUG,Histopathology,Bottle,70.4,70.4,5,0,50,10,20,500,"Asthakind,Syrup,Sugar,Phenylephrine,5mg,Mankind",Phenylephrine (5mg/5ml) + Chlorpheniramine Maleate (2mg/5ml),3002,,,"Mankind Pharma Ltd"
+Allegra 180mg Tablet,ALL180TAB,Ayurvedic Product Manufacturing,Strip of 10 tablets,251.2,251.2,5,0,50,10,20,500,"Allegra,180mg,Tablet,Fexofenadine,Sanofi,strip",Fexofenadine (180mg),3004,,,"Sanofi India Ltd"
+Albendazole 400mg Tablet,ALB400TAB,Healthcare Supply Forecasting,Tablet,9.58,9.58,5,0,50,10,20,500,"Albendazole,400mg,Tablet,Cadila,strip",Albendazole (400mg),3003,,,"Cadila Pharmaceuticals Ltd"
+Asthalin Syrup,ASTSYR,Medical Crowdfunding,Bottle,19.04,19.04,5,0,50,10,20,500,"Asthalin,Syrup,Salbutamol,2mg,Cipla,bottle",Salbutamol (2mg/5ml),3002,,,"Cipla Ltd"
+Alprax 0.25 Tablet,ALP025TAB,Clinical Workflow Automation,Strip of 15 tablets,29,29,5,0,50,10,20,500,"Alprax,025,Tablet,Alprazolam,025mg,Torrent",Alprazolam (0.25mg),3003,,,"Torrent Pharmaceuticals Ltd"
+Altraday Capsule SR,ALTCAPSR,Healthcare Supply Forecasting,Capsule,128,128,5,0,50,10,20,500,"Altraday,Capsule,Aceclofenac,200mg,Sun,strip",Aceclofenac (200mg) + Rabeprazole (20mg),3004,,,"Sun Pharmaceutical Industries Ltd"
+Ativan 2mg Tablet,ATI2MGTAB,Medical Cyber-Physical Systems,Tablet,91.87,91.87,5,0,50,10,20,500,"Ativan,2mg,Tablet,Lorazepam,Pfizer,strip",Lorazepam (2mg),3002,,,"Pfizer Ltd"
+Ascoril LS Junior Syrup,ASCLSJUN,Healthcare Accessibility,Bottle,96,96,5,0,50,10,20,500,"Ascoril,Junior,Syrup,Ambroxol,15mg,Glenmark",Ambroxol (15mg/5ml) + Levosalbutamol (0.5mg/5ml),3004,,,"Glenmark Pharmaceuticals Ltd"
+Asthalin 100mcg Inhaler,AST100INH,Siddha Medicine,Inhaler,157.85,157.85,5,0,50,10,20,500,"Asthalin,100mcg,Inhaler,Salbutamol,Cipla,packet",Salbutamol (100mcg),3003,,,"Cipla Ltd"
+Almox 500 Capsule,ALM500CAP,Homeopathic Repertory,Capsule,80.26,80.26,5,0,50,10,20,500,"Almox,500,Capsule,Amoxycillin,500mg,Alkem",Amoxycillin (500mg),3005,,,"Alkem Laboratories Ltd"
+Atarax 10mg Tablet,ATA10MTAB,Unani Education,Strip of 15 tablets,47.91,47.91,5,0,50,10,20,500,"Atarax,10mg,Tablet,Hydroxyzine,Reddys,strip",Hydroxyzine (10mg),3005,,,"Dr Reddy's Laboratories Ltd"
+Aciloc RD 20 Tablet,ACIRD20,Healthcare Architecture,Strip of 15 tablets,77,77,5,0,50,10,20,500,"Aciloc,Tablet,Domperidone,10mg,Cadila,strip",Domperidone (10mg) + Omeprazole (20mg),3003,,,"Cadila Pharmaceuticals Ltd"
+Aldactone Tablet,ALDTAB,Medical Podcasting,Strip of 15 tablets,35.35,35.35,5,0,50,10,20,500,"Aldactone,Tablet,Spironolactone,25mg,RPG,strip",Spironolactone (25mg),3005,,,"RPG Life Sciences Ltd"
+Allegra Suspension Raspberry & Vanilla,ALLSUSRAS,Unani Nutrition,Oral Suspension,188.78,188.78,5,0,50,10,20,500,"Allegra,Suspension,Raspberry,Fexofenadine,30mg,Sanofi",Fexofenadine (30mg/5ml),3003,,,"Sanofi India Ltd"
+Atarax Syrup,ATASYR,TCM Emotional Balance,Bottle,110.25,110.25,5,0,50,10,20,500,"Atarax,Syrup,Hydroxyzine,10mg,Reddys,bottle",Hydroxyzine (10mg),3002,,,"Dr Reddy's Laboratories Ltd"
+Amlokind-AT Tablet,AMLTAB,Medical Simulation,Strip of 15 tablets,44.7,44.7,5,0,50,10,20,500,"Amlokind,Tablet,Amlodipine,5mg,Mankind,strip",Amlodipine (5mg) + Atenolol (50mg),3003,,,"Mankind Pharma Ltd"
+Axcer 90mg Tablet,AXC90MTAB,Homeopathic Gynaecology,Tablet,420,420,5,0,50,10,20,500,"Axcer,90mg,Tablet,Ticagrelor,Sun,strip",Ticagrelor (90mg),3005,,,"Sun Pharmaceutical Industries Ltd"
+Ativan 1mg Tablet,ATI1MGTAB,Homeopathic Oncology,Tablet,75.67,75.67,5,0,50,10,20,500,"Ativan,1mg,Tablet,Lorazepam,Pfizer,strip",Lorazepam (1mg),3005,,,"Pfizer Ltd"
+Alkasol Oral Solution,ALKORASOL,Aromatherapy,Oral Solution,122.05,122.05,5,0,50,10,20,500,"Alkasol,Oral,Solution,Disodium,Hydrogen,Stadmed",Disodium Hydrogen Citrate (1.4gm/5ml),3006,,,"Stadmed Pvt Ltd"
+Aldigesic P 100mg/325mg Tablet,ALDP100,OT Equipment,Strip of 15 tablets,110,110,5,0,50,10,20,500,"Aldigesic,100mg,325mg,Aceclofenac,Alkem,strip",Aceclofenac (100mg) + Paracetamol (325mg),3002,,,"Alkem Laboratories Ltd"
+Alfoo 10mg Tablet PR,ALF10MTAB,Lifestyle Medicine,Tablet,687.75,687.75,5,0,50,10,20,500,"Alfoo,10mg,Tablet,Alfuzosin,Reddys,strip",Alfuzosin (10mg),3004,,,"Dr Reddy's Laboratories Ltd"
+Alprax 0.5mg Tablet,ALP05MTAB,Healthcare Analytics,Strip of 15 tablets,66.9,66.9,5,0,50,10,20,500,"Alprax,05mg,Tablet,Alprazolam,Torrent,strip",Alprazolam (0.5mg),3003,,,"Torrent Pharmaceuticals Ltd"
+Arachitol 6L Injection,ARA6LINJ,Mind-Body Medicine,Pack,407.76,407.76,0,0,50,10,20,500,"Arachitol,Injection,Vitamin,600000IU,Abbott,packet",Vitamin D3 (600000IU),3004,,,"Abbott"
+Anafortan 25 mg/300 mg Tablet,ANA25MG3,Ayurvedic Beauty Care,Strip of 15 tablets,124.56,124.56,5,0,50,10,20,500,"Anafortan,300,Tablet,Camylofin,25mg,Abbott",Camylofin (25mg) + Paracetamol (300mg),3006,,,"Abbott"
+Alex Junior Syrup,ALEJUNSYR,Healthcare Compliance,Bottle,95,95,5,0,50,10,20,500,"Alex,Junior,Syrup,Chlorpheniramine,Maleate,Glenmark",Chlorpheniramine Maleate (2mg/5ml) + Dextromethorphan Hydrobromide (5mg/5ml),3004,,,"Glenmark Pharmaceuticals Ltd"
+Azithral 200 Liquid,AZI200LIQ,Naturopathic Sleep Therapy,Oral Suspension,57.25,57.25,5,0,50,10,20,500,"Azithral,200,Liquid,Azithromycin,200mg,Alembic",Azithromycin (200mg/5ml),3003,,,"Alembic Pharmaceuticals Ltd"
+AB Phylline Capsule,ABPHYCAP,Ayurvedic Research,Capsule,162,162,5,0,50,10,20,500,"Phylline,Capsule,Acebrophylline,100mg,Sun,strip",Acebrophylline (100mg),3006,,,"Sun Pharmaceutical Industries Ltd"
+Althrocin 500 Tablet,ALT500TAB,Color Therapy,Strip of 10 tablets,110.3,110.3,18,0,50,10,20,500,"Althrocin,500,Tablet,Erythromycin,500mg,Alembic",Erythromycin (500mg),3006,,,"Alembic Pharmaceuticals Ltd"
+Augmentin DDS Suspension,AUGDDSSUS,Homeopathic Toxicology,Oral Suspension,173,173,5,0,50,10,20,500,"Augmentin,DDS,Suspension,Amoxycillin,400mg,Glaxo",Amoxycillin (400mg/5ml) + Clavulanic Acid (57mg/5ml),3002,,,"Glaxo SmithKline Pharmaceuticals Ltd"
+Azicip 500 Tablet,AZI500TAB,Ayurveda,Strip of 3 tablets,79.43,79.43,5,0,50,10,20,500,"Azicip,500,Tablet,Azithromycin,500mg,Cipla",Azithromycin (500mg),3004,,,"Cipla Ltd"
+Aldigesic-SP Tablet,ALDTAB,Medical Compliance Training,Strip of 10 tablets,120,120,0,0,50,10,20,500,"Aldigesic,Tablet,Aceclofenac,100mg,Alkem,strip",Aceclofenac (100mg) + Paracetamol (325mg),3006,,,"Alkem Laboratories Ltd"
+Amoxycillin 500mg Capsule,AMO500CAP,Histopathology,Capsule,31.9,31.9,0,0,50,10,20,500,"Amoxycillin,500mg,Capsule,Jagsonpal,strip",Amoxycillin (500mg),3005,,,"Jagsonpal Pharmaceuticals Ltd"
+Asthakind Expectorant Sugar Free,ASTEXPSUG,Biotechnology,Bottle,64.22,64.22,18,0,50,10,20,500,"Asthakind,Expectorant,Sugar,Guaifenesin,50mg,Mankind",Guaifenesin (50mg) + Terbutaline (1.25mg),3006,,,"Mankind Pharma Ltd"
+Acemiz Plus Tablet,ACEPLUTAB,Healthcare Marketing,Strip of 10 tablets,99.5,99.5,5,0,50,10,20,500,"Acemiz,Plus,Tablet,Aceclofenac,100mg,Lupin",Aceclofenac (100mg) + Paracetamol (325mg),3005,,,"Lupin Ltd"
+Aceclo Plus Tablet,ACEPLUTAB,Medical Crowdsourcing,Strip of 15 tablets,90.85,90.85,5,0,50,10,20,500,"Aceclo,Plus,Tablet,Aceclofenac,100mg,Aristo",Aceclofenac (100mg) + Paracetamol (325mg),3006,,,"Aristo Pharmaceuticals Pvt Ltd"
+Anobliss Cream,ANOCRE,Homeopathic Gynaecology,Cream,136.68,136.68,18,0,50,10,20,500,"Anobliss,Cream,Lidocaine,Samarth,tube",Lidocaine (1.5% w/w) + Nifedipine (0.3% w/w),3006,,,"Samarth Life Sciences Pvt Ltd"
+Alex Cough Lozenges Lemon Ginger,ALECOULOZ,Medical Disaster Response,Lozenge,108,108,5,0,50,10,20,500,"Alex,Cough,Lozenges,Dextromethorphan,Hydrobromide,Glenmark",Dextromethorphan Hydrobromide (5mg),3005,,,"Glenmark Pharmaceuticals Ltd"
+Asthalin Respules,ASTRES,Ayurvedic Research,Strip of 5 tablets,7.07,7.07,5,0,50,10,20,500,"Asthalin,Respules,Salbutamol,25mg,Cipla,packet",Salbutamol (2.5mg),3006,,,"Cipla Ltd"
+Avil Injection,AVIINJ,Holistic Wellness,Strip of 10 tablets,21.17,21.17,5,0,50,10,20,500,"Avil,Injection,Pheniramine,2275mg,Sanofi,vial",Pheniramine (22.75mg),3003,,,"Sanofi India Ltd"
+Azee 200mg Dry Syrup,AZE200DRY,Mobility Aids,Oral Suspension,52.31,52.31,5,0,50,10,20,500,"Azee,200mg,Dry,Azithromycin,Cipla,bottle",Azithromycin (200mg/5ml),3006,,,"Cipla Ltd"
+Atorva Tablet,ATOTAB,Healthcare Accessibility,Strip of 15 tablets,102.31,102.31,5,0,50,10,20,500,"Atorva,Tablet,Atorvastatin,10mg,Zydus,strip",Atorvastatin (10mg),3002,,,"Zydus Cadila"
+Asthakind-LS Expectorant Cola Sugar Free,ASTEXPCOL,Medical Waste Management,Bottle,93.5,93.5,5,0,50,10,20,500,"Asthakind,Expectorant,Cola,Ambroxol,30mg,Mankind",Ambroxol (30mg/5ml) + Levosalbutamol (1mg/5ml),3002,,,"Mankind Pharma Ltd"
+Ascoril LS Drops,ASCLSDRO,Healthcare Accessibility,Oral Drops,72,72,0,0,50,10,20,500,"Ascoril,Drops,Ambroxol,75mg,Glenmark,bottle",Ambroxol (7.5mg/ml) + Levosalbutamol (0.25mg/ml),3002,,,"Glenmark Pharmaceuticals Ltd"
+Azmarda 50mg Tablet,AZM50MTAB,Homeopathic Counseling,Tablet,1092.03,1092.03,0,0,50,10,20,500,"Azmarda,50mg,Tablet,Sacubitril,24mg,Chemicals",Sacubitril (24mg) + Valsartan (26mg),3003,,,"J B Chemicals and Pharmaceuticals Ltd"
+Amixide-H Tablet,AMITAB,Medical SaaS Platforms,Strip of 10 tablets,51,51,5,0,50,10,20,500,"Amixide,Tablet,Amitriptyline,125mg,Sun,strip",Amitriptyline (12.5mg) + Chlordiazepoxide (5mg),3003,,,"Sun Pharmaceutical Industries Ltd"
+AB-Flo-N Tablet,ABFTAB,Sleep Medicine,Strip of 10 tablets,207.25,207.25,5,0,50,10,20,500,"Flo,Tablet,Acebrophylline,100mg,Lupin,strip",Acebrophylline (100mg) + Acetylcysteine (600mg),3006,,,"Lupin Ltd"
+AF Kit Tablet,AFKITTAB,TCM Cupping Therapy,Tablet,110,110,5,0,50,10,20,500,"Kit,Tablet,Azithromycin,1000mg,Systopic,strip",Azithromycin (1000mg) + Ornidazole (750mg),3005,,,"Systopic Laboratories Pvt Ltd"
+Amlokind 5 Tablet,AML5TAB,Siddha Education,Strip of 15 tablets,22.15,22.15,5,0,50,10,20,500,"Amlokind,Tablet,Amlodipine,5mg,Mankind,strip",Amlodipine (5mg),3002,,,"Mankind Pharma Ltd"
+Amlong Tablet,AMLTAB,Unani Dermatology,Strip of 15 tablets,48.55,48.55,5,0,50,10,20,500,"Amlong,Tablet,Amlodipine,5mg,Micro,strip",Amlodipine (5mg),3005,,,"Micro Labs Ltd"
+Akt 4 Kit,AKT4KIT,Naturopathic Oncology,Pack,24.7,24.7,5,0,50,10,20,500,"Akt,Kit,Isoniazid,300mg,Lupin,packet",Isoniazid (300mg) + Rifampicin (450mg),3002,,,"Lupin Ltd"
+Ascoril D Junior Cough Syrup,ASCDJUN,Healthcare Infrastructure,Bottle,98,98,0,0,50,10,20,500,"Ascoril,Junior,Cough,Phenylephrine,5mg,Glenmark",Phenylephrine (5mg/5ml) + Chlorpheniramine Maleate (2mg/5ml),3004,,,"Glenmark Pharmaceuticals Ltd"
+Amitone 10mg Tablet,AMI10MTAB,Clinical Engineering,Strip of 10 tablets,19.15,19.15,5,0,50,10,20,500,"Amitone,10mg,Tablet,Amitriptyline,Intas,strip",Amitriptyline (10mg),3003,,,"Intas Pharmaceuticals Ltd"
+Aulin 100mg Tablet,AUL100TAB,Lifestyle Medicine,Strip of 10 tablets,50.56,50.56,5,0,50,10,20,500,"Aulin,100mg,Tablet,Nimesulide,Elder,strip",Nimesulide (100mg),3005,,,"Elder Pharmaceuticals Ltd"
+Amikacin Sulphate 500mg Injection,AMISUL500,Healthcare Procurement,Vial,11.87,11.87,5,0,50,10,20,500,"Amikacin,Sulphate,500mg,Sun,vial",Amikacin (500mg),3003,,,"Sun Pharmaceutical Industries Ltd"
+Ambrodil-LX Syrup,AMBSYR,Clinical Chemistry,Bottle,90.85,90.85,5,0,50,10,20,500,"Ambrodil,Syrup,Ambroxol,30mg,Aristo,bottle",Ambroxol (30mg/5ml) + Levosalbutamol (1mg/5ml),3006,,,"Aristo Pharmaceuticals Pvt Ltd"
+Aquasol A Capsule,AQUACAP,Healthcare Infrastructure,Capsule,29.6,29.6,0,0,50,10,20,500,"Aquasol,Capsule,Vitamin,25000IU,USV,bottle",Vitamin A (25000IU),3006,,,"USV Ltd"
+AB Phylline SR 200 Tablet,ABPHYSR,Orthopedics,Tablet,252,252,18,0,50,10,20,500,"Phylline,200,Tablet,Acebrophylline,200mg,Sun",Acebrophylline (200mg),3003,,,"Sun Pharmaceutical Industries Ltd"
+Azoran Tablet,AZOTAB,Healthcare Cybersecurity,Strip of 10 tablets,106.65,106.65,5,0,50,10,20,500,"Azoran,Tablet,Azathioprine,50mg,RPG,strip",Azathioprine (50mg),3005,,,"RPG Life Sciences Ltd"
+Amaryl 1mg Tablet,AMA1MGTAB,Healthcare Chatbots,Tablet,133.81,133.81,5,0,50,10,20,500,"Amaryl,1mg,Tablet,Glimepiride,Sanofi,strip",Glimepiride (1mg),3002,,,"Sanofi India Ltd"
+Aztor 10 Tablet,AZT10TAB,Medical Crowdsourcing,Strip of 15 tablets,102.25,102.25,5,0,50,10,20,500,"Aztor,Tablet,Atorvastatin,10mg,Sun,strip",Atorvastatin (10mg),3005,,,"Sun Pharmaceutical Industries Ltd"
+Atorva 40 Tablet,ATO40TAB,Healthcare Interdisciplinary Research,Strip of 10 tablets,239.89,239.89,18,0,50,10,20,500,"Atorva,Tablet,Atorvastatin,40mg,Zydus,strip",Atorvastatin (40mg),3005,,,"Zydus Cadila"
+Azax 500 Tablet,AZA500TAB,Medical Affiliate Networks,Strip of 3 tablets,79.3,79.3,5,0,50,10,20,500,"Azax,500,Tablet,Azithromycin,500mg,Sun",Azithromycin (500mg),3006,,,"Sun Pharmaceutical Industries Ltd"
+Alex Syrup Sugar Free,ALESYRSUG,Reiki Healing,Bottle,129,129,5,0,50,10,20,500,"Alex,Syrup,Sugar,Phenylephrine,5mg,Glenmark",Phenylephrine (5mg/5ml) + Chlorpheniramine Maleate (2mg/5ml),3004,,,"Glenmark Pharmaceuticals Ltd"
+Anxit 0.5 Tablet,ANX05TAB,Healthcare Robotics Maintenance,Strip of 15 tablets,47,47,18,0,50,10,20,500,"Anxit,Tablet,Alprazolam,05mg,Micro,strip",Alprazolam (0.5mg),3006,,,"Micro Labs Ltd"
+Anxit 0.25mg Tablet,ANX025TAB,IV Therapy,Strip of 15 tablets,20.5,20.5,5,0,50,10,20,500,"Anxit,025mg,Tablet,Alprazolam,Micro,strip",Alprazolam (0.25mg),3002,,,"Micro Labs Ltd"
+Acitrom 2 Tablet,ACI2TAB,Pathology,Tablet,414.65,414.65,5,0,50,10,20,500,"Acitrom,Tablet,Acenocoumarol,2mg,Abbott,strip",Acenocoumarol (2mg),3006,,,"Abbott"
+Angispan - TR 2.5mg Capsule,ANGTR25M,Color Therapy,Capsule,198,198,5,0,50,10,20,500,"Angispan,25mg,Capsule,Nitroglycerin,USV,bottle",Nitroglycerin (2.5mg),3006,,,"USV Ltd"
+Azeflo Nasal Spray,AZENASSPR,Genetics & Genomics,Nasal Spray,420.1,420.1,5,0,50,10,20,500,"Azeflo,Nasal,Spray,Fluticasone,Propionate,Lupin",Fluticasone Propionate (50mcg) + Azelastine (140mcg),3002,,,"Lupin Ltd"
+Acemiz -MR Tablet,ACEMRTAB,Clinical Trials,Strip of 10 tablets,99.5,99.5,5,0,50,10,20,500,"Acemiz,Tablet,Aceclofenac,100mg,Lupin,strip",Aceclofenac (100mg) + Paracetamol (325mg),3003,,,"Lupin Ltd"
+Akurit 4 Tablet,AKU4TAB,Siddha Pharmacy,Strip of 10 tablets,82.6,82.6,5,0,50,10,20,500,"Akurit,Tablet,Isoniazid,75mg,Lupin,strip",Isoniazid (75mg) + Rifampicin (150mg),3006,,,"Lupin Ltd"
+Aerocort Inhaler,AERINH,Medical Cloud Infrastructure,Inhaler,273.77,273.77,5,0,50,10,20,500,"Aerocort,Inhaler,Levosalbutamol,50mcg,Cipla,packet",Levosalbutamol (50mcg) + Beclometasone (50mcg),3002,,,"Cipla Ltd"
+Adaferin Gel,ADAGEL,Genetics & Genomics,Tube,284,284,5,0,50,10,20,500,"Adaferin,Gel,Adapalene,Galderma,tube",Adapalene (0.1% w/w),3006,,,"Galderma India Pvt Ltd"
+Acivir 400 DT Tablet,ACI400DT,Dance Movement Therapy,Tablet,76.55,76.55,5,0,50,10,20,500,"Acivir,400,Tablet,Acyclovir,400mg,Cipla",Acyclovir (400mg),3004,,,"Cipla Ltd"
+Aptimust Syrup,APTSYR,Medical Credentialing,Bottle,129.9,129.9,5,0,50,10,20,500,"Aptimust,Syrup,Cyproheptadine,2mg,Mankind,bottle",Cyproheptadine (2mg/5ml) + Tricholine Citrate (275mg/5ml),3004,,,"Mankind Pharma Ltd"
+Augmentin 1000 Duo Tablet,AUG100DUO,Medical Compliance Training,Strip of 10 tablets,601.45,601.45,5,0,50,10,20,500,"Augmentin,1000,Duo,Amoxycillin,875mg,Glaxo",Amoxycillin (875mg) + Clavulanic Acid (125mg),3003,,,"Glaxo SmithKline Pharmaceuticals Ltd"
+Ambrodil Syrup,AMBSYR,Healthcare Interoperability Standards,Bottle,69.75,69.75,5,0,50,10,20,500,"Ambrodil,Syrup,Ambroxol,30mg,Aristo,bottle",Ambroxol (30mg/5ml),3002,,,"Aristo Pharmaceuticals Pvt Ltd"
+Acogut Tablet,ACOTAB,Laboratory Equipment,Strip of 15 tablets,239.4,239.4,5,0,50,10,20,500,"Acogut,Tablet,Acotiamide,100mg,Lupin,strip",Acotiamide (100mg),3006,,,"Lupin Ltd"
+Atarax Drops,ATADRO,Medical Robotics,Bottle,69.75,69.75,0,0,50,10,20,500,"Atarax,Drops,Hydroxyzine,6mg,Reddys,bottle",Hydroxyzine (6mg),3003,,,"Dr Reddy's Laboratories Ltd"
+Amlip 5 Tablet,AML5TAB,Naturopathic Sleep Therapy,Strip of 10 tablets,32.36,32.36,5,0,50,10,20,500,"Amlip,Tablet,Amlodipine,5mg,Cipla,strip",Amlodipine (5mg),3004,,,"Cipla Ltd"
+AntiD 300mcg/ml Injection,ANT300INJ,Biotechnology,Vial,3039.42,3039.42,5,0,50,10,20,500,"AntiD,300mcg,Injection,Anti,Immunoglobulin,Bharat",Anti Rh D Immunoglobulin (300mcg/ml),3004,,,"Bharat Serums & Vaccines Ltd"
+Alerid Syrup,ALESYR,Healthcare Loyalty Programs,Bottle,21.84,21.84,5,0,50,10,20,500,"Alerid,Syrup,Cetirizine,5mg,Cipla,bottle",Cetirizine (5mg/5ml),3006,,,"Cipla Ltd"
+Aldactone 50 Tablet,ALD50TAB,Medical Open Data Platforms,Strip of 15 tablets,70.6,70.6,5,0,50,10,20,500,"Aldactone,Tablet,Spironolactone,50mg,RPG,strip",Spironolactone (50mg),3006,,,"RPG Life Sciences Ltd"
+Ampoxin 500 Capsule,AMP500CAP,Laboratory Equipment,Capsule,88.9,88.9,5,0,50,10,20,500,"Ampoxin,500,Capsule,Ampicillin,250mg,Torrent",Ampicillin (250mg) + Cloxacillin (250mg),3006,,,"Torrent Pharmaceuticals Ltd"
+Azee 250 Tablet,AZE250TAB,Healthcare Interoperability Standards,Strip of 10 tablets,118.49,118.49,18,0,50,10,20,500,"Azee,250,Tablet,Azithromycin,250mg,Cipla",Azithromycin (250mg),3002,,,"Cipla Ltd"
+Alerid Tablet,ALETAB,Pain Management,Strip of 10 tablets,20.48,20.48,5,0,50,10,20,500,"Alerid,Tablet,Cetirizine,10mg,Cipla,strip",Cetirizine (10mg),3002,,,"Cipla Ltd"
+Augmentin 375 Tablet,AUG375TAB,Healthcare Risk Management,Strip of 10 tablets,229,229,5,0,50,10,20,500,"Augmentin,375,Tablet,Amoxycillin,250mg,Glaxo",Amoxycillin (250mg) + Clavulanic Acid (125mg),3006,,,"Glaxo SmithKline Pharmaceuticals Ltd"
+Acenac-P Tablet,ACETAB,Healthcare Wearable Integration,Strip of 10 tablets,61,61,5,0,50,10,20,500,"Acenac,Tablet,Aceclofenac,100mg,Medley,strip",Aceclofenac (100mg) + Paracetamol (325mg),3003,,,"Medley Pharmaceuticals"
+Acivir Cream,ACICRE,Healthcare Interdisciplinary Research,Cream,72.53,72.53,5,0,50,10,20,500,"Acivir,Cream,Acyclovir,Cipla,tube",Acyclovir (5% w/w),3004,,,"Cipla Ltd"
+AB-Flo Capsule,ABFCAP,Radiology,Capsule,156.6,156.6,0,0,50,10,20,500,"Flo,Capsule,Acebrophylline,100mg,Lupin,strip",Acebrophylline (100mg),3005,,,"Lupin Ltd"
+AB Phylline N Tablet,ABPHYN,Healthcare DevOps,Strip of 10 tablets,209,209,0,0,50,10,20,500,"Phylline,Tablet,Acebrophylline,100mg,Sun,strip",Acebrophylline (100mg) + Acetylcysteine (600mg),3004,,,"Sun Pharmaceutical Industries Ltd"
+Amifru 40 Tablet,AMI40TAB,Geriatrics,Strip of 10 tablets,11.25,11.25,5,0,50,10,20,500,"Amifru,Tablet,Furosemide,40mg,Torrent,strip",Furosemide (40mg) + Amiloride (5mg),3004,,,"Torrent Pharmaceuticals Ltd"
+Avamys Nasal Spray,AVANASSPR,Medical Grants & Funding,Nasal Spray,404.5,404.5,5,0,50,10,20,500,"Avamys,Nasal,Spray,Fluticasone,Furoate,Glaxo",Fluticasone Furoate (0.05% w/w),3006,,,"Glaxo SmithKline Pharmaceuticals Ltd"
+Alkasol Oral Solution Sugar Free,ALKORASOL,Ayurvedic Cardiology,Oral Solution,122.05,122.05,5,0,50,10,20,500,"Alkasol,Oral,Solution,Disodium,Hydrogen,Stadmed",Disodium Hydrogen Citrate (1.4gm/5ml),3002,,,"Stadmed Pvt Ltd"
+Aciloc 300 Tablet,ACI300TAB,Clinical Chemistry,Tablet,50,50,18,0,50,10,20,500,"Aciloc,300,Tablet,Ranitidine,300mg,Cadila",Ranitidine (300mg),3003,,,"Cadila Pharmaceuticals Ltd"
+Aziderm 20% Cream,AZI20CRE,Anesthesiology,Cream,285,285,5,0,50,10,20,500,"Aziderm,Cream,Azelaic,Acid,Micro,tube",Azelaic Acid (20% w/w),3006,,,"Micro Labs Ltd"
+Ace Proxyvon Tablet,ACEPROTAB,Biomedical Engineering,Strip of 10 tablets,72.5,72.5,5,0,50,10,20,500,"Ace,Proxyvon,Tablet,Aceclofenac,100mg,Reddys",Aceclofenac (100mg) + Paracetamol (325mg),3002,,,"Dr Reddy's Laboratories Ltd"
+Avil Injection,AVIINJ,Homeopathic Research,Vial,5.66,5.66,5,0,50,10,20,500,"Avil,Injection,Pheniramine,2275mg,Sanofi,vial",Pheniramine (22.75mg),3002,,,"Sanofi India Ltd"
+Ano Metrogyl Cream,ANOMETCRE,Homeopathic Sports Medicine,Cream,121.41,121.41,5,0,50,10,20,500,"Ano,Metrogyl,Cream,Lidocaine,Lekar,tube",Lidocaine (4% w/w) + Metronidazole (1% w/w),3003,,,"Lekar Pharma Ltd"
+Admenta 5 Tablet,ADM5TAB,Wearable Health Tech,Strip of 10 tablets,119,119,5,0,50,10,20,500,"Admenta,Tablet,Memantine,5mg,Sun,strip",Memantine (5mg),3006,,,"Sun Pharmaceutical Industries Ltd"
+Aceclo-MR Tablet,ACETAB,Siddha Education,Strip of 10 tablets,88.65,88.65,18,0,50,10,20,500,"Aceclo,Tablet,Aceclofenac,100mg,Aristo,strip",Aceclofenac (100mg) + Paracetamol (325mg),3003,,,"Aristo Pharmaceuticals Pvt Ltd"
+Alerid-D Tablet,ALETAB,Healthcare Vendor Management,Strip of 10 tablets,57.97,57.97,5,0,50,10,20,500,"Alerid,Tablet,Cetirizine,5mg,Cipla,strip",Cetirizine (5mg) + Phenylephrine (10mg),3003,,,"Cipla Ltd"
+Acemiz-S Tablet,ACETAB,Naturopathic Nutrition,Strip of 10 tablets,115.44,115.44,0,0,50,10,20,500,"Acemiz,Tablet,Aceclofenac,100mg,Lupin,strip",Aceclofenac (100mg) + Paracetamol (325mg),3004,,,"Lupin Ltd"
+Allercet-DC Tablet,ALLTAB,Naturopathy,Strip of 10 tablets,80,80,5,0,50,10,20,500,"Allercet,Tablet,Cetirizine,10mg,Micro,strip",Cetirizine (10mg) + Phenylephrine (10mg),3003,,,"Micro Labs Ltd"
+Aztolet 10 Tablet,AZT10TAB,Medical Crowdfunding,Strip of 10 tablets,170,170,5,0,50,10,20,500,"Aztolet,Tablet,Atorvastatin,10mg,Sun,strip",Atorvastatin (10mg) + Clopidogrel (75mg),3002,,,"Sun Pharmaceutical Industries Ltd"
+Amaryl 2mg Tablet,AMA2MGTAB,Homeopathic Oncology,Tablet,212.65,212.65,5,0,50,10,20,500,"Amaryl,2mg,Tablet,Glimepiride,Sanofi,strip",Glimepiride (2mg),3005,,,"Sanofi India Ltd"
+Augmentin 1.2gm Injection,AUG12GINJ,Healthcare Digital Twins,Powder,156.14,156.14,5,0,50,10,20,500,"Augmentin,12gm,Injection,Amoxycillin,1000mg,Glaxo",Amoxycillin (1000mg) + Clavulanic Acid (200mg),3005,,,"Glaxo SmithKline Pharmaceuticals Ltd"
+Ambrodil-Plus RF Syrup,AMBRFSYR,Homeopathic ENT,Bottle,89.75,89.75,5,0,50,10,20,500,"Ambrodil,Plus,Syrup,Ambroxol,15mg,Aristo",Ambroxol (15mg/5ml) + Pseudoephedrine (30mg/5ml),3003,,,"Aristo Pharmaceuticals Pvt Ltd"
+Amlopres-AT Tablet,AMLTAB,Medical Voice Technology,Strip of 15 tablets,148.59,148.59,0,0,50,10,20,500,"Amlopres,Tablet,Amlodipine,5mg,Cipla,strip",Amlodipine (5mg) + Atenolol (50mg),3003,,,"Cipla Ltd"
+Ajaduo 25mg/5mg Tablet,AJA25MTAB,Unani Nutrition,Strip of 10 tablets,820,820,5,0,50,10,20,500,"Ajaduo,25mg,5mg,Empagliflozin,Lupin,strip",Empagliflozin (25mg) + Linagliptin (5mg),3002,,,"Lupin Ltd"
+Avanair 100 Tablet,AVA100TAB,Medical SaaS Platforms,Tablet,220,220,5,0,50,10,20,500,"Avanair,100,Tablet,Avanafil,100mg,Cipla",Avanafil (100mg),3006,,,"Cipla Ltd"
+Acton-OR Tablet SR,ACTTABSR,Unani Nutrition,Tablet,50.55,50.55,5,0,50,10,20,500,"Acton,Tablet,Paracetamol,300mg,Apex,strip",Paracetamol (300mg) + Paracetamol (700mg),3006,,,"Apex Laboratories Pvt Ltd"
+Aquazide 12.5 Tablet,AQU125TAB,Homeopathic Counseling,Strip of 10 tablets,12.15,12.15,18,0,50,10,20,500,"Aquazide,125,Tablet,Hydrochlorothiazide,125mg,Sun",Hydrochlorothiazide (12.5mg),3002,,,"Sun Pharmaceutical Industries Ltd"
+Alaspan AM Tablet,ALAAMTAB,Healthcare Influencer Outreach,Strip of 10 tablets,98.8,98.8,5,0,50,10,20,500,"Alaspan,Tablet,Ambroxol,60mg,Bayer,strip",Ambroxol (60mg) + Loratadine (5mg),3004,,,"Bayer Pharmaceuticals Pvt Ltd"
+Althrocin 250 Tablet,ALT250TAB,Emergency Medicine,Strip of 10 tablets,56.6,56.6,5,0,50,10,20,500,"Althrocin,250,Tablet,Erythromycin,250mg,Alembic",Erythromycin (250mg),3005,,,"Alembic Pharmaceuticals Ltd"
+Azikem 500mg Tablet,AZI500TAB,Homeopathic Geriatrics,Strip of 3 tablets,71.7,71.7,5,0,50,10,20,500,"Azikem,500mg,Tablet,Azithromycin,Alkem,strip",Azithromycin (500mg),3004,,,"Alkem Laboratories Ltd"
+Aldosmin 500mg Tablet,ALD500TAB,Siddha Toxicology,Strip of 10 tablets,137,137,5,0,50,10,20,500,"Aldosmin,500mg,Tablet,Diosmin,450mg,Sun",Diosmin (450mg) + Hesperidin (50mg),3006,,,"Sun Pharmaceutical Industries Ltd"
+Amlovas 5 Tablet,AML5TAB,Pharmaceutical R&D,Strip of 15 tablets,48.55,48.55,5,0,50,10,20,500,"Amlovas,Tablet,Amlodipine,5mg,Macleods,strip",Amlodipine (5mg),3006,,,"Macleods Pharmaceuticals Pvt Ltd"
+Acitrom 1 Tablet,ACI1TAB,Clinical Documentation,Tablets,264.74,264.74,5,0,50,10,20,500,"Acitrom,Tablet,Acenocoumarol,1mg,Abbott,strip",Acenocoumarol (1mg),3005,,,"Abbott"
+AF 150 Tablet DT,AF150TAB,Pharmacy,Tablet,11.45,11.45,5,0,50,10,20,500,"150,Tablet,Fluconazole,150mg,Systopic,strip",Fluconazole (150mg),3006,,,"Systopic Laboratories Pvt Ltd"
+Ascoril SF Expectorant,ASCSFEXP,Medical Drones,Bottle,135,135,5,0,50,10,20,500,"Ascoril,Expectorant,Guaifenesin,50mg,Glenmark,bottle",Guaifenesin (50mg) + Terbutaline (1.25mg),3002,,,"Glenmark Pharmaceuticals Ltd"
+Amaryl M 1mg Tablet PR,AMAM1MG,Homeopathic Counseling,Tablet,242.84,242.84,5,0,50,10,20,500,"Amaryl,1mg,Tablet,Glimepiride,Sanofi,strip",Glimepiride (1mg) + Metformin (500mg),3002,,,"Sanofi India Ltd"
+Azithral XL 200 Liquid,AZIXL200,Healthcare Interoperability Standards,Oral Suspension,114.56,114.56,5,0,50,10,20,500,"Azithral,200,Liquid,Azithromycin,200mg,Alembic",Azithromycin (200mg/5ml),3005,,,"Alembic Pharmaceuticals Ltd"
+AF 400 Tablet,AF400TAB,Homeopathic Dermatology,Tablet,25.6,25.6,5,0,50,10,20,500,"400,Tablet,Fluconazole,400mg,Systopic,strip",Fluconazole (400mg),3004,,,"Systopic Laboratories Pvt Ltd"
+Amantrel Tablet,AMATAB,Medical Tourism,Strip of 15 tablets,222.27,222.27,5,0,50,10,20,500,"Amantrel,Tablet,Amantadine,100mg,Cipla,strip",Amantadine (100mg),3005,,,"Cipla Ltd"
+Atorva 20 Tablet,ATO20TAB,Healthcare Wearables,Strip of 15 tablets,247.78,247.78,5,0,50,10,20,500,"Atorva,Tablet,Atorvastatin,20mg,Zydus,strip",Atorvastatin (20mg),3004,,,"Zydus Cadila"
+Acenac-MR Tablet,ACETAB,Siddha Research,Strip of 10 tablets,218,218,5,0,50,10,20,500,"Acenac,Tablet,Thiocolchicoside,4mg,Medley,strip",Thiocolchicoside (4mg) + Aceclofenac (100mg),3002,,,"Medley Pharmaceuticals"
+Ambrolite-S Expectorant,AMBEXP,Homeopathy,Bottle,106,106,5,0,50,10,20,500,"Ambrolite,Expectorant,Ambroxol,30mg,Tablets,bottle",Ambroxol (30mg) + Guaifenesin (50mg),3005,,,"Tablets India Limited"
+Asthalin 4 Tablet,AST4TAB,Homeopathic Remedy Manufacturing,Tablet,9.06,9.06,5,0,50,10,20,500,"Asthalin,Tablet,Salbutamol,4mg,Cipla,strip",Salbutamol (4mg),3005,,,"Cipla Ltd"
+Abiways Tablet,ABITAB,Healthcare Chatbots,Strip of 10 tablets,167.5,167.5,5,0,50,10,20,500,"Abiways,Tablet,Acebrophylline,100mg,Mankind,strip",Acebrophylline (100mg) + Acetylcysteine (600mg),3003,,,"Mankind Pharma Ltd"
+Amaryl M 2mg Tablet PR,AMAM2MG,Healthcare IT,Tablet,363.34,363.34,5,0,50,10,20,500,"Amaryl,2mg,Tablet,Glimepiride,Sanofi,strip",Glimepiride (2mg) + Metformin (500mg),3006,,,"Sanofi India Ltd"
+Azoran Tablet,AZOTAB,Homeopathic Nutraceuticals,Tablet,236.25,236.25,0,0,50,10,20,500,"Azoran,Tablet,Azathioprine,50mg,RPG,strip",Azathioprine (50mg),3003,,,"RPG Life Sciences Ltd"
+Ampilox Capsule,AMPCAP,Homeopathic Education,Capsule,151.35,151.35,5,0,50,10,20,500,"Ampilox,Capsule,Ampicillin,250mg,Biochem,strip",Ampicillin (250mg) + Dicloxacillin (250mg),3003,,,"Biochem Pharmaceutical Industries"
+Adrenaline Tartrate Injection,ADRTARINJ,Biomedical Engineering,Vial,14.52,14.52,0,0,50,10,20,500,"Adrenaline,Tartrate,Injection,Harson,vial",Adrenaline (NA),3003,,,"Harson Laboratories"
+Acogut 300 ER Tablet,ACO300ER,TCM Nutrition Therapy,Tablet,384.8,384.8,5,0,50,10,20,500,"Acogut,300,Tablet,Acotiamide,300mg,Lupin",Acotiamide (300mg),3002,,,"Lupin Ltd"
+Acuvin Tablet,ACUTAB,Traditional Chinese Medicine,Strip of 15 tablets,227.66,227.66,5,0,50,10,20,500,"Acuvin,Tablet,Paracetamol,Acetaminophen,Abbott,strip",Paracetamol/Acetaminophen (325mg) + Tramadol (37.5mg),3006,,,"Abbott"
+AB-Flo SR Tablet,ABFSRTAB,Healthcare Logistics Automation,Tablet,238.5,238.5,5,0,50,10,20,500,"Flo,Tablet,Acebrophylline,200mg,Lupin,strip",Acebrophylline (200mg),3005,,,"Lupin Ltd"
+Air-M Tablet,AIRTAB,Meditative Therapy,Strip of 10 tablets,69,69,5,0,50,10,20,500,"Air,Tablet,Montelukast,10mg,Systopic,strip",Montelukast (10mg) + Fexofenadine (120mg),3003,,,"Systopic Laboratories Pvt Ltd"
+Atorlip-F Tablet,ATOTAB,Diagnostics,Strip of 15 tablets,366.75,366.75,5,0,50,10,20,500,"Atorlip,Tablet,Atorvastatin,10mg,Cipla,strip",Atorvastatin (10mg) + Fenofibrate (145mg),3002,,,"Cipla Ltd"
+Advent Forte 457mg Syrup Tangy Orange,ADVFOR457,Ayurvedic Oncology,Bottle,193.74,193.74,5,0,50,10,20,500,"Advent,Forte,457mg,Amoxycillin,400mg,Cipla",Amoxycillin (400mg/5ml) + Clavulanic Acid (57mg/5ml),3006,,,"Cipla Ltd"
+Amlodac 5 Tablet,AML5TAB,Unani Cardiology,Tablet,97.1,97.1,0,0,50,10,20,500,"Amlodac,Tablet,Amlodipine,5mg,Zydus,strip",Amlodipine (5mg),3003,,,"Zydus Cadila"
+Aztor 40 Tablet,AZT40TAB,Healthcare Finance,Strip of 15 tablets,359.8,359.8,5,0,50,10,20,500,"Aztor,Tablet,Atorvastatin,40mg,Sun,strip",Atorvastatin (40mg),3005,,,"Sun Pharmaceutical Industries Ltd"
+Ascoril Plus Expectorant,ASCPLUEXP,Color Therapy,Bottle,182,182,18,0,50,10,20,500,"Ascoril,Plus,Expectorant,Bromhexine,2mg,Glenmark",Bromhexine (2mg/5ml) + Guaifenesin (50mg/5ml),3006,,,"Glenmark Pharmaceuticals Ltd"
+Alupent 10mg Tablet,ALU10MTAB,Homeopathic Software,Strip of 10 tablets,52.5,52.5,18,0,50,10,20,500,"Alupent,10mg,Tablet,Orciprenaline,Zydus,strip",Orciprenaline (10mg),3005,,,"Zydus Cadila"
+Amlip AT Tablet,AMLATTAB,Siddha Spiritual Healing,Strip of 10 tablets,72.6,72.6,5,0,50,10,20,500,"Amlip,Tablet,Amlodipine,5mg,Cipla,strip",Amlodipine (5mg) + Atenolol (50mg),3006,,,"Cipla Ltd"
+Asthakind-P Drops,ASTDRO,Naturopathic Fitness,Oral Drops,62,62,5,0,50,10,20,500,"Asthakind,Drops,Ambroxol,75mg,Mankind,packet",Ambroxol (7.5mg) + Guaifenesin (12.5mg),3005,,,"Mankind Pharma Ltd"
+Allegra Nasal Spray,ALLNASSPR,Functional Medicine,Nasal Spray,361,361,5,0,50,10,20,500,"Allegra,Nasal,Spray,Fluticasone,Furoate,Sanofi",Fluticasone Furoate (27.5mcg),3003,,,"Sanofi India Ltd"
+Addnok 0.2mg Tablet,ADD02MTAB,Healthcare DevOps,Tablet,76.6,76.6,5,0,50,10,20,500,"Addnok,02mg,Tablet,Buprenorphine,Rusan,strip",Buprenorphine (0.2mg),3006,,,"Rusan Pharma Ltd"
+Aldosmin 1000mg Tablet,ALD100TAB,Energy Medicine,Strip of 10 tablets,238,238,5,0,50,10,20,500,"Aldosmin,1000mg,Tablet,Diosmin,900mg,Sun",Diosmin (900mg) + Hesperidin (100mg),3004,,,"Sun Pharmaceutical Industries Ltd"
+Andre I-Kul Eye Drop,ANDIKUEYE,Siddha Geriatrics,Blister pack of 10,73.5,73.5,0,0,50,10,20,500,"Andre,Kul,Eye,Camphor,001,Intas",Camphor (0.01% w/v) + Menthol (0.005% w/v),3004,,,"Intas Pharmaceuticals Ltd"
+Antiflu 75mg Capsule,ANT75MCAP,Medical Equipment Leasing,Capsule,726.72,726.72,5,0,50,10,20,500,"Antiflu,75mg,Capsule,Oseltamivir,Phosphate,Cipla",Oseltamivir Phosphate (75mg),3004,,,"Cipla Ltd"
+Alerfix Total Tablet SR,ALETOTTAB,Genetics & Genomics,Tablet,262.02,262.02,5,0,50,10,20,500,"Alerfix,Total,Tablet,Ambroxol,75mg,Eris",Ambroxol (75mg) + Levocetirizine (5mg),3003,,,"Eris Lifesciences Ltd"
+Alex-L Cough Syrup Mango,ALECOUSYR,Homeopathic Cardiology,Oral Suspension,129,129,5,0,50,10,20,500,"Alex,Cough,Syrup,Levocloperastine,20mg,Glenmark",Levocloperastine (20mg/5ml),3003,,,"Glenmark Pharmaceuticals Ltd"
+Atropine Sulphate Injection,ATRSULINJ,Mobility Aids,Strip of 10 tablets,11.25,11.25,5,0,50,10,20,500,"Atropine,Sulphate,Injection,06mg,Samarth,vial",Atropine (0.6mg),3004,,,"Samarth Life Sciences Pvt Ltd"
+Aquaviron Injection 1ml,AQUINJ1ML,Siddha Neurology,Vial,194.49,194.49,5,0,50,10,20,500,"Aquaviron,Injection,1ml,Testosterone,25mg,Abbott",Testosterone (25mg),3003,,,"Abbott"
+Aciclovir 400 Tablet,ACI400TAB,Homeopathic Lifestyle Management,Strip of 5 tablets,67.42,67.42,5,0,50,10,20,500,"Aciclovir,400,Tablet,Acyclovir,400mg,Care",Acyclovir (400mg),3006,,,"Care Formulation Labs Pvt Ltd"
+Alkof DX Syrup,ALKDXSYR,Consumables,Bottle,110,110,5,0,50,10,20,500,"Alkof,Syrup,Chlorpheniramine,Maleate,Alkem,bottle",Chlorpheniramine Maleate (4mg) + Dextromethorphan Hydrobromide (10mg),3006,,,"Alkem Laboratories Ltd"
+ATM 500 Tablet,ATM500TAB,Ayurvedic Product Manufacturing,Strip of 5 tablets,132.38,132.38,5,0,50,10,20,500,"ATM,500,Tablet,Azithromycin,500mg,Indoco",Azithromycin (500mg),3004,,,"Indoco Remedies Ltd"
+Assurans Tablet,ASSTAB,Medical Consent Management,Strip of 10 tablets,200,200,5,0,50,10,20,500,"Assurans,Tablet,Sildenafil,20mg,Cipla,strip",Sildenafil (20mg),3005,,,"Cipla Ltd"
+Ambrolite D Syrup,AMBDSYR,Medical Cyber-Physical Systems,Bottle,118,118,5,0,50,10,20,500,"Ambrolite,Syrup,Phenylephrine,5mg,Tablets,bottle",Phenylephrine (5mg/5ml) + Chlorpheniramine Maleate (2mg/5ml),3004,,,"Tablets India Limited"
+Actrapid HM 100IU/ml Penfill,ACTHM100,Siddha Toxicology,Oral Solution Bottle,350.9,350.9,5,0,50,10,20,500,"Actrapid,100IU,Penfill,Human,insulin,Novo",Human insulin (100IU),3005,,,"Novo Nordisk India Pvt Ltd"
+Aten 50 Tablet,ATE50TAB,Homeopathic Regulatory Affairs,Tablet,31.04,31.04,5,0,50,10,20,500,"Aten,Tablet,Atenolol,50mg,Zydus,strip",Atenolol (50mg),3005,,,"Zydus Cadila"
+Azmarda 100mg Tablet,AZM100TAB,Medical Crowdsourcing,Tablet,1169.05,1169.05,5,0,50,10,20,500,"Azmarda,100mg,Tablet,Sacubitril,49mg,Chemicals",Sacubitril (49mg) + Valsartan (51mg),3003,,,"J B Chemicals and Pharmaceuticals Ltd"
+Asthalin AX Syrup,ASTAXSYR,Wellness Retreats,Bottle,104.67,104.67,0,0,50,10,20,500,"Asthalin,Syrup,Ambroxol,30mg,Cipla,bottle",Ambroxol (30mg/5ml) + Levosalbutamol (1mg/5ml),3005,,,"Cipla Ltd"
+Alzolam 0.5mg Tablet,ALZ05MTAB,Dental,Strip of 10 tablets,36.5,36.5,0,0,50,10,20,500,"Alzolam,05mg,Tablet,Alprazolam,Sun,strip",Alprazolam (0.5mg),3005,,,"Sun Pharmaceutical Industries Ltd"
+A Kare Combipack,AKARCOM,Occupational Health,Pack,595,595,5,0,50,10,20,500,"Kare,Combipack,Mifepristone,200mg,DKT,packet",Mifepristone (200mg) + Misoprostol (200mcg),3003,,,"DKT India Ltd"
+Ambulax Tablet,AMBTAB,Pathology,Strip of 15 tablets,101.25,101.25,5,0,50,10,20,500,"Ambulax,Tablet,Alprazolam,025mg,Unimarck,strip",Alprazolam (0.25mg) + Propranolol (20mg),3004,,,"Unimarck Pharma India Ltd"
+Amlovas-AT Tablet,AMLTAB,Medical App Development,Strip of 15 tablets,106,106,5,0,50,10,20,500,"Amlovas,Tablet,Amlodipine,5mg,Macleods,strip",Amlodipine (5mg) + Atenolol (50mg),3004,,,"Macleods Pharmaceuticals Pvt Ltd"
+Asthakind-DX Junior Syrup Cherry,ASTJUNSYR,Ayurvedic Product Manufacturing,Bottle,60.5,60.5,5,0,50,10,20,500,"Asthakind,Junior,Syrup,Phenylephrine,25mg,Mankind",Phenylephrine (2.5mg/5ml) + Chlorpheniramine Maleate (1mg/5ml),3005,,,"Mankind Pharma Ltd"
+Advent 228.5mg Dry Syrup,ADV228DRY,Healthcare Gamification,Bottle,67.2,67.2,5,0,50,10,20,500,"Advent,228,2285mg,Dry,Amoxycillin,200mg,Cipla",Amoxycillin (200mg/5ml) + Clavulanic Acid (28.5mg/5ml),3005,,,"Cipla Ltd"
+Acivir 800 DT Tablet,ACI800DT,Oncology,Tablet,246.23,246.23,5,0,50,10,20,500,"Acivir,800,Tablet,Acyclovir,800mg,Cipla",Acyclovir (800mg),3002,,,"Cipla Ltd"
+Alfusin Tablet PR,ALFTABPR,Homeopathic ENT,Tablet,298.67,298.67,5,0,50,10,20,500,"Alfusin,Tablet,Alfuzosin,10mg,Cipla,strip",Alfuzosin (10mg),3002,,,"Cipla Ltd"
+Aziwok 500 Tablet,AZI500TAB,ICU Equipment,Strip of 5 tablets,132.36,132.36,5,0,50,10,20,500,"Aziwok,500,Tablet,Azithromycin,500mg,Reddys",Azithromycin (500mg),3003,,,"Dr Reddy's Laboratories Ltd"
+Alkacitral Liquid,ALKLIQ,Medical Disaster Response,Bottle,111.35,111.35,5,0,50,10,20,500,"Alkacitral,Liquid,Disodium,Hydrogen,Alembic,bottle",Disodium Hydrogen Citrate (1.25gm/5ml),3006,,,"Alembic Pharmaceuticals Ltd"
+Almox-CV 625 Tablet,ALM625TAB,Medical Device Testing,Strip of 6 tablets,116.51,116.51,5,0,50,10,20,500,"Almox,625,Tablet,Amoxycillin,500mg,Cachet",Amoxycillin (500mg) + Clavulanic Acid (125mg),3005,,,"Cachet Pharmaceuticals Pvt Ltd"
+Azithral 100 Liquid,AZI100LIQ,Medical Supply Chain,Oral Suspension,46.3,46.3,5,0,50,10,20,500,"Azithral,100,Liquid,Azithromycin,20mg,Alembic",Azithromycin (20mg/ml),3003,,,"Alembic Pharmaceuticals Ltd"
+Azee 100mg Dry Syrup Peppermint,AZE100DRY,Siddha Neurology,Bottle,45.88,45.88,5,0,50,10,20,500,"Azee,100mg,Dry,Azithromycin,Cipla,bottle",Azithromycin (100mg/5ml),3004,,,"Cipla Ltd"
+Ace-Proxyvon CR Tablet,ACECRTAB,Healthcare Cybersecurity,Tablet,143.25,143.25,5,0,50,10,20,500,"Ace,Proxyvon,Tablet,Aceclofenac,200mg,Reddys",Aceclofenac (200mg) + Rabeprazole (20mg),3002,,,"Dr Reddy's Laboratories Ltd"
+Ascoril C Syrup,ASCCSYR,Healthcare Supply Forecasting,Bottle,174,174,18,0,50,10,20,500,"Ascoril,Syrup,Chlorpheniramine,Maleate,Glenmark,bottle",Chlorpheniramine Maleate (4mg) + Codeine (10mg),3002,,,"Glenmark Pharmaceuticals Ltd"
+Aprezo 30mg Tablet,APR30MTAB,Dental,Strip of 10 tablets,295.5,295.5,18,0,50,10,20,500,"Aprezo,30mg,Tablet,Apremilast,Glenmark,strip",Apremilast (30mg),3006,,,"Glenmark Pharmaceuticals Ltd"
+Apidra 100IU Cartridge,API100CAR,Ayurvedic Education,Oral Solution Bottle,761,761,5,0,50,10,20,500,"Apidra,100IU,Cartridge,Insulin,Glulisine,Sanofi",Insulin Glulisine (100IU),3003,,,"Sanofi India Ltd"
+Amlosafe 3D Tablet,AML3DTAB,Clinical Chemistry,Tablet,67.2,67.2,5,0,50,10,20,500,"Amlosafe,Tablet,Telmisartan,40mg,Aristo,strip",Telmisartan (40mg) + Amlodipine (5mg),3003,,,"Aristo Pharmaceuticals Pvt Ltd"
+Andial 2mg Tablet,AND2MGTAB,Wearable Health Tech,Strip of 10 tablets,24.5,24.5,5,0,50,10,20,500,"Andial,2mg,Tablet,Loperamide,Veritaz,strip",Loperamide (2mg),3004,,,"Veritaz Healthcare Ltd"
+Acenext P 100mg/325mg Tablet,ACEP100,Medical Accreditation,Strip of 10 tablets,58,58,5,0,50,10,20,500,"Acenext,100mg,325mg,Aceclofenac,Cadila,strip",Aceclofenac (100mg) + Paracetamol (325mg),3006,,,"Cadila Pharmaceuticals Ltd"

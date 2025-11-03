@@ -1,5 +1,10 @@
-from modules.inventory_module.models.entities import Product
+from modules.inventory_module.models.entities import Product, HsnCode
 from modules.admin_module.services.base_service import BaseService
+from core.database.connection import db_manager
+from core.shared.utils.session_manager import session_manager
+from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
+from decimal import Decimal, InvalidOperation
 
 
 class ProductService(BaseService):
@@ -32,6 +37,50 @@ class ProductService(BaseService):
         if 'gst_percentage' in data and 'gst_rate' not in data:
             data['gst_rate'] = data.pop('gst_percentage')
 
+        # Remove computed columns if present (DB computes them)
+        data.pop('cgst_rate', None)
+        data.pop('sgst_rate', None)
+
+        # Convert numeric-like fields safely
+        def _to_decimal(val, default=None):
+            if val is None or val == '':
+                return default
+            try:
+                return Decimal(str(val))
+            except (InvalidOperation, ValueError, TypeError):
+                return default
+
+        for nfield in ('mrp_price', 'selling_price', 'cost_price', 'gst_rate', 'igst_rate', 'cess_rate', 'commission_value', 'reorder_level', 'danger_level', 'min_stock', 'max_stock'):
+            if nfield in data:
+                data[nfield] = _to_decimal(data.get(nfield), data.get(nfield))
+
+        # Map hsn_code -> hsn_id if provided
+        tenant_id = session_manager.get_current_tenant_id()
+        if 'hsn_code' in data and not data.get('hsn_id'):
+            code_val = (data.get('hsn_code') or '').strip()
+            if code_val:
+                with db_manager.get_session() as session:
+                    hsn = session.query(HsnCode).filter(HsnCode.code == code_val, HsnCode.tenant_id == tenant_id).first()
+                    if hsn:
+                        data['hsn_id'] = hsn.id
+                    else:
+                        hsn = HsnCode(tenant_id=tenant_id, code=code_val)
+                        session.add(hsn)
+                        try:
+                            session.flush()
+                            data['hsn_id'] = hsn.id
+                        except IntegrityError:
+                            # Another process likely inserted the same HSN concurrently.
+                            # Roll back this transaction's pending changes and re-query.
+                            session.rollback()
+                            existing = session.query(HsnCode).filter(HsnCode.code == code_val, HsnCode.tenant_id == tenant_id).first()
+                            if existing:
+                                data['hsn_id'] = existing.id
+
+        # Ensure tenant_id is set for created product
+        if tenant_id and not data.get('tenant_id'):
+            data['tenant_id'] = tenant_id
+
         return super().create(data)
 
     def update(self, entity_id, data):
@@ -47,5 +96,43 @@ class ProductService(BaseService):
             data['selling_price'] = data.pop('price')
         if 'gst_percentage' in data and 'gst_rate' not in data:
             data['gst_rate'] = data.pop('gst_percentage')
+
+        # Remove computed columns if present
+        data.pop('cgst_rate', None)
+        data.pop('sgst_rate', None)
+
+        # Convert numeric-like fields safely
+        def _to_decimal(val, default=None):
+            if val is None or val == '':
+                return default
+            try:
+                return Decimal(str(val))
+            except (InvalidOperation, ValueError, TypeError):
+                return default
+
+        for nfield in ('mrp_price', 'selling_price', 'cost_price', 'gst_rate', 'igst_rate', 'cess_rate', 'commission_value', 'reorder_level', 'danger_level', 'min_stock', 'max_stock'):
+            if nfield in data:
+                data[nfield] = _to_decimal(data.get(nfield), data.get(nfield))
+
+        # Map hsn_code -> hsn_id if provided
+        tenant_id = session_manager.get_current_tenant_id()
+        if 'hsn_code' in data and not data.get('hsn_id'):
+            code_val = (data.get('hsn_code') or '').strip()
+            if code_val:
+                with db_manager.get_session() as session:
+                    hsn = session.query(HsnCode).filter(HsnCode.code == code_val, HsnCode.tenant_id == tenant_id).first()
+                    if hsn:
+                        data['hsn_id'] = hsn.id
+                    else:
+                        hsn = HsnCode(tenant_id=tenant_id, code=code_val)
+                        session.add(hsn)
+                        try:
+                            session.flush()
+                            data['hsn_id'] = hsn.id
+                        except IntegrityError:
+                            session.rollback()
+                            existing = session.query(HsnCode).filter(HsnCode.code == code_val, HsnCode.tenant_id == tenant_id).first()
+                            if existing:
+                                data['hsn_id'] = existing.id
 
         return super().update(entity_id, data)

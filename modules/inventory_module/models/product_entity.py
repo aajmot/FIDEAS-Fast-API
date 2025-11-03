@@ -35,9 +35,9 @@ class Product(Base):
     # Tax configuration
     hsn_id = Column(Integer, ForeignKey('hsn_codes.id'))
     gst_rate = Column(Numeric(5, 2), default=0.00)
-    # cgst/sgst are stored/generated columns in DB: computed as gst_rate / 2
-    cgst_rate = Column(Numeric(5, 2), Computed("gst_rate / 2"))
-    sgst_rate = Column(Numeric(5, 2), Computed("gst_rate / 2"))
+    # cgst/sgst are stored/generated columns in DB: computed as gst_rate / 2 (persisted/stored)
+    cgst_rate = Column(Numeric(5, 2), Computed("gst_rate / 2", persisted=True))
+    sgst_rate = Column(Numeric(5, 2), Computed("gst_rate / 2", persisted=True))
     igst_rate = Column(Numeric(5, 2), default=0.00)
     cess_rate = Column(Numeric(5, 2), default=0.00)
     is_reverse_charge = Column(Boolean, default=False)
