@@ -19,6 +19,8 @@ from api.v1.routers.inventory_routes import (
     suppliers_route,
     units_route,
     waste_products_route,
+    stock_adjustments_route,
+    stock_transfers_route,
 )
 
 load_dotenv()
@@ -228,6 +230,8 @@ app.include_router(purchase_invoices_route.router, prefix="/api/v1/inventory", t
 app.include_router(sales_invoices_route.router, prefix="/api/v1/inventory", tags=["inventory-sales-invoices v1"], dependencies=[Depends(get_current_user)])
 app.include_router(stocks_route.router, prefix="/api/v1/inventory", tags=["inventory-stocks v1"], dependencies=[Depends(get_current_user)])
 app.include_router(waste_products_route.router, prefix="/api/v1/inventory", tags=["inventory-waste-products v1"], dependencies=[Depends(get_current_user)])
+app.include_router(stock_adjustments_route.router, prefix="/api/v1/inventory", tags=["inventory-stock-adjustments v1"], dependencies=[Depends(get_current_user)])
+app.include_router(stock_transfers_route.router, prefix="/api/v1/inventory", tags=["inventory-stock-transfers v1"], dependencies=[Depends(get_current_user)])
 app.include_router(invoice.router, prefix="/api/v1/inventory", tags=["invoice-invoice v1"], dependencies=[Depends(get_current_user)])
 app.include_router(warehouse_route.router, prefix="/api/v1/inventory", tags=["inventory-warehouse v1"], dependencies=[Depends(get_current_user)])
 app.include_router(inventory_extensions.router, prefix="/api/v1/inventory", tags=["inventory-extensions v1"], dependencies=[Depends(get_current_user)])

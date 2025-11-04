@@ -20,6 +20,7 @@ class PurchaseOrder(Base):
     supplier_id = Column(Integer, ForeignKey('suppliers.id'), nullable=False)
     supplier_name = Column(String(200))
     supplier_gstin = Column(String(15))
+    supplier_address = Column(String(200))
     
     # === AMOUNT BREAKDOWN ===
     subtotal_amount = Column(Numeric(12, 4), nullable=False, default=0)  # Sum of line total_price
@@ -30,10 +31,11 @@ class PurchaseOrder(Base):
     cgst_amount = Column(Numeric(12, 4), default=0)
     sgst_amount = Column(Numeric(12, 4), default=0)
     igst_amount = Column(Numeric(12, 4), default=0)
+    utgst_amount = Column(Numeric(12, 4), default=0)
     cess_amount = Column(Numeric(12, 4), default=0)
     
     # total_tax_amount - GENERATED column in DB, computed by database
-    total_tax_amount = Column(Numeric(12, 4), Computed("cgst_amount + sgst_amount + igst_amount + cess_amount", persisted=True))
+    total_tax_amount = Column(Numeric(12, 4), Computed("cgst_amount + sgst_amount + igst_amount + utgst_amount + cess_amount", persisted=True))
     
     roundoff = Column(Numeric(12, 4), default=0)
     net_amount = Column(Numeric(12, 4), nullable=False)  # Final payable
@@ -105,6 +107,8 @@ class PurchaseOrderItem(Base):
     sgst_amount = Column(Numeric(12, 4), default=0)
     igst_rate = Column(Numeric(5, 2), default=0)
     igst_amount = Column(Numeric(12, 4), default=0)
+    ugst_rate = Column(Numeric(5, 2), default=0)
+    ugst_amount = Column(Numeric(12, 4), default=0)
     cess_rate = Column(Numeric(5, 2), default=0)
     cess_amount = Column(Numeric(12, 4), default=0)
     

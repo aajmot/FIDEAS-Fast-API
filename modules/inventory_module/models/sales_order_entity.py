@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Text, Numeric, CheckConstraint, Date
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Text, Numeric, CheckConstraint, Date, Computed
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from core.database.connection import Base
@@ -19,6 +19,8 @@ class SalesOrder(Base):
     customer_id = Column(Integer, ForeignKey('customers.id'), nullable=False)
     customer_name = Column(String(200))
     customer_phone = Column(String(20))
+    customer_gstin = Column(String(20))
+    customer_address = Column(String(200))
     agency_id = Column(Integer, ForeignKey('agencies.id'))
     
     # === AMOUNT BREAKDOWN (Critical for Journal) ===
@@ -31,9 +33,10 @@ class SalesOrder(Base):
     sgst_amount = Column(Numeric(12, 4), default=0)
     igst_amount = Column(Numeric(12, 4), default=0)
     utgst_amount = Column(Numeric(12, 4), default=0)
+    cess_amount = Column(Numeric(12, 4), default=0)
     
-    # total_tax_amount - computed in DB but can be set manually
-    total_tax_amount = Column(Numeric(12, 4), default=0)
+    # total_tax_amount - GENERATED column in DB, computed by database
+    total_tax_amount = Column(Numeric(12, 4), Computed("cgst_amount + sgst_amount + igst_amount + utgst_amount + cess_amount", persisted=True))
     
     agent_commission_percent = Column(Numeric(5, 2))
     agent_commission_amount = Column(Numeric(12, 4), default=0)
@@ -44,8 +47,8 @@ class SalesOrder(Base):
     # === MULTI-CURRENCY ===
     currency_id = Column(Integer, ForeignKey('currencies.id'), default=1)  # 1 = Base (INR)
     exchange_rate = Column(Numeric(12, 6), default=1.000000)
-    # net_amount_base - computed in DB but can be set manually
-    net_amount_base = Column(Numeric(12, 4), default=0)
+    # net_amount_base - GENERATED column in DB, computed by database
+    net_amount_base = Column(Numeric(12, 4), Computed("net_amount * exchange_rate", persisted=True))
     
     # Status & Reversal
     status = Column(String(20), default='DRAFT')
@@ -102,6 +105,8 @@ class SalesOrderItem(Base):
     igst_amount = Column(Numeric(12, 4), default=0)
     utgst_rate = Column(Numeric(5, 2), default=0)
     utgst_amount = Column(Numeric(12, 4), default=0)
+    cess_rate = Column(Numeric(5, 2), default=0)
+    cess_amount = Column(Numeric(12, 4), default=0)
     
     agent_commission_percent = Column(Numeric(5, 2))
     agent_commission_amount = Column(Numeric(12, 4), default=0)

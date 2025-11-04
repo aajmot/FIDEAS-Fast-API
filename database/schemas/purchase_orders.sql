@@ -15,6 +15,7 @@ CREATE TABLE public.purchase_orders
     supplier_id INTEGER NOT NULL REFERENCES suppliers(id),
     supplier_name VARCHAR(200),
     supplier_gstin VARCHAR(15),
+    supplier_address VARCHAR(200),
 
     -- === AMOUNT BREAKDOWN ===
     subtotal_amount NUMERIC(12,4) NOT NULL DEFAULT 0,           -- Sum of line total_price
@@ -25,10 +26,12 @@ CREATE TABLE public.purchase_orders
     cgst_amount NUMERIC(12,4) DEFAULT 0,
     sgst_amount NUMERIC(12,4) DEFAULT 0,
     igst_amount NUMERIC(12,4) DEFAULT 0,
+    utgst_amount NUMERIC(12,4) DEFAULT 0,
     cess_amount NUMERIC(12,4) DEFAULT 0,
+    
 
     total_tax_amount NUMERIC(12,4) GENERATED ALWAYS AS 
-        (cgst_amount + sgst_amount + igst_amount + cess_amount) STORED,
+        (cgst_amount + sgst_amount + igst_amount + utgst_amount + cess_amount) STORED,
 
     roundoff NUMERIC(12,4) DEFAULT 0,
     net_amount NUMERIC(12,4) NOT NULL,  -- Final payable
@@ -94,6 +97,8 @@ CREATE TABLE public.purchase_order_items
     sgst_amount NUMERIC(12,4) DEFAULT 0,
     igst_rate NUMERIC(5,2) DEFAULT 0,
     igst_amount NUMERIC(12,4) DEFAULT 0,
+    ugst_rate NUMERIC(5,2) DEFAULT 0,
+    ugst_amount NUMERIC(12,4) DEFAULT 0,
     cess_rate NUMERIC(5,2) DEFAULT 0,
     cess_amount NUMERIC(12,4) DEFAULT 0,
 

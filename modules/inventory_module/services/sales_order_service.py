@@ -9,23 +9,20 @@ class SalesOrderService:
     def create_with_items(self, order_data: dict, items_data: list):
         with db_manager.get_session() as session:
             try:
+                # Remove generated columns from order_data - these are calculated by the database
+                generated_columns = ['total_tax_amount', 'net_amount_base']
+                for col in generated_columns:
+                    order_data.pop(col, None)
+                
+                # Remove fields that don't exist in the model
+                invalid_fields = ['is_reverse_charge', 'is_tax_inclusive', 'approval_status']
+                for field in invalid_fields:
+                    order_data.pop(field, None)
+                
                 # Add tenant_id and audit fields to order
                 order_data['tenant_id'] = session_manager.get_current_tenant_id()
                 order_data['created_by'] = session_manager.get_current_username()
                 order_data['updated_by'] = session_manager.get_current_username()
-                
-                # Calculate tax totals if not provided
-                if 'total_tax_amount' not in order_data:
-                    order_data['total_tax_amount'] = (
-                        order_data.get('cgst_amount', 0) + 
-                        order_data.get('sgst_amount', 0) + 
-                        order_data.get('igst_amount', 0) + 
-                        order_data.get('utgst_amount', 0)
-                    )
-                
-                # Calculate net_amount_base if currency is provided
-                if 'net_amount_base' not in order_data and 'exchange_rate' in order_data:
-                    order_data['net_amount_base'] = order_data.get('net_amount', 0) * order_data.get('exchange_rate', 1)
                 
                 # Create sales order
                 sales_order = SalesOrder(**order_data)
@@ -38,6 +35,15 @@ class SalesOrderService:
                 username = session_manager.get_current_username()
                 
                 for item_data in items_data:
+                    # Map field names if needed
+                    if 'mrp' in item_data and 'mrp_price' not in item_data:
+                        item_data['mrp_price'] = item_data.pop('mrp')
+                    
+                    # Remove fields that don't exist in the item model
+                    invalid_item_fields = ['is_active', 'hsn_code', 'description']
+                    for field in invalid_item_fields:
+                        item_data.pop(field, None)
+                    
                     item_data['sales_order_id'] = sales_order.id
                     item_data['tenant_id'] = tenant_id
                     item_data['created_by'] = username

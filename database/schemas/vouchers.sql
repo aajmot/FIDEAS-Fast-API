@@ -1,97 +1,119 @@
--- Table: public.vouchers
-
+DROP TABLE IF EXISTS public.voucher_lines;
 DROP TABLE IF EXISTS public.vouchers;
+CREATE TABLE IF NOT EXISTS public.vouchers (
+    id                  SERIAL PRIMARY KEY,
+    tenant_id           INTEGER NOT NULL 
+                        REFERENCES public.tenants(id) ON DELETE CASCADE,
 
-CREATE TABLE IF NOT EXISTS public.vouchers
-(
-    id SERIAL,
-    tenant_id integer NOT NULL,
-    voucher_number character varying(50) NOT NULL,
-    voucher_type_id integer NOT NULL,
-    voucher_date timestamp without time zone NOT NULL,
-    reference_type character varying(20),
-    reference_id integer,
-    reference_number character varying(50),
-    narration text,
+    voucher_number      VARCHAR(50) NOT NULL,
+    voucher_type_id     INTEGER NOT NULL 
+                        REFERENCES public.voucher_types(id) ON DELETE RESTRICT,
+    
+    voucher_date        TIMESTAMP NOT NULL,
 
-    currency_amount numeric(15,4),
-    currency_id integer,
-    exchange_rate numeric(15,4) DEFAULT 1,
-    total_amount numeric(15,4) NOT NULL,
-    total_debit numeric(15,4) NOT NULL,
-    total_credit numeric(15,4) NOT NULL,
+    -- Currency
+    base_currency_id    INTEGER NOT NULL 
+                        REFERENCES public.currencies(id) ON DELETE RESTRICT,
+    foreign_currency_id INTEGER 
+                        REFERENCES public.currencies(id) ON DELETE SET NULL,
+    exchange_rate       NUMERIC(15,4) DEFAULT 1,
 
-    is_posted boolean DEFAULT true,
-    reversed_voucher_id integer,
-    reversal_voucher_id integer,
-    is_reversal boolean DEFAULT false,
-    approval_status character varying(20),
-    approval_request_id integer,
+    -- Base Currency Totals (Always Required)
+    base_total_amount   NUMERIC(15,4) NOT NULL DEFAULT 0,
+    base_total_debit    NUMERIC(15,4) NOT NULL DEFAULT 0,
+    base_total_credit   NUMERIC(15,4) NOT NULL DEFAULT 0,
 
+    -- Foreign Currency Totals (Optional)
+    foreign_total_amount NUMERIC(15,4),
+    foreign_total_debit  NUMERIC(15,4),
+    foreign_total_credit NUMERIC(15,4),
 
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    created_by text DEFAULT 'system'::text,
-    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    updated_by text DEFAULT 'system'::text,
-    is_deleted boolean DEFAULT false,
+    -- References
+    reference_type      VARCHAR(20),
+    reference_id        INTEGER,
+    reference_number    VARCHAR(50),
 
-    CONSTRAINT vouchers_pkey PRIMARY KEY (id),
-    CONSTRAINT vouchers_voucher_number_key UNIQUE (voucher_number),
-    CONSTRAINT vouchers_currency_id_fkey FOREIGN KEY (currency_id)
-        REFERENCES public.currencies (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT vouchers_reversal_voucher_id_fkey FOREIGN KEY (reversal_voucher_id)
-        REFERENCES public.vouchers (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT vouchers_reversed_voucher_id_fkey FOREIGN KEY (reversed_voucher_id)
-        REFERENCES public.vouchers (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT vouchers_tenant_id_fkey FOREIGN KEY (tenant_id)
-        REFERENCES public.tenants (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT vouchers_voucher_type_id_fkey FOREIGN KEY (voucher_type_id)
-        REFERENCES public.voucher_types (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+    narration           TEXT,
+    
+    -- Posting & Reversal
+    is_posted           BOOLEAN DEFAULT TRUE,
+    reversed_voucher_id INTEGER 
+                        REFERENCES public.vouchers(id) ON DELETE SET NULL,
+    reversal_voucher_id INTEGER 
+                        REFERENCES public.vouchers(id) ON DELETE SET NULL,
+    is_reversal         BOOLEAN DEFAULT FALSE,
+
+    -- Approval
+    approval_status     VARCHAR(20),
+    approval_request_id INTEGER,
+
+    created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by          TEXT DEFAULT 'system',
+    updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by          TEXT DEFAULT 'system',
+    is_deleted          BOOLEAN DEFAULT FALSE,
+
+    CONSTRAINT uq_voucher_number_tenant UNIQUE (voucher_number, tenant_id),
+    CONSTRAINT chk_currency_logic 
+        CHECK (
+            (foreign_currency_id IS NULL AND exchange_rate = 1 AND 
+             foreign_total_amount IS NULL AND foreign_total_debit IS NULL AND foreign_total_credit IS NULL)
+            OR
+            (foreign_currency_id IS NOT NULL AND exchange_rate > 0)
+        )
 );
 
+CREATE TABLE IF NOT EXISTS public.voucher_lines (
+    id                  SERIAL PRIMARY KEY,
+    tenant_id           INTEGER NOT NULL 
+                        REFERENCES public.tenants(id) ON DELETE CASCADE,
 
+    voucher_id          INTEGER NOT NULL 
+                        REFERENCES public.vouchers(id) ON DELETE CASCADE,
 
--- Table: public.voucher_details
+    line_no             INTEGER NOT NULL,
 
-DROP TABLE IF EXISTS public.voucher_details;
+    account_id          INTEGER NOT NULL 
+                        REFERENCES public.accounts(id) ON DELETE RESTRICT,
 
-CREATE TABLE IF NOT EXISTS public.voucher_details
-(
-    id SERIAL,
-    tenant_id integer NOT NULL,
-    voucher_id integer NOT NULL,
-    account_id integer NOT NULL,
-    description text,
-    debit_amount numeric(15,4),
-    credit_amount numeric(15,4),
+    description         TEXT,
 
-    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    created_by text DEFAULT 'system'::text,
-    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
-    updated_by text DEFAULT 'system'::text,
-    is_deleted boolean DEFAULT false,
+    -- Base Currency Amounts
+    debit_base          NUMERIC(15,4) DEFAULT 0,
+    credit_base         NUMERIC(15,4) DEFAULT 0,
 
-    CONSTRAINT voucher_details_pkey PRIMARY KEY (id),
-    CONSTRAINT voucher_details_tenant_id_fkey FOREIGN KEY (tenant_id)
-        REFERENCES public.tenants (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT voucher_details_voucher_id_fkey FOREIGN KEY (voucher_id)
-        REFERENCES public.vouchers (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT voucher_details_account_id_fkey FOREIGN KEY (account_id)
-        REFERENCES public.accounts (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+    -- Foreign Currency Amounts
+    debit_foreign       NUMERIC(15,4),
+    credit_foreign      NUMERIC(15,4),
+
+    -- Tax
+    tax_id              INTEGER 
+                        REFERENCES public.taxes(id) ON DELETE SET NULL,
+    tax_amount_base     NUMERIC(15,4) DEFAULT 0,
+    tax_amount_foreign  NUMERIC(15,4),
+
+    -- Commission
+    commission_id       INTEGER 
+                        REFERENCES public.commissions(id) ON DELETE SET NULL,
+    commission_base     NUMERIC(15,4) DEFAULT 0,
+    commission_foreign  NUMERIC(15,4),
+
+    -- Line Reference
+    reference_type      VARCHAR(30),
+    reference_id        INTEGER,
+    reference_line_no   INTEGER,
+
+    created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by          VARCHAR(100) DEFAULT 'system',
+    updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by          VARCHAR(100) DEFAULT 'system',
+    is_deleted          BOOLEAN DEFAULT FALSE,
+
+    CONSTRAINT uq_voucher_line_tenant UNIQUE (voucher_id, line_no, tenant_id)
 );
+
+-- Indexes
+CREATE INDEX idx_voucher_lines_voucher ON public.voucher_lines(voucher_id);
+CREATE INDEX idx_voucher_lines_account ON public.voucher_lines(account_id);
+CREATE INDEX idx_voucher_lines_tax ON public.voucher_lines(tax_id);
+CREATE INDEX idx_voucher_lines_commission ON public.voucher_lines(commission_id);

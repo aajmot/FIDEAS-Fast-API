@@ -19,6 +19,8 @@ class PurchaseOrderItem(BaseModel):
     sgst_amount: Decimal = Field(default=0)
     igst_rate: Decimal = Field(default=0)
     igst_amount: Decimal = Field(default=0)
+    ugst_rate: Decimal = Field(default=0)
+    ugst_amount: Decimal = Field(default=0)
     cess_rate: Decimal = Field(default=0)
     cess_amount: Decimal = Field(default=0)
     total_price: Decimal
@@ -45,6 +47,7 @@ class PurchaseOrderRequest(BaseModel):
     order_date: datetime
     supplier_name: Optional[str] = None
     supplier_gstin: Optional[str] = None
+    supplier_address: Optional[str] = None
     
     # Amount breakdown
     subtotal_amount: Decimal
@@ -54,6 +57,7 @@ class PurchaseOrderRequest(BaseModel):
     cgst_amount: Decimal = Field(default=0)
     sgst_amount: Decimal = Field(default=0)
     igst_amount: Decimal = Field(default=0)
+    utgst_amount: Decimal = Field(default=0)
     cess_amount: Decimal = Field(default=0)
     total_tax_amount: Optional[Decimal] = Field(default=None, exclude=True)  # GENERATED in DB - ignored if passed
     roundoff: Decimal = Field(default=0)

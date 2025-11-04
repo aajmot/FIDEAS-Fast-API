@@ -13,6 +13,8 @@ CREATE TABLE public.sales_orders
     customer_id INTEGER NOT NULL REFERENCES customers(id),
     customer_name VARCHAR(200),
     customer_phone VARCHAR(20),
+    customer_gstin VARCHAR(20),
+    customer_address VARCHAR(200),
     agency_id INTEGER REFERENCES agencies(id),
 
     -- === AMOUNT BREAKDOWN (Critical for Journal) ===
@@ -25,9 +27,11 @@ CREATE TABLE public.sales_orders
     sgst_amount NUMERIC(12,4) DEFAULT 0,
     igst_amount NUMERIC(12,4) DEFAULT 0,
     utgst_amount NUMERIC(12,4) DEFAULT 0,
+    cess_amount NUMERIC(12,4) DEFAULT 0,
+
 
     total_tax_amount NUMERIC(12,4) GENERATED ALWAYS AS 
-        (cgst_amount + sgst_amount + igst_amount + utgst_amount) STORED,
+        (cgst_amount + sgst_amount + igst_amount + utgst_amount+cess_amount) STORED,
     
     agent_commission_percent NUMERIC(5,2),
     agent_commission_amount NUMERIC(12,4) DEFAULT 0,
@@ -91,6 +95,9 @@ CREATE TABLE public.sales_order_items
     igst_amount NUMERIC(12,4) DEFAULT 0,
     utgst_rate NUMERIC(5,2) DEFAULT 0,
     utgst_amount NUMERIC(12,4) DEFAULT 0,
+
+    cess_rate NUMERIC(5,2) DEFAULT 0,
+    cess_amount NUMERIC(12,4) DEFAULT 0,
 
 
     agent_commission_percent NUMERIC(5,2),

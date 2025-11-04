@@ -137,7 +137,8 @@ class ValidationService:
     
     @staticmethod
     def validate_gst_calculation(subtotal: float, cgst_rate: float, sgst_rate: float, igst_rate: float, 
-                                 cgst_amount: float, sgst_amount: float, igst_amount: float) -> bool:
+                                 cgst_amount: float, sgst_amount: float, igst_amount: float, 
+                                 utgst_rate: float = 0, utgst_amount: float = 0) -> bool:
         """
         Validate GST calculation
         
@@ -149,6 +150,8 @@ class ValidationService:
             cgst_amount: Calculated CGST
             sgst_amount: Calculated SGST
             igst_amount: Calculated IGST
+            utgst_rate: UTGST rate (for Union Territories)
+            utgst_amount: Calculated UTGST (for Union Territories)
             
         Returns:
             bool: True if valid
@@ -163,8 +166,18 @@ class ValidationService:
             expected_igst = round(subtotal * igst_rate / 100, 2)
             if abs(igst_amount - expected_igst) > tolerance:
                 raise ValueError(f"IGST calculation incorrect. Expected: {expected_igst}, Got: {igst_amount}")
-            if cgst_amount > 0 or sgst_amount > 0:
-                raise ValueError("CGST/SGST should be zero for interstate transactions")
+            if cgst_amount > 0 or sgst_amount > 0 or utgst_amount > 0:
+                raise ValueError("CGST/SGST/UTGST should be zero for interstate transactions")
+        elif utgst_rate > 0:
+            # Union Territory - CGST + UTGST
+            expected_cgst = round(subtotal * cgst_rate / 100, 2)
+            expected_utgst = round(subtotal * utgst_rate / 100, 2)
+            if abs(cgst_amount - expected_cgst) > tolerance:
+                raise ValueError(f"CGST calculation incorrect. Expected: {expected_cgst}, Got: {cgst_amount}")
+            if abs(utgst_amount - expected_utgst) > tolerance:
+                raise ValueError(f"UTGST calculation incorrect. Expected: {expected_utgst}, Got: {utgst_amount}")
+            if sgst_amount > 0 or igst_amount > 0:
+                raise ValueError("SGST/IGST should be zero for Union Territory transactions")
         else:
             # Intrastate - CGST + SGST
             expected_cgst = round(subtotal * cgst_rate / 100, 2)
@@ -173,7 +186,7 @@ class ValidationService:
                 raise ValueError(f"CGST calculation incorrect. Expected: {expected_cgst}, Got: {cgst_amount}")
             if abs(sgst_amount - expected_sgst) > tolerance:
                 raise ValueError(f"SGST calculation incorrect. Expected: {expected_sgst}, Got: {sgst_amount}")
-            if igst_amount > 0:
-                raise ValueError("IGST should be zero for intrastate transactions")
+            if igst_amount > 0 or utgst_amount > 0:
+                raise ValueError("IGST/UTGST should be zero for intrastate transactions")
         
         return True

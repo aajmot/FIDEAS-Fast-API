@@ -51,4 +51,5 @@ from .category_entity import Category
 from .unit_entity import Unit
 from .hsn_entity import HsnCode
 from .stock_entity import StockTransaction, StockBalance
-from .warehouse_entity import Warehouse, StockByLocation, StockTransfer, StockTransferItem
+from .warehouse_entity import Warehouse, StockByLocation
+from .stock_transfer_entity import StockTransfer, StockTransferItem

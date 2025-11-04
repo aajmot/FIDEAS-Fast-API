@@ -41,38 +41,5 @@ class StockByLocation(Base):
     product = relationship("Product")
     warehouse = relationship("Warehouse", back_populates="stock_locations")
 
-class StockTransfer(Base):
-    __tablename__ = 'stock_transfers'
-    
-    id = Column(Integer, primary_key=True)
-    transfer_number = Column(String(50), unique=True, nullable=False)
-    transfer_date = Column(DateTime, default=datetime.utcnow)
-    from_warehouse_id = Column(Integer, ForeignKey('warehouses.id'), nullable=False)
-    to_warehouse_id = Column(Integer, ForeignKey('warehouses.id'), nullable=False)
-    status = Column(String(20), default='Created')  # Created, Approved, Rejected
-    notes = Column(Text)
-    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    created_by = Column(String(100))
-    updated_by = Column(String(100))
-    
-    # Relationships
-    from_warehouse = relationship("Warehouse", foreign_keys=[from_warehouse_id], back_populates="from_transfers")
-    to_warehouse = relationship("Warehouse", foreign_keys=[to_warehouse_id], back_populates="to_transfers")
-    items = relationship("StockTransferItem", back_populates="transfer")
-
-class StockTransferItem(Base):
-    __tablename__ = 'stock_transfer_items'
-    
-    id = Column(Integer, primary_key=True)
-    transfer_id = Column(Integer, ForeignKey('stock_transfers.id'), nullable=False)
-    product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
-    batch_number = Column(String(50))
-    quantity = Column(Numeric(10, 2), nullable=False)
-    serial_numbers = Column(Text)  # JSON string for serial numbers
-    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
-    
-    # Relationships
-    transfer = relationship("StockTransfer", back_populates="items")
-    product = relationship("Product")
+# NOTE: StockTransfer and StockTransferItem classes have been moved to stock_transfer_entity.py
+# The Warehouse relationships above still work via string references

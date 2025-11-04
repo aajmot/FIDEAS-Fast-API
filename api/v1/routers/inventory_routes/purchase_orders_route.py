@@ -3,7 +3,7 @@ from typing import Dict, Any
 import math
 
 from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
-from api.schemas.purchase_orders import PurchaseOrderRequest
+from modules.inventory_module.models.purchase_order_schemas import PurchaseOrderRequest
 from api.middleware.auth_middleware import get_current_user
 
 router = APIRouter()
@@ -24,6 +24,7 @@ async def get_purchase_orders(pagination: PaginationParams = Depends(), current_
         "supplier_id": order.supplier_id,
         "supplier_name": order.supplier_name,
         "supplier_gstin": order.supplier_gstin,
+        "supplier_address": order.supplier_address if hasattr(order, 'supplier_address') else None,
         "order_date": order.order_date.isoformat() if order.order_date else None,
         
         # Amount breakdown
@@ -36,6 +37,7 @@ async def get_purchase_orders(pagination: PaginationParams = Depends(), current_
         "cgst_amount": float(order.cgst_amount) if order.cgst_amount else 0,
         "sgst_amount": float(order.sgst_amount) if order.sgst_amount else 0,
         "igst_amount": float(order.igst_amount) if order.igst_amount else 0,
+        "utgst_amount": float(order.utgst_amount) if order.utgst_amount else 0,
         "cess_amount": float(order.cess_amount) if order.cess_amount else 0,
         "total_tax_amount": float(order.total_tax_amount) if order.total_tax_amount else 0,
         
@@ -142,6 +144,7 @@ async def get_purchase_order(order_id: int, current_user: dict = Depends(get_cur
             "supplier_id": order.supplier_id,
             "supplier_name": supplier.name if supplier else order.supplier_name,
             "supplier_gstin": order.supplier_gstin,
+            "supplier_address": order.supplier_address,
             "order_date": order.order_date.isoformat() if order.order_date else None,
             
             # Amount breakdown
@@ -154,6 +157,7 @@ async def get_purchase_order(order_id: int, current_user: dict = Depends(get_cur
             "cgst_amount": float(order.cgst_amount) if order.cgst_amount else 0,
             "sgst_amount": float(order.sgst_amount) if order.sgst_amount else 0,
             "igst_amount": float(order.igst_amount) if order.igst_amount else 0,
+            "utgst_amount": float(order.utgst_amount) if order.utgst_amount else 0,
             "cess_amount": float(order.cess_amount) if order.cess_amount else 0,
             "total_tax_amount": float(order.total_tax_amount) if order.total_tax_amount else 0,
             
@@ -200,6 +204,8 @@ async def get_purchase_order(order_id: int, current_user: dict = Depends(get_cur
                 "sgst_amount": float(item.sgst_amount) if item.sgst_amount else 0,
                 "igst_rate": float(item.igst_rate) if item.igst_rate else 0,
                 "igst_amount": float(item.igst_amount) if item.igst_amount else 0,
+                "ugst_rate": float(item.ugst_rate) if item.ugst_rate else 0,
+                "ugst_amount": float(item.ugst_amount) if item.ugst_amount else 0,
                 "cess_rate": float(item.cess_rate) if item.cess_rate else 0,
                 "cess_amount": float(item.cess_amount) if item.cess_amount else 0,
                 

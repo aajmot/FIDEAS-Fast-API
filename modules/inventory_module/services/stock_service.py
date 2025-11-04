@@ -149,28 +149,93 @@ class StockService:
             self.record_waste_transaction_in_session(session, product_waste)
             session.commit()
     
-    def record_waste_transaction_in_session(self, session, product_waste):
-        """Record stock OUT transaction for product waste within existing session"""
-        # Create stock transaction
+    def record_waste_transaction_in_session(self, session, waste_item, waste_header=None):
+        """Record stock OUT transaction for product waste item within existing session"""
+        # Create stock transaction (use base currency cost)
         transaction = StockTransaction(
-            product_id=product_waste.product_id,
+            product_id=waste_item.product_id,
             transaction_type='OUT',
             transaction_source='WASTE',
-            reference_id=product_waste.id,
-            reference_number=product_waste.waste_number,
-            batch_number=product_waste.batch_number or '',
-            quantity=product_waste.quantity,
-            unit_price=product_waste.unit_cost,
+            reference_id=waste_item.waste_id if hasattr(waste_item, 'waste_id') else waste_item.id,
+            reference_number=waste_header.waste_number if waste_header else getattr(waste_item, 'waste_number', ''),
+            batch_number=waste_item.batch_number or '',
+            quantity=waste_item.quantity,
+            unit_price=waste_item.unit_cost_base,  # Use base currency cost
             tenant_id=session_manager.get_current_tenant_id(),
             created_by=session_manager.get_current_username()
         )
         session.add(transaction)
         
         # Update stock balance
-        self._update_stock_balance(session, product_waste.product_id, 
-                                 product_waste.batch_number or '', 
-                                 float(product_waste.quantity), 
-                                 float(product_waste.unit_cost), 'OUT')
+        self._update_stock_balance(session, waste_item.product_id, 
+                                 waste_item.batch_number or '', 
+                                 float(waste_item.quantity), 
+                                 float(waste_item.unit_cost_base), 'OUT')  # Use base currency cost
+    
+    def record_adjustment_transaction_in_session(self, session, adjustment_item, adjustment_header=None):
+        """Record stock transaction for adjustment item within existing session"""
+        # Determine transaction type based on adjustment_qty (+ve = IN, -ve = OUT)
+        adjustment_qty = float(adjustment_item.adjustment_qty)
+        transaction_type = 'IN' if adjustment_qty > 0 else 'OUT'
+        abs_quantity = abs(adjustment_qty)
+        
+        # Create stock transaction
+        transaction = StockTransaction(
+            product_id=adjustment_item.product_id,
+            transaction_type=transaction_type,
+            transaction_source='ADJUSTMENT',
+            reference_id=adjustment_item.adjustment_id if hasattr(adjustment_item, 'adjustment_id') else adjustment_item.id,
+            reference_number=adjustment_header.adjustment_number if adjustment_header else getattr(adjustment_item, 'adjustment_number', ''),
+            batch_number=adjustment_item.batch_number or '',
+            quantity=abs_quantity,
+            unit_price=adjustment_item.unit_cost_base,
+            tenant_id=session_manager.get_current_tenant_id(),
+            created_by=session_manager.get_current_username()
+        )
+        session.add(transaction)
+        
+        # Update stock balance
+        self._update_stock_balance(session, adjustment_item.product_id, 
+                                 adjustment_item.batch_number or '', 
+                                 abs_quantity, 
+                                 float(adjustment_item.unit_cost_base), 
+                                 transaction_type)
+    
+    def record_transfer_transaction_in_session(self, session, transfer_item, transfer_header=None):
+        """Record stock transactions for transfer item within existing session"""
+        # Create OUT transaction from source warehouse
+        out_transaction = StockTransaction(
+            product_id=transfer_item.product_id,
+            transaction_type='OUT',
+            transaction_source='TRANSFER_OUT',
+            reference_id=transfer_item.transfer_id if hasattr(transfer_item, 'transfer_id') else transfer_item.id,
+            reference_number=transfer_header.transfer_number if transfer_header else getattr(transfer_item, 'transfer_number', ''),
+            batch_number=transfer_item.batch_number or '',
+            quantity=transfer_item.quantity,
+            unit_price=transfer_item.unit_cost_base,
+            tenant_id=session_manager.get_current_tenant_id(),
+            created_by=session_manager.get_current_username()
+        )
+        session.add(out_transaction)
+        
+        # Create IN transaction to destination warehouse
+        in_transaction = StockTransaction(
+            product_id=transfer_item.product_id,
+            transaction_type='IN',
+            transaction_source='TRANSFER_IN',
+            reference_id=transfer_item.transfer_id if hasattr(transfer_item, 'transfer_id') else transfer_item.id,
+            reference_number=transfer_header.transfer_number if transfer_header else getattr(transfer_item, 'transfer_number', ''),
+            batch_number=transfer_item.batch_number or '',
+            quantity=transfer_item.quantity,
+            unit_price=transfer_item.unit_cost_base,
+            tenant_id=session_manager.get_current_tenant_id(),
+            created_by=session_manager.get_current_username()
+        )
+        session.add(in_transaction)
+        
+        # Update stock balances for both warehouses
+        # Note: This would need warehouse context which should be passed from transfer service
+        # For now, stock balance updates are handled in the transfer service
     
     def reverse_sales_transaction_in_session(self, session, sales_order, items):
         """Reverse stock OUT transactions for sales order within existing session"""

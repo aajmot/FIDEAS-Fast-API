@@ -132,15 +132,22 @@ async def create_product(product_data: Dict[str, Any], current_user: dict = Depe
 
 @router.get("/products/get/{product_id}", response_model=BaseResponse)
 async def get_product(product_id: int, current_user: dict = Depends(get_current_user)):
-    product_service = ProductService()
-    product = product_service.get_by_id(product_id)
-    if not product:
-        raise HTTPException(status_code=404, detail="Product not found")
-
-    return BaseResponse(
-        success=True,
-        message="Product retrieved successfully",
-        data={
+    from core.database.connection import db_manager
+    from modules.inventory_module.models.entities import Product
+    from core.shared.utils.session_manager import session_manager
+    
+    with db_manager.get_session() as session:
+        tenant_id = current_user['tenant_id']
+        product = session.query(Product).filter(
+            Product.id == product_id,
+            Product.tenant_id == tenant_id
+        ).first()
+        
+        if not product:
+            raise HTTPException(status_code=404, detail="Product not found")
+        
+        # Access all attributes within the session to avoid DetachedInstanceError
+        product_data = {
             "id": product.id,
             "name": product.name,
             "code": product.code,
@@ -177,6 +184,11 @@ async def get_product(product_id: int, current_user: dict = Depends(get_current_
             "is_serialized": bool(getattr(product, 'is_serialized', False)),
             "warranty_months": getattr(product, 'warranty_months', None)
         }
+    
+    return BaseResponse(
+        success=True,
+        message="Product retrieved successfully",
+        data=product_data
     )
 
 

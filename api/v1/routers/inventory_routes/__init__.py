@@ -7,6 +7,8 @@ from . import sales_orders_route
 from . import waste_products_route
 from . import products_route
 from . import stocks_route
+from . import stock_adjustments_route
+from . import stock_transfers_route
 
 __all__ = [
 	"categories_route",
@@ -18,4 +20,6 @@ __all__ = [
 	"waste_products_route",
 	"products_route",
 	"stocks_route",
+	"stock_adjustments_route",
+	"stock_transfers_route",
 ]

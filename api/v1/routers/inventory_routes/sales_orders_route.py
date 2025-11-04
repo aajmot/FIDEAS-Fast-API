@@ -46,16 +46,36 @@ async def create_sales_order(order_data: Dict[str, Any], current_user: dict = De
 
     with db_manager.get_session() as session:
         sales_order_service = SalesOrderService()
-        order_id = sales_order_service.create_with_items(order_data['order'], order_data['items'])
+        
+        # Validate format - should NOT have nested 'order' key
+        if 'order' in order_data:
+            raise HTTPException(
+                status_code=400, 
+                detail="Invalid request format. Data should not be nested under 'order' key. Send order fields and 'items' array at the root level."
+            )
+        
+        # Validate items exist
+        if 'items' not in order_data:
+            raise HTTPException(status_code=400, detail="Invalid request format. 'items' field is required.")
+        
+        # Extract items and use remaining as order data
+        items_list = order_data.pop('items')
+        order_dict = order_data
+        
+        # Map 'so_number' to 'order_number' if present
+        if 'so_number' in order_dict and 'order_number' not in order_dict:
+            order_dict['order_number'] = order_dict.pop('so_number')
+        
+        order_id = sales_order_service.create_with_items(order_dict, items_list)
 
         # Post to accounting
         try:
             posting_data = {
                 'reference_type': 'SALES_ORDER',
                 'reference_id': order_id,
-                'reference_number': order_data['order'].get('order_number'),
-                'total_amount': order_data['order'].get('net_amount'),
-                'transaction_date': order_data['order'].get('order_date'),
+                'reference_number': order_dict.get('order_number'),
+                'total_amount': order_dict.get('net_amount'),
+                'transaction_date': order_dict.get('order_date'),
                 'created_by': current_user['username']
             }
             voucher_id = TransactionPostingService.post_transaction(
@@ -103,6 +123,8 @@ async def get_sales_order(order_id: int, current_user: dict = Depends(get_curren
             "customer_id": order.customer_id,
             "customer_name": customer.name if customer else order.customer_name,
             "customer_phone": order.customer_phone,
+            "customer_gstin": order.customer_gstin,
+            "customer_address": order.customer_address,
             "agency_id": order.agency_id,
             "agency_name": agency_name,
             "order_date": order.order_date.isoformat() if order.order_date else None,
@@ -118,6 +140,7 @@ async def get_sales_order(order_id: int, current_user: dict = Depends(get_curren
             "sgst_amount": float(order.sgst_amount) if order.sgst_amount else 0,
             "igst_amount": float(order.igst_amount) if order.igst_amount else 0,
             "utgst_amount": float(order.utgst_amount) if order.utgst_amount else 0,
+            "cess_amount": float(order.cess_amount) if order.cess_amount else 0,
             "total_tax_amount": float(order.total_tax_amount) if order.total_tax_amount else 0,
             
             # Agent commission
@@ -161,6 +184,8 @@ async def get_sales_order(order_id: int, current_user: dict = Depends(get_curren
                 "igst_amount": float(item.igst_amount) if item.igst_amount else 0,
                 "utgst_rate": float(item.utgst_rate) if item.utgst_rate else 0,
                 "utgst_amount": float(item.utgst_amount) if item.utgst_amount else 0,
+                "cess_rate": float(item.cess_rate) if item.cess_rate else 0,
+                "cess_amount": float(item.cess_amount) if item.cess_amount else 0,
                 
                 # Agent commission per line
                 "agent_commission_percent": float(item.agent_commission_percent) if item.agent_commission_percent else None,

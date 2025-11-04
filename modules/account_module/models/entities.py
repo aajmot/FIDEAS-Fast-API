@@ -65,31 +65,113 @@ class Voucher(Base):
     __tablename__ = 'vouchers'
     
     id = Column(Integer, primary_key=True)
-    voucher_number = Column(String(50), unique=True, nullable=False)
+    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    
+    voucher_number = Column(String(50), nullable=False)
     voucher_type_id = Column(Integer, ForeignKey('voucher_types.id'), nullable=False)
     voucher_date = Column(DateTime, nullable=False)
-    reference_type = Column(String(20))  # SALES, PURCHASE, PAYMENT, RECEIPT
-    reference_id = Column(Integer)  # SO/PO ID
-    reference_number = Column(String(50))  # SO/PO Number
+    
+    # Currency
+    base_currency_id = Column(Integer, ForeignKey('currencies.id'), nullable=False)
+    foreign_currency_id = Column(Integer, ForeignKey('currencies.id'))
+    exchange_rate = Column(Numeric(15, 4), default=1)
+    
+    # Base Currency Totals (Always Required)
+    base_total_amount = Column(Numeric(15, 4), nullable=False, default=0)
+    base_total_debit = Column(Numeric(15, 4), nullable=False, default=0)
+    base_total_credit = Column(Numeric(15, 4), nullable=False, default=0)
+    
+    # Foreign Currency Totals (Optional)
+    foreign_total_amount = Column(Numeric(15, 4))
+    foreign_total_debit = Column(Numeric(15, 4))
+    foreign_total_credit = Column(Numeric(15, 4))
+    
+    # References
+    reference_type = Column(String(20))
+    reference_id = Column(Integer)
+    reference_number = Column(String(50))
+    
     narration = Column(Text)
-    total_amount = Column(Numeric(15, 2), nullable=False)
-    currency_id = Column(Integer, ForeignKey('currencies.id'))
-    exchange_rate = Column(Numeric(15, 6), default=1)
-    base_currency_amount = Column(Numeric(15, 2))
+    
+    # Posting & Reversal
+    is_posted = Column(Boolean, default=True)
     reversed_voucher_id = Column(Integer, ForeignKey('vouchers.id'))
     reversal_voucher_id = Column(Integer, ForeignKey('vouchers.id'))
     is_reversal = Column(Boolean, default=False)
-    is_posted = Column(Boolean, default=False)
-    is_deleted = Column(Boolean, default=False)
-    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    
+    # Approval
+    approval_status = Column(String(20))
+    approval_request_id = Column(Integer)
+    
+    # Audit
     created_at = Column(DateTime, default=datetime.utcnow)
-    created_by = Column(String(100))
+    created_by = Column(Text, default='system')
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_by = Column(Text, default='system')
+    is_deleted = Column(Boolean, default=False)
+    
+    __table_args__ = (
+        UniqueConstraint('voucher_number', 'tenant_id', name='uq_voucher_number_tenant'),
+    )
     
     voucher_type = relationship("VoucherType", back_populates="vouchers")
     journals = relationship("Journal", back_populates="voucher")
-    currency = relationship("Currency")
+    voucher_lines = relationship("VoucherLine", back_populates="voucher")
+    base_currency = relationship("Currency", foreign_keys=[base_currency_id])
+    foreign_currency = relationship("Currency", foreign_keys=[foreign_currency_id])
     reversed_voucher = relationship("Voucher", foreign_keys=[reversed_voucher_id], remote_side='Voucher.id')
     reversal_voucher = relationship("Voucher", foreign_keys=[reversal_voucher_id], remote_side='Voucher.id')
+
+
+class VoucherLine(Base):
+    __tablename__ = 'voucher_lines'
+    
+    id = Column(Integer, primary_key=True)
+    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    
+    voucher_id = Column(Integer, ForeignKey('vouchers.id', ondelete='CASCADE'), nullable=False)
+    line_no = Column(Integer, nullable=False)
+    
+    account_id = Column(Integer, ForeignKey('account_masters.id'), nullable=False)
+    description = Column(Text)
+    
+    # Base Currency Amounts
+    debit_base = Column(Numeric(15, 4), default=0)
+    credit_base = Column(Numeric(15, 4), default=0)
+    
+    # Foreign Currency Amounts
+    debit_foreign = Column(Numeric(15, 4))
+    credit_foreign = Column(Numeric(15, 4))
+    
+    # Tax
+    tax_id = Column(Integer, ForeignKey('tax_masters.id'))
+    tax_amount_base = Column(Numeric(15, 4), default=0)
+    tax_amount_foreign = Column(Numeric(15, 4))
+    
+    # Commission
+    commission_id = Column(Integer)  # References commissions table (not created yet)
+    commission_base = Column(Numeric(15, 4), default=0)
+    commission_foreign = Column(Numeric(15, 4))
+    
+    # Line Reference
+    reference_type = Column(String(30))
+    reference_id = Column(Integer)
+    reference_line_no = Column(Integer)
+    
+    # Audit
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(100), default='system')
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_by = Column(String(100), default='system')
+    is_deleted = Column(Boolean, default=False)
+    
+    __table_args__ = (
+        UniqueConstraint('voucher_id', 'line_no', 'tenant_id', name='uq_voucher_line_tenant'),
+    )
+    
+    voucher = relationship("Voucher", back_populates="voucher_lines")
+    account = relationship("AccountMaster")
+    tax = relationship("TaxMaster")
 
 class Journal(Base):
     __tablename__ = 'journals'

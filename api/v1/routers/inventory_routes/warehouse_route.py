@@ -7,7 +7,8 @@ from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from core.database.connection import db_manager
 from sqlalchemy import text
 from sqlalchemy.orm import joinedload
-from modules.inventory_module.models.warehouse_entity import Warehouse, StockByLocation, StockTransfer, StockTransferItem
+from modules.inventory_module.models.warehouse_entity import Warehouse, StockByLocation
+from modules.inventory_module.models.stock_transfer_entity import StockTransfer, StockTransferItem
 from modules.inventory_module.models.entities import Product
 import math
 
@@ -154,144 +155,10 @@ async def get_stock_by_location(product_id: int = None, warehouse_id: int = None
         
         return BaseResponse(success=True, message="Stock by location retrieved", data=data)
 
-@router.get("/stock-transfers", response_model=PaginatedResponse)
-async def get_stock_transfers(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
-    with db_manager.get_session() as session:
-        query = session.query(StockTransfer).options(
-            joinedload(StockTransfer.from_warehouse),
-            joinedload(StockTransfer.to_warehouse)
-        ).filter(StockTransfer.tenant_id == current_user['tenant_id'])
-        
-        total = query.count()
-        transfers = query.order_by(StockTransfer.transfer_date.desc()).offset(pagination.offset).limit(pagination.per_page).all()
-        
-        data = [{
-            "id": st.id,
-            "transfer_number": st.transfer_number,
-            "transfer_date": st.transfer_date,
-            "from_warehouse_id": st.from_warehouse_id,
-            "to_warehouse_id": st.to_warehouse_id,
-            "status": st.status,
-            "notes": st.notes,
-            "created_at": st.created_at,
-            "created_by": st.created_by,
-            "from_warehouse": st.from_warehouse.name,
-            "to_warehouse": st.to_warehouse.name
-        } for st in transfers]
-    
-    return PaginatedResponse(success=True, message="Stock transfers retrieved", data=data,
-                           total=total, page=pagination.page, per_page=pagination.per_page,
-                           total_pages=math.ceil(total / pagination.per_page))
-
-@router.get("/stock-transfers/{transfer_id}", response_model=BaseResponse)
-async def get_stock_transfer(transfer_id: int, current_user: dict = Depends(get_current_user)):
-    with db_manager.get_session() as session:
-        transfer = session.query(StockTransfer).options(
-            joinedload(StockTransfer.from_warehouse),
-            joinedload(StockTransfer.to_warehouse),
-            joinedload(StockTransfer.items).joinedload(StockTransferItem.product)
-        ).filter(
-            StockTransfer.id == transfer_id,
-            StockTransfer.tenant_id == current_user['tenant_id']
-        ).first()
-        
-        if not transfer:
-            raise HTTPException(404, "Stock transfer not found")
-        
-        data = {
-            "id": transfer.id,
-            "transfer_number": transfer.transfer_number,
-            "transfer_date": transfer.transfer_date,
-            "from_warehouse_id": transfer.from_warehouse_id,
-            "to_warehouse_id": transfer.to_warehouse_id,
-            "status": transfer.status,
-            "notes": transfer.notes,
-            "created_at": transfer.created_at,
-            "created_by": transfer.created_by,
-            "from_warehouse": transfer.from_warehouse.name,
-            "to_warehouse": transfer.to_warehouse.name,
-            "items": [{
-                "id": item.id,
-                "product_id": item.product_id,
-                "product_name": item.product.name,
-                "batch_number": item.batch_number,
-                "quantity": float(item.quantity),
-                "serial_numbers": item.serial_numbers
-            } for item in transfer.items]
-        }
-        
-        return BaseResponse(success=True, message="Stock transfer retrieved", data=data)
-
-@router.post("/stock-transfers", response_model=BaseResponse)
-async def create_stock_transfer(data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    with db_manager.get_session() as session:
-        try:
-            transfer = StockTransfer(
-                transfer_number=data.get("transfer_number"),
-                transfer_date=data.get("transfer_date"),
-                from_warehouse_id=data.get("from_warehouse_id"),
-                to_warehouse_id=data.get("to_warehouse_id"),
-                status="Created",  # Default status
-                notes=data.get("notes"),
-                tenant_id=current_user['tenant_id'],
-                created_by=current_user['username']
-            )
-            session.add(transfer)
-            session.flush()
-            
-            for item in data.get('items', []):
-                transfer_item = StockTransferItem(
-                    transfer_id=transfer.id,
-                    product_id=item.get("product_id"),
-                    batch_number=item.get("batch_number"),
-                    quantity=item.get("quantity"),
-                    serial_numbers=item.get("serial_numbers"),
-                    tenant_id=current_user['tenant_id']
-                )
-                session.add(transfer_item)
-            
-            session.commit()
-            return BaseResponse(success=True, message="Stock transfer created", data={"id": transfer.id})
-        except Exception as e:
-            session.rollback()
-            raise HTTPException(400, str(e))
-
-@router.put("/stock-transfers/{transfer_id}", response_model=BaseResponse)
-async def update_stock_transfer(transfer_id: int, data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    with db_manager.get_session() as session:
-        transfer = session.query(StockTransfer).filter(
-            StockTransfer.id == transfer_id,
-            StockTransfer.tenant_id == current_user['tenant_id']
-        ).first()
-        
-        if not transfer:
-            raise HTTPException(404, "Stock transfer not found")
-        
-        # Update basic fields
-        for key, value in data.items():
-            if hasattr(transfer, key) and key not in ['id', 'tenant_id', 'created_at', 'created_by', 'items']:
-                setattr(transfer, key, value)
-        transfer.updated_by = current_user['username']
-        
-        # Handle items separately if provided
-        if 'items' in data:
-            # Delete existing items
-            session.query(StockTransferItem).filter(StockTransferItem.transfer_id == transfer_id).delete()
-            
-            # Add new items
-            for item_data in data['items']:
-                item = StockTransferItem(
-                    transfer_id=transfer_id,
-                    product_id=item_data.get('product_id'),
-                    batch_number=item_data.get('batch_number'),
-                    quantity=item_data.get('quantity'),
-                    serial_numbers=item_data.get('serial_numbers'),
-                    tenant_id=current_user['tenant_id']
-                )
-                session.add(item)
-        
-        session.commit()
-        return BaseResponse(success=True, message="Stock transfer updated")
+# ====================================================================
+# COMMENTED OUT: Stock transfer endpoints moved to stock_transfers_route.py
+# Use /api/v1/inventory/stock-transfers endpoints from stock_transfers_route.py instead
+# ====================================================================
 
 @router.get("/batches/near-expiry", response_model=BaseResponse)
 async def get_near_expiry_batches(days: int = 30, current_user: dict = Depends(get_current_user)):
@@ -311,51 +178,6 @@ async def get_near_expiry_batches(days: int = 30, current_user: dict = Depends(g
         
         return BaseResponse(success=True, message="Near expiry batches retrieved", data=data)
 
-@router.post("/stock-transfers/{transfer_id}/approve", response_model=BaseResponse)
-async def approve_stock_transfer(transfer_id: int, current_user: dict = Depends(get_current_user)):
-    with db_manager.get_session() as session:
-        try:
-            # Get transfer details
-            transfer = session.execute(text("""
-                SELECT * FROM stock_transfers WHERE id = :id AND tenant_id = :tenant_id
-            """), {"id": transfer_id, "tenant_id": current_user['tenant_id']}).fetchone()
-            
-            if not transfer:
-                raise HTTPException(404, "Transfer not found")
-            
-            # Get items
-            items = session.execute(text("""
-                SELECT * FROM stock_transfer_items WHERE transfer_id = :id
-            """), {"id": transfer_id}).fetchall()
-            
-            # Update stock by location
-            for item in items:
-                # Reduce from source
-                session.execute(text("""
-                    UPDATE stock_by_location 
-                    SET quantity = quantity - :qty, available_quantity = available_quantity - :qty
-                    WHERE product_id = :product_id AND warehouse_id = :from_wh AND tenant_id = :tenant_id
-                """), {"qty": item.quantity, "product_id": item.product_id, 
-                      "from_wh": transfer.from_warehouse_id, "tenant_id": current_user['tenant_id']})
-                
-                # Add to destination
-                session.execute(text("""
-                    INSERT INTO stock_by_location (product_id, warehouse_id, quantity, available_quantity, tenant_id)
-                    VALUES (:product_id, :to_wh, :qty, :qty, :tenant_id)
-                    ON CONFLICT (product_id, warehouse_id, tenant_id) 
-                    DO UPDATE SET quantity = stock_by_location.quantity + :qty,
-                                  available_quantity = stock_by_location.available_quantity + :qty
-                """), {"product_id": item.product_id, "to_wh": transfer.to_warehouse_id, 
-                      "qty": item.quantity, "tenant_id": current_user['tenant_id']})
-            
-            # Update transfer status
-            session.execute(text("""
-                UPDATE stock_transfers SET status = 'APPROVED', approved_at = NOW(), approved_by = :user
-                WHERE id = :id
-            """), {"id": transfer_id, "user": current_user['username']})
-            
-            session.commit()
-            return BaseResponse(success=True, message="Stock transfer approved")
-        except Exception as e:
-            session.rollback()
-            raise HTTPException(400, str(e))
+# COMMENTED OUT: Approve endpoint moved to stock_transfers service layer
+# @router.post("/stock-transfers/{transfer_id}/approve", response_model=BaseResponse)
+# async def approve_stock_transfer(transfer_id: int, current_user: dict = Depends(get_current_user)):

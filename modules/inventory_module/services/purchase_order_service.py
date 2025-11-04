@@ -38,10 +38,11 @@ class PurchaseOrderService:
                 cgst = float(order_data.get('cgst_amount', 0))
                 sgst = float(order_data.get('sgst_amount', 0))
                 igst = float(order_data.get('igst_amount', 0))
+                utgst = float(order_data.get('utgst_amount', 0))
                 cess = float(order_data.get('cess_amount', 0))
                 
                 taxable = float(order_data.get('taxable_amount', 0))
-                net = taxable + cgst + sgst + igst + cess - discount + roundoff
+                net = taxable + cgst + sgst + igst + utgst + cess - discount + roundoff
                 order_data['net_amount'] = net
             
             # Create order
@@ -103,6 +104,7 @@ class PurchaseOrderService:
                     'supplier_id': order.supplier_id,
                     'supplier_name': order.supplier.name if order.supplier else order.supplier_name or '',
                     'supplier_gstin': order.supplier_gstin,
+                    'supplier_address': order.supplier_address,
                     'order_date': order.order_date,
                     'subtotal_amount': order.subtotal_amount,
                     'header_discount_percent': order.header_discount_percent,
@@ -111,6 +113,7 @@ class PurchaseOrderService:
                     'cgst_amount': order.cgst_amount,
                     'sgst_amount': order.sgst_amount,
                     'igst_amount': order.igst_amount,
+                    'utgst_amount': order.utgst_amount,
                     'cess_amount': order.cess_amount,
                     'total_tax_amount': order.total_tax_amount,
                     'roundoff': order.roundoff,
