@@ -8,7 +8,7 @@ from . import financial_years_route
 from . import agencies_route
 from . import role_menu_mappings_route
 from . import transaction_templates_route
-from . import account_mappings_route
+from . import account_configurations_route
 from . import accounts_route
 
 __all__ = [
@@ -21,7 +21,7 @@ __all__ = [
     "agencies_route",
     "role_menu_mappings_route",
     "transaction_templates_route",
-    "account_mappings_route",
+    "account_configurations_route",
     "accounts_route",
 ]
 # API v1 routers

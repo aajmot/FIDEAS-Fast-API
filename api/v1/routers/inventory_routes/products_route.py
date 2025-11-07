@@ -288,7 +288,7 @@ async def import_products(file: UploadFile = File(...), current_user: dict = Dep
 
                 unit = session.query(Unit).filter(Unit.name.ilike(unit_name)).first()
                 if not unit:
-                    unit = Unit(name=unit_name)
+                    unit = Unit(name=unit_name, tenant_id=current_user['tenant_id'])
                     session.add(unit)
                     session.flush()
                     session.refresh(unit)

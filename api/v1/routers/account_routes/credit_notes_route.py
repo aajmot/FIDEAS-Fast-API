@@ -99,8 +99,8 @@ async def create_credit_note(note_data: Dict[str, Any], current_user: dict = Dep
                     # Create ledger entries based on template rules
                     for rule in rules:
                         account_id = rule[1] if rule[1] else session.execute(text("""
-                            SELECT account_id FROM account_type_mappings 
-                            WHERE account_type = :account_type AND tenant_id = :tenant_id
+                            SELECT account_id FROM account_configurations 
+                            WHERE account_type = :account_type AND tenant_id = :tenant_id AND is_deleted = FALSE
                         """), {"account_type": rule[0], "tenant_id": current_user['tenant_id']}).scalar()
 
                         if account_id:

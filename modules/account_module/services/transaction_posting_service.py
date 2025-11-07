@@ -86,9 +86,9 @@ class TransactionPostingService:
         if account_id:
             return account_id
         
-        # Try account type mapping
+        # Try account configuration
         mapping = session.execute(text("""
-            SELECT account_id FROM account_type_mappings
+            SELECT account_id FROM account_configurations
             WHERE account_type = :type AND tenant_id = :tenant_id
         """), {"type": account_type, "tenant_id": tenant_id}).fetchone()
         

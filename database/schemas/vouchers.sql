@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS public.voucher_lines (
     line_no             INTEGER NOT NULL,
 
     account_id          INTEGER NOT NULL 
-                        REFERENCES public.accounts(id) ON DELETE RESTRICT,
+                        REFERENCES public.account_masters(id) ON DELETE RESTRICT,
 
     description         TEXT,
 

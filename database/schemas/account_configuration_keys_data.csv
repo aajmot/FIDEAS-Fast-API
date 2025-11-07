@@ -1,0 +1,14 @@
+"id"	"code"	"name"	"description"	"is_active"	"default_account_id"	"created_at"	"is_deleted"
+1	"CASH"	"Cash Account"	"Default cash account for cash transactions"	true	53	"2025-11-06 11:25:55.98971"	false
+2	"BANK"	"Bank Account"	"Default bank account for banking transactions"	true	54	"2025-11-06 11:25:55.98971"	false
+3	"ACCOUNTS_RECEIVABLE"	"Accounts Receivable"	"Customer receivables account"	true	55	"2025-11-06 11:25:55.98971"	false
+4	"ACCOUNTS_PAYABLE"	"Accounts Payable"	"Vendor payables account"	true	60	"2025-11-06 11:25:55.98971"	false
+5	"INVENTORY"	"Inventory Account"	"Inventory asset account"	true	56	"2025-11-06 11:25:55.98971"	false
+6	"SALES"	"Sales Revenue"	"Sales revenue account"	true	65	"2025-11-06 11:25:55.98971"	false
+7	"PURCHASE"	"Purchase Expense"	"Purchase expense account"	true	70	"2025-11-06 11:25:55.98971"	false
+8	"GST_INPUT_CGST"	"CGST Input"	"CGST input tax credit"	true	57	"2025-11-06 11:25:55.98971"	false
+9	"GST_INPUT_SGST"	"SGST Input"	"SGST input tax credit"	true	58	"2025-11-06 11:25:55.98971"	false
+10	"GST_INPUT_IGST"	"IGST Input"	"IGST input tax credit"	true	59	"2025-11-06 11:25:55.98971"	false
+11	"GST_OUTPUT_CGST"	"CGST Output"	"CGST output tax payable"	true	61	"2025-11-06 11:25:55.98971"	false
+12	"GST_OUTPUT_SGST"	"SGST Output"	"SGST output tax payable"	true	62	"2025-11-06 11:25:55.98971"	false
+13	"GST_OUTPUT_IGST"	"IGST Output"	"IGST output tax payable"	true	63	"2025-11-06 11:25:55.98971"	false

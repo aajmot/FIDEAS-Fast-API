@@ -120,6 +120,7 @@ async def import_units(file: UploadFile = File(...), current_user: dict = Depend
                 unit = Unit(
                     name=row["name"],
                     symbol=row["symbol"],
+                    tenant_id=current_user['tenant_id'],
                     is_active=row["is_active"].lower() == "true"
                 )
                 session.add(unit)

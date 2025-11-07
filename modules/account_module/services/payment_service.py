@@ -4,6 +4,7 @@ from modules.account_module.services.account_service import AccountService
 from modules.account_module.services.audit_service import AuditService
 from core.shared.utils.session_manager import session_manager
 from core.shared.middleware.exception_handler import ExceptionMiddleware
+from sqlalchemy import or_
 from datetime import datetime
 from decimal import Decimal
 
@@ -704,298 +705,358 @@ class PaymentService:
         
         return voucher
     
-    @ExceptionMiddleware.handle_exceptions("PaymentService")
-    def record_payment(self, payment_data):
-        """Record cash/bank payment (reduces AP or other payables)"""
-        with db_manager.get_session() as session:
-            tenant_id = session_manager.get_current_tenant_id()
-            username = session_manager.get_current_username()
-            
-            # Get cash/bank account
-            cash_account = session.query(AccountMaster).filter(
-                AccountMaster.id == payment_data['account_id'],
-                AccountMaster.tenant_id == tenant_id
-            ).first()
-            
-            # Get payable account (AP or other)
-            payable_account = session.query(AccountMaster).filter(
-                AccountMaster.code == 'AP001',
-                AccountMaster.tenant_id == tenant_id
-            ).first()
-            
-            if not cash_account or not payable_account:
-                raise ValueError("Required accounts not found")
-            
-            # Get voucher type
-            voucher_type = session.query(VoucherType).filter(
-                VoucherType.code == 'PAY',
-                VoucherType.tenant_id == tenant_id
-            ).first()
-            
-            if not voucher_type:
-                voucher_type = session.query(VoucherType).filter(
-                    VoucherType.code == 'JV',
-                    VoucherType.tenant_id == tenant_id
-                ).first()
-            
-            if not voucher_type:
-                raise ValueError("Payment voucher type not found. Please initialize default voucher types.")
-            
-            # Create payment record
-            payment = Payment(
-                payment_number=payment_data['payment_number'],
-                payment_date=payment_data['payment_date'],
-                payment_type=payment_data['payment_type'],
-                payment_mode='PAID',
-                reference_type=payment_data.get('reference_type', 'GENERAL'),
-                reference_id=payment_data.get('reference_id', 0),
-                reference_number=payment_data.get('reference_number', ''),
-                amount=payment_data['amount'],
-                account_id=cash_account.id,
-                remarks=payment_data.get('remarks', ''),
-                tenant_id=tenant_id,
-                created_by=username
-            )
-            session.add(payment)
-            session.flush()
-            
-            # Create voucher
-            voucher = Voucher(
-                voucher_number=payment_data['payment_number'],
-                voucher_type_id=voucher_type.id,
-                voucher_date=payment_data['payment_date'],
-                reference_type='PAYMENT',
-                reference_id=payment.id,
-                reference_number=payment_data['payment_number'],
-                narration=payment_data.get('remarks', 'Payment made'),
-                total_amount=payment_data['amount'],
-                is_posted=True,
-                tenant_id=tenant_id,
-                created_by=username
-            )
-            session.add(voucher)
-            session.flush()
-            
-            payment.voucher_id = voucher.id
-            
-            # Create journal
-            journal = Journal(
-                voucher_id=voucher.id,
-                journal_date=payment_data['payment_date'],
-                total_debit=payment_data['amount'],
-                total_credit=payment_data['amount'],
-                tenant_id=tenant_id
-            )
-            session.add(journal)
-            session.flush()
-            
-            # Journal details - Debit AP, Credit Cash/Bank
-            journal_details = [
-                JournalDetail(
-                    journal_id=journal.id,
-                    account_id=payable_account.id,
-                    debit_amount=payment_data['amount'],
-                    credit_amount=0,
-                    narration=f"Payment - {payment_data['payment_number']}",
-                    tenant_id=tenant_id
-                ),
-                JournalDetail(
-                    journal_id=journal.id,
-                    account_id=cash_account.id,
-                    debit_amount=0,
-                    credit_amount=payment_data['amount'],
-                    narration=f"Payment - {payment_data['payment_number']}",
-                    tenant_id=tenant_id
-                )
-            ]
-            
-            for detail in journal_details:
-                session.add(detail)
-            
-            # Ledger entries
-            ledger_entries = [
-                Ledger(
-                    account_id=payable_account.id,
-                    voucher_id=voucher.id,
-                    transaction_date=payment_data['payment_date'],
-                    debit_amount=payment_data['amount'],
-                    credit_amount=0,
-                    balance=(payable_account.current_balance or Decimal('0')) - Decimal(str(payment_data['amount'])),
-                    narration=f"Payment - {payment_data['payment_number']}",
-                    tenant_id=tenant_id
-                ),
-                Ledger(
-                    account_id=cash_account.id,
-                    voucher_id=voucher.id,
-                    transaction_date=payment_data['payment_date'],
-                    debit_amount=0,
-                    credit_amount=payment_data['amount'],
-                    balance=(cash_account.current_balance or Decimal('0')) - Decimal(str(payment_data['amount'])),
-                    narration=f"Payment - {payment_data['payment_number']}",
-                    tenant_id=tenant_id
-                )
-            ]
-            
-            for ledger in ledger_entries:
-                session.add(ledger)
-            
-            # Update balances
-            self.account_service.update_account_balance_in_session(session, payable_account.id, payment_data['amount'], 'DEBIT')
-            self.account_service.update_account_balance_in_session(session, cash_account.id, payment_data['amount'], 'CREDIT')
-            
-            # Log audit trail
-            AuditService.log_action(
-                session, 'PAYMENT', payment.id, 'CREATE',
-                new_value={'payment_number': payment.payment_number, 'amount': float(payment.amount)}
-            )
-            
-            session.commit()
-            return payment
+    # ==================== NEW PAYMENT STRUCTURE METHODS ====================
     
     @ExceptionMiddleware.handle_exceptions("PaymentService")
-    def record_receipt(self, receipt_data):
-        """Record cash/bank receipt (reduces AR or other receivables)"""
+    def create_payment(self, payment_data: dict):
+        """Create a new payment with details"""
+        from modules.account_module.models.payment_entity import Payment, PaymentDetail
+        
         with db_manager.get_session() as session:
             tenant_id = session_manager.get_current_tenant_id()
             username = session_manager.get_current_username()
             
-            # Get cash/bank account
-            cash_account = session.query(AccountMaster).filter(
-                AccountMaster.id == receipt_data['account_id'],
-                AccountMaster.tenant_id == tenant_id
+            # Check if payment number already exists
+            existing = session.query(Payment).filter(
+                Payment.tenant_id == tenant_id,
+                Payment.payment_number == payment_data.get('payment_number'),
+                Payment.is_deleted == False
             ).first()
             
-            # Get receivable account (AR or other)
-            receivable_account = session.query(AccountMaster).filter(
-                AccountMaster.code == 'AR001',
-                AccountMaster.tenant_id == tenant_id
-            ).first()
+            if existing:
+                raise ValueError(f"Payment number '{payment_data.get('payment_number')}' already exists")
             
-            if not cash_account or not receivable_account:
-                raise ValueError("Required accounts not found")
+            # Extract details from payment data
+            details_data = payment_data.pop('details', [])
             
-            # Get voucher type
-            voucher_type = session.query(VoucherType).filter(
-                VoucherType.code == 'REC',
-                VoucherType.tenant_id == tenant_id
-            ).first()
-            
-            if not voucher_type:
-                voucher_type = session.query(VoucherType).filter(
-                    VoucherType.code == 'JV',
-                    VoucherType.tenant_id == tenant_id
-                ).first()
-            
-            if not voucher_type:
-                raise ValueError("Receipt voucher type not found. Please initialize default voucher types.")
-            
-            # Create payment record
-            receipt = Payment(
-                payment_number=receipt_data['payment_number'],
-                payment_date=receipt_data['payment_date'],
-                payment_type=receipt_data['payment_type'],
-                payment_mode='RECEIVED',
-                reference_type=receipt_data.get('reference_type', 'SALES'),
-                reference_id=receipt_data.get('reference_id', 0),
-                reference_number=receipt_data.get('reference_number', ''),
-                amount=receipt_data['amount'],
-                account_id=cash_account.id,
-                remarks=receipt_data.get('remarks', ''),
+            # Create payment header
+            payment = Payment(
                 tenant_id=tenant_id,
-                created_by=username
+                payment_number=payment_data.get('payment_number'),
+                payment_date=payment_data.get('payment_date'),
+                payment_type=payment_data.get('payment_type'),
+                party_type=payment_data.get('party_type'),
+                party_id=payment_data.get('party_id'),
+                base_currency_id=payment_data.get('base_currency_id'),
+                foreign_currency_id=payment_data.get('foreign_currency_id'),
+                exchange_rate=payment_data.get('exchange_rate', 1),
+                total_amount_base=payment_data.get('total_amount_base'),
+                total_amount_foreign=payment_data.get('total_amount_foreign'),
+                tds_amount_base=payment_data.get('tds_amount_base', 0),
+                advance_amount_base=payment_data.get('advance_amount_base', 0),
+                status=payment_data.get('status', 'DRAFT'),
+                reference_number=payment_data.get('reference_number'),
+                remarks=payment_data.get('remarks'),
+                tags=payment_data.get('tags'),
+                created_by=username,
+                updated_by=username
             )
-            session.add(receipt)
-            session.flush()
             
-            # Create voucher
-            voucher = Voucher(
-                voucher_number=receipt_data['payment_number'],
-                voucher_type_id=voucher_type.id,
-                voucher_date=receipt_data['payment_date'],
-                reference_type='RECEIPT',
-                reference_id=receipt.id,
-                reference_number=receipt_data['payment_number'],
-                narration=receipt_data.get('remarks', 'Receipt received'),
-                total_amount=receipt_data['amount'],
-                is_posted=True,
-                tenant_id=tenant_id,
-                created_by=username
-            )
-            session.add(voucher)
-            session.flush()
+            session.add(payment)
+            session.flush()  # Get payment ID
             
-            receipt.voucher_id = voucher.id
-            
-            # Create journal
-            journal = Journal(
-                voucher_id=voucher.id,
-                journal_date=receipt_data['payment_date'],
-                total_debit=receipt_data['amount'],
-                total_credit=receipt_data['amount'],
-                tenant_id=tenant_id
-            )
-            session.add(journal)
-            session.flush()
-            
-            # Journal details - Debit Cash/Bank, Credit AR
-            journal_details = [
-                JournalDetail(
-                    journal_id=journal.id,
-                    account_id=cash_account.id,
-                    debit_amount=receipt_data['amount'],
-                    credit_amount=0,
-                    narration=f"Receipt - {receipt_data['payment_number']}",
-                    tenant_id=tenant_id
-                ),
-                JournalDetail(
-                    journal_id=journal.id,
-                    account_id=receivable_account.id,
-                    debit_amount=0,
-                    credit_amount=receipt_data['amount'],
-                    narration=f"Receipt - {receipt_data['payment_number']}",
-                    tenant_id=tenant_id
+            # Create payment details
+            for detail_data in details_data:
+                detail = PaymentDetail(
+                    tenant_id=tenant_id,
+                    payment_id=payment.id,
+                    line_no=detail_data.get('line_no'),
+                    payment_mode=detail_data.get('payment_mode'),
+                    bank_account_id=detail_data.get('bank_account_id'),
+                    instrument_number=detail_data.get('instrument_number'),
+                    instrument_date=detail_data.get('instrument_date'),
+                    bank_name=detail_data.get('bank_name'),
+                    branch_name=detail_data.get('branch_name'),
+                    ifsc_code=detail_data.get('ifsc_code'),
+                    transaction_reference=detail_data.get('transaction_reference'),
+                    amount_base=detail_data.get('amount_base'),
+                    amount_foreign=detail_data.get('amount_foreign'),
+                    account_id=detail_data.get('account_id'),
+                    description=detail_data.get('description'),
+                    created_by=username,
+                    updated_by=username
                 )
-            ]
-            
-            for detail in journal_details:
                 session.add(detail)
             
-            # Ledger entries
-            ledger_entries = [
-                Ledger(
-                    account_id=cash_account.id,
-                    voucher_id=voucher.id,
-                    transaction_date=receipt_data['payment_date'],
-                    debit_amount=receipt_data['amount'],
-                    credit_amount=0,
-                    balance=(cash_account.current_balance or Decimal('0')) + Decimal(str(receipt_data['amount'])),
-                    narration=f"Receipt - {receipt_data['payment_number']}",
-                    tenant_id=tenant_id
-                ),
-                Ledger(
-                    account_id=receivable_account.id,
-                    voucher_id=voucher.id,
-                    transaction_date=receipt_data['payment_date'],
-                    debit_amount=0,
-                    credit_amount=receipt_data['amount'],
-                    balance=(receivable_account.current_balance or Decimal('0')) - Decimal(str(receipt_data['amount'])),
-                    narration=f"Receipt - {receipt_data['payment_number']}",
-                    tenant_id=tenant_id
-                )
-            ]
+            session.commit()
+            session.refresh(payment)
             
-            for ledger in ledger_entries:
-                session.add(ledger)
+            return self.get_payment_by_id(payment.id)
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def get_all_payments(self, page=1, page_size=100, search=None, payment_type=None, 
+                        party_type=None, status=None, date_from=None, date_to=None,
+                        is_reconciled=None):
+        """Get all payments with pagination and filters"""
+        from modules.account_module.models.payment_entity import Payment
+        import math
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
             
-            # Update balances
-            self.account_service.update_account_balance_in_session(session, cash_account.id, receipt_data['amount'], 'DEBIT')
-            self.account_service.update_account_balance_in_session(session, receivable_account.id, receipt_data['amount'], 'CREDIT')
-            
-            # Log audit trail
-            AuditService.log_action(
-                session, 'PAYMENT', receipt.id, 'CREATE',
-                new_value={'payment_number': receipt.payment_number, 'amount': float(receipt.amount)}
+            query = session.query(Payment).filter(
+                Payment.tenant_id == tenant_id,
+                Payment.is_deleted == False
             )
             
+            # Apply filters
+            if search:
+                search_pattern = f"%{search}%"
+                query = query.filter(
+                    or_(
+                        Payment.payment_number.ilike(search_pattern),
+                        Payment.reference_number.ilike(search_pattern),
+                        Payment.remarks.ilike(search_pattern)
+                    )
+                )
+            
+            if payment_type:
+                query = query.filter(Payment.payment_type == payment_type)
+            
+            if party_type:
+                query = query.filter(Payment.party_type == party_type)
+            
+            if status:
+                query = query.filter(Payment.status == status)
+            
+            if date_from:
+                query = query.filter(Payment.payment_date >= date_from)
+            
+            if date_to:
+                query = query.filter(Payment.payment_date <= date_to)
+            
+            if is_reconciled is not None:
+                query = query.filter(Payment.is_reconciled == is_reconciled)
+            
+            # Get total count
+            total = query.count()
+            
+            # Apply pagination and ordering
+            query = query.order_by(Payment.payment_date.desc(), Payment.id.desc())
+            offset = (page - 1) * page_size
+            payments = query.offset(offset).limit(page_size).all()
+            
+            return {
+                'total': total,
+                'page': page,
+                'per_page': page_size,
+                'total_pages': math.ceil(total / page_size) if total > 0 else 0,
+                'data': [self._payment_to_dict(p, include_details=False) for p in payments]
+            }
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def get_payment_by_id(self, payment_id: int):
+        """Get a specific payment by ID with details"""
+        from modules.account_module.models.payment_entity import Payment
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            
+            payment = session.query(Payment).filter(
+                Payment.id == payment_id,
+                Payment.tenant_id == tenant_id,
+                Payment.is_deleted == False
+            ).first()
+            
+            if not payment:
+                return None
+            
+            return self._payment_to_dict(payment, include_details=True)
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def update_payment(self, payment_id: int, payment_data: dict):
+        """Update an existing payment"""
+        from modules.account_module.models.payment_entity import Payment, PaymentDetail
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            username = session_manager.get_current_username()
+            
+            payment = session.query(Payment).filter(
+                Payment.id == payment_id,
+                Payment.tenant_id == tenant_id,
+                Payment.is_deleted == False
+            ).first()
+            
+            if not payment:
+                return None
+            
+            # Check if payment number changed and is unique
+            if 'payment_number' in payment_data and payment_data['payment_number'] != payment.payment_number:
+                existing = session.query(Payment).filter(
+                    Payment.tenant_id == tenant_id,
+                    Payment.payment_number == payment_data['payment_number'],
+                    Payment.id != payment_id,
+                    Payment.is_deleted == False
+                ).first()
+                
+                if existing:
+                    raise ValueError(f"Payment number '{payment_data['payment_number']}' already exists")
+            
+            # Extract details if present
+            details_data = payment_data.pop('details', None)
+            
+            # Update header fields
+            for field in ['payment_number', 'payment_date', 'payment_type', 'party_type', 'party_id',
+                         'base_currency_id', 'foreign_currency_id', 'exchange_rate',
+                         'total_amount_base', 'total_amount_foreign',
+                         'tds_amount_base', 'advance_amount_base', 'status',
+                         'reference_number', 'remarks', 'tags']:
+                if field in payment_data:
+                    setattr(payment, field, payment_data[field])
+            
+            payment.updated_by = username
+            
+            # Update details if provided
+            if details_data is not None:
+                # Delete existing details
+                session.query(PaymentDetail).filter(
+                    PaymentDetail.payment_id == payment_id
+                ).delete()
+                
+                # Add new details
+                for detail_data in details_data:
+                    detail = PaymentDetail(
+                        tenant_id=tenant_id,
+                        payment_id=payment.id,
+                        line_no=detail_data.get('line_no'),
+                        payment_mode=detail_data.get('payment_mode'),
+                        bank_account_id=detail_data.get('bank_account_id'),
+                        instrument_number=detail_data.get('instrument_number'),
+                        instrument_date=detail_data.get('instrument_date'),
+                        bank_name=detail_data.get('bank_name'),
+                        branch_name=detail_data.get('branch_name'),
+                        ifsc_code=detail_data.get('ifsc_code'),
+                        transaction_reference=detail_data.get('transaction_reference'),
+                        amount_base=detail_data.get('amount_base'),
+                        amount_foreign=detail_data.get('amount_foreign'),
+                        account_id=detail_data.get('account_id'),
+                        description=detail_data.get('description'),
+                        created_by=username,
+                        updated_by=username
+                    )
+                    session.add(detail)
+            
             session.commit()
-            return receipt
+            session.refresh(payment)
+            
+            return self.get_payment_by_id(payment.id)
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def delete_payment(self, payment_id: int):
+        """Soft delete a payment"""
+        from modules.account_module.models.payment_entity import Payment
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            username = session_manager.get_current_username()
+            
+            payment = session.query(Payment).filter(
+                Payment.id == payment_id,
+                Payment.tenant_id == tenant_id,
+                Payment.is_deleted == False
+            ).first()
+            
+            if not payment:
+                return False
+            
+            # Check if payment can be deleted (only DRAFT or CANCELLED)
+            if payment.status not in ['DRAFT', 'CANCELLED']:
+                raise ValueError(f"Cannot delete payment with status '{payment.status}'. Only DRAFT or CANCELLED payments can be deleted.")
+            
+            payment.is_deleted = True
+            payment.is_active = False
+            payment.updated_by = username
+            
+            session.commit()
+            return True
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def reconcile_payment(self, payment_id: int, reconciled_at: datetime = None):
+        """Reconcile a payment"""
+        from modules.account_module.models.payment_entity import Payment
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            username = session_manager.get_current_username()
+            
+            payment = session.query(Payment).filter(
+                Payment.id == payment_id,
+                Payment.tenant_id == tenant_id,
+                Payment.is_deleted == False
+            ).first()
+            
+            if not payment:
+                return None
+            
+            if payment.is_reconciled:
+                raise ValueError("Payment is already reconciled")
+            
+            payment.is_reconciled = True
+            payment.reconciled_at = reconciled_at or datetime.utcnow()
+            payment.reconciled_by = username
+            payment.status = 'RECONCILED'
+            payment.updated_by = username
+            
+            session.commit()
+            session.refresh(payment)
+            
+            return self._payment_to_dict(payment, include_details=False)
+    
+    def _payment_to_dict(self, payment, include_details=True):
+        """Convert payment entity to dictionary"""
+        result = {
+            'id': payment.id,
+            'payment_number': payment.payment_number,
+            'payment_date': payment.payment_date,
+            'payment_type': payment.payment_type,
+            'party_type': payment.party_type,
+            'party_id': payment.party_id,
+            'base_currency_id': payment.base_currency_id,
+            'foreign_currency_id': payment.foreign_currency_id,
+            'exchange_rate': payment.exchange_rate,
+            'total_amount_base': payment.total_amount_base,
+            'total_amount_foreign': payment.total_amount_foreign,
+            'tds_amount_base': payment.tds_amount_base,
+            'advance_amount_base': payment.advance_amount_base,
+            'status': payment.status,
+            'voucher_id': payment.voucher_id,
+            'reference_number': payment.reference_number,
+            'remarks': payment.remarks,
+            'tags': payment.tags,
+            'is_reconciled': payment.is_reconciled,
+            'reconciled_at': payment.reconciled_at,
+            'reconciled_by': payment.reconciled_by,
+            'created_at': payment.created_at,
+            'created_by': payment.created_by,
+            'updated_at': payment.updated_at,
+            'updated_by': payment.updated_by,
+            'is_active': payment.is_active,
+            'is_deleted': payment.is_deleted
+        }
+        
+        if include_details:
+            result['details'] = [self._detail_to_dict(detail) for detail in payment.payment_details]
+        else:
+            result['details'] = []
+        
+        return result
+    
+    def _detail_to_dict(self, detail):
+        """Convert payment detail entity to dictionary"""
+        return {
+            'id': detail.id,
+            'line_no': detail.line_no,
+            'payment_mode': detail.payment_mode,
+            'bank_account_id': detail.bank_account_id,
+            'instrument_number': detail.instrument_number,
+            'instrument_date': detail.instrument_date,
+            'bank_name': detail.bank_name,
+            'branch_name': detail.branch_name,
+            'ifsc_code': detail.ifsc_code,
+            'transaction_reference': detail.transaction_reference,
+            'amount_base': detail.amount_base,
+            'amount_foreign': detail.amount_foreign,
+            'account_id': detail.account_id,
+            'description': detail.description
+        }

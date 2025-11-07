@@ -53,3 +53,4 @@ from .hsn_entity import HsnCode
 from .stock_entity import StockTransaction, StockBalance
 from .warehouse_entity import Warehouse, StockByLocation
 from .stock_transfer_entity import StockTransfer, StockTransferItem
+from .purchase_invoice_entity import PurchaseInvoice, PurchaseInvoiceItem

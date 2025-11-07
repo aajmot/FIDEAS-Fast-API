@@ -37,11 +37,9 @@ from api.v1.routers.admin_routes import (
     agencies_route,
     role_menu_mappings_route,
     transaction_templates_route,
-    account_mappings_route,
-    accounts_route as admin_accounts_route,
+    account_configurations_route,
 )
 from api.v1.routers.account_routes import (
-    accounts_route,
     comparative_reports_route,
     reconciliation_route,
     vouchers_route,
@@ -49,13 +47,14 @@ from api.v1.routers.account_routes import (
     ledger_route,
     journals_route,
     account_groups_route,
+    account_masters_route,
+    account_configuration_keys_route,
     taxes_route,
     bank_reconciliation_route,
     recurring_vouchers_route,
     voucher_series_route,
     cost_centers_route,
     budgets_route,
-    chart_of_accounts_route,
     audit_route,
     gst_route,
     reports_route,
@@ -205,8 +204,8 @@ app.include_router(menus_route.router, prefix="/api/v1/admin", tags=["admin-menu
 app.include_router(approvals_route.router, prefix="/api/v1/admin", tags=["admin-approvals v1"], dependencies=[Depends(get_current_user)])
 app.include_router(tenant_route.router, prefix="/api/v1/admin", tags=["admin-tenant v1"], dependencies=[Depends(get_current_user)])
 app.include_router(currency.router, prefix="/api/v1/admin", tags=["admin-currencies v1"], dependencies=[Depends(get_current_user)])
-app.include_router(admin_accounts_route.router, prefix="/api/v1/admin", tags=["admin-accounts v1"], dependencies=[Depends(get_current_user)])
-app.include_router(account_mappings_route.router, prefix="/api/v1/admin", tags=["admin-account-mappings v1"], dependencies=[Depends(get_current_user)])
+app.include_router(account_configuration_keys_route.router, prefix="/api/v1/admin", tags=["admin-account-configuration-keys v1"], dependencies=[Depends(get_current_user)])
+app.include_router(account_configurations_route.router, prefix="/api/v1/admin", tags=["admin-account-configurations v1"], dependencies=[Depends(get_current_user)])
 app.include_router(transaction_templates_route.router, prefix="/api/v1/admin", tags=["admin-transaction-templates v1"], dependencies=[Depends(get_current_user)])
 app.include_router(role_menu_mappings_route.router, prefix="/api/v1/admin", tags=["admin-role-menu-mappings v1"], dependencies=[Depends(get_current_user)])
 app.include_router(legal_entities_route.router, prefix="/api/v1/admin", tags=["admin-legal-entities v1"], dependencies=[Depends(get_current_user)])
@@ -240,12 +239,12 @@ app.include_router(inventory_extensions.router, prefix="/api/v1/inventory", tags
 #endregion inventory routes
 
 #region account routes
-app.include_router(accounts_route.router, prefix="/api/v1/account", tags=["account-accounts v1"], dependencies=[Depends(get_current_user)])
 app.include_router(vouchers_route.router, prefix="/api/v1/account", tags=["account-vouchers v1"], dependencies=[Depends(get_current_user)])
 app.include_router(payments_route.router, prefix="/api/v1/account", tags=["account-payments v1"], dependencies=[Depends(get_current_user)])
 app.include_router(ledger_route.router, prefix="/api/v1/account", tags=["account-ledger v1"], dependencies=[Depends(get_current_user)])
 app.include_router(journals_route.router, prefix="/api/v1/account", tags=["account-journals v1"], dependencies=[Depends(get_current_user)])
 app.include_router(account_groups_route.router, prefix="/api/v1/account", tags=["account-account-groups v1"], dependencies=[Depends(get_current_user)])
+app.include_router(account_masters_route.router, prefix="/api/v1/account", tags=["account-account-masters v1"], dependencies=[Depends(get_current_user)])
 app.include_router(taxes_route.router, prefix="/api/v1/account", tags=["account-taxes v1"], dependencies=[Depends(get_current_user)])
 app.include_router(bank_reconciliation_route.router, prefix="/api/v1/account", tags=["account-bank-reconciliations v1"], dependencies=[Depends(get_current_user)])
 app.include_router(reconciliation_route.router, prefix="/api/v1/account", tags=["account-reconciliation v1"], dependencies=[Depends(get_current_user)])
@@ -254,7 +253,6 @@ app.include_router(voucher_series_route.router, prefix="/api/v1/account", tags=[
 app.include_router(reports_route.router, prefix="/api/v1/account", tags=["account-reports v1"], dependencies=[Depends(get_current_user)])
 app.include_router(cost_centers_route.router, prefix="/api/v1/account", tags=["account-cost-centers v1"], dependencies=[Depends(get_current_user)])
 app.include_router(budgets_route.router, prefix="/api/v1/account", tags=["account-budgets v1"], dependencies=[Depends(get_current_user)])
-app.include_router(chart_of_accounts_route.router, prefix="/api/v1/account", tags=["account-chart-of-accounts v1"], dependencies=[Depends(get_current_user)])
 app.include_router(audit_route.router, prefix="/api/v1/account", tags=["account-audit v1"], dependencies=[Depends(get_current_user)])
 app.include_router(gst_route.router, prefix="/api/v1/account", tags=["account-gst v1"], dependencies=[Depends(get_current_user)])
 # remaining account routes (already follow the pattern)

@@ -1,68 +1,117 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
-from typing import Dict, Any, Optional
-from datetime import datetime, timedelta
+from typing import Optional
+from datetime import date
+from decimal import Decimal
 from api.middleware.auth_middleware import get_current_user
-from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
-from core.database.connection import db_manager
-from sqlalchemy import text, or_
-import math
+from api.schemas.common import BaseResponse
+from modules.inventory_module.models.purchase_invoice_schemas import (
+    PurchaseInvoiceRequest,
+    PurchaseInvoiceResponse,
+    PurchaseInvoiceListResponse
+)
+from modules.inventory_module.services.purchase_invoice_service import PurchaseInvoiceService
 
 router = APIRouter()
+purchase_invoice_service = PurchaseInvoiceService()
 
 
+@router.get("/purchase-invoices", response_model=PurchaseInvoiceListResponse)
+async def get_purchase_invoices(
+    page: int = Query(1, ge=1, description="Page number"),
+    page_size: int = Query(100, ge=1, le=500, description="Items per page"),
+    search: Optional[str] = Query(None, description="Search by invoice or reference number"),
+    status: Optional[str] = Query(None, description="Filter by status"),
+    supplier_id: Optional[int] = Query(None, description="Filter by supplier"),
+    date_from: Optional[date] = Query(None, description="Filter from date"),
+    date_to: Optional[date] = Query(None, description="Filter to date"),
+    current_user: dict = Depends(get_current_user)
+):
+    """Get all purchase invoices with pagination and filters"""
+    result = purchase_invoice_service.get_all(
+        page=page,
+        page_size=page_size,
+        search=search,
+        status=status,
+        supplier_id=supplier_id,
+        date_from=date_from,
+        date_to=date_to
+    )
+    return result
 
-# Purchase Invoice
-@router.get("/purchase-invoices", response_model=PaginatedResponse)
-async def get_purchase_invoices(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
-    with db_manager.get_session() as session:
-        query = """
-            SELECT pi.*, s.name as supplier_name 
-            FROM purchase_invoices pi 
-            JOIN suppliers s ON pi.supplier_id = s.id 
-            WHERE pi.tenant_id = :tenant_id
-        """
-        params = {"tenant_id": current_user['tenant_id']}
-        
-        if pagination.search:
-            query += " AND (pi.invoice_number ILIKE :search OR s.name ILIKE :search)"
-            params["search"] = f"%{pagination.search}%"
-        
-        total = session.execute(text(query.replace("pi.*, s.name as supplier_name", "COUNT(*)")), params).scalar()
-        query += f" ORDER BY pi.invoice_date DESC LIMIT :limit OFFSET :offset"
-        params.update({"limit": pagination.per_page, "offset": pagination.offset})
-        
-        result = session.execute(text(query), params)
-        data = [dict(row._mapping) for row in result]
-    
-    return PaginatedResponse(success=True, message="Purchase invoices retrieved", data=data,
-                           total=total, page=pagination.page, per_page=pagination.per_page,
-                           total_pages=math.ceil(total / pagination.per_page))
 
-@router.post("/purchase-invoices", response_model=BaseResponse)
-async def create_purchase_invoice(data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    with db_manager.get_session() as session:
-        try:
-            result = session.execute(text("""
-                INSERT INTO purchase_invoices (invoice_number, invoice_date, supplier_id, 
-                    subtotal, discount_amount, tax_amount, total_amount, balance_amount, 
-                    status, notes, tenant_id, created_by)
-                VALUES (:invoice_number, :invoice_date, :supplier_id, :subtotal, :discount_amount,
-                    :tax_amount, :total_amount, :total_amount, :status, :notes, :tenant_id, :created_by)
-                RETURNING id
-            """), {**data, "tenant_id": current_user['tenant_id'], "created_by": current_user['username']})
-            invoice_id = result.scalar()
-            
-            for item in data['items']:
-                session.execute(text("""
-                    INSERT INTO purchase_invoice_items (invoice_id, product_id, quantity, unit_price,
-                        discount_amount, taxable_amount, cgst_amount, sgst_amount, igst_amount,
-                        total_amount, tenant_id)
-                    VALUES (:invoice_id, :product_id, :quantity, :unit_price, :discount_amount,
-                        :taxable_amount, :cgst_amount, :sgst_amount, :igst_amount, :total_amount, :tenant_id)
-                """), {**item, "invoice_id": invoice_id, "tenant_id": current_user['tenant_id']})
-            
-            session.commit()
-            return BaseResponse(success=True, message="Purchase invoice created", data={"id": invoice_id})
-        except Exception as e:
-            session.rollback()
-            raise HTTPException(400, str(e))
+@router.get("/purchase-invoices/{invoice_id}", response_model=PurchaseInvoiceResponse)
+async def get_purchase_invoice(
+    invoice_id: int,
+    current_user: dict = Depends(get_current_user)
+):
+    """Get a specific purchase invoice by ID"""
+    invoice = purchase_invoice_service.get_by_id(invoice_id)
+    if not invoice:
+        raise HTTPException(status_code=404, detail="Purchase invoice not found")
+    return invoice
+
+
+@router.post("/purchase-invoices", response_model=PurchaseInvoiceResponse)
+async def create_purchase_invoice(
+    invoice: PurchaseInvoiceRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create a new purchase invoice"""
+    try:
+        result = purchase_invoice_service.create(invoice.dict())
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating purchase invoice: {str(e)}")
+
+
+@router.put("/purchase-invoices/{invoice_id}", response_model=PurchaseInvoiceResponse)
+async def update_purchase_invoice(
+    invoice_id: int,
+    invoice: PurchaseInvoiceRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update an existing purchase invoice"""
+    try:
+        result = purchase_invoice_service.update(invoice_id, invoice.dict())
+        if not result:
+            raise HTTPException(status_code=404, detail="Purchase invoice not found")
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating purchase invoice: {str(e)}")
+
+
+@router.delete("/purchase-invoices/{invoice_id}", response_model=BaseResponse)
+async def delete_purchase_invoice(
+    invoice_id: int,
+    current_user: dict = Depends(get_current_user)
+):
+    """Soft delete a purchase invoice"""
+    try:
+        result = purchase_invoice_service.delete(invoice_id)
+        if not result:
+            raise HTTPException(status_code=404, detail="Purchase invoice not found")
+        return BaseResponse(success=True, message="Purchase invoice deleted successfully", data={"id": invoice_id})
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting purchase invoice: {str(e)}")
+
+
+@router.post("/purchase-invoices/{invoice_id}/payment", response_model=PurchaseInvoiceResponse)
+async def record_payment(
+    invoice_id: int,
+    payment_amount: Decimal = Query(..., gt=0, description="Payment amount"),
+    current_user: dict = Depends(get_current_user)
+):
+    """Record a payment for a purchase invoice"""
+    try:
+        result = purchase_invoice_service.update_payment(invoice_id, payment_amount)
+        if not result:
+            raise HTTPException(status_code=404, detail="Purchase invoice not found")
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error recording payment: {str(e)}")

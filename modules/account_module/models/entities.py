@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Text, Numeric, UniqueConstraint, Date
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Text, Numeric, UniqueConstraint, Date, CheckConstraint
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from modules.inventory_module.models.entities import Base
@@ -27,22 +27,55 @@ class AccountMaster(Base):
     __tablename__ = 'account_masters'
     
     id = Column(Integer, primary_key=True)
-    name = Column(String(200), nullable=False)
-    code = Column(String(50), nullable=False)
-    account_group_id = Column(Integer, ForeignKey('account_groups.id'), nullable=False)
-    opening_balance = Column(Numeric(15, 2), default=0)
-    current_balance = Column(Numeric(15, 2), default=0)
-    is_active = Column(Boolean, default=True)
-    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    created_by = Column(String(100))
+    tenant_id = Column(Integer, ForeignKey('tenants.id', ondelete='CASCADE'), nullable=False)
+    parent_id = Column(Integer, ForeignKey('account_masters.id', ondelete='SET NULL'))
+    account_group_id = Column(Integer, ForeignKey('account_groups.id', ondelete='RESTRICT'), nullable=False)
     
+    # Core
+    code = Column(String(50), nullable=False)
+    name = Column(String(200), nullable=False)
+    description = Column(Text)
+    
+    # Account Type
+    account_type = Column(String(20), nullable=False)  # ASSET, LIABILITY, EQUITY, REVENUE, EXPENSE
+    normal_balance = Column(String(1), nullable=False, default='D')  # D or C
+    
+    # System Account
+    is_system_account = Column(Boolean, default=False)
+    system_code = Column(String(50))
+    
+    # Hierarchy
+    level = Column(Integer, nullable=False, default=1)
+    path = Column(Text)
+    
+    # Balances
+    opening_balance = Column(Numeric(15, 4), default=0)
+    current_balance = Column(Numeric(15, 4), default=0)
+    is_reconciled = Column(Boolean, default=False)
+    
+    # Status
+    is_active = Column(Boolean, default=True)
+    is_deleted = Column(Boolean, default=False)
+    
+    # Audit
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(100), default='system')
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_by = Column(String(100), default='system')
+    
+    # Relationships
+    parent = relationship("AccountMaster", remote_side=[id], foreign_keys=[parent_id])
+    children = relationship("AccountMaster", back_populates="parent", foreign_keys=[parent_id])
     account_group = relationship("AccountGroup", back_populates="accounts")
     journal_details = relationship("JournalDetail", back_populates="account")
     ledger_entries = relationship("Ledger", back_populates="account")
     
     __table_args__ = (
-        UniqueConstraint('code', 'tenant_id', name='uq_account_master_code_tenant'),
+        UniqueConstraint('code', 'tenant_id', name='uq_account_code_tenant'),
+        CheckConstraint("account_type IN ('ASSET', 'LIABILITY', 'EQUITY', 'REVENUE', 'EXPENSE')", name='chk_account_type'),
+        CheckConstraint("normal_balance IN ('D', 'C')", name='chk_normal_balance'),
+        CheckConstraint("level >= 1", name='chk_level_positive'),
+        CheckConstraint("parent_id IS NULL OR parent_id != id", name='chk_parent_not_self'),
     )
 
 class VoucherType(Base):
@@ -50,10 +83,18 @@ class VoucherType(Base):
     
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
-    code = Column(String(10), nullable=False)
-    prefix = Column(String(10))
+    code = Column(String(50), nullable=False)
+    prefix = Column(String(50))
+    allow_multi_currency = Column(Boolean, default=True)
+    allow_tax = Column(Boolean, default=True)
+    allow_commission = Column(Boolean, default=True)
     is_active = Column(Boolean, default=True)
     tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(100), default='system')
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_by = Column(String(100), default='system')
+    is_deleted = Column(Boolean, default=False)
     
     vouchers = relationship("Voucher", back_populates="voucher_type")
     
@@ -225,27 +266,8 @@ class Ledger(Base):
     account = relationship("AccountMaster", back_populates="ledger_entries")
     voucher = relationship("Voucher")
 
-class Payment(Base):
-    __tablename__ = 'payments'
-    
-    id = Column(Integer, primary_key=True)
-    payment_number = Column(String(50), unique=True, nullable=False)
-    payment_date = Column(DateTime, nullable=False)
-    payment_type = Column(String(20), nullable=False)  # CASH, BANK, CARD
-    payment_mode = Column(String(20), nullable=False)  # RECEIVED, PAID
-    reference_type = Column(String(20), nullable=False)  # SALES, PURCHASE
-    reference_id = Column(Integer, nullable=False)
-    reference_number = Column(String(50), nullable=False)
-    amount = Column(Numeric(15, 2), nullable=False)
-    account_id = Column(Integer, ForeignKey('account_masters.id'))  # Cash/Bank Account
-    voucher_id = Column(Integer, ForeignKey('vouchers.id'))
-    remarks = Column(Text)
-    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    created_by = Column(String(100))
-    
-    account = relationship("AccountMaster")
-    voucher = relationship("Voucher")
+# Import Payment and PaymentDetail classes
+from .payment_entity import Payment, PaymentDetail
 
 class TaxMaster(Base):
     __tablename__ = 'tax_masters'
@@ -355,3 +377,6 @@ class Integration(Base):
     __table_args__ = (
         UniqueConstraint('integration_type', 'provider', 'tenant_id', name='uq_integration'),
     )
+
+# Import PaymentTerm for backward compatibility
+from .payment_term_entity import PaymentTerm

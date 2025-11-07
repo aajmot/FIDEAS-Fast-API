@@ -111,14 +111,16 @@ class InventoryModule:
             logger.info("Default categories created", "InventoryModule")
         
         # Create default units
-        with db_manager.get_session() as session:
-            units = session.query(Unit).all()
-            if not units:
-                default_units = [
-                    Unit(name='Piece', symbol='pcs'),
-                    Unit(name='Box', symbol='box'),
-                    Unit(name='Bottle', symbol='btl')
-                ]
-                for unit in default_units:
-                    session.add(unit)
-                logger.info("Default units created", "InventoryModule")
+        # Note: Units should be created per tenant through the API, not as global defaults
+        # This section is commented out to prevent tenant_id constraint violations
+        # with db_manager.get_session() as session:
+        #     units = session.query(Unit).all()
+        #     if not units:
+        #         default_units = [
+        #             Unit(name='Piece', symbol='pcs', tenant_id=1),  # Requires tenant_id
+        #             Unit(name='Box', symbol='box', tenant_id=1),
+        #             Unit(name='Bottle', symbol='btl', tenant_id=1)
+        #         ]
+        #         for unit in default_units:
+        #             session.add(unit)
+        #         logger.info("Default units created", "InventoryModule")

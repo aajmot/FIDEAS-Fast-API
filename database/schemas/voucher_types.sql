@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS public.voucher_types (
                         REFERENCES public.tenants(id) ON DELETE CASCADE,
     
     name                VARCHAR(50) NOT NULL,
-    code                VARCHAR(10) NOT NULL,
-    prefix              VARCHAR(10),
+    code                VARCHAR(50) NOT NULL,
+    prefix              VARCHAR(50),
     
     allow_multi_currency BOOLEAN DEFAULT TRUE,
     allow_tax           BOOLEAN DEFAULT TRUE,
