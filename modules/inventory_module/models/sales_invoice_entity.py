@@ -3,6 +3,12 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 from core.database.connection import Base
 
+# Import related models to ensure they're available for relationships
+from modules.admin_module.models.address import Address
+from modules.admin_module.models.currency import Currency
+from modules.account_module.models.payment_term_entity import PaymentTerm
+from modules.account_module.models.entities import Voucher
+
 
 class SalesInvoice(Base):
     """Sales Invoice - records customer invoices with GST, e-Invoice and e-Way Bill support"""

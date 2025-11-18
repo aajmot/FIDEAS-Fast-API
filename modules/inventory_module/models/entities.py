@@ -54,3 +54,6 @@ from .stock_entity import StockTransaction, StockBalance
 from .warehouse_entity import Warehouse, StockByLocation
 from .stock_transfer_entity import StockTransfer, StockTransferItem
 from .purchase_invoice_entity import PurchaseInvoice, PurchaseInvoiceItem
+
+# Import Address from admin module to ensure it's loaded for relationships
+from modules.admin_module.models.address import Address
