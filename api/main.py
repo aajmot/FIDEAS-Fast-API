@@ -59,6 +59,7 @@ from api.v1.routers.account_routes import (
     gst_route,
     reports_route,
     payment_terms_route,
+    account_types_route,
 )
 from api.v1.routers.account_routes import (
     contra_route,
@@ -231,7 +232,7 @@ app.include_router(stocks_route.router, prefix="/api/v1/inventory", tags=["inven
 app.include_router(waste_products_route.router, prefix="/api/v1/inventory", tags=["inventory-waste-products v1"], dependencies=[Depends(get_current_user)])
 app.include_router(stock_adjustments_route.router, prefix="/api/v1/inventory", tags=["inventory-stock-adjustments v1"], dependencies=[Depends(get_current_user)])
 app.include_router(stock_transfers_route.router, prefix="/api/v1/inventory", tags=["inventory-stock-transfers v1"], dependencies=[Depends(get_current_user)])
-app.include_router(invoice.router, prefix="/api/v1/inventory", tags=["invoice-invoice v1"], dependencies=[Depends(get_current_user)])
+app.include_router(invoice.router, prefix="/api/v1/invoice", tags=["invoices v1"], dependencies=[Depends(get_current_user)])
 app.include_router(warehouse_route.router, prefix="/api/v1/inventory", tags=["inventory-warehouse v1"], dependencies=[Depends(get_current_user)])
 app.include_router(inventory_extensions.router, prefix="/api/v1/inventory", tags=["inventory-extensions v1"], dependencies=[Depends(get_current_user)])
 
@@ -265,6 +266,7 @@ app.include_router(payment_terms_route.router, prefix="/api/v1/account", tags=["
 app.include_router(comparative_reports_route.router, prefix="/api/v1/account", tags=["account-comparative-reports v1"], dependencies=[Depends(get_current_user)])
 app.include_router(gst_reports_route.router, prefix="/api/v1/account", tags=["account-gst-reports v1"], dependencies=[Depends(get_current_user)])
 app.include_router(gst_compliance_route.router, prefix="/api/v1/account", tags=["account-gst-compliance v1"], dependencies=[Depends(get_current_user)])
+app.include_router(account_types_route.router, prefix="/api/v1/account", tags=["account-account-types v1"], dependencies=[Depends(get_current_user)])
 
 #endregion account routes
 

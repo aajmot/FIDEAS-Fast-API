@@ -152,7 +152,7 @@ async def get_recent_transactions(limit: int = Query(10), current_user: dict = D
                 v.voucher_number,
                 vt.name as voucher_type,
                 v.voucher_date,
-                v.total_amount,
+                v.base_total_amount,
                 v.narration
             FROM vouchers v
             JOIN voucher_types vt ON v.voucher_type_id = vt.id
@@ -165,7 +165,7 @@ async def get_recent_transactions(limit: int = Query(10), current_user: dict = D
             "voucher_number": row[0],
             "type": row[1],
             "date": row[2].isoformat() if row[2] else None,
-            "amount": float(row[3]),
+            "amount": float(row[3]) if row[3] else 0.0,
             "description": row[4] or ""
         } for row in result]
         

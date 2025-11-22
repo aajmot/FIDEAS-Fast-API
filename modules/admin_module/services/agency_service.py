@@ -11,6 +11,9 @@ class AgencyService:
             agency_data['created_by'] = session_manager.get_current_username()
             agency_data['updated_by'] = session_manager.get_current_username()
             
+            # Remove is_active if present (not in Agency model)
+            agency_data.pop('is_active', None)
+            
             agency = Agency(**agency_data)
             session.add(agency)
             session.commit()
@@ -42,6 +45,9 @@ class AgencyService:
             ).first()
             if agency:
                 agency_data['updated_by'] = session_manager.get_current_username()
+                
+                # Remove is_active if present (not in Agency model)
+                agency_data.pop('is_active', None)
                 
                 for key, value in agency_data.items():
                     if hasattr(agency, key):

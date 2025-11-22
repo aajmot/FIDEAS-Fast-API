@@ -6,6 +6,7 @@ from modules.account_module.models.entities import Voucher, VoucherLine, Voucher
 from modules.account_module.models.account_configuration_entity import AccountConfiguration
 from modules.account_module.models.account_configuration_key_entity import AccountConfigurationKey
 from modules.account_module.models.payment_entity import Payment, PaymentDetail
+from modules.inventory_module.services.stock_service import StockService
 from sqlalchemy import func, or_
 from decimal import Decimal
 from datetime import datetime
@@ -94,9 +95,10 @@ class PurchaseInvoiceService:
                     paid_amount = sum(Decimal(str(detail.get('amount_base', 0))) for detail in payment_details_data)
                 
                 # Update invoice paid_amount and balance_amount
-                total_amount = Decimal(str(invoice_data.get('total_amount_base')))
-                invoice_data['paid_amount_base'] = paid_amount
-                invoice_data['balance_amount_base'] = total_amount - paid_amount
+                total_amount = Decimal(str(invoice_data.get('total_amount_base', 0)))
+                paid_amount_decimal = Decimal(str(paid_amount)) if paid_amount else Decimal('0.0000')
+                invoice_data['paid_amount_base'] = paid_amount_decimal
+                invoice_data['balance_amount_base'] = total_amount - paid_amount_decimal
                 
                 # Update status based on payment
                 if paid_amount >= total_amount:
@@ -110,16 +112,16 @@ class PurchaseInvoiceService:
                 if not invoice_data.get('base_currency_id'):
                     invoice_data['base_currency_id'] = self._get_default_currency_id(session, tenant_id)
                 
-                # Set exchange rate to 1 if not provided
+                # Set exchange rate to 1 if not provided and ensure it's Decimal
                 exchange_rate = invoice_data.get('exchange_rate')
                 if exchange_rate is None or exchange_rate == '':
-                    exchange_rate = Decimal('1')
+                    exchange_rate = Decimal('1.0000')
                 else:
                     exchange_rate = Decimal(str(exchange_rate))
+                invoice_data['exchange_rate'] = exchange_rate
                 
-                # Set paid and balance amounts as Decimal
-                paid_amount = Decimal(str(paid_amount))
-                balance_amount = Decimal(str(invoice_data['balance_amount_base']))
+                # Ensure all amounts are Decimal
+                balance_amount = invoice_data['balance_amount_base']
                 
                 # Create invoice header
                 invoice = PurchaseInvoice(
@@ -134,7 +136,7 @@ class PurchaseInvoiceService:
                     warehouse_id=invoice_data.get('warehouse_id'),
                     base_currency_id=invoice_data.get('base_currency_id'),
                     foreign_currency_id=invoice_data.get('foreign_currency_id'),
-                    exchange_rate=exchange_rate,
+                    exchange_rate=invoice_data['exchange_rate'],
                     cgst_amount_base=invoice_data.get('cgst_amount_base', 0),
                     sgst_amount_base=invoice_data.get('sgst_amount_base', 0),
                     igst_amount_base=invoice_data.get('igst_amount_base', 0),
@@ -148,8 +150,8 @@ class PurchaseInvoiceService:
                     discount_amount_foreign=invoice_data.get('discount_amount_foreign'),
                     tax_amount_foreign=invoice_data.get('tax_amount_foreign'),
                     total_amount_foreign=invoice_data.get('total_amount_foreign'),
-                    paid_amount_base=paid_amount,
-                    balance_amount_base=balance_amount,
+                    paid_amount_base=invoice_data['paid_amount_base'],
+                    balance_amount_base=invoice_data['balance_amount_base'],
                     status=invoice_data['status'],
                     notes=invoice_data.get('notes'),
                     tags=invoice_data.get('tags'),
@@ -161,6 +163,7 @@ class PurchaseInvoiceService:
                 session.flush()  # Get invoice ID
                 
                 # Create invoice items
+                invoice_items = []
                 for item_data in items_data:
                     item = PurchaseInvoiceItem(
                         tenant_id=tenant_id,
@@ -199,6 +202,18 @@ class PurchaseInvoiceService:
                         updated_by=username
                     )
                     session.add(item)
+                    invoice_items.append(item)
+                
+                # Flush to get item IDs
+                session.flush()
+                
+                # Record stock transactions for purchase invoice items
+                stock_service = StockService()
+                stock_service.record_purchase_invoice_transaction_in_session(
+                    session=session,
+                    invoice=invoice,
+                    items=invoice_items
+                )
                 
                 # Create accounting voucher for the purchase invoice
                 voucher = self._create_purchase_voucher(
@@ -240,6 +255,113 @@ class PurchaseInvoiceService:
             except Exception as e:
                 session.rollback()
                 raise
+    
+    def _get_or_create_vendor_account(self, session, tenant_id, supplier_id, username):
+        """Get or create account master for vendor/supplier"""
+        from modules.inventory_module.models.supplier_entity import Supplier
+        from modules.account_module.models.entities import AccountMaster, AccountGroup
+        
+        # Get supplier details
+        supplier = session.query(Supplier).filter(
+            Supplier.id == supplier_id,
+            Supplier.tenant_id == tenant_id,
+            Supplier.is_deleted == False
+        ).first()
+        
+        if not supplier:
+            raise ValueError(f"Supplier with ID {supplier_id} not found")
+        
+        # Check if vendor account already exists
+        vendor_account = session.query(AccountMaster).filter(
+            AccountMaster.tenant_id == tenant_id,
+            AccountMaster.system_code == f'VENDOR_{supplier_id}',
+            AccountMaster.is_deleted == False
+        ).first()
+        
+        if vendor_account:
+            return vendor_account.id
+        
+        # Try to get Accounts Payable account as parent
+        # First try to get from configured account
+        parent_account_id = None
+        parent_group_id = None
+        
+        try:
+            # Try to get configured Accounts Payable account
+            payable_account_id = self._get_configured_account(session, tenant_id, 'ACCOUNTS_PAYABLE')
+            payable_account = session.query(AccountMaster).filter(
+                AccountMaster.id == payable_account_id,
+                AccountMaster.tenant_id == tenant_id
+            ).first()
+            
+            if payable_account:
+                parent_account_id = payable_account.id
+                parent_group_id = payable_account.account_group_id
+        except ValueError:
+            # If no configured account, try to find Accounts Payable group
+            payable_group = session.query(AccountGroup).filter(
+                AccountGroup.tenant_id == tenant_id,
+                AccountGroup.code.in_(['ACCOUNTS_PAYABLE', 'SUNDRY_CREDITORS', 'CREDITORS']),
+                AccountGroup.is_active == True
+            ).first()
+            
+            if payable_group:
+                parent_group_id = payable_group.id
+            else:
+                # Try to find any LIABILITY group
+                liability_group = session.query(AccountGroup).filter(
+                    AccountGroup.tenant_id == tenant_id,
+                    AccountGroup.account_type == 'LIABILITY',
+                    AccountGroup.is_active == True
+                ).first()
+                
+                if liability_group:
+                    parent_group_id = liability_group.id
+        
+        # If still no group found, raise error
+        if not parent_group_id:
+            raise ValueError("No suitable account group found for vendor accounts. Please configure Accounts Payable group or LIABILITY account groups.")
+        
+        # Generate unique code for vendor account
+        vendor_code = f"AP-{supplier_id:06d}"
+        
+        # Check if code already exists and make it unique
+        existing = session.query(AccountMaster).filter(
+            AccountMaster.tenant_id == tenant_id,
+            AccountMaster.code == vendor_code,
+            AccountMaster.is_deleted == False
+        ).first()
+        
+        if existing:
+            # Add timestamp suffix to make it unique
+            import time
+            vendor_code = f"AP-{supplier_id:06d}-{int(time.time())}"
+        
+        # Create new vendor account
+        vendor_account = AccountMaster(
+            tenant_id=tenant_id,
+            parent_id=parent_account_id,
+            account_group_id=parent_group_id,
+            code=vendor_code,
+            name=f"{supplier.name} - Payable",
+            description=f"Account payable for supplier {supplier.name}",
+            account_type='LIABILITY',
+            normal_balance='C',
+            system_code=f'VENDOR_{supplier_id}',
+            is_system_account=False,
+            level=2 if parent_account_id else 1,
+            opening_balance=Decimal(0),
+            current_balance=Decimal(0),
+            is_active=True,
+            is_deleted=False,
+            created_by=username,
+            updated_by=username
+        )
+        
+        session.add(vendor_account)
+        session.flush()
+        
+        return vendor_account.id
     
     def _create_purchase_voucher(self, session, tenant_id, username, invoice, items_data):
         """Create accounting voucher for purchase invoice"""
@@ -287,17 +409,19 @@ class PurchaseInvoiceService:
         # Get configured account IDs
         try:
             purchase_account_id = self._get_configured_account(session, tenant_id, 'PURCHASE')
-            accounts_payable_id = self._get_configured_account(session, tenant_id, 'ACCOUNTS_PAYABLE')
             cgst_input_id = self._get_configured_account(session, tenant_id, 'GST_INPUT_CGST')
             sgst_input_id = self._get_configured_account(session, tenant_id, 'GST_INPUT_SGST')
             igst_input_id = self._get_configured_account(session, tenant_id, 'GST_INPUT_IGST')
         except ValueError as e:
             raise ValueError(f"Account configuration error: {str(e)}. Please run tenant accounting initialization.")
         
+        # Get or create vendor-specific account
+        vendor_account_id = self._get_or_create_vendor_account(session, tenant_id, invoice.supplier_id, username)
+        
         # Create voucher lines
         line_no = 1
         
-        # Debit: Purchase Account (or Inventory Account)
+        # Debit: Purchase Expense Account
         purchase_line = VoucherLine(
             tenant_id=tenant_id,
             voucher_id=voucher.id,
@@ -316,7 +440,7 @@ class PurchaseInvoiceService:
         session.add(purchase_line)
         line_no += 1
         
-        # Debit: Tax Accounts (CGST, SGST, IGST, etc.)
+        # Debit: Tax Accounts (CGST, SGST, IGST)
         if invoice.cgst_amount_base > 0:
             cgst_line = VoucherLine(
                 tenant_id=tenant_id,
@@ -371,13 +495,62 @@ class PurchaseInvoiceService:
             session.add(igst_line)
             line_no += 1
         
-        # Credit: Supplier Account (Accounts Payable)
+        # UGST and CESS if applicable
+        if invoice.ugst_amount_base > 0:
+            try:
+                ugst_input_id = self._get_configured_account(session, tenant_id, 'GST_INPUT_UGST')
+                ugst_line = VoucherLine(
+                    tenant_id=tenant_id,
+                    voucher_id=voucher.id,
+                    line_no=line_no,
+                    account_id=ugst_input_id,
+                    description="UGST Input",
+                    debit_base=invoice.ugst_amount_base,
+                    credit_base=Decimal(0),
+                    tax_amount_base=invoice.ugst_amount_base,
+                    reference_type='PURCHASE_INVOICE',
+                    reference_id=invoice.id,
+                    created_by=username,
+                    updated_by=username
+                )
+                session.add(ugst_line)
+                line_no += 1
+            except ValueError:
+                pass  # UGST account not configured
+        
+        if invoice.cess_amount_base > 0:
+            try:
+                cess_input_id = self._get_configured_account(session, tenant_id, 'GST_INPUT_CESS')
+                cess_line = VoucherLine(
+                    tenant_id=tenant_id,
+                    voucher_id=voucher.id,
+                    line_no=line_no,
+                    account_id=cess_input_id,
+                    description="CESS Input",
+                    debit_base=invoice.cess_amount_base,
+                    credit_base=Decimal(0),
+                    tax_amount_base=invoice.cess_amount_base,
+                    reference_type='PURCHASE_INVOICE',
+                    reference_id=invoice.id,
+                    created_by=username,
+                    updated_by=username
+                )
+                session.add(cess_line)
+                line_no += 1
+            except ValueError:
+                pass  # CESS account not configured
+        
+        # Credit: Vendor-Specific Account Payable
+        from modules.inventory_module.models.supplier_entity import Supplier
+        supplier = session.query(Supplier).filter(Supplier.id == invoice.supplier_id).first()
+        supplier_name = supplier.name if supplier else f"Supplier {invoice.supplier_id}"
+        
         supplier_line = VoucherLine(
             tenant_id=tenant_id,
             voucher_id=voucher.id,
             line_no=line_no,
-            account_id=accounts_payable_id,
-            description=f"Supplier {invoice.supplier_id}",
+            account_id=vendor_account_id,
+            description=f"{supplier_name} - Invoice {invoice.invoice_number}",
             debit_base=Decimal(0),
             credit_base=invoice.total_amount_base,
             debit_foreign=Decimal(0) if invoice.total_amount_foreign else None,
@@ -392,7 +565,7 @@ class PurchaseInvoiceService:
         return voucher
     
     def _create_payment(self, session, tenant_id, username, invoice, payment_number, payment_details_data, payment_remarks):
-        """Create payment record for the purchase invoice"""
+        """Create payment record and voucher for the purchase invoice"""
         # Calculate total payment amount
         total_payment = sum(Decimal(str(detail.get('amount_base', 0))) for detail in payment_details_data)
         
@@ -442,7 +615,129 @@ class PurchaseInvoiceService:
             )
             session.add(detail)
         
+        # Create payment voucher
+        self._create_payment_voucher(session, tenant_id, username, invoice, payment, payment_details_data)
+        
         return payment
+    
+    def _create_payment_voucher(self, session, tenant_id, username, invoice, payment, payment_details_data):
+        """Create accounting voucher for payment"""
+        # Get or create Payment voucher type
+        voucher_type = session.query(VoucherType).filter(
+            VoucherType.tenant_id == tenant_id,
+            VoucherType.code == 'PAYMENT',
+            VoucherType.is_active == True,
+            VoucherType.is_deleted == False
+        ).first()
+        
+        if not voucher_type:
+            raise ValueError("Payment voucher type not configured. Please configure 'PAYMENT' voucher type.")
+        
+        # Generate voucher number
+        voucher_number = f"PAY-{payment.payment_number}"
+        
+        # Create voucher
+        voucher = Voucher(
+            tenant_id=tenant_id,
+            voucher_number=voucher_number,
+            voucher_type_id=voucher_type.id,
+            voucher_date=payment.payment_date if hasattr(payment.payment_date, 'hour') else datetime.combine(payment.payment_date, datetime.min.time()),
+            base_currency_id=payment.base_currency_id,
+            foreign_currency_id=payment.foreign_currency_id,
+            exchange_rate=payment.exchange_rate,
+            base_total_amount=payment.total_amount_base,
+            base_total_debit=payment.total_amount_base,
+            base_total_credit=payment.total_amount_base,
+            foreign_total_amount=payment.total_amount_foreign,
+            foreign_total_debit=payment.total_amount_foreign,
+            foreign_total_credit=payment.total_amount_foreign,
+            reference_type='PAYMENT',
+            reference_id=payment.id,
+            reference_number=payment.payment_number,
+            narration=f"Payment {payment.payment_number} for invoice {invoice.invoice_number}",
+            is_posted=True,
+            created_by=username,
+            updated_by=username
+        )
+        
+        session.add(voucher)
+        session.flush()
+        
+        # Update payment with voucher reference
+        payment.voucher_id = voucher.id
+        
+        # Get vendor account
+        vendor_account_id = self._get_or_create_vendor_account(session, tenant_id, invoice.supplier_id, username)
+        
+        # Create voucher lines
+        line_no = 1
+        
+        # Debit: Vendor Account (reduces liability)
+        from modules.inventory_module.models.supplier_entity import Supplier
+        supplier = session.query(Supplier).filter(Supplier.id == invoice.supplier_id).first()
+        supplier_name = supplier.name if supplier else f"Supplier {invoice.supplier_id}"
+        
+        vendor_line = VoucherLine(
+            tenant_id=tenant_id,
+            voucher_id=voucher.id,
+            line_no=line_no,
+            account_id=vendor_account_id,
+            description=f"{supplier_name} - Payment for Invoice {invoice.invoice_number}",
+            debit_base=payment.total_amount_base,
+            credit_base=Decimal(0),
+            debit_foreign=payment.total_amount_foreign,
+            credit_foreign=Decimal(0) if payment.total_amount_foreign else None,
+            reference_type='PAYMENT',
+            reference_id=payment.id,
+            created_by=username,
+            updated_by=username
+        )
+        session.add(vendor_line)
+        line_no += 1
+        
+        # Credit: Bank/Cash Accounts (based on payment details)
+        for detail_data in payment_details_data:
+            payment_mode = detail_data.get('payment_mode', 'CASH')
+            amount = Decimal(str(detail_data.get('amount_base', 0)))
+            
+            # Get payment account from detail or use configured default
+            if detail_data.get('account_id'):
+                payment_account_id = detail_data.get('account_id')
+            elif detail_data.get('bank_account_id'):
+                payment_account_id = detail_data.get('bank_account_id')
+            else:
+                # Use default cash/bank account based on mode
+                try:
+                    if payment_mode == 'CASH':
+                        payment_account_id = self._get_configured_account(session, tenant_id, 'CASH')
+                    else:
+                        payment_account_id = self._get_configured_account(session, tenant_id, 'BANK')
+                except ValueError:
+                    raise ValueError(f"Payment account not configured for mode {payment_mode}. Please configure CASH/BANK accounts.")
+            
+            payment_description = detail_data.get('description') or f"{payment_mode} payment"
+            if detail_data.get('instrument_number'):
+                payment_description += f" - {detail_data.get('instrument_number')}"
+            
+            payment_line = VoucherLine(
+                tenant_id=tenant_id,
+                voucher_id=voucher.id,
+                line_no=line_no,
+                account_id=payment_account_id,
+                description=payment_description,
+                debit_base=Decimal(0),
+                credit_base=amount,
+                debit_foreign=Decimal(0) if detail_data.get('amount_foreign') else None,
+                credit_foreign=detail_data.get('amount_foreign'),
+                reference_type='PAYMENT',
+                reference_id=payment.id,
+                created_by=username,
+                updated_by=username
+            )
+            session.add(payment_line)
+            line_no += 1
+        
+        return voucher
     
     @ExceptionMiddleware.handle_exceptions("PurchaseInvoiceService")
     def get_all(self, page=1, page_size=100, search=None, status=None, supplier_id=None, 
@@ -558,12 +853,27 @@ class PurchaseInvoiceService:
             
             # Update items if provided
             if items_data is not None:
+                # Get existing items for stock reversal
+                existing_items = session.query(PurchaseInvoiceItem).filter(
+                    PurchaseInvoiceItem.invoice_id == invoice_id
+                ).all()
+                
+                # Reverse stock transactions for existing items
+                if existing_items:
+                    stock_service = StockService()
+                    stock_service.reverse_purchase_invoice_transaction_in_session(
+                        session=session,
+                        invoice=invoice,
+                        items=existing_items
+                    )
+                
                 # Delete existing items
                 session.query(PurchaseInvoiceItem).filter(
                     PurchaseInvoiceItem.invoice_id == invoice_id
                 ).delete()
                 
                 # Add new items
+                new_items = []
                 for item_data in items_data:
                     item = PurchaseInvoiceItem(
                         tenant_id=tenant_id,
@@ -602,6 +912,19 @@ class PurchaseInvoiceService:
                         updated_by=username
                     )
                     session.add(item)
+                    new_items.append(item)
+                
+                # Flush to get new item IDs
+                session.flush()
+                
+                # Record stock transactions for new items
+                if new_items:
+                    stock_service = StockService()
+                    stock_service.record_purchase_invoice_transaction_in_session(
+                        session=session,
+                        invoice=invoice,
+                        items=new_items
+                    )
             
             session.commit()
             session.refresh(invoice)
@@ -627,6 +950,19 @@ class PurchaseInvoiceService:
             # Check if invoice can be deleted (only DRAFT or CANCELLED)
             if invoice.status not in ['DRAFT', 'CANCELLED']:
                 raise ValueError(f"Cannot delete invoice with status '{invoice.status}'. Only DRAFT or CANCELLED invoices can be deleted.")
+            
+            # Reverse stock transactions for the invoice items
+            items = session.query(PurchaseInvoiceItem).filter(
+                PurchaseInvoiceItem.invoice_id == invoice_id
+            ).all()
+            
+            if items:
+                stock_service = StockService()
+                stock_service.reverse_purchase_invoice_transaction_in_session(
+                    session=session,
+                    invoice=invoice,
+                    items=items
+                )
             
             invoice.is_deleted = True
             invoice.is_active = False

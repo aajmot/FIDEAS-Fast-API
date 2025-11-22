@@ -68,7 +68,7 @@ async def get_vouchers(pagination: PaginationParams = Depends(), current_user: d
             "voucher_number": voucher.voucher_number,
             "voucher_type": voucher.voucher_type.name if voucher.voucher_type else "",
             "date": voucher.voucher_date.isoformat() if voucher.voucher_date else None,
-            "amount": float(voucher.total_amount) if voucher.total_amount else 0,
+            "amount": float(voucher.base_total_amount) if voucher.base_total_amount else 0,
             "description": voucher.narration or "",
             "created_by": voucher.created_by or "",
             "status": "Posted" if voucher.is_posted else "Draft"
@@ -116,7 +116,7 @@ async def get_voucher(voucher_id: int, current_user: dict = Depends(get_current_
             "voucher_type": voucher.voucher_type.name if voucher.voucher_type else "",
             "date": voucher.voucher_date.isoformat() if voucher.voucher_date else None,
             "description": voucher.narration or "",
-            "amount": float(voucher.total_amount) if voucher.total_amount else 0,
+            "amount": float(voucher.base_total_amount) if voucher.base_total_amount else 0,
             "status": "Posted" if voucher.is_posted else "Draft",
             "lines": lines
         }
@@ -161,7 +161,7 @@ async def create_voucher(voucher_data: Dict[str, Any], current_user: dict = Depe
                 voucher_type_id=voucher_type.id,
                 voucher_date=datetime.fromisoformat(voucher_data['date']),
                 narration=voucher_data.get('description', ''),
-                total_amount=voucher_data['total_amount'],
+                base_total_amount=voucher_data['total_amount'],
                 is_posted=voucher_data.get('is_posted', False),
                 tenant_id=current_user['tenant_id'],
                 created_by=current_user['username']
@@ -200,7 +200,7 @@ async def create_voucher(voucher_data: Dict[str, Any], current_user: dict = Depe
             
             AuditService.log_action(
                 session, 'VOUCHER', voucher.id, 'CREATE',
-                new_value={'voucher_number': voucher.voucher_number, 'amount': float(voucher.total_amount)}
+                new_value={'voucher_number': voucher.voucher_number, 'amount': float(voucher.base_total_amount)}
             )
             
             session.commit()
@@ -237,7 +237,7 @@ async def update_voucher(voucher_id: int, voucher_data: Dict[str, Any], current_
             if 'date' in voucher_data:
                 voucher.voucher_date = datetime.fromisoformat(voucher_data['date'])
             if 'amount' in voucher_data:
-                voucher.total_amount = voucher_data['amount']
+                voucher.base_total_amount = voucher_data['amount']
             if 'description' in voucher_data:
                 voucher.narration = voucher_data['description']
             
@@ -380,7 +380,7 @@ async def reverse_voucher(voucher_id: int, current_user: dict = Depends(get_curr
                 voucher_type_id=original_voucher.voucher_type_id,
                 voucher_date=datetime.now(),
                 narration=f"Reversal of {original_voucher.voucher_number}: {original_voucher.narration or ''}",
-                total_amount=original_voucher.total_amount,
+                base_total_amount=original_voucher.base_total_amount,
                 is_posted=True,
                 tenant_id=current_user['tenant_id'],
                 created_by=current_user['username']

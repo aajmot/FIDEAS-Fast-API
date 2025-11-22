@@ -3,7 +3,9 @@ from . import customers_route
 from . import units_route
 from . import suppliers_route
 from . import purchase_orders_route
+from . import purchase_invoices_route
 from . import sales_orders_route
+from . import sales_invoices_route
 from . import waste_products_route
 from . import products_route
 from . import stocks_route
@@ -16,7 +18,9 @@ __all__ = [
 	"units_route",
 	"suppliers_route",
 	"purchase_orders_route",
+	"purchase_invoices_route",
 	"sales_orders_route",
+	"sales_invoices_route",
 	"waste_products_route",
 	"products_route",
 	"stocks_route",

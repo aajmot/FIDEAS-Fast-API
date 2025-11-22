@@ -284,6 +284,8 @@ class SalesInvoiceResponse(BaseModel):
     invoice_date: date
     due_date: Optional[date] = None
     customer_id: int
+    customer_name: Optional[str] = None
+    customer_phone: Optional[str] = None
     sales_order_id: Optional[int] = None
     payment_term_id: Optional[int] = None
     warehouse_id: int
@@ -320,6 +322,7 @@ class SalesInvoiceResponse(BaseModel):
     notes: Optional[str] = None
     terms_conditions: Optional[str] = None
     tags: Optional[List[str]] = None
+    payments: Optional[List[dict]] = []
     created_at: datetime
     created_by: str
     updated_at: datetime

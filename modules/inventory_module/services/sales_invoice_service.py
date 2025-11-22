@@ -6,6 +6,7 @@ from modules.account_module.models.entities import Voucher, VoucherLine, Voucher
 from modules.account_module.models.account_configuration_entity import AccountConfiguration
 from modules.account_module.models.account_configuration_key_entity import AccountConfigurationKey
 from modules.account_module.models.payment_entity import Payment, PaymentDetail
+from modules.inventory_module.services.stock_service import StockService
 from sqlalchemy import func, or_
 from decimal import Decimal
 from datetime import datetime
@@ -17,7 +18,7 @@ class SalesInvoiceService:
     
     def _get_default_currency_id(self, session, tenant_id):
         """Get default currency ID for tenant (defaults to INR if not configured)"""
-        from modules.admin_module.models.currency_entity import Currency
+        from modules.admin_module.models.currency import Currency
         
         # Try to get tenant's default currency from settings
         # For now, default to INR (currency code 'INR')
@@ -90,7 +91,7 @@ class SalesInvoiceService:
                 generate_eway_bill = invoice_data.pop('generate_eway_bill', False)
                 
                 # Calculate paid amount from payment details if provided
-                paid_amount = Decimal(0)
+                paid_amount = Decimal('0.0000')
                 if payment_details_data:
                     paid_amount = sum(Decimal(str(detail.get('amount_base', 0))) for detail in payment_details_data)
                 
@@ -114,13 +115,15 @@ class SalesInvoiceService:
                 # Set exchange rate to 1 if not provided
                 exchange_rate = invoice_data.get('exchange_rate')
                 if exchange_rate is None or exchange_rate == '':
-                    exchange_rate = Decimal('1')
+                    exchange_rate = Decimal('1.0000')
                 else:
                     exchange_rate = Decimal(str(exchange_rate))
                 
-                # Set paid and balance amounts as Decimal
-                paid_amount = Decimal(str(paid_amount))
-                balance_amount = Decimal(str(invoice_data['balance_amount_base']))
+                # Ensure exchange_rate is properly set in invoice_data
+                invoice_data['exchange_rate'] = exchange_rate
+                
+                # Set paid and balance amounts as Decimal (already set above)
+                balance_amount = invoice_data['balance_amount_base']
                 
                 # Create invoice header
                 invoice = SalesInvoice(
@@ -203,6 +206,21 @@ class SalesInvoiceService:
                     )
                     session.add(item)
                 
+                # Flush to get item IDs for stock tracking
+                session.flush()
+                
+                # Record stock transactions for each line item
+                stock_service = StockService()
+                stock_service.record_sales_invoice_transaction_in_session(
+                    session=session,
+                    tenant_id=tenant_id,
+                    invoice_id=invoice.id,
+                    invoice_number=invoice.invoice_number,
+                    invoice_date=invoice.invoice_date,
+                    items_data=items_data,
+                    username=username
+                )
+                
                 # Create accounting voucher for the sales invoice
                 voucher = self._create_sales_voucher(
                     session=session,
@@ -243,6 +261,112 @@ class SalesInvoiceService:
             except Exception as e:
                 session.rollback()
                 raise
+    
+    def _get_or_create_customer_account(self, session, tenant_id, customer_id, username):
+        """Get or create account master for customer"""
+        from modules.inventory_module.models.customer_entity import Customer
+        from modules.account_module.models.entities import AccountMaster, AccountGroup
+        
+        # Get customer details
+        customer = session.query(Customer).filter(
+            Customer.id == customer_id,
+            Customer.tenant_id == tenant_id,
+            Customer.is_active == True
+        ).first()
+        
+        if not customer:
+            raise ValueError(f"Customer with ID {customer_id} not found")
+        
+        # Check if customer account already exists
+        customer_account = session.query(AccountMaster).filter(
+            AccountMaster.tenant_id == tenant_id,
+            AccountMaster.system_code == f'CUSTOMER_{customer_id}',
+            AccountMaster.is_deleted == False
+        ).first()
+        
+        if customer_account:
+            return customer_account.id
+        
+        # Try to get Accounts Receivable account as parent
+        parent_account_id = None
+        parent_group_id = None
+        
+        try:
+            # Try to get configured Accounts Receivable account
+            receivable_account_id = self._get_configured_account(session, tenant_id, 'ACCOUNTS_RECEIVABLE')
+            receivable_account = session.query(AccountMaster).filter(
+                AccountMaster.id == receivable_account_id,
+                AccountMaster.tenant_id == tenant_id
+            ).first()
+            
+            if receivable_account:
+                parent_account_id = receivable_account.id
+                parent_group_id = receivable_account.account_group_id
+        except ValueError:
+            # If no configured account, try to find Accounts Receivable group
+            receivable_group = session.query(AccountGroup).filter(
+                AccountGroup.tenant_id == tenant_id,
+                AccountGroup.code.in_(['ACCOUNTS_RECEIVABLE', 'SUNDRY_DEBTORS', 'DEBTORS']),
+                AccountGroup.is_active == True
+            ).first()
+            
+            if receivable_group:
+                parent_group_id = receivable_group.id
+            else:
+                # Try to find any ASSET group
+                asset_group = session.query(AccountGroup).filter(
+                    AccountGroup.tenant_id == tenant_id,
+                    AccountGroup.account_type == 'ASSET',
+                    AccountGroup.is_active == True
+                ).first()
+                
+                if asset_group:
+                    parent_group_id = asset_group.id
+        
+        # If still no group found, raise error
+        if not parent_group_id:
+            raise ValueError("No suitable account group found for customer accounts. Please configure Accounts Receivable group or ASSET account groups.")
+        
+        # Generate unique code for customer account
+        customer_code = f"AR-{customer_id:06d}"
+        
+        # Check if code already exists and make it unique
+        existing = session.query(AccountMaster).filter(
+            AccountMaster.tenant_id == tenant_id,
+            AccountMaster.code == customer_code,
+            AccountMaster.is_deleted == False
+        ).first()
+        
+        if existing:
+            # Add timestamp suffix to make it unique
+            import time
+            customer_code = f"AR-{customer_id:06d}-{int(time.time())}"
+        
+        # Create new customer account
+        customer_account = AccountMaster(
+            tenant_id=tenant_id,
+            parent_id=parent_account_id,
+            account_group_id=parent_group_id,
+            code=customer_code,
+            name=f"{customer.name} - Receivable",
+            description=f"Account receivable for customer {customer.name}",
+            account_type='ASSET',
+            normal_balance='D',
+            system_code=f'CUSTOMER_{customer_id}',
+            is_system_account=False,
+            level=2 if parent_account_id else 1,
+            opening_balance=Decimal(0),
+            current_balance=Decimal(0),
+            is_active=True,
+            is_deleted=False,
+            created_by=username,
+            updated_by=username
+        )
+        
+        session.add(customer_account)
+        session.flush()
+        
+        return customer_account.id
     
     def _create_sales_voucher(self, session, tenant_id, username, invoice, items_data):
         """Create accounting voucher for sales invoice"""
@@ -290,23 +414,29 @@ class SalesInvoiceService:
         # Get configured account IDs
         try:
             sales_account_id = self._get_configured_account(session, tenant_id, 'SALES')
-            accounts_receivable_id = self._get_configured_account(session, tenant_id, 'ACCOUNTS_RECEIVABLE')
             cgst_output_id = self._get_configured_account(session, tenant_id, 'GST_OUTPUT_CGST')
             sgst_output_id = self._get_configured_account(session, tenant_id, 'GST_OUTPUT_SGST')
             igst_output_id = self._get_configured_account(session, tenant_id, 'GST_OUTPUT_IGST')
         except ValueError as e:
             raise ValueError(f"Account configuration error: {str(e)}. Please run tenant accounting initialization.")
         
+        # Get or create customer-specific account
+        customer_account_id = self._get_or_create_customer_account(session, tenant_id, invoice.customer_id, username)
+        
         # Create voucher lines
         line_no = 1
         
-        # Debit: Customer Account (Accounts Receivable)
+        # Debit: Customer-Specific Account Receivable
+        from modules.inventory_module.models.customer_entity import Customer
+        customer = session.query(Customer).filter(Customer.id == invoice.customer_id).first()
+        customer_name = customer.name if customer else f"Customer {invoice.customer_id}"
+        
         customer_line = VoucherLine(
             tenant_id=tenant_id,
             voucher_id=voucher.id,
             line_no=line_no,
-            account_id=accounts_receivable_id,
-            description=f"Customer {invoice.customer_id}",
+            account_id=customer_account_id,
+            description=f"{customer_name} - Invoice {invoice.invoice_number}",
             debit_base=invoice.total_amount_base,
             credit_base=Decimal(0),
             debit_foreign=invoice.total_amount_foreign,
@@ -393,10 +523,33 @@ class SalesInvoiceService:
             session.add(igst_line)
             line_no += 1
         
+        # CESS if applicable
+        if invoice.cess_amount_base > 0:
+            try:
+                cess_output_id = self._get_configured_account(session, tenant_id, 'GST_OUTPUT_CESS')
+                cess_line = VoucherLine(
+                    tenant_id=tenant_id,
+                    voucher_id=voucher.id,
+                    line_no=line_no,
+                    account_id=cess_output_id,
+                    description="CESS Output",
+                    debit_base=Decimal(0),
+                    credit_base=invoice.cess_amount_base,
+                    tax_amount_base=invoice.cess_amount_base,
+                    reference_type='SALES_INVOICE',
+                    reference_id=invoice.id,
+                    created_by=username,
+                    updated_by=username
+                )
+                session.add(cess_line)
+                line_no += 1
+            except ValueError:
+                pass  # CESS account not configured
+        
         return voucher
     
     def _create_payment(self, session, tenant_id, username, invoice, payment_number, payment_details_data, payment_remarks):
-        """Create payment record for the sales invoice"""
+        """Create payment record and voucher for the sales invoice"""
         # Calculate total payment amount
         total_payment = sum(Decimal(str(detail.get('amount_base', 0))) for detail in payment_details_data)
         
@@ -415,7 +568,7 @@ class SalesInvoiceService:
             total_amount_foreign=total_payment * invoice.exchange_rate if invoice.foreign_currency_id else None,
             status='POSTED',
             reference_number=invoice.invoice_number,
-            remarks=payment_remarks or f"Payment for invoice {invoice.invoice_number}",
+            remarks=payment_remarks or f"Receipt for invoice {invoice.invoice_number}",
             created_by=username,
             updated_by=username
         )
@@ -446,12 +599,135 @@ class SalesInvoiceService:
             )
             session.add(detail)
         
+        # Create payment voucher
+        self._create_payment_voucher(session, tenant_id, username, invoice, payment, payment_details_data)
+        
         return payment
+    
+    def _create_payment_voucher(self, session, tenant_id, username, invoice, payment, payment_details_data):
+        """Create accounting voucher for payment receipt"""
+        # Get or create Receipt voucher type
+        voucher_type = session.query(VoucherType).filter(
+            VoucherType.tenant_id == tenant_id,
+            VoucherType.code == 'RECEIPT',
+            VoucherType.is_active == True,
+            VoucherType.is_deleted == False
+        ).first()
+        
+        if not voucher_type:
+            raise ValueError("Receipt voucher type not configured. Please configure 'RECEIPT' voucher type.")
+        
+        # Generate voucher number
+        voucher_number = f"REC-{payment.payment_number}"
+        
+        # Create voucher
+        voucher = Voucher(
+            tenant_id=tenant_id,
+            voucher_number=voucher_number,
+            voucher_type_id=voucher_type.id,
+            voucher_date=payment.payment_date if hasattr(payment.payment_date, 'hour') else datetime.combine(payment.payment_date, datetime.min.time()),
+            base_currency_id=payment.base_currency_id,
+            foreign_currency_id=payment.foreign_currency_id,
+            exchange_rate=payment.exchange_rate,
+            base_total_amount=payment.total_amount_base,
+            base_total_debit=payment.total_amount_base,
+            base_total_credit=payment.total_amount_base,
+            foreign_total_amount=payment.total_amount_foreign,
+            foreign_total_debit=payment.total_amount_foreign,
+            foreign_total_credit=payment.total_amount_foreign,
+            reference_type='PAYMENT',
+            reference_id=payment.id,
+            reference_number=payment.payment_number,
+            narration=f"Receipt {payment.payment_number} for invoice {invoice.invoice_number}",
+            is_posted=True,
+            created_by=username,
+            updated_by=username
+        )
+        
+        session.add(voucher)
+        session.flush()
+        
+        # Update payment with voucher reference
+        payment.voucher_id = voucher.id
+        
+        # Get customer account
+        customer_account_id = self._get_or_create_customer_account(session, tenant_id, invoice.customer_id, username)
+        
+        # Create voucher lines
+        line_no = 1
+        
+        # Debit: Bank/Cash Accounts (based on payment details)
+        for detail_data in payment_details_data:
+            payment_mode = detail_data.get('payment_mode', 'CASH')
+            amount = Decimal(str(detail_data.get('amount_base', 0)))
+            
+            # Get payment account from detail or use configured default
+            if detail_data.get('account_id'):
+                payment_account_id = detail_data.get('account_id')
+            elif detail_data.get('bank_account_id'):
+                payment_account_id = detail_data.get('bank_account_id')
+            else:
+                # Use default cash/bank account based on mode
+                try:
+                    if payment_mode == 'CASH':
+                        payment_account_id = self._get_configured_account(session, tenant_id, 'CASH')
+                    else:
+                        payment_account_id = self._get_configured_account(session, tenant_id, 'BANK')
+                except ValueError:
+                    raise ValueError(f"Payment account not configured for mode {payment_mode}. Please configure CASH/BANK accounts.")
+            
+            payment_description = detail_data.get('description') or f"{payment_mode} receipt"
+            if detail_data.get('instrument_number'):
+                payment_description += f" - {detail_data.get('instrument_number')}"
+            
+            payment_line = VoucherLine(
+                tenant_id=tenant_id,
+                voucher_id=voucher.id,
+                line_no=line_no,
+                account_id=payment_account_id,
+                description=payment_description,
+                debit_base=amount,
+                credit_base=Decimal(0),
+                debit_foreign=detail_data.get('amount_foreign'),
+                credit_foreign=Decimal(0) if detail_data.get('amount_foreign') else None,
+                reference_type='PAYMENT',
+                reference_id=payment.id,
+                created_by=username,
+                updated_by=username
+            )
+            session.add(payment_line)
+            line_no += 1
+        
+        # Credit: Customer Account (reduces asset/receivable)
+        from modules.inventory_module.models.customer_entity import Customer
+        customer = session.query(Customer).filter(Customer.id == invoice.customer_id).first()
+        customer_name = customer.name if customer else f"Customer {invoice.customer_id}"
+        
+        customer_line = VoucherLine(
+            tenant_id=tenant_id,
+            voucher_id=voucher.id,
+            line_no=line_no,
+            account_id=customer_account_id,
+            description=f"{customer_name} - Receipt for Invoice {invoice.invoice_number}",
+            debit_base=Decimal(0),
+            credit_base=payment.total_amount_base,
+            debit_foreign=Decimal(0) if payment.total_amount_foreign else None,
+            credit_foreign=payment.total_amount_foreign,
+            reference_type='PAYMENT',
+            reference_id=payment.id,
+            created_by=username,
+            updated_by=username
+        )
+        session.add(customer_line)
+        
+        return voucher
     
     @ExceptionMiddleware.handle_exceptions("SalesInvoiceService")
     def get_all(self, page=1, page_size=100, search=None, status=None, customer_id=None, 
                 date_from=None, date_to=None, invoice_type=None):
-        """Get all sales invoices with pagination and filters"""
+        """Get all sales invoices with pagination and filters, including customer and payment info"""
+        from modules.inventory_module.models.customer_entity import Customer
+        
         with db_manager.get_session() as session:
             tenant_id = session_manager.get_current_tenant_id()
             
@@ -493,17 +769,63 @@ class SalesInvoiceService:
             offset = (page - 1) * page_size
             invoices = query.offset(offset).limit(page_size).all()
             
+            # Convert invoices to dict and add customer and payment info
+            invoice_data = []
+            for inv in invoices:
+                inv_dict = self._to_dict(inv, include_items=False)
+                
+                # Add customer information
+                if inv.customer_id:
+                    customer = session.query(Customer).filter(
+                        Customer.id == inv.customer_id
+                    ).first()
+                    
+                    if customer:
+                        inv_dict['customer_name'] = customer.name
+                        inv_dict['customer_phone'] = customer.phone
+                    else:
+                        inv_dict['customer_name'] = None
+                        inv_dict['customer_phone'] = None
+                else:
+                    inv_dict['customer_name'] = None
+                    inv_dict['customer_phone'] = None
+                
+                # Add payment information (multiple payments possible)
+                payments = session.query(Payment).filter(
+                    Payment.party_type == 'CUSTOMER',
+                    Payment.party_id == inv.customer_id,
+                    Payment.reference_number == inv.invoice_number,
+                    Payment.tenant_id == tenant_id,
+                    Payment.is_deleted == False
+                ).all()
+                
+                inv_dict['payments'] = []
+                if payments:
+                    for payment in payments:
+                        inv_dict['payments'].append({
+                            'payment_id': payment.id,
+                            'payment_number': payment.payment_number,
+                            'payment_date': payment.payment_date.isoformat() if payment.payment_date else None,
+                            'payment_amount': float(payment.total_amount_base) if payment.total_amount_base else 0.0,
+                            'payment_status': payment.status
+                        })
+                
+                invoice_data.append(inv_dict)
+            
             return {
                 'total': total,
                 'page': page,
                 'per_page': page_size,
                 'total_pages': math.ceil(total / page_size) if total > 0 else 0,
-                'data': [self._to_dict(inv, include_items=False) for inv in invoices]
+                'data': invoice_data
             }
     
     @ExceptionMiddleware.handle_exceptions("SalesInvoiceService")
     def get_by_id(self, invoice_id: int):
-        """Get a specific sales invoice by ID with items"""
+        """Get a specific sales invoice by ID with items, customer info, product names, and payment info"""
+        from modules.inventory_module.models.customer_entity import Customer
+        from modules.inventory_module.models.product_entity import Product
+        
         with db_manager.get_session() as session:
             tenant_id = session_manager.get_current_tenant_id()
             
@@ -516,7 +838,91 @@ class SalesInvoiceService:
             if not invoice:
                 raise ValueError(f"Sales invoice with ID {invoice_id} not found")
             
-            return self._to_dict(invoice, include_items=True)
+            result = self._to_dict(invoice, include_items=True)
+            
+            # Add customer information
+            if invoice.customer_id:
+                customer = session.query(Customer).filter(
+                    Customer.id == invoice.customer_id,
+                    Customer.tenant_id == tenant_id
+                ).first()
+                
+                if customer:
+                    result['customer'] = {
+                        'id': customer.id,
+                        'name': customer.name,
+                        'phone': customer.phone,
+                        'email': customer.email,
+                        'address': customer.address,
+                        'tax_id': customer.tax_id
+                    }
+            
+            # Add product names to items
+            if 'items' in result:
+                for item in result['items']:
+                    if item.get('product_id'):
+                        product = session.query(Product).filter(
+                            Product.id == item['product_id'],
+                            Product.tenant_id == tenant_id
+                        ).first()
+                        
+                        if product:
+                            item['product_name'] = product.name
+                            item['product_code'] = product.code
+            
+            # Add payment information (multiple payments possible)
+            payments = session.query(Payment).filter(
+                Payment.party_type == 'CUSTOMER',
+                Payment.party_id == invoice.customer_id,
+                Payment.reference_number == invoice.invoice_number,
+                Payment.tenant_id == tenant_id,
+                Payment.is_deleted == False
+            ).all()
+            
+            result['payments'] = []
+            if payments:
+                for payment in payments:
+                    payment_obj = {
+                        'id': payment.id,
+                        'payment_number': payment.payment_number,
+                        'payment_date': payment.payment_date.isoformat() if payment.payment_date else None,
+                        'payment_type': payment.payment_type,
+                        'total_amount_base': float(payment.total_amount_base) if payment.total_amount_base else 0.0,
+                        'total_amount_foreign': float(payment.total_amount_foreign) if payment.total_amount_foreign else None,
+                        'voucher_id': payment.voucher_id,
+                        'remarks': payment.remarks,
+                        'details': []
+                    }
+                    
+                    # Add payment details
+                    payment_details = session.query(PaymentDetail).filter(
+                        PaymentDetail.payment_id == payment.id,
+                        PaymentDetail.tenant_id == tenant_id
+                    ).all()
+                    
+                    if payment_details:
+                        payment_obj['details'] = [
+                            {
+                                'id': detail.id,
+                                'line_no': detail.line_no,
+                                'payment_mode': detail.payment_mode,
+                                'amount_base': float(detail.amount_base) if detail.amount_base else 0.0,
+                                'amount_foreign': float(detail.amount_foreign) if detail.amount_foreign else None,
+                                'bank_account_id': detail.bank_account_id,
+                                'instrument_number': detail.instrument_number,
+                                'instrument_date': detail.instrument_date.isoformat() if detail.instrument_date else None,
+                                'bank_name': detail.bank_name,
+                                'branch_name': detail.branch_name,
+                                'ifsc_code': detail.ifsc_code,
+                                'transaction_reference': detail.transaction_reference,
+                                'description': detail.description
+                            }
+                            for detail in payment_details
+                        ]
+                    
+                    result['payments'].append(payment_obj)
+            
+            return result
     
     @ExceptionMiddleware.handle_exceptions("SalesInvoiceService")
     def update(self, invoice_id: int, invoice_data: dict):
@@ -552,6 +958,15 @@ class SalesInvoiceService:
                 
                 # Update items if provided
                 if items_data is not None:
+                    # Reverse existing stock transactions
+                    stock_service = StockService()
+                    stock_service.reverse_sales_invoice_transaction_in_session(
+                        session=session,
+                        tenant_id=tenant_id,
+                        invoice_id=invoice_id,
+                        username=username
+                    )
+                    
                     # Delete existing items
                     session.query(SalesInvoiceItem).filter(
                         SalesInvoiceItem.invoice_id == invoice_id
@@ -567,6 +982,20 @@ class SalesInvoiceService:
                             updated_by=username
                         )
                         session.add(item)
+                    
+                    # Flush to get new item IDs
+                    session.flush()
+                    
+                    # Record new stock transactions
+                    stock_service.record_sales_invoice_transaction_in_session(
+                        session=session,
+                        tenant_id=tenant_id,
+                        invoice_id=invoice.id,
+                        invoice_number=invoice.invoice_number,
+                        invoice_date=invoice.invoice_date,
+                        items_data=items_data,
+                        username=username
+                    )
                 
                 session.commit()
                 session.refresh(invoice)
@@ -598,6 +1027,15 @@ class SalesInvoiceService:
                 if invoice.status not in ['DRAFT', 'CANCELLED']:
                     raise ValueError(f"Cannot delete invoice with status {invoice.status}. Please cancel it first.")
                 
+                # Reverse stock transactions
+                stock_service = StockService()
+                stock_service.reverse_sales_invoice_transaction_in_session(
+                    session=session,
+                    tenant_id=tenant_id,
+                    invoice_id=invoice_id,
+                    username=username
+                )
+                
                 invoice.is_deleted = True
                 invoice.updated_by = username
                 invoice.updated_at = datetime.utcnow()
@@ -609,6 +1047,39 @@ class SalesInvoiceService:
             except Exception as e:
                 session.rollback()
                 raise
+    
+    @ExceptionMiddleware.handle_exceptions("SalesInvoiceService")
+    def update_payment(self, invoice_id: int, payment_amount: Decimal):
+        """Update payment information for an invoice"""
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            username = session_manager.get_current_username()
+            
+            invoice = session.query(SalesInvoice).filter(
+                SalesInvoice.id == invoice_id,
+                SalesInvoice.tenant_id == tenant_id,
+                SalesInvoice.is_deleted == False
+            ).first()
+            
+            if not invoice:
+                return None
+            
+            # Update paid amount and balance
+            invoice.paid_amount_base += payment_amount
+            invoice.balance_amount_base = invoice.total_amount_base - invoice.paid_amount_base
+            
+            # Update status based on payment
+            if invoice.balance_amount_base <= 0:
+                invoice.status = 'PAID'
+            elif invoice.paid_amount_base > 0:
+                invoice.status = 'PARTIALLY_PAID'
+            
+            invoice.updated_by = username
+            
+            session.commit()
+            session.refresh(invoice)
+            
+            return self._to_dict(invoice, include_items=False)
     
     def _to_dict(self, invoice, include_items=True):
         """Convert invoice entity to dictionary"""
