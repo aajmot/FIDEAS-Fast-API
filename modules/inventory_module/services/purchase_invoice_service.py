@@ -90,15 +90,15 @@ class PurchaseInvoiceService:
                 payment_remarks = invoice_data.pop('payment_remarks', None)
                 
                 # Calculate paid amount from payment details if provided
-                paid_amount = Decimal(0)
+                paid_amount = Decimal('0.0000')
                 if payment_details_data:
                     paid_amount = sum(Decimal(str(detail.get('amount_base', 0))) for detail in payment_details_data)
                 
                 # Update invoice paid_amount and balance_amount
                 total_amount = Decimal(str(invoice_data.get('total_amount_base', 0)))
-                paid_amount_decimal = Decimal(str(paid_amount)) if paid_amount else Decimal('0.0000')
-                invoice_data['paid_amount_base'] = paid_amount_decimal
-                invoice_data['balance_amount_base'] = total_amount - paid_amount_decimal
+                invoice_data['paid_amount_base'] = paid_amount
+                # Round balance to 2 decimal places to avoid negative tiny amounts
+                invoice_data['balance_amount_base'] = (total_amount - paid_amount).quantize(Decimal('0.01'))
                 
                 # Update status based on payment
                 if paid_amount >= total_amount:
@@ -120,10 +120,37 @@ class PurchaseInvoiceService:
                     exchange_rate = Decimal(str(exchange_rate))
                 invoice_data['exchange_rate'] = exchange_rate
                 
-                # Ensure all amounts are Decimal
-                balance_amount = invoice_data['balance_amount_base']
+                # Convert and round all amounts to proper Decimal with 4 decimal places
+                cgst_amount = Decimal(str(invoice_data.get('cgst_amount_base', 0))).quantize(Decimal('0.0001'))
+                sgst_amount = Decimal(str(invoice_data.get('sgst_amount_base', 0))).quantize(Decimal('0.0001'))
+                igst_amount = Decimal(str(invoice_data.get('igst_amount_base', 0))).quantize(Decimal('0.0001'))
+                ugst_amount = Decimal(str(invoice_data.get('ugst_amount_base', 0))).quantize(Decimal('0.0001'))
+                cess_amount = Decimal(str(invoice_data.get('cess_amount_base', 0))).quantize(Decimal('0.0001'))
                 
-                # Create invoice header
+                # Recalculate tax_amount to match sum of GST components (fixes rounding issues)
+                tax_amount = (cgst_amount + sgst_amount + igst_amount + ugst_amount + cess_amount).quantize(Decimal('0.0001'))
+                
+                subtotal = Decimal(str(invoice_data.get('subtotal_base', 0))).quantize(Decimal('0.0001'))
+                discount_amount = Decimal(str(invoice_data.get('discount_amount_base', 0))).quantize(Decimal('0.0001'))
+                
+                # Recalculate total_amount = subtotal + tax_amount (subtotal should already have discount applied)
+                total_amount = (subtotal + tax_amount).quantize(Decimal('0.0001'))
+                
+                # Update paid and balance based on the corrected total
+                paid_amount = invoice_data['paid_amount_base']
+                balance_amount = (total_amount - paid_amount).quantize(Decimal('0.01'))
+                
+                # Ensure balance doesn't go negative due to rounding (if paid >= total, set to 0)
+                if balance_amount < 0 and abs(balance_amount) < Decimal('0.01'):
+                    balance_amount = Decimal('0.00')
+                
+                # Update status based on corrected amounts
+                if balance_amount <= 0:
+                    invoice_data['status'] = 'PAID'
+                elif paid_amount > 0:
+                    invoice_data['status'] = 'PARTIALLY_PAID'
+                
+                # Create invoice header with corrected amounts
                 invoice = PurchaseInvoice(
                     tenant_id=tenant_id,
                     invoice_number=invoice_data.get('invoice_number'),
@@ -137,21 +164,21 @@ class PurchaseInvoiceService:
                     base_currency_id=invoice_data.get('base_currency_id'),
                     foreign_currency_id=invoice_data.get('foreign_currency_id'),
                     exchange_rate=invoice_data['exchange_rate'],
-                    cgst_amount_base=invoice_data.get('cgst_amount_base', 0),
-                    sgst_amount_base=invoice_data.get('sgst_amount_base', 0),
-                    igst_amount_base=invoice_data.get('igst_amount_base', 0),
-                    ugst_amount_base=invoice_data.get('ugst_amount_base', 0),
-                    cess_amount_base=invoice_data.get('cess_amount_base', 0),
-                    subtotal_base=invoice_data.get('subtotal_base', 0),
-                    discount_amount_base=invoice_data.get('discount_amount_base', 0),
-                    tax_amount_base=invoice_data.get('tax_amount_base', 0),
+                    cgst_amount_base=cgst_amount,
+                    sgst_amount_base=sgst_amount,
+                    igst_amount_base=igst_amount,
+                    ugst_amount_base=ugst_amount,
+                    cess_amount_base=cess_amount,
+                    subtotal_base=subtotal,
+                    discount_amount_base=discount_amount,
+                    tax_amount_base=tax_amount,
                     total_amount_base=total_amount,
                     subtotal_foreign=invoice_data.get('subtotal_foreign'),
                     discount_amount_foreign=invoice_data.get('discount_amount_foreign'),
                     tax_amount_foreign=invoice_data.get('tax_amount_foreign'),
                     total_amount_foreign=invoice_data.get('total_amount_foreign'),
-                    paid_amount_base=invoice_data['paid_amount_base'],
-                    balance_amount_base=invoice_data['balance_amount_base'],
+                    paid_amount_base=paid_amount,
+                    balance_amount_base=balance_amount,
                     status=invoice_data['status'],
                     notes=invoice_data.get('notes'),
                     tags=invoice_data.get('tags'),
@@ -175,6 +202,7 @@ class PurchaseInvoiceService:
                         batch_number=item_data.get('batch_number'),
                         serial_numbers=item_data.get('serial_numbers'),
                         quantity=item_data.get('quantity'),
+                        free_quantity=item_data.get('free_quantity', 0),
                         uom=item_data.get('uom', 'NOS'),
                         unit_price_base=item_data.get('unit_price_base'),
                         discount_percent=item_data.get('discount_percent', 0),
@@ -885,6 +913,7 @@ class PurchaseInvoiceService:
                         batch_number=item_data.get('batch_number'),
                         serial_numbers=item_data.get('serial_numbers'),
                         quantity=item_data.get('quantity'),
+                        free_quantity=item_data.get('free_quantity', 0),
                         uom=item_data.get('uom', 'NOS'),
                         unit_price_base=item_data.get('unit_price_base'),
                         discount_percent=item_data.get('discount_percent', 0),
@@ -1064,6 +1093,7 @@ class PurchaseInvoiceService:
             'batch_number': item.batch_number,
             'serial_numbers': item.serial_numbers,
             'quantity': item.quantity,
+            'free_quantity': item.free_quantity,
             'uom': item.uom,
             'unit_price_base': item.unit_price_base,
             'discount_percent': item.discount_percent,

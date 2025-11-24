@@ -163,6 +163,7 @@ class SalesInvoiceItem(Base):
     
     # Quantity
     quantity = Column(Numeric(15, 4), nullable=False)
+    free_quantity = Column(Numeric(15, 4), default=0)
     uom = Column(String(20), default='NOS')
     
     # Pricing (Base Currency)

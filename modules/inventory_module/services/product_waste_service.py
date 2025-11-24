@@ -99,11 +99,13 @@ class ProductWasteService:
                 
                 session.flush()
                 
-                # Record accounting transaction
+                # Create accounting voucher for waste
                 try:
-                    self._record_accounting_transaction_in_session(session, product_waste)
-                except (ImportError, AttributeError):
-                    pass
+                    voucher = self._create_waste_voucher(session, tenant_id, username, product_waste, items_data)
+                    product_waste.voucher_id = voucher.id
+                except Exception as e:
+                    # Log error but don't fail the transaction
+                    print(f"Warning: Could not create waste voucher: {str(e)}")
                 
                 session.commit()
                 return product_waste.id
@@ -207,16 +209,256 @@ class ProductWasteService:
         # Default to INR if not found
         return 'INR'
     
-    def _record_accounting_transaction_in_session(self, session, product_waste):
-        try:
-            from modules.account_module.services.payment_service import PaymentService
-            payment_service = PaymentService()
-            payment_service.record_waste_transaction_in_session(
-                session,
-                product_waste.id,
-                product_waste.waste_number,
-                float(product_waste.total_cost_base),  # Use base currency cost
-                product_waste.waste_date
+    def _create_waste_voucher(self, session, tenant_id, username, waste, items_data):
+        """Create accounting voucher for product waste"""
+        from modules.account_module.models.entities import Voucher, VoucherLine, VoucherType
+        from modules.account_module.models.account_configuration_entity import AccountConfiguration
+        from modules.account_module.models.account_configuration_key_entity import AccountConfigurationKey
+        from modules.account_module.models.entities import AccountMaster, AccountGroup
+        from decimal import Decimal
+        
+        # Get JOURNAL voucher type
+        voucher_type = session.query(VoucherType).filter(
+            VoucherType.tenant_id == tenant_id,
+            VoucherType.code == 'JOURNAL',
+            VoucherType.is_active == True,
+            VoucherType.is_deleted == False
+        ).first()
+        
+        if not voucher_type:
+            raise ValueError("Journal voucher type not configured. Please configure 'JOURNAL' voucher type.")
+        
+        # Generate voucher number
+        voucher_number = f"JV-WASTE-{waste.waste_number}"
+        
+        # Convert total cost to Decimal to ensure proper handling
+        total_cost = Decimal(str(waste.total_cost_base)) if waste.total_cost_base else Decimal('0.0000')
+        
+        # Create voucher
+        voucher = Voucher(
+            tenant_id=tenant_id,
+            voucher_number=voucher_number,
+            voucher_type_id=voucher_type.id,
+            voucher_date=waste.waste_date if hasattr(waste.waste_date, 'hour') else datetime.combine(waste.waste_date, datetime.min.time()),
+            base_currency_id=waste.currency_id,
+            foreign_currency_id=None,
+            exchange_rate=Decimal('1.0000'),
+            base_total_amount=total_cost,
+            base_total_debit=total_cost,
+            base_total_credit=total_cost,
+            foreign_total_amount=None,
+            foreign_total_debit=None,
+            foreign_total_credit=None,
+            reference_type='PRODUCT_WASTE',
+            reference_id=waste.id,
+            reference_number=waste.waste_number,
+            narration=f"Product waste {waste.waste_number} - {waste.reason or 'Waste recorded'}",
+            is_posted=True,
+            created_by=username,
+            updated_by=username
+        )
+        
+        session.add(voucher)
+        session.flush()
+        
+        # Get configured waste expense account
+        waste_expense_account_id = self._get_configured_account(session, tenant_id, 'WASTE_EXPENSE')
+        
+        # Get inventory account
+        inventory_account_id = self._get_configured_account(session, tenant_id, 'INVENTORY')
+        
+        line_no = 1
+        
+        # Debit: Waste Expense Account (expense increases)
+        waste_expense_line = VoucherLine(
+            tenant_id=tenant_id,
+            voucher_id=voucher.id,
+            line_no=line_no,
+            account_id=waste_expense_account_id,
+            description=f"Waste expense - {waste.reason or 'Product waste recorded'}",
+            debit_base=total_cost,
+            credit_base=Decimal('0.0000'),
+            debit_foreign=None,
+            credit_foreign=None,
+            reference_type='PRODUCT_WASTE',
+            reference_id=waste.id,
+            created_by=username,
+            updated_by=username
+        )
+        session.add(waste_expense_line)
+        line_no += 1
+        
+        # Credit: Inventory Account (asset decreases)
+        inventory_line = VoucherLine(
+            tenant_id=tenant_id,
+            voucher_id=voucher.id,
+            line_no=line_no,
+            account_id=inventory_account_id,
+            description=f"Inventory reduction due to waste - {waste.waste_number}",
+            debit_base=Decimal('0.0000'),
+            credit_base=total_cost,
+            debit_foreign=None,
+            credit_foreign=None,
+            reference_type='PRODUCT_WASTE',
+            reference_id=waste.id,
+            created_by=username,
+            updated_by=username
+        )
+        session.add(inventory_line)
+        
+        return voucher
+    
+    def _get_configured_account(self, session, tenant_id, key_code):
+        """Get configured account ID from account configuration"""
+        from modules.account_module.models.account_configuration_entity import AccountConfiguration
+        from modules.account_module.models.account_configuration_key_entity import AccountConfigurationKey
+        from modules.account_module.models.entities import AccountMaster, AccountGroup
+        
+        # Get configuration key
+        config_key = session.query(AccountConfigurationKey).filter(
+            AccountConfigurationKey.code == key_code,
+            AccountConfigurationKey.is_active == True
+        ).first()
+        
+        if not config_key:
+            raise ValueError(f"Account configuration key '{key_code}' not found")
+        
+        # Get account configuration for tenant
+        config = session.query(AccountConfiguration).filter(
+            AccountConfiguration.tenant_id == tenant_id,
+            AccountConfiguration.key_id == config_key.id,
+            AccountConfiguration.is_active == True
+        ).first()
+        
+        if config and config.account_id:
+            return config.account_id
+        
+        # Fallback: Try to find account by system code or name pattern
+        if key_code == 'WASTE_EXPENSE':
+            # Look for expense account with "waste" in name or system code
+            account = session.query(AccountMaster).filter(
+                AccountMaster.tenant_id == tenant_id,
+                AccountMaster.account_type == 'EXPENSE',
+                AccountMaster.is_deleted == False
+            ).filter(
+                (AccountMaster.name.ilike('%waste%')) | 
+                (AccountMaster.system_code.ilike('%waste%'))
+            ).first()
+            
+            if account:
+                return account.id
+            
+            # Create default waste expense account
+            return self._create_default_waste_account(session, tenant_id, 'EXPENSE')
+        
+        elif key_code == 'INVENTORY':
+            # Look for inventory asset account
+            account = session.query(AccountMaster).filter(
+                AccountMaster.tenant_id == tenant_id,
+                AccountMaster.account_type == 'ASSET',
+                AccountMaster.is_deleted == False
+            ).filter(
+                (AccountMaster.name.ilike('%inventory%')) | 
+                (AccountMaster.system_code.ilike('%inventory%')) |
+                (AccountMaster.name.ilike('%stock%'))
+            ).first()
+            
+            if account:
+                return account.id
+            
+            # Create default inventory account
+            return self._create_default_inventory_account(session, tenant_id)
+        
+        raise ValueError(f"No account configured for '{key_code}' and no suitable fallback found")
+    
+    def _create_default_waste_account(self, session, tenant_id, account_type):
+        """Create default waste expense account"""
+        from modules.account_module.models.entities import AccountMaster, AccountGroup
+        
+        username = session_manager.get_current_username()
+        
+        # Find or create expense group
+        expense_group = session.query(AccountGroup).filter(
+            AccountGroup.tenant_id == tenant_id,
+            AccountGroup.account_type == 'EXPENSE',
+            AccountGroup.is_deleted == False
+        ).first()
+        
+        if not expense_group:
+            expense_group = AccountGroup(
+                tenant_id=tenant_id,
+                name='Expenses',
+                code='EXP',
+                account_type='EXPENSE',
+                normal_balance='DEBIT',
+                is_active=True,
+                created_by=username,
+                updated_by=username
             )
-        except ImportError:
-            pass  # Account module not available
+            session.add(expense_group)
+            session.flush()
+        
+        # Create waste expense account
+        account = AccountMaster(
+            tenant_id=tenant_id,
+            name='Waste & Spoilage Expense',
+            code='WASTE-EXP-001',
+            system_code='WASTE_EXPENSE',
+            account_type='EXPENSE',
+            account_group_id=expense_group.id,
+            normal_balance='DEBIT',
+            is_active=True,
+            is_sub_ledger=False,
+            created_by=username,
+            updated_by=username
+        )
+        session.add(account)
+        session.flush()
+        
+        return account.id
+    
+    def _create_default_inventory_account(self, session, tenant_id):
+        """Create default inventory account"""
+        from modules.account_module.models.entities import AccountMaster, AccountGroup
+        
+        username = session_manager.get_current_username()
+        
+        # Find or create asset group
+        asset_group = session.query(AccountGroup).filter(
+            AccountGroup.tenant_id == tenant_id,
+            AccountGroup.account_type == 'ASSET',
+            AccountGroup.is_deleted == False
+        ).first()
+        
+        if not asset_group:
+            asset_group = AccountGroup(
+                tenant_id=tenant_id,
+                name='Assets',
+                code='AST',
+                account_type='ASSET',
+                normal_balance='DEBIT',
+                is_active=True,
+                created_by=username,
+                updated_by=username
+            )
+            session.add(asset_group)
+            session.flush()
+        
+        # Create inventory account
+        account = AccountMaster(
+            tenant_id=tenant_id,
+            name='Inventory',
+            code='INV-001',
+            system_code='INVENTORY',
+            account_type='ASSET',
+            account_group_id=asset_group.id,
+            normal_balance='DEBIT',
+            is_active=True,
+            is_sub_ledger=False,
+            created_by=username,
+            updated_by=username
+        )
+        session.add(account)
+        session.flush()
+        
+        return account.id

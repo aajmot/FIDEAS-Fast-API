@@ -43,6 +43,7 @@ class PurchaseInvoiceItemRequest(BaseModel):
     
     # Quantity
     quantity: Decimal = Field(..., gt=0, description="Quantity")
+    free_quantity: Decimal = Field(0, ge=0, description="Free/complimentary quantity")
     uom: str = Field("NOS", max_length=20, description="Unit of measurement")
     
     # Pricing (Base Currency)
@@ -84,6 +85,7 @@ class PurchaseInvoiceItemRequest(BaseModel):
                 "line_no": 1,
                 "product_id": 1,
                 "quantity": 10,
+                "free_quantity": 2,
                 "unit_price_base": 100.00,
                 "taxable_amount_base": 1000.00,
                 "cgst_rate": 9,
@@ -106,6 +108,7 @@ class PurchaseInvoiceItemResponse(BaseModel):
     batch_number: Optional[str] = None
     serial_numbers: Optional[str] = None
     quantity: Decimal
+    free_quantity: Decimal
     uom: str
     unit_price_base: Decimal
     discount_percent: Decimal

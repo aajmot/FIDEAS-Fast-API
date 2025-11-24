@@ -39,6 +39,10 @@ class StockService:
     def record_purchase_invoice_transaction_in_session(self, session, invoice, items):
         """Record stock IN transactions for purchase invoice within existing session"""
         for item in items:
+            # Calculate total quantity including free quantity
+            free_qty = float(getattr(item, 'free_quantity', 0) or 0)
+            total_qty = float(item.quantity) + free_qty
+            
             # Create stock transaction
             transaction = StockTransaction(
                 product_id=item.product_id,
@@ -47,17 +51,17 @@ class StockService:
                 reference_id=invoice.id,
                 reference_number=invoice.invoice_number,
                 batch_number=getattr(item, 'batch_number', '') or '',
-                quantity=item.quantity,
+                quantity=total_qty,
                 unit_price=item.unit_price_base,
                 tenant_id=session_manager.get_current_tenant_id(),
                 created_by=session_manager.get_current_username()
             )
             session.add(transaction)
             
-            # Update stock balance
+            # Update stock balance with total quantity
             self._update_stock_balance(session, item.product_id, 
                                      getattr(item, 'batch_number', '') or '', 
-                                     float(item.quantity), float(item.unit_price_base), 'IN')
+                                     total_qty, float(item.unit_price_base), 'IN')
     
     @ExceptionMiddleware.handle_exceptions("StockService")
     def record_sales_transaction(self, sales_order, items):
@@ -309,6 +313,10 @@ class StockService:
     def reverse_purchase_invoice_transaction_in_session(self, session, invoice, items):
         """Reverse stock IN transactions for purchase invoice within existing session"""
         for item in items:
+            # Calculate total quantity including free quantity
+            free_qty = float(getattr(item, 'free_quantity', 0) or 0)
+            total_qty = float(item.quantity) + free_qty
+            
             # Create reverse stock transaction (OUT to reverse IN)
             transaction = StockTransaction(
                 product_id=item.product_id,
@@ -317,17 +325,17 @@ class StockService:
                 reference_id=invoice.id,
                 reference_number=f"REV-{invoice.invoice_number}",
                 batch_number=getattr(item, 'batch_number', '') or '',
-                quantity=item.quantity,
+                quantity=total_qty,
                 unit_price=item.unit_price_base,
                 tenant_id=session_manager.get_current_tenant_id(),
                 created_by=session_manager.get_current_username()
             )
             session.add(transaction)
             
-            # Update stock balance (reverse IN with OUT)
+            # Update stock balance (reverse IN with OUT) with total quantity
             self._update_stock_balance(session, item.product_id, 
                                      getattr(item, 'batch_number', '') or '', 
-                                     float(item.quantity), float(item.unit_price_base), 'OUT')
+                                     total_qty, float(item.unit_price_base), 'OUT')
     
     def record_sales_invoice_transaction_in_session(self, session, tenant_id, invoice_id, invoice_number, invoice_date, items_data, username):
         """Record stock OUT transactions for sales invoice within existing session"""
@@ -340,6 +348,10 @@ class StockService:
         ).all()
         
         for item in items:
+            # Calculate total quantity including free quantity
+            free_qty = float(getattr(item, 'free_quantity', 0) or 0)
+            total_qty = float(item.quantity) + free_qty
+            
             # Create stock transaction
             transaction = StockTransaction(
                 product_id=item.product_id,
@@ -348,17 +360,17 @@ class StockService:
                 reference_id=invoice_id,
                 reference_number=invoice_number,
                 batch_number=getattr(item, 'batch_number', '') or '',
-                quantity=item.quantity,
+                quantity=total_qty,
                 unit_price=item.unit_price_base,
                 tenant_id=tenant_id,
                 created_by=username
             )
             session.add(transaction)
             
-            # Update stock balance
+            # Update stock balance with total quantity
             self._update_stock_balance(session, item.product_id, 
                                      getattr(item, 'batch_number', '') or '', 
-                                     float(item.quantity), float(item.unit_price_base), 'OUT')
+                                     total_qty, float(item.unit_price_base), 'OUT')
     
     def reverse_sales_invoice_transaction_in_session(self, session, tenant_id, invoice_id, username):
         """Reverse stock OUT transactions for sales invoice within existing session"""
@@ -380,6 +392,10 @@ class StockService:
         ).all()
         
         for item in items:
+            # Calculate total quantity including free quantity
+            free_qty = float(getattr(item, 'free_quantity', 0) or 0)
+            total_qty = float(item.quantity) + free_qty
+            
             # Create reverse stock transaction (IN to reverse OUT)
             transaction = StockTransaction(
                 product_id=item.product_id,
@@ -388,17 +404,17 @@ class StockService:
                 reference_id=invoice_id,
                 reference_number=f"REV-{invoice.invoice_number}",
                 batch_number=getattr(item, 'batch_number', '') or '',
-                quantity=item.quantity,
+                quantity=total_qty,
                 unit_price=item.unit_price_base,
                 tenant_id=tenant_id,
                 created_by=username
             )
             session.add(transaction)
             
-            # Update stock balance (reverse OUT with IN)
+            # Update stock balance (reverse OUT with IN) with total quantity
             self._update_stock_balance(session, item.product_id, 
                                      getattr(item, 'batch_number', '') or '', 
-                                     float(item.quantity), float(item.unit_price_base), 'IN')
+                                     total_qty, float(item.unit_price_base), 'IN')
     
     @ExceptionMiddleware.handle_exceptions("StockService")
     def get_product_stock_summary(self):

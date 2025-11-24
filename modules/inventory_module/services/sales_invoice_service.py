@@ -98,7 +98,8 @@ class SalesInvoiceService:
                 # Update invoice paid_amount and balance_amount
                 total_amount = Decimal(str(invoice_data.get('total_amount_base')))
                 invoice_data['paid_amount_base'] = paid_amount
-                invoice_data['balance_amount_base'] = total_amount - paid_amount
+                # Round balance to 2 decimal places to avoid negative tiny amounts
+                invoice_data['balance_amount_base'] = (total_amount - paid_amount).quantize(Decimal('0.01'))
                 
                 # Update status based on payment
                 if paid_amount >= total_amount:
@@ -122,10 +123,36 @@ class SalesInvoiceService:
                 # Ensure exchange_rate is properly set in invoice_data
                 invoice_data['exchange_rate'] = exchange_rate
                 
-                # Set paid and balance amounts as Decimal (already set above)
-                balance_amount = invoice_data['balance_amount_base']
+                # Convert and round all amounts to proper Decimal with 4 decimal places
+                cgst_amount = Decimal(str(invoice_data.get('cgst_amount_base', 0))).quantize(Decimal('0.0001'))
+                sgst_amount = Decimal(str(invoice_data.get('sgst_amount_base', 0))).quantize(Decimal('0.0001'))
+                igst_amount = Decimal(str(invoice_data.get('igst_amount_base', 0))).quantize(Decimal('0.0001'))
+                cess_amount = Decimal(str(invoice_data.get('cess_amount_base', 0))).quantize(Decimal('0.0001'))
                 
-                # Create invoice header
+                # Recalculate tax_amount to match sum of GST components (fixes rounding issues)
+                tax_amount = (cgst_amount + sgst_amount + igst_amount + cess_amount).quantize(Decimal('0.0001'))
+                
+                subtotal = Decimal(str(invoice_data.get('subtotal_base', 0))).quantize(Decimal('0.0001'))
+                discount_amount = Decimal(str(invoice_data.get('discount_amount_base', 0))).quantize(Decimal('0.0001'))
+                
+                # Recalculate total_amount = subtotal + tax_amount (subtotal should already have discount applied)
+                total_amount = (subtotal + tax_amount).quantize(Decimal('0.0001'))
+                
+                # Update paid and balance based on the corrected total
+                paid_amount = invoice_data['paid_amount_base']
+                balance_amount = (total_amount - paid_amount).quantize(Decimal('0.01'))
+                
+                # Ensure balance doesn't go negative due to rounding (if paid >= total, set to 0)
+                if balance_amount < 0 and abs(balance_amount) < Decimal('0.01'):
+                    balance_amount = Decimal('0.00')
+                
+                # Update status based on corrected amounts
+                if balance_amount <= 0:
+                    invoice_data['status'] = 'PAID'
+                elif paid_amount > 0:
+                    invoice_data['status'] = 'PARTIALLY_PAID'
+                
+                # Create invoice header with corrected amounts
                 invoice = SalesInvoice(
                     tenant_id=tenant_id,
                     invoice_number=invoice_data.get('invoice_number'),
@@ -140,13 +167,13 @@ class SalesInvoiceService:
                     base_currency_id=invoice_data.get('base_currency_id'),
                     foreign_currency_id=invoice_data.get('foreign_currency_id'),
                     exchange_rate=exchange_rate,
-                    cgst_amount_base=invoice_data.get('cgst_amount_base', 0),
-                    sgst_amount_base=invoice_data.get('sgst_amount_base', 0),
-                    igst_amount_base=invoice_data.get('igst_amount_base', 0),
-                    cess_amount_base=invoice_data.get('cess_amount_base', 0),
-                    subtotal_base=invoice_data.get('subtotal_base', 0),
-                    discount_amount_base=invoice_data.get('discount_amount_base', 0),
-                    tax_amount_base=invoice_data.get('tax_amount_base', 0),
+                    cgst_amount_base=cgst_amount,
+                    sgst_amount_base=sgst_amount,
+                    igst_amount_base=igst_amount,
+                    cess_amount_base=cess_amount,
+                    subtotal_base=subtotal,
+                    discount_amount_base=discount_amount,
+                    tax_amount_base=tax_amount,
                     total_amount_base=total_amount,
                     subtotal_foreign=invoice_data.get('subtotal_foreign'),
                     discount_amount_foreign=invoice_data.get('discount_amount_foreign'),
@@ -180,6 +207,7 @@ class SalesInvoiceService:
                         batch_number=item_data.get('batch_number'),
                         serial_numbers=item_data.get('serial_numbers'),
                         quantity=item_data.get('quantity'),
+                        free_quantity=item_data.get('free_quantity', 0),
                         uom=item_data.get('uom', 'NOS'),
                         unit_price_base=item_data.get('unit_price_base'),
                         unit_cost_base=item_data.get('unit_cost_base'),
@@ -974,6 +1002,9 @@ class SalesInvoiceService:
                     
                     # Create new items
                     for item_data in items_data:
+                        # Ensure free_quantity has default value
+                        if 'free_quantity' not in item_data:
+                            item_data['free_quantity'] = 0
                         item = SalesInvoiceItem(
                             tenant_id=tenant_id,
                             invoice_id=invoice.id,
@@ -1145,6 +1176,7 @@ class SalesInvoiceService:
                     'batch_number': item.batch_number,
                     'serial_numbers': item.serial_numbers,
                     'quantity': float(item.quantity) if item.quantity else 0.0,
+                    'free_quantity': float(item.free_quantity) if item.free_quantity else 0.0,
                     'uom': item.uom,
                     'unit_price_base': float(item.unit_price_base) if item.unit_price_base else 0.0,
                     'unit_cost_base': float(item.unit_cost_base) if item.unit_cost_base else 0.0,

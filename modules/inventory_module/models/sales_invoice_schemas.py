@@ -43,6 +43,7 @@ class SalesInvoiceItemRequest(BaseModel):
     
     # Quantity
     quantity: Decimal = Field(..., gt=0, description="Quantity")
+    free_quantity: Decimal = Field(0, ge=0, description="Free/complimentary quantity")
     uom: str = Field("NOS", max_length=20, description="Unit of measurement")
     
     # Pricing (Base Currency)
@@ -80,6 +81,7 @@ class SalesInvoiceItemRequest(BaseModel):
                 "line_no": 1,
                 "product_id": 1,
                 "quantity": 10,
+                "free_quantity": 1,
                 "unit_price_base": 150.00,
                 "unit_cost_base": 100.00,
                 "taxable_amount_base": 1500.00,
@@ -103,6 +105,7 @@ class SalesInvoiceItemResponse(BaseModel):
     batch_number: Optional[str] = None
     serial_numbers: Optional[str] = None
     quantity: Decimal
+    free_quantity: Decimal
     uom: str
     unit_price_base: Decimal
     unit_cost_base: Decimal
@@ -218,6 +221,7 @@ class SalesInvoiceRequest(BaseModel):
                         "description": "Product description",
                         "hsn_code": "1234",
                         "quantity": 10,
+                        "free_quantity": 1,
                         "uom": "NOS",
                         "unit_price_base": 150.00,
                         "unit_cost_base": 100.00,

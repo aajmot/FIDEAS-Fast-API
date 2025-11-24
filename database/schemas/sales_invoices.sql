@@ -144,6 +144,7 @@ CREATE TABLE IF NOT EXISTS public.sales_invoice_items (
 
     -- === Quantity ===
     quantity               NUMERIC(15,4) NOT NULL CHECK (quantity > 0),
+    free_quantity          NUMERIC(15,4) DEFAULT 0,
     uom                    VARCHAR(20) DEFAULT 'NOS',
 
     -- === Pricing (Base) ===

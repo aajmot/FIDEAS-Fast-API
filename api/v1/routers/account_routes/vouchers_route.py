@@ -58,7 +58,7 @@ async def get_vouchers(pagination: PaginationParams = Depends(), current_user: d
                 Voucher.narration.ilike(f"%{pagination.search}%")
             ))
         
-        query = query.order_by(Voucher.voucher_date.desc(), Voucher.id.desc())
+        query = query.order_by(Voucher.id.desc(), Voucher.voucher_date.desc())
         
         total = query.count()
         vouchers = query.offset(pagination.offset).limit(pagination.per_page).all()
