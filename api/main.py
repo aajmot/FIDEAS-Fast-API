@@ -72,6 +72,9 @@ from core.database.connection import db_manager
 import types
 from fastapi import APIRouter
 
+# Import models to ensure they're registered with SQLAlchemy
+from modules.account_module.models.bank_account_entity import BankAccount
+
 # Import commonly-used routers directly; provide safe fallbacks for
 # optional/legacy modules so the app can still start during the refactor.
 try:

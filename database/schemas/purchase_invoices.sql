@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS public.purchase_invoices (
         CHECK (due_date IS NULL OR due_date >= invoice_date),
 
     CONSTRAINT chk_gst_sum 
-        CHECK (tax_amount_base = cgst_amount_base + sgst_amount_base + igst_amount_base + ugst_amount_base + cess_amount_base)
+        CHECK (ABS(tax_amount_base - (cgst_amount_base + sgst_amount_base + igst_amount_base + ugst_amount_base + cess_amount_base)) < 0.01)
 );
 
 -- Indexes
@@ -179,20 +179,18 @@ CREATE TABLE IF NOT EXISTS public.purchase_invoice_items (
         )),
 
     CONSTRAINT chk_gst_components 
-        CHECK (tax_amount_base = 
-            cgst_amount_base + sgst_amount_base + igst_amount_base + ugst_amount_base + cess_amount_base
+        CHECK (ABS(tax_amount_base - 
+            (cgst_amount_base + sgst_amount_base + igst_amount_base + ugst_amount_base + cess_amount_base)) < 0.01
         ),
 
     CONSTRAINT chk_gst_exclusivity 
         CHECK (
-            -- Only one of CGST/SGST or IGST or UGST
-            (cgst_amount_base > 0 AND sgst_amount_base > 0 AND igst_amount_base = 0 AND ugst_amount_base = 0)
+            -- CGST+SGST together, or IGST alone, or UGST alone, or no GST
+            (cgst_amount_base >= 0 AND sgst_amount_base >= 0 AND igst_amount_base = 0 AND ugst_amount_base = 0)
             OR
             (igst_amount_base > 0 AND cgst_amount_base = 0 AND sgst_amount_base = 0 AND ugst_amount_base = 0)
             OR
             (ugst_amount_base > 0 AND cgst_amount_base = 0 AND sgst_amount_base = 0 AND igst_amount_base = 0)
-            OR
-            (cgst_amount_base = 0 AND sgst_amount_base = 0 AND igst_amount_base = 0 AND ugst_amount_base = 0)
         )
 );
 

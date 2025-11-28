@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Text, Numeric, UniqueConstraint, Date
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from modules.inventory_module.models.entities import Base
+from core.database.connection import Base
 
 class Currency(Base):
     __tablename__ = 'currencies'

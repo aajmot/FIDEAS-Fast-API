@@ -17,7 +17,7 @@ class PaymentDetailRequest(BaseModel):
     transaction_reference: Optional[str] = Field(None, max_length=100, description="UPI/NEFT reference")
     amount_base: Decimal = Field(..., gt=0, description="Amount in base currency")
     amount_foreign: Optional[Decimal] = Field(None, description="Amount in foreign currency")
-    account_id: int = Field(..., description="Account ID (Dr/Cr)")
+    account_id: Optional[int] = Field(None, description="Account ID (Dr/Cr) - auto-determined if not provided")
     description: Optional[str] = Field(None, description="Description")
     
     class Config:

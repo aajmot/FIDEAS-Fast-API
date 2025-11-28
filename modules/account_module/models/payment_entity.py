@@ -3,6 +3,12 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 from core.database.connection import Base
 
+# Import to ensure bank_accounts table is available
+try:
+    from .bank_account_entity import BankAccount
+except ImportError:
+    pass  # BankAccount model not available
+
 
 class Payment(Base):
     """Payments - records receipts, payments and contra entries"""
@@ -113,8 +119,8 @@ class PaymentDetail(Base):
     amount_base = Column(Numeric(15, 4), nullable=False)
     amount_foreign = Column(Numeric(15, 4))
     
-    # Account (Dr/Cr)
-    account_id = Column(Integer, ForeignKey('account_masters.id', ondelete='RESTRICT'), nullable=False)
+    # Account (Dr/Cr) - auto-determined if not provided
+    account_id = Column(Integer, ForeignKey('account_masters.id', ondelete='RESTRICT'), nullable=True)
     
     description = Column(Text)
     

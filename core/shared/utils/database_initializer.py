@@ -48,6 +48,7 @@ def _run_database_setup():
         # Import all models to ensure they're registered with SQLAlchemy
         import modules.admin_module.models.entities
         import modules.account_module.models.entities
+        import modules.account_module.models.bank_account_entity
         import modules.inventory_module.models.entities
         import modules.clinic_module.models.entities
         

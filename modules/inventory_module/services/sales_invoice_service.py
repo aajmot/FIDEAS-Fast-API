@@ -40,6 +40,8 @@ class SalesInvoiceService:
     
     def _get_configured_account(self, session, tenant_id, config_code):
         """Get configured account ID for a given configuration code"""
+        from modules.account_module.models.entities import AccountMaster
+        
         # Get configuration key
         config_key = session.query(AccountConfigurationKey).filter(
             AccountConfigurationKey.code == config_code,
@@ -57,13 +59,84 @@ class SalesInvoiceService:
             AccountConfiguration.is_deleted == False
         ).first()
         
-        if not config:
-            # Fallback to default account if tenant config not found
-            if config_key.default_account_id:
-                return config_key.default_account_id
+        account_id = None
+        if config:
+            account_id = config.account_id
+        elif config_key.default_account_id:
+            account_id = config_key.default_account_id
+        else:
             raise ValueError(f"Account configuration for '{config_code}' not found for tenant {tenant_id}")
         
-        return config.account_id
+        # Verify the account actually exists
+        account = session.query(AccountMaster).filter(
+            AccountMaster.id == account_id,
+            AccountMaster.tenant_id == tenant_id,
+            AccountMaster.is_deleted == False
+        ).first()
+        
+        if not account:
+            # If configured account doesn't exist, try fallback for CASH/BANK
+            if config_code in ['CASH', 'BANK']:
+                payment_mode = config_code
+                fallback_account_id = self._get_or_create_cash_bank_account(session, tenant_id, payment_mode, 'system')
+                if fallback_account_id:
+                    return fallback_account_id
+            raise ValueError(f"Configured account ID {account_id} for '{config_code}' does not exist")
+        
+        return account_id
+    
+    def _get_or_create_cash_bank_account(self, session, tenant_id, payment_mode, username):
+        """Get or create cash/bank account for payment mode"""
+        from modules.account_module.models.entities import AccountMaster, AccountGroup
+        
+        # Try to find existing cash/bank account
+        account_type = 'CASH' if payment_mode == 'CASH' else 'BANK'
+        existing_account = session.query(AccountMaster).filter(
+            AccountMaster.tenant_id == tenant_id,
+            AccountMaster.code.ilike(f"%{account_type}%"),
+            AccountMaster.account_type == 'ASSET',
+            AccountMaster.is_deleted == False
+        ).first()
+        
+        if existing_account:
+            return existing_account.id
+        
+        # Find suitable parent group
+        parent_group = session.query(AccountGroup).filter(
+            AccountGroup.tenant_id == tenant_id,
+            AccountGroup.account_type == 'ASSET',
+            AccountGroup.is_active == True
+        ).first()
+        
+        if not parent_group:
+            return None
+        
+        # Create new account
+        account_name = "Cash Account" if payment_mode == 'CASH' else "Bank Account"
+        account_code = f"{account_type}-001"
+        
+        new_account = AccountMaster(
+            tenant_id=tenant_id,
+            account_group_id=parent_group.id,
+            code=account_code,
+            name=account_name,
+            description=f"Default {account_name.lower()} for payments",
+            account_type='ASSET',
+            normal_balance='D',
+            is_system_account=True,
+            level=1,
+            opening_balance=Decimal(0),
+            current_balance=Decimal(0),
+            is_active=True,
+            is_deleted=False,
+            created_by=username,
+            updated_by=username
+        )
+        
+        session.add(new_account)
+        session.flush()
+        
+        return new_account.id
     
     @ExceptionMiddleware.handle_exceptions("SalesInvoiceService")
     def create(self, invoice_data: dict):
@@ -88,6 +161,27 @@ class SalesInvoiceService:
                 payment_details_data = invoice_data.pop('payment_details', None)
                 payment_number = invoice_data.pop('payment_number', None)
                 payment_remarks = invoice_data.pop('payment_remarks', None)
+                
+                # Validate and auto-populate account_id in payment details if missing
+                if payment_details_data:
+                    for detail in payment_details_data:
+                        if not detail.get('account_id'):
+                            payment_mode = detail.get('payment_mode', 'CASH')
+                            # Auto-determine account_id based on payment mode
+                            try:
+                                if payment_mode == 'CASH':
+                                    detail['account_id'] = self._get_configured_account(session, tenant_id, 'CASH')
+                                else:
+                                    detail['account_id'] = self._get_configured_account(session, tenant_id, 'BANK')
+                            except ValueError:
+                                # Try to create or find fallback account
+                                fallback_account_id = self._get_or_create_cash_bank_account(session, tenant_id, payment_mode, username)
+                                if fallback_account_id:
+                                    detail['account_id'] = fallback_account_id
+                                else:
+                                    raise ValueError(f"Unable to determine account for payment mode {payment_mode}. Please configure CASH/BANK accounts.")
+                
+
                 generate_eway_bill = invoice_data.pop('generate_eway_bill', False)
                 
                 # Calculate paid amount from payment details if provided
@@ -101,12 +195,13 @@ class SalesInvoiceService:
                 # Round balance to 2 decimal places to avoid negative tiny amounts
                 invoice_data['balance_amount_base'] = (total_amount - paid_amount).quantize(Decimal('0.01'))
                 
-                # Update status based on payment
+                # Update status based on payment alignment
                 if paid_amount >= total_amount:
                     invoice_data['status'] = 'PAID'
                 elif paid_amount > 0:
                     invoice_data['status'] = 'PARTIALLY_PAID'
-                elif invoice_data.get('status') == 'DRAFT':
+                else:
+                    # If no payment, set to POSTED (not DRAFT)
                     invoice_data['status'] = 'POSTED'
                 
                 # Set default currency if not provided
@@ -146,11 +241,13 @@ class SalesInvoiceService:
                 if balance_amount < 0 and abs(balance_amount) < Decimal('0.01'):
                     balance_amount = Decimal('0.00')
                 
-                # Update status based on corrected amounts
+                # Update status based on corrected amounts - ensure proper alignment
                 if balance_amount <= 0:
                     invoice_data['status'] = 'PAID'
                 elif paid_amount > 0:
                     invoice_data['status'] = 'PARTIALLY_PAID'
+                else:
+                    invoice_data['status'] = 'POSTED'
                 
                 # Create invoice header with corrected amounts
                 invoice = SalesInvoice(
@@ -263,7 +360,11 @@ class SalesInvoiceService:
                 
                 # Create payment if payment details provided
                 payment = None
-                if payment_details_data and payment_number:
+                if payment_details_data:
+                    # Generate payment number if not provided
+                    if not payment_number:
+                        payment_number = f"REC-{invoice.invoice_number}"
+                    
                     payment = self._create_payment(
                         session=session,
                         tenant_id=tenant_id,
@@ -606,6 +707,26 @@ class SalesInvoiceService:
         
         # Create payment details
         for detail_data in payment_details_data:
+            # Get account_id - auto-determine if not provided
+            account_id = detail_data.get('account_id')
+            if not account_id:
+                # Use default cash/bank account based on payment mode
+                payment_mode = detail_data.get('payment_mode', 'CASH')
+                try:
+                    if payment_mode == 'CASH':
+                        account_id = self._get_configured_account(session, tenant_id, 'CASH')
+                    else:
+                        account_id = self._get_configured_account(session, tenant_id, 'BANK')
+                except ValueError:
+                    # If no configured account, try to create or find a fallback account
+                    account_id = self._get_or_create_cash_bank_account(session, tenant_id, payment_mode, username)
+                    if not account_id:
+                        raise ValueError(f"Unable to determine account for payment mode {payment_mode}. Please configure CASH/BANK accounts.")
+            
+            # Ensure account_id is determined before creating the record
+            if not account_id:
+                raise ValueError(f"Account ID could not be determined for payment detail with mode {detail_data.get('payment_mode', 'UNKNOWN')}")
+            
             detail = PaymentDetail(
                 tenant_id=tenant_id,
                 payment_id=payment.id,
@@ -620,7 +741,7 @@ class SalesInvoiceService:
                 transaction_reference=detail_data.get('transaction_reference'),
                 amount_base=detail_data.get('amount_base'),
                 amount_foreign=detail_data.get('amount_foreign'),
-                account_id=detail_data.get('account_id'),
+                account_id=account_id,
                 description=detail_data.get('description'),
                 created_by=username,
                 updated_by=username
@@ -689,12 +810,12 @@ class SalesInvoiceService:
             payment_mode = detail_data.get('payment_mode', 'CASH')
             amount = Decimal(str(detail_data.get('amount_base', 0)))
             
-            # Get payment account from detail or use configured default
-            if detail_data.get('account_id'):
-                payment_account_id = detail_data.get('account_id')
-            elif detail_data.get('bank_account_id'):
+            # Get payment account from detail or use configured default  
+            payment_account_id = detail_data.get('account_id')
+            if not payment_account_id and detail_data.get('bank_account_id'):
                 payment_account_id = detail_data.get('bank_account_id')
-            else:
+            
+            if not payment_account_id:
                 # Use default cash/bank account based on mode
                 try:
                     if payment_mode == 'CASH':
@@ -702,7 +823,10 @@ class SalesInvoiceService:
                     else:
                         payment_account_id = self._get_configured_account(session, tenant_id, 'BANK')
                 except ValueError:
-                    raise ValueError(f"Payment account not configured for mode {payment_mode}. Please configure CASH/BANK accounts.")
+                    # If no configured account, try to create or find a fallback account
+                    payment_account_id = self._get_or_create_cash_bank_account(session, tenant_id, payment_mode, username)
+                    if not payment_account_id:
+                        raise ValueError(f"Payment account not configured for mode {payment_mode}. Please configure CASH/BANK accounts.")
             
             payment_description = detail_data.get('description') or f"{payment_mode} receipt"
             if detail_data.get('instrument_number'):
