@@ -7,6 +7,8 @@ from modules.account_module.models.account_configuration_entity import AccountCo
 from modules.account_module.models.account_configuration_key_entity import AccountConfigurationKey
 from modules.account_module.models.payment_entity import Payment, PaymentDetail
 from modules.inventory_module.services.stock_service import StockService
+from modules.account_module.services.voucher_service import VoucherService
+from modules.account_module.services.payment_service import PaymentService
 from sqlalchemy import func, or_
 from decimal import Decimal
 from datetime import datetime
@@ -15,6 +17,10 @@ import math
 
 class PurchaseInvoiceService:
     """Service layer for purchase invoice management"""
+    
+    def __init__(self):
+        self.voucher_service = VoucherService()
+        self.payment_service = PaymentService()
     
     def _get_default_currency_id(self, session, tenant_id):
         """Get default currency ID for tenant (defaults to INR if not configured)"""
@@ -143,21 +149,24 @@ class PurchaseInvoiceService:
                     exchange_rate = Decimal(str(exchange_rate))
                 invoice_data['exchange_rate'] = exchange_rate
                 
-                # Convert and round all amounts to proper Decimal with 4 decimal places
-                cgst_amount = Decimal(str(invoice_data.get('cgst_amount_base', 0))).quantize(Decimal('0.0001'))
-                sgst_amount = Decimal(str(invoice_data.get('sgst_amount_base', 0))).quantize(Decimal('0.0001'))
-                igst_amount = Decimal(str(invoice_data.get('igst_amount_base', 0))).quantize(Decimal('0.0001'))
-                ugst_amount = Decimal(str(invoice_data.get('ugst_amount_base', 0))).quantize(Decimal('0.0001'))
-                cess_amount = Decimal(str(invoice_data.get('cess_amount_base', 0))).quantize(Decimal('0.0001'))
+                # Convert and round all amounts to proper Decimal with 2 decimal places for consistency
+                cgst_amount = Decimal(str(invoice_data.get('cgst_amount_base', 0))).quantize(Decimal('0.01'))
+                sgst_amount = Decimal(str(invoice_data.get('sgst_amount_base', 0))).quantize(Decimal('0.01'))
+                igst_amount = Decimal(str(invoice_data.get('igst_amount_base', 0))).quantize(Decimal('0.01'))
+                ugst_amount = Decimal(str(invoice_data.get('ugst_amount_base', 0))).quantize(Decimal('0.01'))
+                cess_amount = Decimal(str(invoice_data.get('cess_amount_base', 0))).quantize(Decimal('0.01'))
                 
                 # Recalculate tax_amount to match sum of GST components (fixes rounding issues)
-                tax_amount = (cgst_amount + sgst_amount + igst_amount + ugst_amount + cess_amount).quantize(Decimal('0.0001'))
+                tax_amount = (cgst_amount + sgst_amount + igst_amount + ugst_amount + cess_amount).quantize(Decimal('0.01'))
                 
-                subtotal = Decimal(str(invoice_data.get('subtotal_base', 0))).quantize(Decimal('0.0001'))
-                discount_amount = Decimal(str(invoice_data.get('discount_amount_base', 0))).quantize(Decimal('0.0001'))
+                subtotal = Decimal(str(invoice_data.get('subtotal_base', 0))).quantize(Decimal('0.01'))
+                discount_amount = Decimal(str(invoice_data.get('discount_amount_base', 0))).quantize(Decimal('0.01'))
                 
                 # Recalculate total_amount = subtotal + tax_amount (subtotal should already have discount applied)
-                total_amount = (subtotal + tax_amount).quantize(Decimal('0.0001'))
+                total_amount = (subtotal + tax_amount).quantize(Decimal('0.01'))
+                
+                # Update invoice_data with corrected total_amount
+                invoice_data['total_amount_base'] = total_amount
                 
                 # Update paid and balance based on the corrected total
                 paid_amount = invoice_data['paid_amount_base']
@@ -166,6 +175,9 @@ class PurchaseInvoiceService:
                 # Ensure balance doesn't go negative due to rounding (if paid >= total, set to 0)
                 if balance_amount < 0 and abs(balance_amount) < Decimal('0.01'):
                     balance_amount = Decimal('0.00')
+                
+                # Update invoice_data with corrected amounts
+                invoice_data['balance_amount_base'] = balance_amount
                 
                 # Update status based on corrected amounts - ensure proper alignment
                 if balance_amount <= 0:
@@ -217,6 +229,20 @@ class PurchaseInvoiceService:
                 # Create invoice items
                 invoice_items = []
                 for item_data in items_data:
+                    # Calculate and validate GST components
+                    cgst_amount = Decimal(str(item_data.get('cgst_amount_base', 0))).quantize(Decimal('0.01'))
+                    sgst_amount = Decimal(str(item_data.get('sgst_amount_base', 0))).quantize(Decimal('0.01'))
+                    igst_amount = Decimal(str(item_data.get('igst_amount_base', 0))).quantize(Decimal('0.01'))
+                    ugst_amount = Decimal(str(item_data.get('ugst_amount_base', 0))).quantize(Decimal('0.01'))
+                    cess_amount = Decimal(str(item_data.get('cess_amount_base', 0))).quantize(Decimal('0.01'))
+                    
+                    # Recalculate tax_amount to ensure constraint compliance
+                    tax_amount = (cgst_amount + sgst_amount + igst_amount + ugst_amount + cess_amount).quantize(Decimal('0.01'))
+                    
+                    # Recalculate total_amount
+                    taxable_amount = Decimal(str(item_data.get('taxable_amount_base', 0))).quantize(Decimal('0.01'))
+                    total_amount = (taxable_amount + tax_amount).quantize(Decimal('0.01'))
+                    
                     item = PurchaseInvoiceItem(
                         tenant_id=tenant_id,
                         invoice_id=invoice.id,
@@ -232,19 +258,19 @@ class PurchaseInvoiceService:
                         unit_price_base=item_data.get('unit_price_base'),
                         discount_percent=item_data.get('discount_percent', 0),
                         discount_amount_base=item_data.get('discount_amount_base', 0),
-                        taxable_amount_base=item_data.get('taxable_amount_base'),
+                        taxable_amount_base=taxable_amount,
                         cgst_rate=item_data.get('cgst_rate', 0),
-                        cgst_amount_base=item_data.get('cgst_amount_base', 0),
+                        cgst_amount_base=cgst_amount,
                         sgst_rate=item_data.get('sgst_rate', 0),
-                        sgst_amount_base=item_data.get('sgst_amount_base', 0),
+                        sgst_amount_base=sgst_amount,
                         igst_rate=item_data.get('igst_rate', 0),
-                        igst_amount_base=item_data.get('igst_amount_base', 0),
+                        igst_amount_base=igst_amount,
                         ugst_rate=item_data.get('ugst_rate', 0),
-                        ugst_amount_base=item_data.get('ugst_amount_base', 0),
+                        ugst_amount_base=ugst_amount,
                         cess_rate=item_data.get('cess_rate', 0),
-                        cess_amount_base=item_data.get('cess_amount_base', 0),
-                        tax_amount_base=item_data.get('tax_amount_base', 0),
-                        total_amount_base=item_data.get('total_amount_base'),
+                        cess_amount_base=cess_amount,
+                        tax_amount_base=tax_amount,
+                        total_amount_base=total_amount,
                         unit_price_foreign=item_data.get('unit_price_foreign'),
                         discount_amount_foreign=item_data.get('discount_amount_foreign'),
                         taxable_amount_foreign=item_data.get('taxable_amount_foreign'),
@@ -269,7 +295,7 @@ class PurchaseInvoiceService:
                 )
                 
                 # Create accounting voucher for the purchase invoice
-                voucher = self._create_purchase_voucher(
+                voucher = self._create_purchase_voucher_in_session(
                     session=session,
                     tenant_id=tenant_id,
                     username=username,
@@ -287,7 +313,7 @@ class PurchaseInvoiceService:
                     if not payment_number:
                         payment_number = f"PAY-{invoice.invoice_number}"
                     
-                    payment = self._create_payment(
+                    payment = self._create_payment_in_session(
                         session=session,
                         tenant_id=tenant_id,
                         username=username,
@@ -473,7 +499,7 @@ class PurchaseInvoiceService:
         
         return new_account.id
     
-    def _create_purchase_voucher(self, session, tenant_id, username, invoice, items_data):
+    def _create_purchase_voucher_in_session(self, session, tenant_id, username, invoice, items_data):
         """Create accounting voucher for purchase invoice"""
         # Get or create Purchase voucher type
         voucher_type = session.query(VoucherType).filter(
@@ -674,7 +700,7 @@ class PurchaseInvoiceService:
         
         return voucher
     
-    def _create_payment(self, session, tenant_id, username, invoice, payment_number, payment_details_data, payment_remarks):
+    def _create_payment_in_session(self, session, tenant_id, username, invoice, payment_number, payment_details_data, payment_remarks):
         """Create payment record and voucher for the purchase invoice"""
         # Calculate total payment amount
         total_payment = sum(Decimal(str(detail.get('amount_base', 0))) for detail in payment_details_data)
@@ -742,11 +768,11 @@ class PurchaseInvoiceService:
             session.add(detail)
         
         # Create payment voucher
-        self._create_payment_voucher(session, tenant_id, username, invoice, payment, payment_details_data)
+        self._create_payment_voucher_in_session(session, tenant_id, username, invoice, payment, payment_details_data)
         
         return payment
     
-    def _create_payment_voucher(self, session, tenant_id, username, invoice, payment, payment_details_data):
+    def _create_payment_voucher_in_session(self, session, tenant_id, username, invoice, payment, payment_details_data):
         """Create accounting voucher for payment"""
         # Get or create Payment voucher type
         voucher_type = session.query(VoucherType).filter(
@@ -1004,6 +1030,20 @@ class PurchaseInvoiceService:
                 # Add new items
                 new_items = []
                 for item_data in items_data:
+                    # Calculate and validate GST components
+                    cgst_amount = Decimal(str(item_data.get('cgst_amount_base', 0))).quantize(Decimal('0.01'))
+                    sgst_amount = Decimal(str(item_data.get('sgst_amount_base', 0))).quantize(Decimal('0.01'))
+                    igst_amount = Decimal(str(item_data.get('igst_amount_base', 0))).quantize(Decimal('0.01'))
+                    ugst_amount = Decimal(str(item_data.get('ugst_amount_base', 0))).quantize(Decimal('0.01'))
+                    cess_amount = Decimal(str(item_data.get('cess_amount_base', 0))).quantize(Decimal('0.01'))
+                    
+                    # Recalculate tax_amount to ensure constraint compliance
+                    tax_amount = (cgst_amount + sgst_amount + igst_amount + ugst_amount + cess_amount).quantize(Decimal('0.01'))
+                    
+                    # Recalculate total_amount
+                    taxable_amount = Decimal(str(item_data.get('taxable_amount_base', 0))).quantize(Decimal('0.01'))
+                    total_amount = (taxable_amount + tax_amount).quantize(Decimal('0.01'))
+                    
                     item = PurchaseInvoiceItem(
                         tenant_id=tenant_id,
                         invoice_id=invoice.id,
@@ -1019,19 +1059,19 @@ class PurchaseInvoiceService:
                         unit_price_base=item_data.get('unit_price_base'),
                         discount_percent=item_data.get('discount_percent', 0),
                         discount_amount_base=item_data.get('discount_amount_base', 0),
-                        taxable_amount_base=item_data.get('taxable_amount_base'),
+                        taxable_amount_base=taxable_amount,
                         cgst_rate=item_data.get('cgst_rate', 0),
-                        cgst_amount_base=item_data.get('cgst_amount_base', 0),
+                        cgst_amount_base=cgst_amount,
                         sgst_rate=item_data.get('sgst_rate', 0),
-                        sgst_amount_base=item_data.get('sgst_amount_base', 0),
+                        sgst_amount_base=sgst_amount,
                         igst_rate=item_data.get('igst_rate', 0),
-                        igst_amount_base=item_data.get('igst_amount_base', 0),
+                        igst_amount_base=igst_amount,
                         ugst_rate=item_data.get('ugst_rate', 0),
-                        ugst_amount_base=item_data.get('ugst_amount_base', 0),
+                        ugst_amount_base=ugst_amount,
                         cess_rate=item_data.get('cess_rate', 0),
-                        cess_amount_base=item_data.get('cess_amount_base', 0),
-                        tax_amount_base=item_data.get('tax_amount_base', 0),
-                        total_amount_base=item_data.get('total_amount_base'),
+                        cess_amount_base=cess_amount,
+                        tax_amount_base=tax_amount,
+                        total_amount_base=total_amount,
                         unit_price_foreign=item_data.get('unit_price_foreign'),
                         discount_amount_foreign=item_data.get('discount_amount_foreign'),
                         taxable_amount_foreign=item_data.get('taxable_amount_foreign'),
@@ -1219,3 +1259,229 @@ class PurchaseInvoiceService:
             'total_amount_foreign': item.total_amount_foreign,
             'landed_cost_per_unit': item.landed_cost_per_unit
         }
+    
+    def create_purchase_voucher(self, invoice_id: int, items_data: list = None):
+        """Create purchase voucher using voucher service"""
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            username = session_manager.get_current_username()
+            
+            invoice = session.query(PurchaseInvoice).filter(
+                PurchaseInvoice.id == invoice_id,
+                PurchaseInvoice.tenant_id == tenant_id,
+                PurchaseInvoice.is_deleted == False
+            ).first()
+            
+            if not invoice:
+                raise ValueError(f"Purchase invoice with ID {invoice_id} not found")
+            
+            if invoice.voucher_id:
+                raise ValueError("Voucher already exists for this invoice")
+            
+            # Get items if not provided
+            if not items_data:
+                items = session.query(PurchaseInvoiceItem).filter(
+                    PurchaseInvoiceItem.invoice_id == invoice_id
+                ).all()
+                items_data = [self._item_to_dict(item) for item in items]
+            
+            # Create voucher
+            voucher = self._create_purchase_voucher_in_session(
+                session=session,
+                tenant_id=tenant_id,
+                username=username,
+                invoice=invoice,
+                items_data=items_data
+            )
+            
+            # Link voucher to invoice
+            invoice.voucher_id = voucher.id
+            
+            session.commit()
+            return voucher.id
+    
+    def create_purchase_payment(self, invoice_id: int, payment_data: dict):
+        """Create payment for purchase invoice using payment service"""
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            username = session_manager.get_current_username()
+            
+            invoice = session.query(PurchaseInvoice).filter(
+                PurchaseInvoice.id == invoice_id,
+                PurchaseInvoice.tenant_id == tenant_id,
+                PurchaseInvoice.is_deleted == False
+            ).first()
+            
+            if not invoice:
+                raise ValueError(f"Purchase invoice with ID {invoice_id} not found")
+            
+            # Extract payment details
+            payment_details_data = payment_data.get('payment_details', [])
+            payment_number = payment_data.get('payment_number')
+            payment_remarks = payment_data.get('payment_remarks')
+            
+            if not payment_number:
+                payment_number = f"PAY-{invoice.invoice_number}"
+            
+            # Create payment
+            payment = self._create_payment_in_session(
+                session=session,
+                tenant_id=tenant_id,
+                username=username,
+                invoice=invoice,
+                payment_number=payment_number,
+                payment_details_data=payment_details_data,
+                payment_remarks=payment_remarks
+            )
+            
+            # Update invoice payment status
+            paid_amount = sum(Decimal(str(detail.get('amount_base', 0))) for detail in payment_details_data)
+            invoice.paid_amount_base = (invoice.paid_amount_base or Decimal('0')) + paid_amount
+            invoice.balance_amount_base = invoice.total_amount_base - invoice.paid_amount_base
+            
+            # Update status
+            if invoice.balance_amount_base <= 0:
+                invoice.status = 'PAID'
+            elif invoice.paid_amount_base > 0:
+                invoice.status = 'PARTIALLY_PAID'
+            
+            invoice.updated_by = username
+            
+            session.commit()
+            return payment.id
+    
+    @ExceptionMiddleware.handle_exceptions("PurchaseInvoiceService")
+    def get_invoice_voucher_details(self, invoice_id: int):
+        """Get voucher details for a purchase invoice"""
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            
+            invoice = session.query(PurchaseInvoice).filter(
+                PurchaseInvoice.id == invoice_id,
+                PurchaseInvoice.tenant_id == tenant_id,
+                PurchaseInvoice.is_deleted == False
+            ).first()
+            
+            if not invoice or not invoice.voucher_id:
+                return None
+            
+            return self.voucher_service.get_by_id(invoice.voucher_id)
+    
+    @ExceptionMiddleware.handle_exceptions("PurchaseInvoiceService")
+    def get_invoice_payments(self, invoice_id: int):
+        """Get all payments for a purchase invoice"""
+        from modules.account_module.models.payment_entity import Payment
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            
+            invoice = session.query(PurchaseInvoice).filter(
+                PurchaseInvoice.id == invoice_id,
+                PurchaseInvoice.tenant_id == tenant_id,
+                PurchaseInvoice.is_deleted == False
+            ).first()
+            
+            if not invoice:
+                return []
+            
+            payments = session.query(Payment).filter(
+                Payment.tenant_id == tenant_id,
+                Payment.party_type == 'SUPPLIER',
+                Payment.party_id == invoice.supplier_id,
+                Payment.reference_number == invoice.invoice_number,
+                Payment.is_deleted == False
+            ).all()
+            
+            return [self.payment_service._payment_to_dict(p, include_details=True) for p in payments]
+    
+    @ExceptionMiddleware.handle_exceptions("PurchaseInvoiceService")
+    def validate_invoice_accounting(self, invoice_id: int):
+        """Validate that invoice has proper voucher and payment entries"""
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            
+            invoice = session.query(PurchaseInvoice).filter(
+                PurchaseInvoice.id == invoice_id,
+                PurchaseInvoice.tenant_id == tenant_id,
+                PurchaseInvoice.is_deleted == False
+            ).first()
+            
+            if not invoice:
+                return {'valid': False, 'errors': ['Invoice not found']}
+            
+            errors = []
+            
+            # Check if voucher exists
+            if not invoice.voucher_id:
+                errors.append('Purchase voucher not created')
+            else:
+                voucher = session.query(Voucher).filter(
+                    Voucher.id == invoice.voucher_id,
+                    Voucher.tenant_id == tenant_id
+                ).first()
+                
+                if not voucher:
+                    errors.append('Purchase voucher not found')
+                elif not voucher.is_posted:
+                    errors.append('Purchase voucher not posted')
+            
+            # Check payment status alignment
+            if invoice.status in ['PAID', 'PARTIALLY_PAID']:
+                if invoice.paid_amount_base <= 0:
+                    errors.append('Invoice marked as paid but no payment amount recorded')
+                
+                # Check if payment vouchers exist
+                from modules.account_module.models.payment_entity import Payment
+                payments = session.query(Payment).filter(
+                    Payment.tenant_id == tenant_id,
+                    Payment.party_type == 'SUPPLIER',
+                    Payment.party_id == invoice.supplier_id,
+                    Payment.reference_number == invoice.invoice_number,
+                    Payment.is_deleted == False
+                ).all()
+                
+                total_payments = sum(p.total_amount_base for p in payments)
+                if abs(total_payments - invoice.paid_amount_base) > Decimal('0.01'):
+                    errors.append('Payment amount mismatch between invoice and payment records')
+            
+            return {
+                'valid': len(errors) == 0,
+                'errors': errors,
+                'invoice_id': invoice_id,
+                'voucher_id': invoice.voucher_id,
+                'status': invoice.status,
+                'total_amount': float(invoice.total_amount_base),
+                'paid_amount': float(invoice.paid_amount_base or 0),
+                'balance_amount': float(invoice.balance_amount_base or 0)
+            }
+    
+    @ExceptionMiddleware.handle_exceptions("PurchaseInvoiceService")
+    def get_invoice_accounting_summary(self, invoice_id: int):
+        """Get complete accounting summary for purchase invoice"""
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            
+            invoice = session.query(PurchaseInvoice).filter(
+                PurchaseInvoice.id == invoice_id,
+                PurchaseInvoice.tenant_id == tenant_id,
+                PurchaseInvoice.is_deleted == False
+            ).first()
+            
+            if not invoice:
+                return None
+            
+            result = {
+                'invoice': self._to_dict(invoice, include_items=True),
+                'voucher': None,
+                'payments': [],
+                'validation': self.validate_invoice_accounting(invoice_id)
+            }
+            
+            # Get voucher details
+            if invoice.voucher_id:
+                result['voucher'] = self.get_invoice_voucher_details(invoice_id)
+            
+            # Get payment details
+            result['payments'] = self.get_invoice_payments(invoice_id)
+            
+            return result

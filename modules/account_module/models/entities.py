@@ -12,6 +12,7 @@ class AccountGroup(Base):
     parent_id = Column(Integer, ForeignKey('account_groups.id'))
     account_type = Column(String(20), nullable=False)  # ASSET, LIABILITY, EQUITY, INCOME, EXPENSE
     is_active = Column(Boolean, default=True)
+    is_system_assigned = Column(Boolean, default=False)
     tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     

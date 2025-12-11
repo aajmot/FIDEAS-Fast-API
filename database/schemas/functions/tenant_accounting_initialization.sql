@@ -82,6 +82,7 @@ DECLARE
     v_key_cgst_output_id INTEGER;
     v_key_sgst_output_id INTEGER;
     v_key_igst_output_id INTEGER;
+    v_key_waste_expense_id INTEGER;
     
     -- Module IDs
     v_inventory_module_id INTEGER;
@@ -320,7 +321,10 @@ BEGIN
     -- Use ON CONFLICT to make this idempotent
     
     INSERT INTO account_configuration_keys (code, name, description, is_active)
-    VALUES ('CASH', 'Cash Account', 'Default cash account for cash transactions', TRUE)
+    VALUES 
+    ('WASTE_EXPENSE', 'Waste Expense Account', 'Account for recording product waste and spoilage expenses', TRUE),
+    ('INVENTORY', 'Inventory Account', 'Account for tracking inventory assets', TRUE),
+    ('CASH', 'Cash Account', 'Default cash account for cash transactions', TRUE)
     ON CONFLICT (code) DO NOTHING;
     SELECT id INTO v_key_cash_id FROM account_configuration_keys WHERE code = 'CASH';
     
@@ -384,6 +388,8 @@ BEGIN
     ON CONFLICT (code) DO NOTHING;
     SELECT id INTO v_key_igst_output_id FROM account_configuration_keys WHERE code = 'GST_OUTPUT_IGST';
     
+    SELECT id INTO v_key_waste_expense_id FROM account_configuration_keys WHERE code = 'WASTE_EXPENSE';
+    
     -- Update default_account_id for configuration keys (global defaults)
     UPDATE account_configuration_keys SET default_account_id = v_cash_id WHERE code = 'CASH' AND default_account_id IS NULL;
     UPDATE account_configuration_keys SET default_account_id = v_bank_id WHERE code = 'BANK' AND default_account_id IS NULL;
@@ -398,13 +404,14 @@ BEGIN
     UPDATE account_configuration_keys SET default_account_id = v_cgst_output_id WHERE code = 'GST_OUTPUT_CGST' AND default_account_id IS NULL;
     UPDATE account_configuration_keys SET default_account_id = v_sgst_output_id WHERE code = 'GST_OUTPUT_SGST' AND default_account_id IS NULL;
     UPDATE account_configuration_keys SET default_account_id = v_igst_output_id WHERE code = 'GST_OUTPUT_IGST' AND default_account_id IS NULL;
+    UPDATE account_configuration_keys SET default_account_id = v_waste_loss_id WHERE code = 'WASTE_EXPENSE' AND default_account_id IS NULL;
     
     -- Count new keys created (approximate)
     SELECT COUNT(*) INTO v_config_keys_count 
     FROM account_configuration_keys 
     WHERE code IN ('CASH', 'BANK', 'ACCOUNTS_RECEIVABLE', 'ACCOUNTS_PAYABLE', 'INVENTORY', 
                    'SALES', 'PURCHASE', 'GST_INPUT_CGST', 'GST_INPUT_SGST', 'GST_INPUT_IGST',
-                   'GST_OUTPUT_CGST', 'GST_OUTPUT_SGST', 'GST_OUTPUT_IGST');
+                   'GST_OUTPUT_CGST', 'GST_OUTPUT_SGST', 'GST_OUTPUT_IGST', 'WASTE_EXPENSE');
     
     -- =====================================================
     -- 4. CREATE ACCOUNT CONFIGURATIONS (TENANT-SPECIFIC MAPPINGS)
@@ -470,9 +477,10 @@ BEGIN
         (p_tenant_id, v_key_igst_input_id, v_igst_input_id, NULL, p_created_by),
         (p_tenant_id, v_key_cgst_output_id, v_cgst_output_id, NULL, p_created_by),
         (p_tenant_id, v_key_sgst_output_id, v_sgst_output_id, NULL, p_created_by),
-        (p_tenant_id, v_key_igst_output_id, v_igst_output_id, NULL, p_created_by);
+        (p_tenant_id, v_key_igst_output_id, v_igst_output_id, NULL, p_created_by),
+        (p_tenant_id, v_key_waste_expense_id, v_waste_loss_id, 'INVENTORY', p_created_by);
     
-    v_configurations_count := 13;
+    v_configurations_count := 14;
     
     -- =====================================================
     -- 5. CREATE VOUCHER TYPES

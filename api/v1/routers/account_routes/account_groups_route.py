@@ -23,7 +23,8 @@ async def get_account_groups(current_user: dict = Depends(get_current_user)):
             "code": group.code,
             "parent_id": group.parent_id,
             "account_type": group.account_type,
-            "is_active": group.is_active
+            "is_active": group.is_active,
+            "is_system_assigned": group.is_system_assigned
         } for group in groups]
 
     return PaginatedResponse(
@@ -50,6 +51,7 @@ async def create_account_group(group_data: Dict[str, Any], current_user: dict = 
                 parent_id=group_data.get('parent_id') if group_data.get('parent_id') else None,
                 account_type=group_data['account_type'],
                 is_active=group_data.get('is_active', True),
+                is_system_assigned=group_data.get('is_system_assigned', False),
                 tenant_id=current_user['tenant_id']
             )
             session.add(group)
@@ -119,6 +121,9 @@ async def delete_account_group(group_id: int, current_user: dict = Depends(get_c
 
             if not group:
                 raise HTTPException(status_code=404, detail="Account group not found")
+            
+            if group.is_system_assigned:
+                raise HTTPException(status_code=400, detail="Cannot delete system assigned account group")
 
             session.delete(group)
             session.commit()

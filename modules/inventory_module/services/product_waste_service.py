@@ -1,12 +1,16 @@
 from core.database.connection import db_manager
 from modules.inventory_module.models.product_waste_entity import ProductWaste, ProductWasteItem
 from modules.inventory_module.models.entities import Product, Inventory
+from modules.account_module.services.voucher_service import VoucherService
 from core.shared.utils.session_manager import session_manager
 from core.shared.middleware.exception_handler import ExceptionMiddleware
 from datetime import datetime
 from decimal import Decimal
 
 class ProductWasteService:
+    
+    def __init__(self):
+        self.voucher_service = VoucherService()
     @ExceptionMiddleware.handle_exceptions("ProductWasteService")
     def create(self, waste_data: dict):
         with db_manager.get_session() as session:
@@ -100,12 +104,8 @@ class ProductWasteService:
                 session.flush()
                 
                 # Create accounting voucher for waste
-                try:
-                    voucher = self._create_waste_voucher(session, tenant_id, username, product_waste, items_data)
-                    product_waste.voucher_id = voucher.id
-                except Exception as e:
-                    # Log error but don't fail the transaction
-                    print(f"Warning: Could not create waste voucher: {str(e)}")
+                voucher = self._create_waste_voucher_in_session(session, tenant_id, username, product_waste, items_data)
+                product_waste.voucher_id = voucher.id
                 
                 session.commit()
                 return product_waste.id
@@ -209,7 +209,7 @@ class ProductWasteService:
         # Default to INR if not found
         return 'INR'
     
-    def _create_waste_voucher(self, session, tenant_id, username, waste, items_data):
+    def _create_waste_voucher_in_session(self, session, tenant_id, username, waste, items_data):
         """Create accounting voucher for product waste"""
         from modules.account_module.models.entities import Voucher, VoucherLine, VoucherType
         from modules.account_module.models.account_configuration_entity import AccountConfiguration
@@ -231,8 +231,8 @@ class ProductWasteService:
         # Generate voucher number
         voucher_number = f"JV-WASTE-{waste.waste_number}"
         
-        # Convert total cost to Decimal to ensure proper handling
-        total_cost = Decimal(str(waste.total_cost_base)) if waste.total_cost_base else Decimal('0.0000')
+        # Convert total cost to Decimal with 2 decimal places for consistency
+        total_cost = Decimal(str(waste.total_cost_base)).quantize(Decimal('0.01')) if waste.total_cost_base else Decimal('0.00')
         
         # Create voucher
         voucher = Voucher(
@@ -242,7 +242,7 @@ class ProductWasteService:
             voucher_date=waste.waste_date if hasattr(waste.waste_date, 'hour') else datetime.combine(waste.waste_date, datetime.min.time()),
             base_currency_id=waste.currency_id,
             foreign_currency_id=None,
-            exchange_rate=Decimal('1.0000'),
+            exchange_rate=Decimal('1.00'),
             base_total_amount=total_cost,
             base_total_debit=total_cost,
             base_total_credit=total_cost,
@@ -277,7 +277,7 @@ class ProductWasteService:
             account_id=waste_expense_account_id,
             description=f"Waste expense - {waste.reason or 'Product waste recorded'}",
             debit_base=total_cost,
-            credit_base=Decimal('0.0000'),
+            credit_base=Decimal('0.00'),
             debit_foreign=None,
             credit_foreign=None,
             reference_type='PRODUCT_WASTE',
@@ -295,7 +295,7 @@ class ProductWasteService:
             line_no=line_no,
             account_id=inventory_account_id,
             description=f"Inventory reduction due to waste - {waste.waste_number}",
-            debit_base=Decimal('0.0000'),
+            debit_base=Decimal('0.00'),
             credit_base=total_cost,
             debit_foreign=None,
             credit_foreign=None,
@@ -326,8 +326,8 @@ class ProductWasteService:
         # Get account configuration for tenant
         config = session.query(AccountConfiguration).filter(
             AccountConfiguration.tenant_id == tenant_id,
-            AccountConfiguration.key_id == config_key.id,
-            AccountConfiguration.is_active == True
+            AccountConfiguration.config_key_id == config_key.id,
+            AccountConfiguration.is_deleted == False
         ).first()
         
         if config and config.account_id:

@@ -1,115 +1,95 @@
 from core.database.connection import db_manager
 from modules.inventory_module.models.stock_transfer_entity import StockTransfer, StockTransferItem
 from modules.inventory_module.models.entities import Product, Warehouse, Inventory
-from core.shared.utils.session_manager import session_manager
 from core.shared.middleware.exception_handler import ExceptionMiddleware
 from datetime import datetime
 from decimal import Decimal
+from typing import Dict, Any
 
 
 class StockTransferService:
     
     @ExceptionMiddleware.handle_exceptions("StockTransferService")
-    def create(self, transfer_data: dict):
+    def create(self, transfer_data, tenant_id: int, username: str) -> int:
+        """Create stock transfer with proper validation and inventory updates"""
         with db_manager.get_session() as session:
             try:
-                tenant_id = session_manager.get_current_tenant_id()
-                username = session_manager.get_current_username()
+                # Convert to dict if it's a Pydantic model
+                if hasattr(transfer_data, 'dict'):
+                    transfer_dict = transfer_data.dict()
+                else:
+                    transfer_dict = transfer_data
                 
                 # Extract items from transfer_data
-                items_data = transfer_data.pop('items', [])
+                items_data = transfer_dict.pop('items', [])
                 if not items_data:
                     raise ValueError("At least one transfer item is required")
                 
-                # Validate warehouses are different
-                if transfer_data['from_warehouse_id'] == transfer_data['to_warehouse_id']:
-                    raise ValueError("Source and destination warehouses must be different")
+                # Validate warehouses exist and are different
+                self._validate_warehouses(session, transfer_dict['from_warehouse_id'], 
+                                        transfer_dict['to_warehouse_id'], tenant_id)
                 
-                # Set header-level fields
-                transfer_data['tenant_id'] = tenant_id
-                transfer_data['created_by'] = username
-                transfer_data['updated_by'] = username
+                # Generate transfer number if not provided
+                if not transfer_dict.get('transfer_number'):
+                    transfer_dict['transfer_number'] = self._generate_transfer_number(session, tenant_id)
                 
-                # Set currency_id if not provided
-                if not transfer_data.get('currency_id'):
-                    base_currency_code = self._get_tenant_base_currency(session, tenant_id)
-                    from modules.admin_module.models.currency import Currency
-                    currency = session.query(Currency).filter(
-                        Currency.code == base_currency_code,
-                        Currency.is_active == True
-                    ).first()
-                    
-                    if not currency:
-                        currency = session.query(Currency).filter(
-                            Currency.is_base == True,
-                            Currency.is_active == True
-                        ).first()
-                    
-                    if currency:
-                        transfer_data['currency_id'] = currency.id
-                
-                # Set exchange_rate to 1 for base currency
-                if not transfer_data.get('exchange_rate'):
-                    transfer_data['exchange_rate'] = 1.0
+                # Set defaults
+                transfer_dict['tenant_id'] = tenant_id
+                transfer_dict['created_by'] = username
+                transfer_dict['updated_by'] = username
+                transfer_dict['transfer_date'] = transfer_dict.get('transfer_date') or datetime.utcnow()
+                transfer_dict['exchange_rate'] = transfer_dict.get('exchange_rate', 1.0)
                 
                 # Initialize totals
-                transfer_data['total_items'] = 0
-                transfer_data['total_quantity'] = 0
-                transfer_data['total_cost_base'] = 0
+                transfer_dict['total_items'] = len(items_data)
+                transfer_dict['total_quantity'] = 0
+                transfer_dict['total_cost_base'] = 0
                 
                 # Create header record
-                stock_transfer = StockTransfer(**transfer_data)
+                stock_transfer = StockTransfer(**transfer_dict)
                 session.add(stock_transfer)
                 session.flush()  # Get the transfer_id
                 
-                # Create line items and calculate totals
-                for item_data in items_data:
+                # Process line items
+                for idx, item_data in enumerate(items_data):
+                    # Set item defaults
                     item_data['tenant_id'] = tenant_id
                     item_data['transfer_id'] = stock_transfer.id
                     item_data['created_by'] = username
                     item_data['updated_by'] = username
+                    item_data['line_no'] = item_data.get('line_no', idx + 1)
                     
-                    from_warehouse_id = transfer_data['from_warehouse_id']
-                    to_warehouse_id = transfer_data['to_warehouse_id']
-                    product_id = item_data['product_id']
-                    batch_number = item_data.get('batch_number', '')
+                    # Validate product exists
+                    product = session.query(Product).filter(
+                        Product.id == item_data['product_id'],
+                        Product.tenant_id == tenant_id,
+                        Product.is_deleted == False
+                    ).first()
+                    if not product:
+                        raise ValueError(f"Product with ID {item_data['product_id']} not found")
                     
-                    # Get from_stock_before if not provided
-                    if item_data.get('from_stock_before') is None:
-                        from_stock = self._get_current_stock(session, from_warehouse_id, product_id, batch_number)
-                        item_data['from_stock_before'] = from_stock
-                    else:
-                        from_stock = Decimal(str(item_data['from_stock_before']))
+                    # Get current stock levels
+                    from_stock = self._get_current_stock(session, transfer_dict['from_warehouse_id'], 
+                                                       item_data['product_id'], item_data.get('batch_number'))
+                    to_stock = self._get_current_stock(session, transfer_dict['to_warehouse_id'], 
+                                                     item_data['product_id'], item_data.get('batch_number'))
                     
-                    # Get to_stock_before if not provided
-                    if item_data.get('to_stock_before') is None:
-                        to_stock = self._get_current_stock(session, to_warehouse_id, product_id, batch_number)
-                        item_data['to_stock_before'] = to_stock
-                    else:
-                        to_stock = Decimal(str(item_data['to_stock_before']))
-                    
-                    # Calculate stock_after
                     quantity = Decimal(str(item_data['quantity']))
+                    
+                    # Set stock before/after
+                    item_data['from_stock_before'] = from_stock
                     item_data['from_stock_after'] = from_stock - quantity
+                    item_data['to_stock_before'] = to_stock
                     item_data['to_stock_after'] = to_stock + quantity
                     
-                    # Validate sufficient stock in source warehouse
+                    # Validate sufficient stock
                     if item_data['from_stock_after'] < 0:
-                        product = session.query(Product).filter(Product.id == product_id).first()
-                        product_name = product.name if product else f"Product ID {product_id}"
-                        raise ValueError(f"Insufficient stock for {product_name}. Available: {from_stock}, Requested: {quantity}")
+                        raise ValueError(f"Insufficient stock for {product.name}. Available: {from_stock}, Requested: {quantity}")
                     
-                    # Calculate total_cost_base (quantity * unit_cost_base)
+                    # Calculate costs
                     unit_cost_base = Decimal(str(item_data['unit_cost_base']))
                     item_data['total_cost_base'] = quantity * unit_cost_base
                     
-                    # Set item currency from header if not specified
-                    if not item_data.get('currency_id'):
-                        item_data['currency_id'] = transfer_data.get('currency_id')
-                    if not item_data.get('exchange_rate'):
-                        item_data['exchange_rate'] = transfer_data.get('exchange_rate', 1.0)
-                    
-                    # Calculate foreign currency total if provided
                     if item_data.get('unit_cost_foreign'):
                         unit_cost_foreign = Decimal(str(item_data['unit_cost_foreign']))
                         item_data['total_cost_foreign'] = quantity * unit_cost_foreign
@@ -119,28 +99,12 @@ class StockTransferService:
                     session.add(transfer_item)
                     
                     # Update header totals
-                    stock_transfer.total_items += 1
                     stock_transfer.total_quantity += quantity
                     stock_transfer.total_cost_base += item_data['total_cost_base']
                     
-                    # Record stock transactions only if status is APPROVED or COMPLETED
-                    if transfer_data.get('status') in ['APPROVED', 'COMPLETED']:
-                        try:
-                            from modules.inventory_module.services.stock_service import StockService
-                            stock_service = StockService()
-                            stock_service.record_transfer_transaction_in_session(
-                                session, transfer_item, stock_transfer
-                            )
-                        except (ImportError, AttributeError) as e:
-                            print(f"Stock service not available: {e}")
-                
-                session.flush()
-                
-                # Record accounting transactions (optional)
-                try:
-                    self._record_accounting_transaction_in_session(session, stock_transfer)
-                except (ImportError, AttributeError) as e:
-                    print(f"Accounting service not available: {e}")
+                    # Update inventory if status is APPROVED or COMPLETED
+                    if transfer_dict.get('status') in ['APPROVED', 'COMPLETED']:
+                        self._update_inventory(session, transfer_item, stock_transfer, tenant_id)
                 
                 session.commit()
                 return stock_transfer.id
@@ -150,15 +114,12 @@ class StockTransferService:
                 raise e
     
     @ExceptionMiddleware.handle_exceptions("StockTransferService")
-    def get_all(self, page=1, page_size=100, status=None):
+    def get_all(self, tenant_id: int, page: int = 1, page_size: int = 100, status: str = None) -> Dict[str, Any]:
         with db_manager.get_session() as session:
-            query = session.query(StockTransfer)
-            tenant_id = session_manager.get_current_tenant_id()
-            if tenant_id:
-                query = query.filter(
-                    StockTransfer.tenant_id == tenant_id,
-                    StockTransfer.is_deleted == False
-                )
+            query = session.query(StockTransfer).filter(
+                StockTransfer.tenant_id == tenant_id,
+                StockTransfer.is_deleted == False
+            )
             
             # Filter by status if provided
             if status:
@@ -262,9 +223,8 @@ class StockTransferService:
             }
     
     @ExceptionMiddleware.handle_exceptions("StockTransferService")
-    def get_by_id(self, transfer_id: int):
+    def get_by_id(self, transfer_id: int, tenant_id: int):
         with db_manager.get_session() as session:
-            tenant_id = session_manager.get_current_tenant_id()
             transfer = session.query(StockTransfer).filter(
                 StockTransfer.id == transfer_id,
                 StockTransfer.tenant_id == tenant_id,
@@ -352,55 +312,104 @@ class StockTransferService:
             return type('StockTransfer', (), transfer_dict)()
     
     @ExceptionMiddleware.handle_exceptions("StockTransferService")
-    def get_total_count(self, status=None):
+    def get_total_count(self, tenant_id: int, status: str = None) -> int:
         with db_manager.get_session() as session:
-            query = session.query(StockTransfer)
-            tenant_id = session_manager.get_current_tenant_id()
-            if tenant_id:
-                query = query.filter(
-                    StockTransfer.tenant_id == tenant_id,
-                    StockTransfer.is_deleted == False
-                )
+            query = session.query(StockTransfer).filter(
+                StockTransfer.tenant_id == tenant_id,
+                StockTransfer.is_deleted == False
+            )
             if status:
                 query = query.filter(StockTransfer.status == status)
             return query.count()
     
-    def _get_current_stock(self, session, warehouse_id, product_id, batch_number):
+    def _validate_warehouses(self, session, from_warehouse_id: int, to_warehouse_id: int, tenant_id: int):
+        """Validate warehouses exist and are different"""
+        if from_warehouse_id == to_warehouse_id:
+            raise ValueError("Source and destination warehouses must be different")
+        
+        from_warehouse = session.query(Warehouse).filter(
+            Warehouse.id == from_warehouse_id,
+            Warehouse.tenant_id == tenant_id,
+            Warehouse.is_active == True
+        ).first()
+        
+        to_warehouse = session.query(Warehouse).filter(
+            Warehouse.id == to_warehouse_id,
+            Warehouse.tenant_id == tenant_id,
+            Warehouse.is_active == True
+        ).first()
+        
+        if not from_warehouse:
+            raise ValueError(f"Source warehouse with ID {from_warehouse_id} not found")
+        if not to_warehouse:
+            raise ValueError(f"Destination warehouse with ID {to_warehouse_id} not found")
+    
+    def _generate_transfer_number(self, session, tenant_id: int) -> str:
+        """Generate unique transfer number"""
+        now = datetime.now()
+        prefix = f"ST-{tenant_id}-{now.strftime('%Y%m%d')}"
+        
+        # Get last transfer number for today
+        last_transfer = session.query(StockTransfer).filter(
+            StockTransfer.transfer_number.like(f"{prefix}%"),
+            StockTransfer.tenant_id == tenant_id
+        ).order_by(StockTransfer.id.desc()).first()
+        
+        if last_transfer:
+            try:
+                seq = int(last_transfer.transfer_number.split('-')[-1]) + 1
+            except (ValueError, IndexError):
+                seq = 1
+        else:
+            seq = 1
+        
+        return f"{prefix}-{seq:04d}"
+    
+    def _get_current_stock(self, session, warehouse_id: int, product_id: int, batch_number: str = None) -> Decimal:
         """Get current stock quantity for a product/batch in warehouse"""
-        inventory = session.query(Inventory).filter(
-            Inventory.warehouse_id == warehouse_id,
-            Inventory.product_id == product_id,
-            Inventory.batch_number == (batch_number or '')
+        from modules.inventory_module.models.warehouse_entity import StockByLocation
+        
+        stock = session.query(StockByLocation).filter(
+            StockByLocation.warehouse_id == warehouse_id,
+            StockByLocation.product_id == product_id
         ).first()
         
-        return Decimal(str(inventory.quantity)) if inventory else Decimal('0')
+        return Decimal(str(stock.quantity)) if stock else Decimal('0')
     
-    def _get_tenant_base_currency(self, session, tenant_id):
-        """Get tenant's base currency code from tenant_settings"""
-        from modules.admin_module.models.entities import TenantSetting
+    def _update_inventory(self, session, transfer_item: StockTransferItem, stock_transfer: StockTransfer, tenant_id: int):
+        """Update inventory for approved/completed transfers"""
+        from modules.inventory_module.models.warehouse_entity import StockByLocation
         
-        setting = session.query(TenantSetting).filter(
-            TenantSetting.tenant_id == tenant_id,
-            TenantSetting.setting == 'base_currency'
+        # Update source warehouse inventory (decrease)
+        from_stock = session.query(StockByLocation).filter(
+            StockByLocation.warehouse_id == stock_transfer.from_warehouse_id,
+            StockByLocation.product_id == transfer_item.product_id,
+            StockByLocation.tenant_id == tenant_id
         ).first()
         
-        if setting and setting.value:
-            return setting.value
+        if from_stock:
+            from_stock.quantity -= transfer_item.quantity
+            from_stock.available_quantity -= transfer_item.quantity
+            from_stock.updated_at = datetime.utcnow()
         
-        # Default to INR if not found
-        return 'INR'
-    
-    def _record_accounting_transaction_in_session(self, session, stock_transfer):
-        """Record accounting transaction for stock transfer (optional)"""
-        try:
-            from modules.account_module.services.payment_service import PaymentService
-            payment_service = PaymentService()
-            payment_service.record_transfer_transaction_in_session(
-                session,
-                stock_transfer.id,
-                stock_transfer.transfer_number,
-                float(stock_transfer.total_cost_base),
-                stock_transfer.transfer_date
+        # Update destination warehouse inventory (increase)
+        to_stock = session.query(StockByLocation).filter(
+            StockByLocation.warehouse_id == stock_transfer.to_warehouse_id,
+            StockByLocation.product_id == transfer_item.product_id,
+            StockByLocation.tenant_id == tenant_id
+        ).first()
+        
+        if to_stock:
+            to_stock.quantity += transfer_item.quantity
+            to_stock.available_quantity += transfer_item.quantity
+            to_stock.updated_at = datetime.utcnow()
+        else:
+            # Create new stock record for destination
+            to_stock = StockByLocation(
+                tenant_id=tenant_id,
+                warehouse_id=stock_transfer.to_warehouse_id,
+                product_id=transfer_item.product_id,
+                quantity=transfer_item.quantity,
+                available_quantity=transfer_item.quantity
             )
-        except ImportError:
-            pass  # Account module not available
+            session.add(to_stock)
