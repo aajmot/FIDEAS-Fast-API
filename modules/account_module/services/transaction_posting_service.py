@@ -211,28 +211,7 @@ class TransactionPostingService:
     @staticmethod
     def _create_ledger_entries(session: Session, voucher_id: int, journal_id: int, 
                                data: Dict[str, Any], tenant_id: int):
-        """Create ledger entries from journal details"""
-        details = session.execute(text("""
-            SELECT account_id, debit_amount, credit_amount, narration
-            FROM journal_details WHERE journal_id = :journal_id
-        """), {"journal_id": journal_id}).fetchall()
-        
-        for detail in details:
-            balance = Decimal(str(detail[1])) - Decimal(str(detail[2]))
-            
-            session.execute(text("""
-                INSERT INTO ledgers (
-                    account_id, voucher_id, transaction_date, debit_amount,
-                    credit_amount, balance, narration, tenant_id
-                ) VALUES (
-                    :account_id, :voucher_id, CURRENT_TIMESTAMP, :debit, :credit, :balance, :narration, :tenant_id
-                )
-            """), {
-                "account_id": detail[0],
-                "voucher_id": voucher_id,
-                "debit": detail[1],
-                "credit": detail[2],
-                "balance": balance,
-                "narration": detail[3],
-                "tenant_id": tenant_id
-            })
+        """Create ledger entries from voucher lines using LedgerService"""
+        from modules.account_module.services.ledger_service import LedgerService
+        ledger_service = LedgerService()
+        ledger_service.create_from_voucher(voucher_id, session)

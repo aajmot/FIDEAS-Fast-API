@@ -1,87 +1,77 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
-from typing import Optional
+from typing import Optional, List
 import math
+from datetime import datetime
 from api.schemas.common import PaginatedResponse, BaseResponse, PaginationParams
 from api.middleware.auth_middleware import get_current_user
+from modules.account_module.services.ledger_service import LedgerService
+from modules.account_module.models.ledger_schemas import LedgerResponse, LedgerSummary, BookType
+from core.database.connection import db_manager
+from modules.account_module.models.ledger_entity import Ledger
+from modules.account_module.models.entities import Voucher, AccountMaster, VoucherType
+from sqlalchemy import or_, and_
 
 router = APIRouter()
+ledger_service = LedgerService()
 
 
 @router.get("/ledger", response_model=PaginatedResponse)
 async def get_ledger(
     pagination: PaginationParams = Depends(),
-    account_id: Optional[str] = Query(None),
+    account_id: Optional[int] = Query(None),
     from_date: Optional[str] = Query(None),
     to_date: Optional[str] = Query(None),
-    voucher_type: Optional[str] = Query(None),
+    is_reconciled: Optional[bool] = Query(None),
+    reference_type: Optional[str] = Query(None),
     current_user: dict = Depends(get_current_user)
 ):
-    from core.database.connection import db_manager
-    from modules.account_module.models.entities import Ledger, Voucher, AccountMaster, VoucherType
-    from sqlalchemy import or_
-    from datetime import datetime
-
-    with db_manager.get_session() as session:
-        query = session.query(Ledger).join(Voucher).join(AccountMaster).join(VoucherType, Voucher.voucher_type_id == VoucherType.id).filter(
-            Ledger.tenant_id == current_user['tenant_id']
-        )
-
-        if account_id and account_id.strip():
-            try:
-                query = query.filter(Ledger.account_id == int(account_id))
-            except ValueError:
-                pass
-
-        if from_date and from_date.strip():
-            try:
-                from_dt = datetime.fromisoformat(from_date.replace('Z', '+00:00'))
-                query = query.filter(Ledger.transaction_date >= from_dt)
-            except ValueError:
-                pass
-
-        if to_date and to_date.strip():
-            try:
-                to_dt = datetime.fromisoformat(to_date.replace('Z', '+00:00'))
-                query = query.filter(Ledger.transaction_date <= to_dt)
-            except ValueError:
-                pass
-
-        if voucher_type and voucher_type.strip():
-            query = query.filter(VoucherType.name.ilike(f"%{voucher_type}%"))
-
-        if pagination.search:
-            query = query.filter(or_(
-                Voucher.voucher_number.ilike(f"%{pagination.search}%"),
-                AccountMaster.name.ilike(f"%{pagination.search}%"),
-                Ledger.narration.ilike(f"%{pagination.search}%")
-            ))
-
-        query = query.order_by(Ledger.transaction_date.desc(), Ledger.id.desc())
-
-        total = query.count()
-        ledger_entries = query.offset(pagination.offset).limit(pagination.per_page).all()
-
-        ledger_data = []
-        for entry in ledger_entries:
-            try:
-                debit_amount = float(entry.debit_amount) if entry.debit_amount is not None else 0.0
-                credit_amount = float(entry.credit_amount) if entry.credit_amount is not None else 0.0
-                balance_amount = float(entry.balance) if entry.balance is not None else 0.0
-
-                ledger_data.append({
-                    "id": entry.id,
-                    "date": entry.transaction_date.isoformat() if entry.transaction_date else None,
-                    "voucher_type": entry.voucher.voucher_type.name if entry.voucher and entry.voucher.voucher_type else "",
-                    "voucher_number": entry.voucher.voucher_number if entry.voucher else "",
-                    "voucher_id": entry.voucher_id if entry.voucher_id else None,
-                    "description": entry.narration or "",
-                    "debit": debit_amount,
-                    "credit": credit_amount,
-                    "balance": balance_amount
-                })
-            except Exception:
-                continue
-
+    filters = {}
+    if account_id:
+        filters['account_id'] = account_id
+    if from_date:
+        try:
+            filters['from_date'] = datetime.fromisoformat(from_date.replace('Z', '+00:00'))
+        except ValueError:
+            pass
+    if to_date:
+        try:
+            filters['to_date'] = datetime.fromisoformat(to_date.replace('Z', '+00:00'))
+        except ValueError:
+            pass
+    if is_reconciled is not None:
+        filters['is_reconciled'] = is_reconciled
+    if reference_type:
+        filters['reference_type'] = reference_type
+    
+    pagination_params = {
+        'offset': pagination.offset,
+        'per_page': pagination.per_page
+    }
+    
+    entries, total = ledger_service.get_ledger_entries(filters, pagination_params)
+    
+    ledger_data = []
+    for entry in entries:
+        ledger_data.append({
+            "id": entry['id'],
+            "account_id": entry['account_id'],
+            "account_name": entry['account_name'],
+            "voucher_id": entry['voucher_id'],
+            "voucher_number": entry['voucher_number'],
+            "voucher_type": entry['voucher_type'],
+            "transaction_date": entry['transaction_date'].isoformat() if entry['transaction_date'] else None,
+            "debit_amount": float(entry['debit_amount']),
+            "credit_amount": float(entry['credit_amount']),
+            "balance": float(entry['balance']),
+            "narration": entry['narration'],
+            "reference_type": entry['reference_type'],
+            "reference_number": entry['reference_number'],
+            "is_reconciled": entry['is_reconciled'],
+            "currency_id": entry['currency_id'],
+            "debit_foreign": float(entry['debit_foreign']) if entry['debit_foreign'] else None,
+            "credit_foreign": float(entry['credit_foreign']) if entry['credit_foreign'] else None
+        })
+    
     return PaginatedResponse(
         success=True,
         message="Ledger retrieved successfully",
@@ -89,112 +79,189 @@ async def get_ledger(
         total=total,
         page=pagination.page,
         per_page=pagination.per_page,
-        total_pages=math.ceil(total / pagination.per_page)
+        total_pages=math.ceil(total / pagination.per_page) if total > 0 else 0
     )
 
 
 @router.get("/ledger/summary", response_model=BaseResponse)
 async def get_ledger_summary(
-    account_id: Optional[str] = Query(None),
+    account_id: Optional[int] = Query(None),
     from_date: Optional[str] = Query(None),
     to_date: Optional[str] = Query(None),
-    voucher_type: Optional[str] = Query(None),
     current_user: dict = Depends(get_current_user)
 ):
-    from core.database.connection import db_manager
-    from modules.account_module.models.entities import Ledger, Voucher, AccountMaster, VoucherType
-    from sqlalchemy import func
-    from datetime import datetime
-
-    with db_manager.get_session() as session:
-        query = session.query(
-            func.sum(Ledger.debit_amount).label('total_debit'),
-            func.sum(Ledger.credit_amount).label('Total_credit')
-        ).join(Voucher).join(AccountMaster).join(VoucherType, Voucher.voucher_type_id == VoucherType.id).filter(
-            Ledger.tenant_id == current_user['tenant_id']
-        )
-
-        if account_id and account_id.strip():
-            try:
-                query = query.filter(Ledger.account_id == int(account_id))
-            except ValueError:
-                pass
-
-        if from_date and from_date.strip():
-            try:
-                from_dt = datetime.fromisoformat(from_date.replace('Z', '+00:00'))
-                query = query.filter(Ledger.transaction_date >= from_dt)
-            except ValueError:
-                pass
-
-        if to_date and to_date.strip():
-            try:
-                to_dt = datetime.fromisoformat(to_date.replace('Z', '+00:00'))
-                query = query.filter(Ledger.transaction_date <= to_dt)
-            except ValueError:
-                pass
-
-        if voucher_type and voucher_type.strip():
-            query = query.filter(VoucherType.name.ilike(f"%{voucher_type}%"))
-
-        result = query.first()
-        total_debit = float(result.total_debit or 0)
-        total_credit = float(result.total_credit or 0)
-        closing_balance = total_debit - total_credit
-
-        summary_data = {
-            "total_debit": total_debit,
-            "total_credit": total_credit,
-            "closing_balance": closing_balance
-        }
-
+    filters = {}
+    if account_id:
+        filters['account_id'] = account_id
+    if from_date:
+        try:
+            filters['from_date'] = datetime.fromisoformat(from_date.replace('Z', '+00:00'))
+        except ValueError:
+            pass
+    if to_date:
+        try:
+            filters['to_date'] = datetime.fromisoformat(to_date.replace('Z', '+00:00'))
+        except ValueError:
+            pass
+    
+    summary = ledger_service.get_ledger_summary(filters)
+    
     return BaseResponse(
         success=True,
         message="Ledger summary retrieved successfully",
-        data=summary_data
+        data=summary
     )
 
 
 @router.post("/ledger/recalculate-balances", response_model=BaseResponse)
 async def recalculate_ledger_balances(current_user: dict = Depends(get_current_user)):
-    from core.database.connection import db_manager
-    from modules.account_module.models.entities import Ledger, AccountMaster
-    from sqlalchemy import func
+    try:
+        result = ledger_service.recalculate_all_balances()
+        return BaseResponse(
+            success=True,
+            message=f"Recalculated {result['updated_accounts']} accounts and {result['updated_entries']} ledger entries",
+            data=result
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to recalculate balances: {str(e)}")
 
-    with db_manager.get_session() as session:
+
+@router.post("/ledger/reconcile", response_model=BaseResponse)
+async def reconcile_ledger_entries(
+    ledger_ids: List[int],
+    reconciliation_ref: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    try:
+        count = ledger_service.mark_reconciled(ledger_ids, reconciliation_ref)
+        return BaseResponse(
+            success=True,
+            message=f"Marked {count} ledger entries as reconciled",
+            data={"reconciled_count": count}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to reconcile entries: {str(e)}")
+
+
+@router.get("/ledger/account/{account_id}", response_model=PaginatedResponse)
+async def get_account_ledger(
+    account_id: int,
+    pagination: PaginationParams = Depends(),
+    from_date: Optional[str] = Query(None),
+    to_date: Optional[str] = Query(None),
+    current_user: dict = Depends(get_current_user)
+):
+    filters = {'account_id': account_id}
+    if from_date:
         try:
-            accounts = session.query(AccountMaster).filter(
-                AccountMaster.tenant_id == current_user['tenant_id']
-            ).all()
+            filters['from_date'] = datetime.fromisoformat(from_date.replace('Z', '+00:00'))
+        except ValueError:
+            pass
+    if to_date:
+        try:
+            filters['to_date'] = datetime.fromisoformat(to_date.replace('Z', '+00:00'))
+        except ValueError:
+            pass
+    
+    pagination_params = {
+        'offset': pagination.offset,
+        'per_page': pagination.per_page
+    }
+    
+    entries, total = ledger_service.get_ledger_entries(filters, pagination_params)
+    
+    ledger_data = []
+    for entry in entries:
+        ledger_data.append({
+            "id": entry['id'],
+            "transaction_date": entry['transaction_date'].isoformat(),
+            "voucher_number": entry['voucher_number'],
+            "debit_amount": float(entry['debit_amount']),
+            "credit_amount": float(entry['credit_amount']),
+            "balance": float(entry['balance']),
+            "narration": entry['narration']
+        })
+    
+    return PaginatedResponse(
+        success=True,
+        message="Account ledger retrieved successfully",
+        data=ledger_data,
+        total=total,
+        page=pagination.page,
+        per_page=pagination.per_page,
+        total_pages=math.ceil(total / pagination.per_page) if total > 0 else 0
+    )
 
-            updated_accounts = 0
-            updated_entries = 0
 
-            for account in accounts:
-                ledger_entries = session.query(Ledger).filter(
-                    Ledger.account_id == account.id,
-                    Ledger.tenant_id == current_user['tenant_id']
-                ).order_by(Ledger.transaction_date.asc(), Ledger.id.asc()).all()
-
-                running_balance = 0.0
-                for entry in ledger_entries:
-                    debit = float(entry.debit_amount or 0)
-                    credit = float(entry.credit_amount or 0)
-                    running_balance += debit - credit
-                    if entry.balance != running_balance:
-                        entry.balance = running_balance
-                        updated_entries += 1
-
-                if account.current_balance != running_balance:
-                    account.current_balance = running_balance
-                    updated_accounts += 1
-
-            session.commit()
-
-            return BaseResponse(
-                success=True,
-                message=f"Recalculated balances for {updated_accounts} accounts and {updated_entries} ledger entries"
-            )
-        except Exception as e:
-            session.rollback()
-            raise HTTPException(status_code=500, detail=f"Failed to recalculate balances: {str(e)}")
+@router.get("/books", response_model=PaginatedResponse)
+async def get_books(
+    book_type: BookType = Query(..., description="Book type: DAILY_BOOK, CASH_BOOK, PETTY_CASH_BOOK"),
+    pagination: PaginationParams = Depends(),
+    account_id: Optional[int] = Query(None),
+    from_date: Optional[str] = Query(None),
+    to_date: Optional[str] = Query(None),
+    reference_type: Optional[str] = Query(None),
+    voucher_type: Optional[str] = Query(None),
+    current_user: dict = Depends(get_current_user)
+):
+    """Get book entries - Daily Book, Cash Book, or Petty Cash Book"""
+    
+    filters = {}
+    if account_id:
+        filters['account_id'] = account_id
+    if from_date:
+        try:
+            filters['from_date'] = datetime.fromisoformat(from_date.replace('Z', '+00:00'))
+        except ValueError:
+            pass
+    if to_date:
+        try:
+            filters['to_date'] = datetime.fromisoformat(to_date.replace('Z', '+00:00'))
+        except ValueError:
+            pass
+    if reference_type:
+        filters['reference_type'] = reference_type
+    if voucher_type:
+        filters['voucher_type'] = voucher_type
+    
+    pagination_params = {
+        'offset': pagination.offset,
+        'per_page': pagination.per_page
+    }
+    
+    entries, total = ledger_service.get_book_entries(book_type.value, filters, pagination_params)
+    
+    book_data = []
+    for entry in entries:
+        book_data.append({
+            "id": entry['id'],
+            "account_id": entry['account_id'],
+            "account_name": entry['account_name'],
+            "account_code": entry['account_code'],
+            "voucher_id": entry['voucher_id'],
+            "voucher_number": entry['voucher_number'],
+            "voucher_type": entry['voucher_type'],
+            "voucher_type_code": entry['voucher_type_code'],
+            "transaction_date": entry['transaction_date'].isoformat() if entry['transaction_date'] else None,
+            "posting_date": entry['posting_date'].isoformat() if entry['posting_date'] else None,
+            "debit_amount": float(entry['debit_amount']),
+            "credit_amount": float(entry['credit_amount']),
+            "balance": float(entry['balance']),
+            "narration": entry['narration'],
+            "reference_type": entry['reference_type'],
+            "reference_number": entry['reference_number'],
+            "currency_id": entry['currency_id'],
+            "debit_foreign": float(entry['debit_foreign']) if entry['debit_foreign'] else None,
+            "credit_foreign": float(entry['credit_foreign']) if entry['credit_foreign'] else None
+        })
+    
+    book_name = book_type.value.replace('_', ' ').title()
+    return PaginatedResponse(
+        success=True,
+        message=f"{book_name} retrieved successfully",
+        data=book_data,
+        total=total,
+        page=pagination.page,
+        per_page=pagination.per_page,
+        total_pages=math.ceil(total / pagination.per_page) if total > 0 else 0
+    )

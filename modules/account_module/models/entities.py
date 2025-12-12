@@ -250,22 +250,8 @@ class JournalDetail(Base):
     tax = relationship("TaxMaster")
     cost_center = relationship("CostCenter")
 
-class Ledger(Base):
-    __tablename__ = 'ledgers'
-    
-    id = Column(Integer, primary_key=True)
-    account_id = Column(Integer, ForeignKey('account_masters.id'), nullable=False)
-    voucher_id = Column(Integer, ForeignKey('vouchers.id'), nullable=False)
-    transaction_date = Column(DateTime, nullable=False)
-    debit_amount = Column(Numeric(15, 2), default=0)
-    credit_amount = Column(Numeric(15, 2), default=0)
-    balance = Column(Numeric(15, 2), default=0)
-    narration = Column(Text)
-    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    
-    account = relationship("AccountMaster", back_populates="ledger_entries")
-    voucher = relationship("Voucher")
+# Import Ledger from separate entity file
+from .ledger_entity import Ledger
 
 # Import Payment and PaymentDetail classes
 from .payment_entity import Payment, PaymentDetail

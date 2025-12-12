@@ -9,6 +9,7 @@ from modules.account_module.models.payment_entity import Payment, PaymentDetail
 from modules.inventory_module.services.stock_service import StockService
 from modules.account_module.services.voucher_service import VoucherService
 from modules.account_module.services.payment_service import PaymentService
+from modules.account_module.services.ledger_service import LedgerService
 from sqlalchemy import func, or_
 from decimal import Decimal
 from datetime import datetime
@@ -21,6 +22,7 @@ class PurchaseInvoiceService:
     def __init__(self):
         self.voucher_service = VoucherService()
         self.payment_service = PaymentService()
+        self.ledger_service = LedgerService()
     
     def _get_default_currency_id(self, session, tenant_id):
         """Get default currency ID for tenant (defaults to INR if not configured)"""
@@ -698,6 +700,9 @@ class PurchaseInvoiceService:
         )
         session.add(supplier_line)
         
+        # Create ledger entries from voucher
+        self.ledger_service.create_from_voucher(voucher.id, session=session)
+        
         return voucher
     
     def _create_payment_in_session(self, session, tenant_id, username, invoice, payment_number, payment_details_data, payment_remarks):
@@ -891,6 +896,9 @@ class PurchaseInvoiceService:
             )
             session.add(payment_line)
             line_no += 1
+        
+        # Create ledger entries from payment voucher
+        self.ledger_service.create_from_voucher(voucher.id, session=session)
         
         return voucher
     

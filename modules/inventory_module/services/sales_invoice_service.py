@@ -377,6 +377,11 @@ class SalesInvoiceService:
                 # Link voucher to invoice
                 invoice.voucher_id = voucher.id
                 
+                # Create ledger entries from voucher
+                from modules.account_module.services.ledger_service import LedgerService
+                ledger_service = LedgerService()
+                ledger_service.create_from_voucher(voucher.id, session)
+                
                 # Create payment if payment details provided
                 payment = None
                 if payment_details_data:
@@ -393,6 +398,12 @@ class SalesInvoiceService:
                         payment_details_data=payment_details_data,
                         payment_remarks=payment_remarks
                     )
+                    
+                    # Create ledger entries for payment voucher
+                    if payment and payment.voucher_id:
+                        from modules.account_module.services.ledger_service import LedgerService
+                        ledger_service = LedgerService()
+                        ledger_service.create_from_voucher(payment.voucher_id, session)
                 
                 session.commit()
                 session.refresh(invoice)
