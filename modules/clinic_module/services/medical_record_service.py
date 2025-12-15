@@ -17,7 +17,9 @@ class MedicalRecordService:
                 # Generate record number in format MR-[tenantid]ddmmyyyyhhmmssfff
                 now = datetime.now()
                 timestamp = now.strftime("%d%m%Y%H%M%S") + f"{now.microsecond//1000:03d}"
-                tenant_id = record_data.get('tenant_id', 1)
+                tenant_id = record_data.get('tenant_id')
+                if not tenant_id:
+                    raise ValueError("tenant_id is required")
                 record_number = f"MR-{tenant_id}{timestamp}"
                 
                 # Remove id and record_number from record_data if present to avoid conflicts

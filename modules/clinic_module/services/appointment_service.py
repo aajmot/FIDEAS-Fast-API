@@ -21,8 +21,11 @@ class AppointmentService:
         try:
             with db_manager.get_session() as session:
                 # Use appointment_number from UI if provided, otherwise generate
+                tenant_id = appointment_data.get('tenant_id')
+                if not tenant_id:
+                    raise ValueError("tenant_id is required")
                 if 'appointment_number' not in appointment_data or not appointment_data['appointment_number']:
-                    appointment_data['appointment_number'] = self.generate_appointment_number(appointment_data.get('tenant_id', 1))
+                    appointment_data['appointment_number'] = self.generate_appointment_number(tenant_id)
                 
                 appointment = Appointment(**appointment_data)
                 session.add(appointment)

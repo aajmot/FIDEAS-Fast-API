@@ -72,9 +72,8 @@ async def get_doctors(pagination: PaginationParams = Depends(), current_user: di
 @router.post("/doctors", response_model=BaseResponse)
 async def create_doctor(doctor_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
     doctor_service = DoctorService()
-    # Add tenant_id from current user if not provided
-    if 'tenant_id' not in doctor_data:
-        doctor_data['tenant_id'] = current_user.get('tenant_id', 1)
+    # Always use tenant_id from logged-in user, never from request
+    doctor_data['tenant_id'] = current_user.get('tenant_id')
     doctor = doctor_service.create(doctor_data)
     return BaseResponse(
         success=True,

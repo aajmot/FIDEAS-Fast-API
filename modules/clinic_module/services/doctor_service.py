@@ -11,7 +11,9 @@ class DoctorService:
         try:
             with db_manager.get_session() as session:
                 # Generate employee ID in D-[tenantid]ddmmyyyyhhmmssfff format
-                tenant_id = doctor_data.get('tenant_id', 1)
+                tenant_id = doctor_data.get('tenant_id')
+                if not tenant_id:
+                    raise ValueError("tenant_id is required")
                 now = datetime.now()
                 employee_id = f"D-{tenant_id}{now.strftime('%d%m%Y%H%M%S%f')[:17]}"
                 

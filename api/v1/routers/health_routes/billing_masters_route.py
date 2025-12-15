@@ -26,7 +26,7 @@ async def get_billing_masters(pagination: PaginationParams = Depends(), current_
     with db_manager.get_session() as session:
         query = session.query(ClinicBillingMaster).filter(
             ClinicBillingMaster.is_deleted == False,
-            ClinicBillingMaster.tenant_id == current_user.get('tenant_id', 1)
+            ClinicBillingMaster.tenant_id == current_user.get('tenant_id')
         )
         
         if pagination.search:
@@ -66,8 +66,9 @@ async def create_billing_master(billing_master_data: Dict[str, Any], current_use
     from modules.clinic_module.services.billing_master_service import BillingMasterService
     
     billing_master_service = BillingMasterService()
-    if 'tenant_id' not in billing_master_data:
-        billing_master_data['tenant_id'] = current_user.get('tenant_id', 1)
+    # Always use tenant_id from logged-in user, never from request
+    billing_master_data['tenant_id'] = current_user.get('tenant_id')
+    billing_master_data['created_by'] = current_user.get('username')
     billing_master = billing_master_service.create(billing_master_data)
     return BaseResponse(
         success=True,

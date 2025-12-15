@@ -311,11 +311,12 @@ async def import_products(file: UploadFile = File(...), current_user: dict = Dep
                 'max_stock': float(row.get('max_stock', 0)) if row.get('max_stock') not in (None, '') else 0,
                 'tags': str(row.get('tags', '')).strip(),
                 'composition': str(row.get('composition', '')).strip(),
-                # Accept either hsn_id (numeric) or hsn_code (string); service will resolve hsn_code -> hsn_id
-                'hsn_id': int(row.get('hsn_id')) if row.get('hsn_id') and str(row.get('hsn_id')).strip().isdigit() else None,
+                # If hsn_code is provided, let service handle lookup/creation; otherwise use hsn_id if provided
                 'hsn_code': str(row.get('hsn_code', '')).strip() if row.get('hsn_code') else None,
-                'schedule': str(row.get('schedule', 'OTC')).strip(),
-                'manufacturer': str(row.get('manufacturer', '')).strip()
+                'hsn_id': int(row.get('hsn_id')) if row.get('hsn_id') and str(row.get('hsn_id')).strip().isdigit() and not row.get('hsn_code') else None,
+                'schedule': str(row.get('schedule', 'OTC')).strip()[:10],  # Truncate to 10 chars max
+                'manufacturer': str(row.get('manufacturer', '')).strip(),
+                'tenant_id': tenant_id
             }
 
             product_service.create(product_data)

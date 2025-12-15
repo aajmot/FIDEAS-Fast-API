@@ -23,9 +23,14 @@ async def get_appointments(pagination: PaginationParams = Depends(), current_use
     from modules.clinic_module.models.entities import Appointment, Patient, Doctor
     
     with db_manager.get_session() as session:
-        query = session.query(Appointment).outerjoin(Patient).outerjoin(Doctor).filter(
-            Appointment.tenant_id == current_user.get('tenant_id', 1)
-        ).order_by(Appointment.appointment_date.desc(), Appointment.created_at.desc())
+        query = session.query(Appointment)
+        
+        # Only filter by tenant_id if it's provided and not None
+        tenant_id = current_user.get('tenant_id')
+        if tenant_id is not None:
+            query = query.filter(Appointment.tenant_id == tenant_id)
+        
+        query = query.order_by(Appointment.appointment_date.desc(), Appointment.created_at.desc())
         
         if pagination.search:
             query = query.filter(or_(
@@ -77,9 +82,9 @@ async def get_appointments(pagination: PaginationParams = Depends(), current_use
 @router.post("/appointments", response_model=BaseResponse)
 async def create_appointment(appointment_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
     appointment_service = AppointmentService()
-    # Add tenant_id from current user if not provided
-    if 'tenant_id' not in appointment_data:
-        appointment_data['tenant_id'] = current_user.get('tenant_id', 1)
+    # Always use tenant_id from logged-in user, never from request
+    appointment_data['tenant_id'] = current_user.get('tenant_id')
+    appointment_data['created_by'] = current_user.get('username')
     appointment = appointment_service.create(appointment_data)
     return BaseResponse(
         success=True,
@@ -106,7 +111,7 @@ async def import_appointments(request_data: Dict[str, Any], current_user: dict =
     if not csv_content:
         raise HTTPException(status_code=400, detail="CSV content is required")
     
-    result = appointment_service.import_appointments(csv_content, current_user.get('tenant_id', 1))
+    result = appointment_service.import_appointments(csv_content, current_user.get('tenant_id'))
     
     return BaseResponse(
         success=True,

@@ -77,8 +77,8 @@ async def create_medical_record(record_data: Dict[str, Any], current_user: dict 
     from modules.clinic_module.services.medical_record_service import MedicalRecordService
     
     medical_record_service = MedicalRecordService()
-    if 'tenant_id' not in record_data:
-        record_data['tenant_id'] = current_user.get('tenant_id', 1)
+    # Always use tenant_id from logged-in user, never from request
+    record_data['tenant_id'] = current_user.get('tenant_id')
     record = medical_record_service.create(record_data)
     return BaseResponse(
         success=True,
@@ -110,7 +110,7 @@ async def import_medical_records(request_data: Dict[str, Any], current_user: dic
         raise HTTPException(status_code=400, detail="CSV content is required")
     
     medical_record_service = MedicalRecordService()
-    result = medical_record_service.import_medical_records(csv_content, current_user.get('tenant_id', 1))
+    result = medical_record_service.import_medical_records(csv_content, current_user.get('tenant_id'))
     
     return BaseResponse(
         success=True,

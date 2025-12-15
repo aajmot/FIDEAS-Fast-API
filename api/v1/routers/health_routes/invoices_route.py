@@ -25,7 +25,7 @@ async def get_invoices(pagination: PaginationParams = Depends(), current_user: d
     
     with db_manager.get_session() as session:
         query = session.query(Invoice).outerjoin(Patient).filter(
-            Invoice.tenant_id == current_user.get('tenant_id', 1)
+            Invoice.tenant_id == current_user.get('tenant_id')
         )
         
         if pagination.search:
@@ -77,8 +77,9 @@ async def create_invoice(invoice_data: Dict[str, Any], current_user: dict = Depe
     from core.database.connection import db_manager
     
     billing_service = BillingService()
-    if 'tenant_id' not in invoice_data:
-        invoice_data['tenant_id'] = current_user.get('tenant_id', 1)
+    # Always use tenant_id from logged-in user, never from request
+    invoice_data['tenant_id'] = current_user.get('tenant_id')
+    invoice_data['created_by'] = current_user.get('username')
     
     # Extract items from invoice data
     items_data = invoice_data.pop('items', [])

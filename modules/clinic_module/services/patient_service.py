@@ -11,7 +11,9 @@ class PatientService:
         try:
             with db_manager.get_session() as session:
                 # Generate patient number in P-[tenantid]ddmmyyyyhhmmssfff format
-                tenant_id = patient_data.get('tenant_id', 1)
+                tenant_id = patient_data.get('tenant_id')
+                if not tenant_id:
+                    raise ValueError("tenant_id is required")
                 now = datetime.now()
                 patient_number = f"P-{tenant_id}{now.strftime('%d%m%Y%H%M%S%f')[:17]}"
                 

@@ -15,7 +15,9 @@ class BillingService:
             with db_manager.get_session() as session:
                 # Use provided invoice number or generate new one
                 now = datetime.now()
-                tenant_id = invoice_data.get('tenant_id', 1)
+                tenant_id = invoice_data.get('tenant_id')
+                if not tenant_id:
+                    raise ValueError("tenant_id is required")
                 invoice_number = invoice_data.get('invoice_number')
                 if not invoice_number:
                     invoice_number = f"CINV-{tenant_id}{now.strftime('%d%m%Y%H%M%S%f')[:15]}"

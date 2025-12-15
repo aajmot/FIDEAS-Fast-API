@@ -24,7 +24,7 @@ async def get_prescriptions(pagination: PaginationParams = Depends(), current_us
     
     with db_manager.get_session() as session:
         query = session.query(Prescription).outerjoin(Patient).outerjoin(Doctor).outerjoin(Appointment).filter(
-            Prescription.tenant_id == current_user.get('tenant_id', 1)
+            Prescription.tenant_id == current_user.get('tenant_id')
         )
         
         if pagination.search:
@@ -77,21 +77,21 @@ async def create_prescription(prescription_data: Dict[str, Any], current_user: d
     from core.database.connection import db_manager
     
     prescription_service = PrescriptionService()
-    if 'tenant_id' not in prescription_data:
-        prescription_data['tenant_id'] = current_user.get('tenant_id', 1)
+    # Always use tenant_id from logged-in user, never from request
+    prescription_data['tenant_id'] = current_user.get('tenant_id')
     
     # Extract items from prescription data
     items_data = prescription_data.pop('items', [])
     test_items_data = prescription_data.pop('test_items', [])
     
-    # Add created_by to items
+    # Add created_by to items (PrescriptionItem has created_by)
     for item in items_data:
         item['created_by'] = current_user.get('username')
     
     # Add created_by and tenant_id to test items
     for test_item in test_items_data:
         test_item['created_by'] = current_user.get('username')
-        test_item['tenant_id'] = current_user.get('tenant_id', 1)
+        test_item['tenant_id'] = current_user.get('tenant_id')
     
     prescription = prescription_service.create(prescription_data, items_data, test_items_data)
     
@@ -120,7 +120,7 @@ async def update_prescription(prescription_id: int, prescription_data: Dict[str,
     if test_items_data:
         for test_item in test_items_data:
             test_item['updated_by'] = current_user.get('username')
-            test_item['tenant_id'] = current_user.get('tenant_id', 1)
+            test_item['tenant_id'] = current_user.get('tenant_id')
     
     prescription = prescription_service.update(prescription_id, prescription_data, items_data, test_items_data)
     if not prescription:

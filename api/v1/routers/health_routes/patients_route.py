@@ -26,7 +26,7 @@ async def get_patients(pagination: PaginationParams = Depends(), current_user: d
     with db_manager.get_session() as session:
         query = session.query(Patient).filter(
             Patient.is_active == True,
-            Patient.tenant_id == current_user.get('tenant_id', 1)
+            Patient.tenant_id == current_user.get('tenant_id')
         )
         
         if pagination.search:
@@ -72,9 +72,9 @@ async def get_patients(pagination: PaginationParams = Depends(), current_user: d
 @router.post("/patients", response_model=BaseResponse)
 async def create_patient(patient_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
     patient_service = PatientService()
-    # Add tenant_id from current user if not provided
-    if 'tenant_id' not in patient_data:
-        patient_data['tenant_id'] = current_user.get('tenant_id', 1)
+    # Always use tenant_id from logged-in user, never from request
+    patient_data['tenant_id'] = current_user.get('tenant_id')
+    patient_data['created_by'] = current_user.get('username')
     patient = patient_service.create(patient_data)
     return BaseResponse(
         success=True,

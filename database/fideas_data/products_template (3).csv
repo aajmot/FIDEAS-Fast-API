@@ -1,0 +1,371 @@
+name,code,category,unit,mrp_price,selling_price,gst_rate,cess_rate,reorder_level,danger_level,min_stock,max_stock,tags,composition,hsn_code,hsn_id,schedule,manufacturer
+Montelukast 248ml,MED55215,Antiviral,Patch,376.47,304.28,5,0,133,48,370,2389,essential,Montelukast 10mg + Excipients,30049000,9389,X,Sun Pharma
+Pyrimethamine 523,MED31095,Ophthalmic,Drops,240.93,195.8,28,0,142,33,168,3472,prescription,Pyrimethamine 500mg + Excipients,30044000,2700,H1,Dr. Reddys
+Salbutamol 450ml,MED12415,Bronchodilator,Gel,156.6,138.37,12,0,188,36,203,2572,"otc,branded",Salbutamol 500mg + Excipients,30031000,5802,X,Torrent
+Metformin 973,MED93929,Antifungal,Cream,243.24,198.88,5,0,128,12,444,1143,"otc,branded",Metformin 100mg + Excipients,30039000,3299,C,Dr. Reddys
+Lopinavir 400ml,MED11010,Antibiotic,Inhaler,123.34,108.32,28,2,76,46,204,4500,otc,Lopinavir 500mg + Excipients,30039000,3434,H1,Aurobindo
+Sofosbuvir 524ml,MED33506,Antiemetic,Syrup,447.88,404.55,5,0,102,37,348,1523,"generic,branded,otc",Sofosbuvir 10mg + Excipients,30043900,8698,None,Abbott India
+Tinidazole 960mg,MED38588,Nasal,Injection,78.82,70.83,28,0,120,28,303,3508,otc,Tinidazole 250mg + Excipients,30032000,7121,H,Bayer India
+Salbutamol 875mg,MED30312,Antifungal,Injection,435.27,355.73,5,0,198,42,249,2798,"prescription,essential",Salbutamol 500mg + Excipients,30039000,7297,X,Mankind
+Bictegravir 413mg,MED14980,Antibiotic,Capsule,377.68,355.39,28,1,191,21,205,2055,"generic,otc",Bictegravir 500mg + Excipients,30049000,7751,None,Dr. Reddys
+Antacid 667mg,MED72268,Antidiabetic,Tablet,60.93,53.38,18,0,120,40,129,1884,essential,Antacid 20mg + Excipients,30042000,1046,H1,Abbott India
+Abacavir 279ml,MED58801,Antibiotic,Inhaler,342.88,306.18,18,0,67,23,218,4448,branded,Abacavir 5mg + Excipients,30039000,6888,None,Cipla
+Chloroquine 971mg,MED40077,Mineral,Syrup,423.37,339.38,12,0,136,47,274,4598,"prescription,otc,generic",Chloroquine 250mg + Excipients,30042000,4006,C,Torrent
+Abacavir 198,MED99391,Analgesic,Inhaler,165.38,148.49,28,0,151,44,208,4555,"generic,prescription,branded",Abacavir 500mg + Excipients,30031000,9973,H1,Dr. Reddys
+Hydroxychloroquine 564,MED96629,Analgesic,Patch,68.05,55.94,28,1,104,20,311,3026,"otc,prescription,branded",Hydroxychloroquine 5mg + Excipients,30032000,9165,None,Boehringer Ingelheim India
+Paroxetine 349mg,MED85329,Antiemetic,Cream,328.53,301.23,5,0,79,39,268,1182,"otc,generic,prescription",Paroxetine 10mg + Excipients,30034000,9222,H,Aurobindo
+Primaquine 246,MED71348,Antihypertensive,Syrup,105.05,91.79,5,0,109,42,427,3173,"otc,essential",Primaquine 20mg + Excipients,30039000,8978,H1,Merck India
+Eye Drops 913mg,MED29126,Mineral,Patch,87.96,80.23,28,0,152,46,319,4902,branded,Eye 500mg + Excipients,30033900,8341,None,GSK India
+Antidiarrheal 266mg,MED14273,Mineral,Tablet,281.87,244.23,18,0,109,45,239,2472,prescription,Antidiarrheal 10mg + Excipients,30041000,3976,H,Johnson & Johnson India
+Thyroxine 205mg,MED36818,Vitamin,Drops,340.21,278.57,28,2,165,31,173,1240,otc,Thyroxine 20mg + Excipients,30043900,7087,H1,Lupin
+Eye Drops 295,MED10967,Antiparasitic,Inhaler,267.5,243.59,5,0,146,17,452,4163,"generic,essential",Eye 250mg + Excipients,30031000,1360,C,Torrent
+Diclofenac 326mg,MED61192,Antibiotic,Capsule,112.71,104.3,5,0,112,20,127,3759,prescription,Diclofenac 250mg + Excipients,30049000,4620,C,Alkem
+Dasabuvir 764mg,MED92705,Otic,Capsule,94.38,87.79,18,0,167,44,484,4649,"otc,branded",Dasabuvir 100mg + Excipients,30042000,8346,X,Sun Pharma
+Clarithromycin 124ml,MED84126,Anxiolytic,Syrup,362.22,313.82,28,0,158,36,443,4066,prescription,Clarithromycin 250mg + Excipients,30041000,3795,H1,Sun Pharma
+Entecavir 430,MED69379,Antihypertensive,Tablet,454.01,395.83,12,0,73,27,196,4319,essential,Entecavir 250mg + Excipients,30033100,7622,C,AstraZeneca India
+Cefuroxime 131,MED35549,Antibiotic,Capsule,427.37,391.31,28,2,155,14,274,1193,"essential,otc",Cefuroxime 10mg + Excipients,30043100,7806,X,Novartis India
+Dexamethasone 276ml,MED83491,Antidiabetic,Injection,445.74,409.72,12,0,114,50,199,2128,"otc,essential,prescription",Dexamethasone 100mg + Excipients,30042000,7346,X,Lupin
+Eye Drops 555,MED67751,Antifungal,Syrup,96.72,87.89,5,0,185,21,443,3490,"essential,branded",Eye 100mg + Excipients,30033100,8039,X,Lupin
+Famciclovir 866ml,MED55271,Antiparasitic,Capsule,308.63,247.66,18,0,149,16,425,3063,"otc,essential",Famciclovir 10mg + Excipients,30049000,8316,X,Lupin
+Aspirin 330mg,MED65770,Antiviral,Drops,343.82,306.32,12,0,156,27,464,3711,"branded,prescription,otc",Aspirin 5mg + Excipients,30033100,7939,X,Torrent
+Velpatasvir 271mg,MED14414,Antacid,Injection,116.9,104.2,18,0,149,27,327,3999,essential,Velpatasvir 250mg + Excipients,30039000,1365,H1,Cipla
+Zanamivir 738mg,MED41626,Antiemetic,Capsule,226.1,214.27,18,0,154,26,242,2669,"branded,otc",Zanamivir 10mg + Excipients,30031000,3076,C,Pfizer India
+Doxycycline 544,MED42559,Otic,Tablet,477.58,427.72,18,0,176,24,291,2584,"otc,generic",Doxycycline 250mg + Excipients,30041000,5185,X,Bayer India
+Cefixime 618ml,MED53864,Antiviral,Inhaler,175.52,142.92,12,0,146,32,173,4417,generic,Cefixime 100mg + Excipients,30043100,2547,H1,Mankind
+Bictegravir 151,MED43902,Laxative,Tablet,197.08,163.57,12,0,171,37,445,4937,essential,Bictegravir 500mg + Excipients,30042000,1519,None,Merck India
+Antacid 344,MED14734,Antihypertensive,Tablet,471.18,417.66,12,0,197,50,334,3181,"generic,branded",Antacid 10mg + Excipients,30043100,8558,H,AstraZeneca India
+Prednisolone 409mg,MED14762,Antiparasitic,Capsule,479.0,392.25,18,0,137,19,350,3475,"prescription,otc",Prednisolone 500mg + Excipients,30049000,5178,C,Sun Pharma
+Ranitidine 696mg,MED97065,Antacid,Gel,307.66,253.6,28,2,125,25,133,3396,"prescription,generic,essential",Ranitidine 100mg + Excipients,30049000,2733,C,Boehringer Ingelheim India
+Zidovudine 169mg,MED89337,Otic,Capsule,103.99,91.7,18,0,188,21,380,1168,"generic,essential",Zidovudine 5mg + Excipients,30043900,7288,C,Abbott India
+Didanosine 422,MED55040,Antiemetic,Cream,394.64,316.44,18,0,145,40,436,4300,"prescription,generic",Didanosine 100mg + Excipients,30039000,5324,C,Mankind
+Antifungal Cream 544mg,MED29797,Antiparasitic,Capsule,208.38,188.95,18,0,170,35,446,4983,"generic,prescription",Antifungal 5mg + Excipients,30033100,9571,None,Pfizer India
+Levocetirizine 555,MED50710,Antihistamine,Inhaler,438.7,378.31,5,0,161,18,420,3161,otc,Levocetirizine 250mg + Excipients,30032000,1583,H1,Merck India
+Pantoprazole 452ml,MED18933,Laxative,Ointment,168.22,156.85,28,1,187,15,298,1505,"otc,generic,prescription",Pantoprazole 100mg + Excipients,30041000,1460,None,Cadila
+Diazepam 346ml,MED59921,Sedative,Tablet,227.62,204.13,12,0,151,26,153,2352,generic,Diazepam 500mg + Excipients,30042000,8849,None,Aurobindo
+Iron 978mg,MED88113,Antihypertensive,Injection,494.67,469.41,12,0,51,36,441,3454,essential,Iron 5mg + Excipients,30033100,1998,H1,GSK India
+Lopinavir 712mg,MED83088,Antiviral,Drops,491.99,461.74,5,0,68,17,303,2373,"essential,otc",Lopinavir 250mg + Excipients,30049000,5758,None,Torrent
+Mebendazole 245,MED86071,Antimalarial,Cream,496.03,400.49,28,0,110,15,296,4141,"generic,essential,prescription",Mebendazole 20mg + Excipients,30032000,3583,X,Mankind
+Budesonide 239mg,MED65031,Antibiotic,Capsule,153.81,142.65,12,0,175,35,385,1221,"prescription,generic",Budesonide 20mg + Excipients,30034000,1215,None,Abbott India
+Artemether 109ml,MED10502,Antacid,Patch,49.55,46.02,5,0,91,25,488,4428,"otc,essential",Artemether 20mg + Excipients,30041000,7660,H,Merck India
+Ivermectin 755ml,MED98329,Otic,Drops,441.88,373.22,5,0,121,16,364,2257,"essential,generic,branded",Ivermectin 500mg + Excipients,30043900,2745,C,Bayer India
+Glecaprevir 913,MED78287,Antiparasitic,Patch,376.41,314.78,18,0,152,13,231,3102,prescription,Glecaprevir 500mg + Excipients,30043100,7530,C,Alkem
+Acyclovir 365,MED12305,Nasal,Patch,354.56,335.16,5,0,66,50,371,1338,"prescription,branded,otc",Acyclovir 5mg + Excipients,30031000,6508,H,Aurobindo
+Clarithromycin 481,MED65485,Sedative,Injection,407.4,359.75,5,0,183,32,156,4078,essential,Clarithromycin 100mg + Excipients,30033100,7878,H1,Merck India
+Antiseptic 359mg,MED57883,Steroid,Drops,156.02,140.87,12,0,127,15,496,4136,"branded,prescription,generic",Antiseptic 5mg + Excipients,30044000,7570,X,Torrent
+Tinidazole 189ml,MED84558,Antihistamine,Injection,445.14,396.59,5,0,88,15,212,4477,essential,Tinidazole 10mg + Excipients,30034000,1136,H1,Eli Lilly India
+Telbivudine 997,MED49957,Antiparasitic,Inhaler,286.2,268.43,5,0,61,12,305,3425,"prescription,otc,branded",Telbivudine 5mg + Excipients,30031000,2127,None,AstraZeneca India
+Telbivudine 498mg,MED67558,Supplement,Gel,109.26,94.71,18,0,156,20,199,4963,"essential,branded,generic",Telbivudine 5mg + Excipients,30041000,5738,None,Cadila
+Azithromycin 793,MED87721,Nasal,Syrup,12.51,11.1,5,0,72,41,115,2109,otc,Azithromycin 250mg + Excipients,30042000,9469,None,Dr. Reddys
+Grazoprevir 940mg,MED71283,Supplement,Patch,223.16,192.84,12,0,166,10,365,2199,"branded,otc,essential",Grazoprevir 250mg + Excipients,30042000,2641,None,Alkem
+Zidovudine 560,MED22212,Sedative,Tablet,291.46,274.63,28,0,146,10,409,2967,essential,Zidovudine 500mg + Excipients,30032000,5208,H1,Pfizer India
+Dexamethasone 345,MED37139,Antimalarial,Ointment,311.2,264.49,5,0,171,50,363,1724,"branded,generic,prescription",Dexamethasone 20mg + Excipients,30043100,1257,H,Cadila
+Metronidazole 143mg,MED90459,Steroid,Tablet,95.73,86.32,18,0,127,33,266,1447,"otc,generic,prescription",Metronidazole 250mg + Excipients,30033100,4256,H1,Johnson & Johnson India
+Diclofenac 766ml,MED88716,Supplement,Injection,35.6,30.87,28,1,195,44,144,4381,"otc,generic,branded",Diclofenac 5mg + Excipients,30044000,1081,C,Abbott India
+Albendazole 164mg,MED77183,Antihypertensive,Patch,314.49,256.66,5,0,52,17,275,1647,"essential,prescription,otc",Albendazole 250mg + Excipients,30034000,5437,X,Pfizer India
+Azithromycin 200,MED17923,Nasal,Patch,242.11,226.45,12,0,50,39,257,1473,"prescription,essential",Azithromycin 100mg + Excipients,30042000,2242,H,Novartis India
+Prednisolone 480ml,MED24371,Otic,Capsule,397.98,370.04,12,0,193,40,230,1962,"essential,prescription",Prednisolone 500mg + Excipients,30033900,1112,H,Dr. Reddys
+Clonazepam 837,MED15039,Antimalarial,Drops,102.78,82.65,18,0,54,25,456,4197,"generic,otc",Clonazepam 10mg + Excipients,30049000,2666,C,GSK India
+Cabotegravir 279,MED67505,Antiviral,Patch,323.46,285.12,18,0,195,26,290,3139,essential,Cabotegravir 100mg + Excipients,30042000,7877,H,Eli Lilly India
+Naproxen 814ml,MED52564,Antacid,Injection,46.9,39.46,28,0,88,47,349,2186,prescription,Naproxen 500mg + Excipients,30049000,1874,H1,Eli Lilly India
+Clarithromycin 194mg,MED33924,Vitamin,Ointment,251.2,232.57,18,0,179,49,270,4430,"otc,generic,essential",Clarithromycin 5mg + Excipients,30031000,8304,C,Cipla
+Adefovir 447,MED38615,Sedative,Drops,331.44,273.59,18,0,121,46,258,1157,"essential,otc",Adefovir 500mg + Excipients,30044000,5883,H,Mankind
+Zolpidem 666mg,MED17297,Supplement,Cream,36.38,29.57,5,0,125,49,253,1134,"essential,otc",Zolpidem 20mg + Excipients,30039000,3027,C,Aurobindo
+Lamivudine 762,MED18794,Antihypertensive,Drops,137.13,110.47,18,0,185,26,334,2823,generic,Lamivudine 100mg + Excipients,30043900,1069,X,Lupin
+Diclofenac 453mg,MED87813,Antifungal,Ointment,233.46,216.23,28,2,187,11,420,2303,branded,Diclofenac 10mg + Excipients,30044000,4134,X,Boehringer Ingelheim India
+Lamivudine 140,MED28393,Sedative,Patch,210.65,169.83,12,0,81,26,315,4523,"prescription,essential,generic",Lamivudine 100mg + Excipients,30039000,8687,X,Alkem
+Erythromycin 797,MED45128,Mineral,Cream,272.82,227.69,5,0,125,33,256,1684,generic,Erythromycin 100mg + Excipients,30031000,7924,H1,Abbott India
+Zidovudine 148mg,MED51349,Nasal,Inhaler,233.35,201.22,12,0,152,40,370,4838,"generic,prescription",Zidovudine 5mg + Excipients,30043100,4454,C,Lupin
+Azithromycin 824,MED77042,Antihistamine,Cream,53.21,45.51,12,0,182,41,498,4108,essential,Azithromycin 20mg + Excipients,30033900,8309,None,Dr. Reddys
+Nevirapine 751,MED46313,Supplement,Gel,239.7,201.08,18,0,175,49,345,4250,essential,Nevirapine 5mg + Excipients,30042000,1801,None,Bayer India
+Metformin 854,MED61751,Bronchodilator,Syrup,103.98,86.45,5,0,169,31,329,3377,"generic,otc",Metformin 500mg + Excipients,30032000,4577,H,Torrent
+Azithromycin 498ml,MED84875,Antidiabetic,Tablet,23.94,21.27,18,0,119,23,488,1745,prescription,Azithromycin 10mg + Excipients,30033900,4823,X,Abbott India
+Dexamethasone 657,MED35013,Otic,Injection,465.85,394.09,5,0,134,41,168,2075,"prescription,otc",Dexamethasone 5mg + Excipients,30039000,3359,None,Mankind
+Raltegravir 887,MED64444,Otic,Gel,83.95,79.28,5,0,162,44,310,3393,"prescription,branded,otc",Raltegravir 500mg + Excipients,30033100,9441,H1,Cadila
+Atazanavir 688,MED45317,Ophthalmic,Syrup,142.59,114.42,5,0,106,38,112,2209,"branded,generic",Atazanavir 5mg + Excipients,30043100,6393,H1,GSK India
+Iron 430mg,MED20513,Ophthalmic,Cream,88.64,81.58,18,0,146,30,191,4628,"essential,otc",Iron 500mg + Excipients,30033100,1408,None,Alkem
+Ribavirin 882,MED60661,Otic,Gel,371.49,322.73,12,0,137,33,219,4952,"generic,prescription,branded",Ribavirin 10mg + Excipients,30031000,5041,H,Lupin
+Atorvastatin 467ml,MED15768,Ophthalmic,Injection,428.02,371.7,12,0,192,37,292,1126,generic,Atorvastatin 20mg + Excipients,30039000,1362,H,Novartis India
+Cabotegravir 973,MED84999,Laxative,Gel,149.99,140.37,18,0,89,35,259,1185,"essential,otc,prescription",Cabotegravir 5mg + Excipients,30032000,7104,C,Sanofi India
+Ledipasvir 833ml,MED49420,Otic,Patch,299.74,241.51,5,0,110,41,273,1324,"branded,generic,essential",Ledipasvir 20mg + Excipients,30049000,9668,None,Alkem
+Paracetamol 418mg,MED34905,Sedative,Ointment,70.12,63.9,28,0,200,33,378,1004,"essential,branded",Paracetamol 10mg + Excipients,30034000,5959,None,Lupin
+Primaquine 792,MED53807,Mineral,Gel,439.96,387.67,28,1,84,43,447,2245,branded,Primaquine 5mg + Excipients,30033900,6190,H1,Abbott India
+Prednisolone 644mg,MED13182,Antihypertensive,Tablet,316.14,292.17,18,0,155,24,185,2534,prescription,Prednisolone 500mg + Excipients,30049000,2693,H,Mankind
+Famciclovir 925ml,MED57797,Analgesic,Ointment,429.62,351.21,5,0,147,46,454,2333,generic,Famciclovir 250mg + Excipients,30034000,6142,C,Mankind
+Albendazole 481mg,MED81771,Nasal,Ointment,145.84,121.04,12,0,187,12,432,2210,generic,Albendazole 250mg + Excipients,30034000,3195,None,Merck India
+Alprazolam 102ml,MED45891,Anxiolytic,Drops,128.8,111.78,28,1,158,15,112,1338,generic,Alprazolam 250mg + Excipients,30033100,4080,H1,Cadila
+Omeprazole 186,MED42989,Steroid,Ointment,102.89,82.72,12,0,124,22,177,3786,otc,Omeprazole 20mg + Excipients,30033900,2513,H1,Aurobindo
+Pantoprazole 803ml,MED89053,Mineral,Ointment,429.89,402.57,12,0,186,30,260,1013,"otc,essential,prescription",Pantoprazole 250mg + Excipients,30034000,8055,H,Merck India
+Antacid 115ml,MED41709,Otic,Inhaler,376.69,314.9,5,0,118,33,339,3192,generic,Antacid 500mg + Excipients,30033100,2535,X,Boehringer Ingelheim India
+Dolutegravir 350,MED59432,Antihypertensive,Patch,409.37,349.13,5,0,128,25,366,4153,"otc,essential",Dolutegravir 20mg + Excipients,30032000,7670,H1,Abbott India
+Velpatasvir 754mg,MED76162,Bronchodilator,Cream,186.37,156.1,5,0,70,17,157,1975,"prescription,generic",Velpatasvir 5mg + Excipients,30041000,1726,X,Johnson & Johnson India
+Bictegravir 823,MED16891,Antidiabetic,Capsule,209.77,188.88,28,0,120,21,182,3194,"otc,prescription,essential",Bictegravir 500mg + Excipients,30043100,2287,H1,Abbott India
+Pantoprazole 249,MED82392,Antidepressant,Drops,452.75,399.24,12,0,61,19,190,1903,"essential,branded",Pantoprazole 10mg + Excipients,30041000,8224,C,AstraZeneca India
+Artemether 507mg,MED87077,Ophthalmic,Ointment,416.82,364.41,28,0,152,48,451,4051,"prescription,generic",Artemether 10mg + Excipients,30049000,9799,H,Bayer India
+Budesonide 553,MED30396,Sedative,Tablet,282.45,231.61,18,0,124,32,230,2932,"otc,essential",Budesonide 10mg + Excipients,30033900,4561,C,Merck India
+Cetirizine 988mg,MED60592,Nasal,Drops,256.28,223.54,12,0,193,11,266,2827,essential,Cetirizine 5mg + Excipients,30044000,3848,C,Sanofi India
+Chloroquine 862,MED80802,Antiparasitic,Tablet,187.54,163.63,18,0,134,43,107,1515,"prescription,otc,generic",Chloroquine 100mg + Excipients,30049000,3271,H1,Aurobindo
+Didanosine 363,MED34106,Analgesic,Capsule,442.99,413.56,28,1,94,36,445,2846,"generic,essential",Didanosine 250mg + Excipients,30044000,6151,X,Bayer India
+Zidovudine 710ml,MED42686,Sedative,Capsule,486.09,403.65,5,0,146,12,311,3211,prescription,Zidovudine 10mg + Excipients,30049000,2814,C,Cadila
+Atazanavir 962ml,MED68904,Antiemetic,Injection,37.81,35.51,18,0,81,32,336,3047,"otc,prescription",Atazanavir 500mg + Excipients,30033100,6149,None,Cipla
+Glecaprevir 648mg,MED35021,Vitamin,Drops,354.22,310.88,12,0,101,49,236,2644,generic,Glecaprevir 10mg + Excipients,30044000,6416,H,Pfizer India
+Budesonide 287mg,MED49957,Antihypertensive,Inhaler,403.95,330.98,12,0,125,13,367,3259,generic,Budesonide 250mg + Excipients,30031000,3854,X,Cipla
+Erythromycin 911mg,MED13252,Antibiotic,Patch,229.04,200.41,12,0,61,39,373,3565,"generic,prescription",Erythromycin 5mg + Excipients,30039000,2226,H1,Sanofi India
+Antiseptic 342mg,MED94168,Laxative,Gel,119.85,104.59,12,0,135,41,211,1039,essential,Antiseptic 500mg + Excipients,30042000,8495,None,GSK India
+Lorazepam 399mg,MED27004,Laxative,Inhaler,101.86,91.84,12,0,58,38,304,1847,"prescription,essential",Lorazepam 500mg + Excipients,30042000,7968,C,GSK India
+Levofloxacin 913ml,MED20902,Antifungal,Injection,370.85,316.12,18,0,173,29,191,3224,prescription,Levofloxacin 500mg + Excipients,30031000,2302,X,Novartis India
+Multivitamin 406mg,MED80033,Mineral,Syrup,204.23,172.61,18,0,177,20,226,3145,branded,Multivitamin 100mg + Excipients,30031000,3044,H1,Mankind
+Levocetirizine 850ml,MED74217,Analgesic,Capsule,420.34,395.25,28,2,97,19,462,1870,"essential,branded,prescription",Levocetirizine 10mg + Excipients,30033900,9263,H,Aurobindo
+Multivitamin 925ml,MED49581,Supplement,Gel,177.73,145.55,28,0,152,28,122,1788,branded,Multivitamin 500mg + Excipients,30041000,8284,X,Merck India
+Diclofenac 331mg,MED84268,Anxiolytic,Patch,159.72,133.8,12,0,128,31,362,4511,branded,Diclofenac 100mg + Excipients,30039000,7825,H1,Sun Pharma
+Famciclovir 940mg,MED77897,Antiparasitic,Ointment,253.38,211.82,18,0,55,22,474,4332,"branded,otc",Famciclovir 20mg + Excipients,30049000,2533,C,Cipla
+Erythromycin 378mg,MED25150,Vitamin,Tablet,369.47,332.68,28,1,156,50,117,4460,otc,Erythromycin 20mg + Excipients,30033900,3791,X,Sun Pharma
+Glecaprevir 639,MED51841,Antiparasitic,Gel,336.99,276.03,18,0,128,45,226,4004,"generic,otc",Glecaprevir 20mg + Excipients,30043100,8799,H1,Merck India
+Dolutegravir 860,MED81580,Nasal,Inhaler,28.97,25.08,5,0,156,35,259,4570,"prescription,essential",Dolutegravir 5mg + Excipients,30041000,7794,None,AstraZeneca India
+Elbasvir 136mg,MED53049,Antimalarial,Ointment,155.12,134.37,12,0,76,47,411,4772,branded,Elbasvir 5mg + Excipients,30031000,1814,None,Pfizer India
+Antidiarrheal 885mg,MED84052,Vitamin,Injection,128.22,117.25,28,2,146,35,405,2245,"otc,prescription,generic",Antidiarrheal 250mg + Excipients,30043100,4644,X,Dr. Reddys
+Antacid 964mg,MED15764,Antiparasitic,Gel,165.63,144.41,18,0,72,34,403,2787,"branded,generic,prescription",Antacid 20mg + Excipients,30043900,6867,C,GSK India
+Amoxicillin 683ml,MED39402,Antiviral,Capsule,133.6,113.67,5,0,198,16,176,4824,"prescription,branded",Amoxicillin 20mg + Excipients,30039000,7661,H1,Torrent
+Ear Drops 437,MED65097,Steroid,Ointment,295.49,276.47,12,0,113,42,252,4755,otc,Ear 10mg + Excipients,30031000,5463,H,Torrent
+Zanamivir 302mg,MED19635,Antihypertensive,Ointment,31.44,29.42,28,1,154,12,489,4155,branded,Zanamivir 250mg + Excipients,30033900,4456,None,Novartis India
+Antiseptic 856ml,MED91870,Antiviral,Tablet,21.15,18.45,12,0,194,38,405,4696,"otc,prescription,branded",Antiseptic 10mg + Excipients,30044000,7627,H,Alkem
+Lamivudine 407mg,MED88456,Antiviral,Ointment,482.66,438.78,28,0,50,35,119,1279,generic,Lamivudine 100mg + Excipients,30032000,6635,H1,AstraZeneca India
+Primaquine 117,MED69801,Antidepressant,Inhaler,12.92,11.82,28,2,192,16,123,1922,"branded,essential,generic",Primaquine 500mg + Excipients,30031000,9333,None,Torrent
+Paracetamol 552mg,MED13958,Sedative,Injection,305.76,280.61,28,2,187,44,249,2023,"essential,generic,otc",Paracetamol 500mg + Excipients,30043900,1533,X,Alkem
+Levocetirizine 803,MED17130,Steroid,Drops,297.32,258.17,5,0,97,42,354,3770,"generic,prescription",Levocetirizine 250mg + Excipients,30033900,8594,X,Sanofi India
+Montelukast 286,MED35108,Antihistamine,Injection,312.56,252.55,18,0,175,33,261,2338,"prescription,generic",Montelukast 10mg + Excipients,30043100,8989,H,Sanofi India
+Elbasvir 632mg,MED24448,Ophthalmic,Cream,462.74,384.44,5,0,177,13,116,3022,essential,Elbasvir 10mg + Excipients,30039000,8836,H,GSK India
+Paroxetine 259ml,MED64301,Bronchodilator,Tablet,352.93,287.49,5,0,88,50,209,1586,prescription,Paroxetine 20mg + Excipients,30031000,7297,None,Aurobindo
+Ribavirin 622,MED68478,Antiemetic,Injection,132.8,113.37,18,0,59,30,497,4537,"generic,branded,otc",Ribavirin 10mg + Excipients,30031000,2620,None,Aurobindo
+Fluoxetine 603mg,MED84233,Antihistamine,Ointment,344.3,305.76,18,0,86,23,489,3903,"generic,branded,prescription",Fluoxetine 20mg + Excipients,30039000,9114,H1,AstraZeneca India
+Fluoxetine 537mg,MED76805,Antiemetic,Cream,68.21,63.78,28,0,87,39,267,4814,"prescription,branded",Fluoxetine 10mg + Excipients,30032000,7914,H1,GSK India
+Ibuprofen 508,MED26535,Vitamin,Gel,88.2,72.41,28,0,70,41,173,2057,"prescription,branded,otc",Ibuprofen 500mg + Excipients,30033900,9874,C,Novartis India
+Grazoprevir 857ml,MED66974,Antihypertensive,Capsule,82.36,69.51,28,0,143,43,151,1403,branded,Grazoprevir 250mg + Excipients,30043900,7402,C,Johnson & Johnson India
+Zolpidem 813ml,MED91482,Mineral,Syrup,78.69,63.74,28,2,172,35,101,4490,"branded,prescription,essential",Zolpidem 5mg + Excipients,30031000,7039,H1,Abbott India
+Zanamivir 228ml,MED62750,Antidepressant,Syrup,485.44,428.84,12,0,136,29,177,2701,"prescription,otc",Zanamivir 500mg + Excipients,30049000,2848,None,Novartis India
+Laxative 180mg,MED31932,Vitamin,Cream,93.52,86.52,12,0,57,49,443,3156,"branded,generic",Laxative 20mg + Excipients,30043100,5152,X,Novartis India
+Sofosbuvir 612mg,MED67696,Antibiotic,Capsule,249.25,224.04,18,0,68,34,379,1455,otc,Sofosbuvir 500mg + Excipients,30033100,1942,None,Eli Lilly India
+Fluoxetine 748mg,MED64465,Antiemetic,Cream,450.88,418.31,18,0,178,28,357,2395,"otc,essential,prescription",Fluoxetine 5mg + Excipients,30042000,3873,H,Sun Pharma
+Amoxicillin 377,MED80933,Laxative,Gel,44.84,39.27,5,0,55,33,427,3735,generic,Amoxicillin 100mg + Excipients,30049000,9147,X,Cadila
+Prednisolone 697ml,MED77035,Otic,Tablet,48.83,42.75,28,2,198,14,453,4105,"prescription,generic,essential",Prednisolone 100mg + Excipients,30039000,1506,H,Dr. Reddys
+Diclofenac 769mg,MED42808,Otic,Injection,478.63,412.52,12,0,151,14,479,4483,generic,Diclofenac 10mg + Excipients,30041000,2984,C,AstraZeneca India
+Chloroquine 126,MED79857,Antidiabetic,Syrup,60.54,53.22,5,0,142,26,104,2701,"essential,branded",Chloroquine 250mg + Excipients,30044000,2746,None,Johnson & Johnson India
+Albendazole 883mg,MED11999,Antimalarial,Syrup,309.18,247.53,12,0,83,28,160,1746,"prescription,branded",Albendazole 10mg + Excipients,30033100,5212,None,Lupin
+Multivitamin 616,MED23514,Analgesic,Ointment,192.24,171.08,18,0,191,27,499,3148,"generic,otc,prescription",Multivitamin 100mg + Excipients,30043100,3670,C,Sanofi India
+Eye Drops 512,MED85337,Antimalarial,Gel,270.34,243.37,18,0,127,27,149,2947,"essential,generic,prescription",Eye 250mg + Excipients,30042000,7894,C,Cipla
+Doxycycline 106mg,MED95520,Otic,Capsule,293.88,253.68,5,0,87,48,130,4491,"prescription,otc",Doxycycline 5mg + Excipients,30043100,3152,H1,Abbott India
+Atazanavir 869mg,MED31664,Antidepressant,Gel,425.01,390.09,28,0,154,26,156,4401,"generic,prescription,otc",Atazanavir 5mg + Excipients,30033100,1896,H1,Lupin
+Chloroquine 753,MED43250,Ophthalmic,Tablet,147.44,120.6,12,0,80,13,287,2937,essential,Chloroquine 20mg + Excipients,30042000,8584,H1,Cipla
+Efavirenz 225,MED19257,Antiviral,Capsule,270.12,226.1,28,2,159,23,139,1185,"generic,otc",Efavirenz 10mg + Excipients,30033900,9256,H1,Mankind
+Levofloxacin 241,MED91552,Antimalarial,Ointment,189.17,177.79,28,2,122,17,500,4642,"prescription,essential",Levofloxacin 20mg + Excipients,30033100,1948,X,Alkem
+Abacavir 901,MED28092,Antacid,Inhaler,410.2,350.53,5,0,125,36,383,3964,"generic,otc",Abacavir 100mg + Excipients,30039000,3451,H,Dr. Reddys
+Antacid 752ml,MED36787,Antidiabetic,Injection,301.51,246.63,18,0,104,42,218,3903,branded,Antacid 10mg + Excipients,30049000,8821,C,Merck India
+Erythromycin 833,MED77341,Otic,Syrup,259.52,240.33,18,0,120,26,353,1086,"prescription,branded,otc",Erythromycin 10mg + Excipients,30034000,7904,H1,Mankind
+Mebendazole 701ml,MED47605,Antihypertensive,Injection,166.31,141.53,28,0,179,36,418,1452,"essential,prescription",Mebendazole 250mg + Excipients,30041000,1968,C,Cipla
+Lopinavir 174,MED45886,Mineral,Ointment,384.58,317.68,28,1,57,22,323,1045,"generic,prescription",Lopinavir 20mg + Excipients,30039000,9855,H1,Sanofi India
+Zalcitabine 506ml,MED67298,Supplement,Tablet,116.96,98.74,5,0,96,28,131,3904,"prescription,essential",Zalcitabine 10mg + Excipients,30044000,2125,X,Sun Pharma
+Lumefantrine 782ml,MED12261,Antihypertensive,Cream,282.17,251.99,5,0,52,13,187,4424,"otc,essential,prescription",Lumefantrine 500mg + Excipients,30042000,8871,X,Cadila
+Alprazolam 113ml,MED20927,Bronchodilator,Drops,452.64,405.91,18,0,127,24,405,3697,"otc,essential",Alprazolam 500mg + Excipients,30049000,9010,H,Torrent
+Ledipasvir 113ml,MED15906,Antidepressant,Inhaler,181.52,157.87,18,0,136,15,314,4412,generic,Ledipasvir 10mg + Excipients,30041000,2771,X,Sanofi India
+Vitamin D 268mg,MED66162,Analgesic,Drops,264.19,214.64,5,0,63,18,415,3918,prescription,Vitamin 5mg + Excipients,30041000,9678,C,Dr. Reddys
+Domperidone 381mg,MED72984,Nasal,Drops,302.76,243.78,12,0,172,38,209,3932,essential,Domperidone 10mg + Excipients,30033900,3595,X,Lupin
+Alprazolam 222mg,MED73769,Anxiolytic,Patch,278.75,238.81,28,0,83,46,165,2775,otc,Alprazolam 20mg + Excipients,30043100,6937,None,Lupin
+Naproxen 980,MED65247,Antifungal,Ointment,18.47,16.09,5,0,200,34,230,3093,"essential,otc,generic",Naproxen 500mg + Excipients,30039000,6706,H,Lupin
+Adefovir 441ml,MED27439,Vitamin,Ointment,241.21,216.54,5,0,119,42,133,1565,"branded,prescription",Adefovir 20mg + Excipients,30032000,2346,H,Merck India
+Diclofenac 723,MED13029,Mineral,Drops,148.93,128.78,12,0,79,20,391,4178,"essential,generic,branded",Diclofenac 500mg + Excipients,30044000,7776,X,Merck India
+Cabotegravir 956,MED23190,Antidiabetic,Capsule,370.4,314.55,5,0,180,27,436,2661,prescription,Cabotegravir 500mg + Excipients,30043900,2262,C,Dr. Reddys
+Albendazole 163mg,MED38731,Supplement,Ointment,266.42,245.41,12,0,139,21,299,4126,branded,Albendazole 5mg + Excipients,30042000,8553,H,Dr. Reddys
+Atazanavir 588mg,MED15443,Laxative,Inhaler,199.27,184.46,12,0,93,22,346,1216,"generic,otc,prescription",Atazanavir 5mg + Excipients,30043100,6650,C,Merck India
+Paracetamol 467mg,MED14712,Steroid,Patch,401.1,346.42,5,0,61,32,177,1735,"branded,otc,prescription",Paracetamol 20mg + Excipients,30043100,4959,C,Aurobindo
+Hydrocortisone 883,MED32695,Antiviral,Tablet,365.26,302.99,12,0,80,35,105,1420,"prescription,essential,branded",Hydrocortisone 500mg + Excipients,30041000,6211,H1,Cadila
+Didanosine 574ml,MED86096,Supplement,Ointment,288.33,247.26,12,0,165,24,162,2391,"branded,essential,generic",Didanosine 10mg + Excipients,30041000,4635,None,Pfizer India
+Dexamethasone 130mg,MED98072,Antifungal,Capsule,381.19,308.22,5,0,107,13,130,3666,"essential,otc",Dexamethasone 10mg + Excipients,30034000,8816,H1,Novartis India
+Cabotegravir 214mg,MED40831,Ophthalmic,Patch,103.53,90.26,5,0,50,47,107,4782,otc,Cabotegravir 100mg + Excipients,30043100,7721,H,Cipla
+Daclatasvir 999mg,MED69261,Antibiotic,Gel,474.42,436.74,28,2,71,42,453,2607,generic,Daclatasvir 10mg + Excipients,30042000,3541,None,Novartis India
+Hydrocortisone 795mg,MED47646,Otic,Tablet,80.32,68.95,18,0,127,27,455,4973,"generic,essential,prescription",Hydrocortisone 20mg + Excipients,30044000,1504,None,Cadila
+Raltegravir 332mg,MED59953,Antidiabetic,Inhaler,352.14,296.1,5,0,128,19,112,2052,"generic,essential",Raltegravir 20mg + Excipients,30043900,4740,None,Johnson & Johnson India
+Famciclovir 175ml,MED70811,Antiparasitic,Inhaler,136.74,123.64,18,0,144,31,144,2048,"essential,branded,generic",Famciclovir 5mg + Excipients,30041000,3881,C,Abbott India
+Cetirizine 409mg,MED12066,Sedative,Injection,64.2,52.11,18,0,176,20,495,2025,prescription,Cetirizine 250mg + Excipients,30049000,6177,H1,Aurobindo
+Telbivudine 460ml,MED55466,Antihypertensive,Ointment,119.35,107.5,28,2,95,40,206,2316,"branded,generic",Telbivudine 20mg + Excipients,30034000,6699,None,Novartis India
+Chloroquine 285,MED88625,Bronchodilator,Inhaler,379.46,329.13,28,1,166,48,469,1427,"prescription,essential",Chloroquine 100mg + Excipients,30034000,6922,C,Mankind
+Acyclovir 708,MED15899,Steroid,Patch,176.75,162.61,18,0,119,34,487,1856,"essential,branded,generic",Acyclovir 5mg + Excipients,30032000,4427,None,Mankind
+Pibrentasvir 420ml,MED82982,Mineral,Patch,316.7,294.79,28,1,184,49,171,2727,"generic,essential,otc",Pibrentasvir 20mg + Excipients,30049000,7035,H1,Sanofi India
+Dexamethasone 531mg,MED62985,Antidiabetic,Injection,66.66,54.92,28,1,68,26,454,1794,"branded,essential",Dexamethasone 500mg + Excipients,30041000,7152,X,Eli Lilly India
+Atorvastatin 712ml,MED59448,Antiparasitic,Syrup,46.71,40.29,28,0,197,46,147,2553,branded,Atorvastatin 10mg + Excipients,30032000,8497,H,Abbott India
+Emtricitabine 174mg,MED39120,Antihypertensive,Patch,290.0,237.31,28,1,123,33,414,2169,"branded,prescription",Emtricitabine 500mg + Excipients,30041000,4693,C,Novartis India
+Zanamivir 991mg,MED79475,Anxiolytic,Cream,437.36,408.82,28,2,117,48,165,3143,"branded,generic",Zanamivir 10mg + Excipients,30049000,7690,None,Abbott India
+Nevirapine 601,MED29253,Antiemetic,Ointment,237.43,212.4,18,0,159,23,230,3825,"essential,otc,prescription",Nevirapine 250mg + Excipients,30043100,3623,None,Johnson & Johnson India
+Antifungal Cream 898,MED16428,Otic,Ointment,332.75,310.9,5,0,164,22,197,3290,"branded,essential",Antifungal 20mg + Excipients,30044000,8957,X,Torrent
+Sulfadoxine 826mg,MED21280,Vitamin,Gel,212.44,197.07,28,0,120,30,119,1163,"essential,otc,prescription",Sulfadoxine 100mg + Excipients,30039000,5903,X,Novartis India
+Telbivudine 678ml,MED94837,Anxiolytic,Ointment,248.7,209.06,12,0,124,44,107,1799,"essential,branded,prescription",Telbivudine 20mg + Excipients,30033100,5320,H1,Mankind
+Calcium 124mg,MED32484,Mineral,Capsule,496.92,428.27,12,0,87,12,163,2158,"essential,prescription",Calcium 250mg + Excipients,30033100,2540,H,Cipla
+Salbutamol 981ml,MED42345,Antiparasitic,Syrup,350.36,330.82,5,0,136,22,494,2881,branded,Salbutamol 20mg + Excipients,30041000,6881,X,Alkem
+Ribavirin 110mg,MED98704,Antidiabetic,Injection,204.13,172.24,28,0,68,13,120,1796,essential,Ribavirin 500mg + Excipients,30042000,7950,C,Sanofi India
+Abacavir 118mg,MED10608,Anxiolytic,Drops,86.88,72.61,18,0,176,35,319,4968,"branded,generic",Abacavir 250mg + Excipients,30034000,8894,H,Lupin
+Hydroxychloroquine 179mg,MED41629,Antimalarial,Syrup,165.29,132.7,5,0,57,24,251,4811,generic,Hydroxychloroquine 20mg + Excipients,30032000,5460,None,Sun Pharma
+Montelukast 941ml,MED26565,Vitamin,Patch,282.89,227.59,18,0,75,23,404,4956,"essential,generic,branded",Montelukast 100mg + Excipients,30044000,3428,None,AstraZeneca India
+Emtricitabine 776mg,MED90248,Steroid,Patch,301.39,264.31,12,0,173,14,358,2621,"otc,prescription",Emtricitabine 100mg + Excipients,30034000,2595,None,Mankind
+Lamivudine 530mg,MED49733,Laxative,Tablet,166.48,148.08,28,2,109,23,259,2933,essential,Lamivudine 250mg + Excipients,30032000,6564,C,Cipla
+Budesonide 848mg,MED70458,Mineral,Gel,107.75,90.59,18,0,155,48,482,4011,"branded,essential",Budesonide 500mg + Excipients,30041000,8491,H1,Dr. Reddys
+Doxycycline 575ml,MED93986,Antibiotic,Patch,348.51,309.71,28,2,52,36,374,3333,"essential,otc",Doxycycline 10mg + Excipients,30041000,1909,H,AstraZeneca India
+Lorazepam 461mg,MED66804,Antiemetic,Drops,172.68,161.74,12,0,185,41,399,4504,"prescription,otc",Lorazepam 100mg + Excipients,30033100,5809,H,Pfizer India
+Pantoprazole 392mg,MED15439,Sedative,Tablet,301.48,285.75,18,0,141,47,147,4642,otc,Pantoprazole 10mg + Excipients,30043100,4494,C,AstraZeneca India
+Ivermectin 482ml,MED36969,Antacid,Syrup,408.71,364.64,12,0,97,50,289,1560,"branded,otc,prescription",Ivermectin 500mg + Excipients,30039000,7000,H,GSK India
+Clarithromycin 377,MED86943,Antihistamine,Injection,498.79,453.97,18,0,144,22,146,1974,"generic,essential",Clarithromycin 10mg + Excipients,30043900,4278,None,Merck India
+Cetirizine 450mg,MED32420,Supplement,Ointment,85.7,71.53,5,0,138,18,119,2119,"prescription,otc,generic",Cetirizine 10mg + Excipients,30042000,4022,H1,Mankind
+Ivermectin 902ml,MED40609,Supplement,Capsule,201.8,190.57,18,0,69,14,493,4377,"otc,essential,branded",Ivermectin 10mg + Excipients,30043900,4481,H1,AstraZeneca India
+Cough Syrup 717ml,MED57607,Antiviral,Capsule,346.0,304.45,28,2,90,22,478,2864,"otc,essential",Cough 10mg + Excipients,30042000,4911,C,Mankind
+Oseltamivir 476mg,MED83935,Antidiabetic,Ointment,74.49,68.99,12,0,73,13,135,2062,"branded,essential",Oseltamivir 5mg + Excipients,30033900,2157,H,GSK India
+Pantoprazole 229ml,MED94801,Antidepressant,Tablet,217.23,196.65,12,0,159,31,142,3466,"prescription,generic",Pantoprazole 100mg + Excipients,30044000,8097,C,Cipla
+Aspirin 294mg,MED25373,Antibiotic,Cream,215.88,190.12,28,0,126,46,297,1735,"branded,generic,essential",Aspirin 250mg + Excipients,30042000,2209,H1,GSK India
+Telbivudine 252mg,MED58839,Antimalarial,Ointment,242.24,215.23,12,0,74,28,166,3400,"branded,essential,otc",Telbivudine 5mg + Excipients,30033100,9434,H1,Pfizer India
+Interferon 932ml,MED64706,Antifungal,Inhaler,41.81,35.75,12,0,167,40,279,4639,branded,Interferon 10mg + Excipients,30034000,1383,H,Mankind
+Interferon 754ml,MED90772,Antihypertensive,Syrup,24.91,22.16,12,0,81,25,237,3220,branded,Interferon 10mg + Excipients,30031000,4006,None,Merck India
+Entecavir 568,MED45303,Vitamin,Cream,259.18,241.54,18,0,87,39,436,2317,branded,Entecavir 100mg + Excipients,30043100,7995,X,Cadila
+Antacid 245mg,MED58381,Antimalarial,Injection,468.29,383.13,12,0,92,43,367,4581,branded,Antacid 500mg + Excipients,30034000,6791,None,Novartis India
+Tinidazole 374mg,MED51035,Bronchodilator,Drops,344.55,321.18,5,0,70,40,102,4852,"otc,essential,generic",Tinidazole 5mg + Excipients,30034000,1079,X,Novartis India
+Cabotegravir 861,MED74922,Antihistamine,Cream,339.06,293.98,5,0,160,43,189,3874,"prescription,generic",Cabotegravir 20mg + Excipients,30044000,7462,H1,Boehringer Ingelheim India
+Multivitamin 437mg,MED72219,Nasal,Tablet,303.67,257.43,5,0,50,21,131,4612,"prescription,otc,essential",Multivitamin 500mg + Excipients,30031000,8603,H1,Sanofi India
+Antifungal Cream 970,MED61610,Antiviral,Capsule,360.41,330.88,12,0,94,26,280,4746,generic,Antifungal 100mg + Excipients,30033900,8902,C,Dr. Reddys
+Nasal Spray 452ml,MED71807,Antifungal,Gel,384.28,320.7,28,0,104,32,278,4798,"generic,essential,branded",Nasal 250mg + Excipients,30049000,5350,H1,Abbott India
+Montelukast 250mg,MED94348,Otic,Drops,366.54,306.66,5,0,89,29,173,4459,branded,Montelukast 20mg + Excipients,30031000,2036,X,Cadila
+Atazanavir 585ml,MED30710,Bronchodilator,Drops,449.65,393.78,5,0,178,27,292,2483,otc,Atazanavir 20mg + Excipients,30039000,6616,H1,AstraZeneca India
+Atazanavir 471ml,MED89351,Vitamin,Drops,404.91,366.39,18,0,127,41,370,2723,prescription,Atazanavir 10mg + Excipients,30044000,6206,C,Cipla
+Lamivudine 499,MED62383,Analgesic,Syrup,469.83,400.55,28,0,148,40,360,2178,"essential,otc",Lamivudine 250mg + Excipients,30044000,3133,C,Sun Pharma
+Tramadol 667mg,MED13121,Antifungal,Cream,360.36,305.21,5,0,166,25,288,4198,otc,Tramadol 100mg + Excipients,30041000,5494,X,Boehringer Ingelheim India
+Thyroxine 516mg,MED71807,Vitamin,Tablet,396.36,322.48,18,0,57,14,326,2794,branded,Thyroxine 250mg + Excipients,30044000,5068,None,Eli Lilly India
+Cefixime 139,MED69337,Antimalarial,Capsule,34.38,31.92,18,0,154,22,275,1514,branded,Cefixime 500mg + Excipients,30033900,5755,H,Merck India
+Elbasvir 633mg,MED66206,Sedative,Cream,97.9,82.44,28,1,79,27,203,2729,"prescription,otc,essential",Elbasvir 20mg + Excipients,30033900,5612,H1,Abbott India
+Nevirapine 392,MED64632,Antiviral,Syrup,368.25,312.99,5,0,132,39,300,4386,"generic,branded",Nevirapine 5mg + Excipients,30043900,6918,None,Pfizer India
+Grazoprevir 399mg,MED98548,Vitamin,Patch,201.5,189.31,28,2,159,16,201,4144,"generic,branded,essential",Grazoprevir 500mg + Excipients,30032000,2363,X,Aurobindo
+Grazoprevir 454mg,MED63362,Vitamin,Patch,201.5,189.31,28,2,159,16,201,4144,"generic,branded,essential",Grazoprevir 500mg + Excipients,30032000,2363,X,Aurobindo
+Atorvastatin 938mg,MED93929,Antacid,Ointment,187.57,160.11,28,0,108,49,437,1774,"branded,prescription",Atorvastatin 500mg + Excipients,30043900,7992,H,Johnson & Johnson India
+Ondansetron 489,MED15458,Ophthalmic,Inhaler,111.69,104.53,18,0,124,46,423,2841,"essential,generic,otc",Ondansetron 5mg + Excipients,30031000,6256,H1,Boehringer Ingelheim India
+Antiseptic 272ml,MED13350,Ophthalmic,Injection,96.49,81.12,12,0,136,45,261,1905,"branded,prescription",Antiseptic 100mg + Excipients,30049000,7558,X,Cipla
+Cabotegravir 947,MED33260,Ophthalmic,Drops,441.41,399.44,18,0,128,29,171,3313,otc,Cabotegravir 10mg + Excipients,30043900,4635,H1,Merck India
+Lumefantrine 682ml,MED68273,Anxiolytic,Syrup,108.88,100.05,12,0,116,22,118,3861,"otc,generic,branded",Lumefantrine 10mg + Excipients,30033900,5342,C,Aurobindo
+Ivermectin 964mg,MED11873,Steroid,Injection,139.82,113.54,18,0,85,38,318,3202,prescription,Ivermectin 500mg + Excipients,30039000,8995,None,Torrent
+Metronidazole 807,MED70601,Antibiotic,Ointment,76.71,69.98,5,0,135,24,345,1664,"essential,otc,branded",Metronidazole 5mg + Excipients,30041000,4971,None,Cipla
+Atorvastatin 903,MED14763,Steroid,Drops,334.01,310.04,12,0,50,12,196,2615,"otc,prescription",Atorvastatin 20mg + Excipients,30044000,1728,H,Johnson & Johnson India
+Albendazole 707,MED18963,Antiviral,Ointment,217.37,178.28,18,0,194,34,475,2915,branded,Albendazole 10mg + Excipients,30043100,7554,H1,Boehringer Ingelheim India
+Raltegravir 373ml,MED41843,Antifungal,Tablet,192.01,159.94,28,0,160,30,240,4062,"prescription,branded,generic",Raltegravir 10mg + Excipients,30043900,2501,H1,Abbott India
+Chloroquine 641ml,MED95294,Anxiolytic,Capsule,150.19,130.51,28,0,84,45,335,2360,"otc,branded",Chloroquine 10mg + Excipients,30043100,9474,X,GSK India
+Antidiarrheal 272mg,MED43927,Antihistamine,Gel,368.93,327.27,5,0,173,45,499,4419,"essential,generic,prescription",Antidiarrheal 20mg + Excipients,30032000,2900,C,Sanofi India
+Ibuprofen 318,MED37181,Antidepressant,Patch,167.65,146.54,18,0,180,49,279,2260,branded,Ibuprofen 5mg + Excipients,30043900,7815,None,AstraZeneca India
+Laxative 160ml,MED40969,Nasal,Ointment,173.72,154.07,12,0,112,26,389,1316,otc,Laxative 500mg + Excipients,30043100,1790,H,Cadila
+Dexamethasone 981mg,MED59912,Steroid,Tablet,310.39,260.7,18,0,148,28,285,1401,essential,Dexamethasone 10mg + Excipients,30031000,1835,None,Abbott India
+Albendazole 432mg,MED53223,Nasal,Drops,27.13,24.0,12,0,97,16,466,2331,"otc,branded",Albendazole 250mg + Excipients,30044000,5200,X,Dr. Reddys
+Lumefantrine 746,MED26383,Antidepressant,Injection,216.14,192.59,5,0,96,50,225,1794,"generic,branded",Lumefantrine 250mg + Excipients,30039000,2941,H1,Torrent
+Adefovir 262mg,MED81952,Antiviral,Gel,212.21,190.6,5,0,92,35,479,2964,"essential,generic",Adefovir 500mg + Excipients,30034000,4127,None,Dr. Reddys
+Domperidone 427,MED72152,Supplement,Inhaler,324.73,300.15,12,0,141,12,434,2203,otc,Domperidone 20mg + Excipients,30031000,8891,None,GSK India
+Dasabuvir 125,MED69985,Antiemetic,Drops,271.48,236.83,12,0,142,49,424,3541,"prescription,essential",Dasabuvir 100mg + Excipients,30043100,9443,H1,GSK India
+Ivermectin 912mg,MED94599,Laxative,Syrup,478.18,388.12,18,0,103,17,487,3108,prescription,Ivermectin 250mg + Excipients,30043900,9650,H,Sun Pharma
+Metformin 126mg,MED24187,Steroid,Injection,433.98,362.07,12,0,195,21,474,4587,"generic,essential",Metformin 5mg + Excipients,30044000,1803,H,Pfizer India
+Paracetamol 330ml,MED64346,Sedative,Cream,421.37,365.43,5,0,116,30,446,4576,"otc,prescription",Paracetamol 5mg + Excipients,30032000,1914,H1,Mankind
+Primaquine 875mg,MED13691,Laxative,Cream,443.52,362.09,18,0,195,35,446,2037,"branded,generic,otc",Primaquine 500mg + Excipients,30049000,9032,None,Abbott India
+Velpatasvir 123mg,MED77968,Bronchodilator,Injection,388.01,312.27,5,0,99,44,175,4107,"generic,prescription,otc",Velpatasvir 10mg + Excipients,30033100,6142,C,Mankind
+Clonazepam 276mg,MED69206,Bronchodilator,Syrup,377.69,328.49,12,0,173,23,483,4181,prescription,Clonazepam 20mg + Excipients,30043100,8442,H1,Bayer India
+Entecavir 949mg,MED50070,Bronchodilator,Gel,169.48,139.67,5,0,144,46,443,1018,"prescription,essential,otc",Entecavir 5mg + Excipients,30031000,7538,None,Bayer India
+Atazanavir 866,MED58019,Antiemetic,Drops,51.44,43.89,12,0,105,19,447,2319,"otc,branded",Atazanavir 5mg + Excipients,30043100,9621,C,Abbott India
+Hydrocortisone 306ml,MED53898,Nasal,Injection,75.18,62.86,28,0,68,16,463,1663,"otc,essential",Hydrocortisone 10mg + Excipients,30043100,9491,X,GSK India
+Antidiarrheal 589mg,MED53819,Supplement,Inhaler,270.1,230.39,28,2,51,41,325,4490,"prescription,essential",Antidiarrheal 10mg + Excipients,30031000,6197,X,Mankind
+Ombitasvir 670mg,MED68885,Antibiotic,Ointment,297.76,278.92,12,0,187,26,468,2508,essential,Ombitasvir 5mg + Excipients,30044000,2428,X,Sanofi India
+Aspirin 231mg,MED10586,Vitamin,Gel,289.31,235.51,18,0,121,34,127,4973,otc,Aspirin 500mg + Excipients,30033900,4828,X,Cipla
+Tramadol 383mg,MED94281,Antimalarial,Ointment,355.69,294.02,28,1,79,20,253,3157,"branded,otc",Tramadol 20mg + Excipients,30043900,8921,C,Cipla
+Multivitamin 357mg,MED60910,Anxiolytic,Injection,391.41,367.82,12,0,149,32,197,2498,"essential,prescription",Multivitamin 500mg + Excipients,30044000,4393,None,Alkem
+Cetirizine 164ml,MED75764,Laxative,Ointment,317.92,255.9,18,0,124,23,481,4066,generic,Cetirizine 500mg + Excipients,30049000,5118,H,Aurobindo
+Zalcitabine 356ml,MED73249,Antihypertensive,Injection,122.15,109.28,28,0,93,37,150,2515,generic,Zalcitabine 250mg + Excipients,30039000,2452,C,AstraZeneca India
+Metronidazole 968ml,MED90703,Supplement,Capsule,23.91,22.4,18,0,200,35,198,1825,"branded,generic",Metronidazole 250mg + Excipients,30033100,5741,H,Sanofi India
+Omeprazole 337ml,MED57614,Supplement,Injection,105.77,95.84,28,1,92,34,231,4615,branded,Omeprazole 5mg + Excipients,30031000,1231,None,Dr. Reddys
+Ear Drops 452,MED86326,Laxative,Inhaler,436.91,412.39,5,0,142,11,313,3620,otc,Ear 5mg + Excipients,30043100,7275,C,Sun Pharma
+Alprazolam 189ml,MED66025,Sedative,Inhaler,435.93,375.93,18,0,51,18,131,2508,otc,Alprazolam 5mg + Excipients,30033900,9486,C,Johnson & Johnson India
+Fluoxetine 390ml,MED94228,Antimalarial,Ointment,180.1,162.75,28,0,189,27,126,1142,essential,Fluoxetine 10mg + Excipients,30043900,5661,None,Aurobindo
+Glecaprevir 536,MED65519,Sedative,Injection,175.02,163.16,5,0,68,15,497,3488,"prescription,branded,generic",Glecaprevir 100mg + Excipients,30031000,8047,None,Novartis India
+Laxative 501mg,MED39935,Otic,Ointment,286.08,230.2,12,0,113,10,141,2228,"generic,essential,branded",Laxative 100mg + Excipients,30044000,1449,None,Pfizer India
+Grazoprevir 454mg,MED26916,Vitamin,Patch,361.21,334.62,28,1,113,31,377,2831,"generic,branded,essential",Grazoprevir 10mg + Excipients,30039000,8667,H,Aurobindo
+Eye Drops 748mg,MED54269,Vitamin,Capsule,56.73,47.05,5,0,132,21,207,4122,"otc,essential,branded",Eye 100mg + Excipients,30039000,3588,None,Novartis India
+Ombitasvir 662ml,MED37762,Antihistamine,Gel,207.88,172.12,5,0,124,19,390,2522,"prescription,generic",Ombitasvir 100mg + Excipients,30041000,6740,H1,Sanofi India
+Erythromycin 379,MED23350,Antiparasitic,Drops,449.87,400.58,18,0,53,10,112,2644,"branded,otc,prescription",Erythromycin 10mg + Excipients,30039000,6436,X,Boehringer Ingelheim India
+Cefuroxime 242ml,MED26212,Supplement,Patch,467.63,392.57,5,0,73,10,328,4986,prescription,Cefuroxime 5mg + Excipients,30044000,4864,H1,Sun Pharma
+Ciprofloxacin 105mg,MED62861,Antidepressant,Capsule,25.34,21.69,5,0,94,40,103,2794,"generic,essential,branded",Ciprofloxacin 100mg + Excipients,30044000,2077,None,Pfizer India
+Antiseptic 621,MED68892,Ophthalmic,Patch,281.6,229.29,5,0,77,11,310,2038,"essential,generic,otc",Antiseptic 20mg + Excipients,30044000,4573,H1,Merck India
+Bictegravir 370,MED45568,Supplement,Gel,399.31,351.03,28,1,153,11,482,2358,essential,Bictegravir 20mg + Excipients,30049000,4456,H,Cadila
+Salbutamol 746,MED72952,Supplement,Tablet,40.11,32.33,18,0,132,48,175,4336,"branded,prescription,otc",Salbutamol 5mg + Excipients,30049000,8346,C,Cadila
+Interferon 121,MED25122,Antihistamine,Syrup,349.38,287.08,18,0,191,40,351,3907,"essential,branded,otc",Interferon 100mg + Excipients,30041000,4662,X,Novartis India
+Antifungal Cream 390,MED41817,Laxative,Injection,88.91,75.97,5,0,176,39,404,4858,essential,Antifungal 20mg + Excipients,30049000,2716,None,Pfizer India
+Raltegravir 260ml,MED67105,Antifungal,Tablet,213.07,199.21,28,0,62,18,186,4667,"prescription,branded",Raltegravir 250mg + Excipients,30033100,3637,H1,AstraZeneca India
+Naproxen 565mg,MED37872,Antidepressant,Ointment,332.83,315.81,12,0,129,28,335,2317,"prescription,generic",Naproxen 100mg + Excipients,30042000,4748,None,Cipla
+Mebendazole 980mg,MED64476,Antifungal,Capsule,270.32,238.84,28,2,86,11,144,3679,branded,Mebendazole 100mg + Excipients,30032000,8779,C,Mankind
+Atorvastatin 534mg,MED21700,Antacid,Cream,245.7,227.19,28,0,168,22,158,3212,prescription,Atorvastatin 500mg + Excipients,30044000,9133,H,Lupin
+Montelukast 239ml,MED66278,Anxiolytic,Injection,20.64,19.33,5,0,135,11,234,3931,"essential,prescription,generic",Montelukast 250mg + Excipients,30043100,9207,None,Pfizer India
+Hydroxychloroquine 621mg,MED61534,Bronchodilator,Injection,358.09,322.71,5,0,178,20,296,1417,"branded,otc",Hydroxychloroquine 20mg + Excipients,30044000,5784,None,GSK India
+Paracetamol 652mg,MED58621,Antiparasitic,Injection,208.62,188.18,5,0,109,43,407,1246,"generic,essential,prescription",Paracetamol 250mg + Excipients,30039000,5121,C,AstraZeneca India
+Levocetirizine 397,MED88603,Vitamin,Ointment,430.06,385.54,5,0,114,31,116,2755,"generic,branded,otc",Levocetirizine 20mg + Excipients,30041000,1063,H1,GSK India
+Velpatasvir 895ml,MED90162,Antifungal,Patch,443.42,398.29,28,2,93,40,227,4584,"otc,branded,generic",Velpatasvir 20mg + Excipients,30039000,3416,C,Johnson & Johnson India
+Primaquine 827,MED24464,Nasal,Tablet,286.0,233.68,5,0,169,31,191,1283,branded,Primaquine 5mg + Excipients,30039000,7549,X,Merck India
+Zanamivir 292ml,MED12728,Antidiabetic,Gel,481.98,455.43,5,0,130,21,331,2917,"generic,branded",Zanamivir 5mg + Excipients,30042000,5641,X,AstraZeneca India
+Lamivudine 418,MED19067,Antiviral,Syrup,375.78,323.33,28,0,93,32,420,3672,"generic,branded",Lamivudine 100mg + Excipients,30044000,1996,None,Johnson & Johnson India
+Ombitasvir 178ml,MED65648,Analgesic,Syrup,228.16,197.45,5,0,75,32,329,4999,otc,Ombitasvir 250mg + Excipients,30031000,3796,C,Novartis India
+Aspirin 844ml,MED48949,Steroid,Cream,393.89,342.6,28,0,146,16,101,3482,"generic,essential",Aspirin 250mg + Excipients,30039000,4930,C,Sun Pharma
+Amlodipine 692ml,MED95086,Antiviral,Injection,374.58,349.08,5,0,117,26,111,3667,"prescription,essential,branded",Amlodipine 10mg + Excipients,30032000,8223,H1,Sanofi India
+Tramadol 353mg,MED73475,Steroid,Drops,257.77,216.53,28,2,166,13,439,2817,"branded,essential",Tramadol 250mg + Excipients,30041000,9165,X,Eli Lilly India
+Cough Syrup 739ml,MED52722,Vitamin,Drops,402.12,337.1,5,0,118,37,235,1913,"branded,otc,generic",Cough 100mg + Excipients,30033100,8773,None,Alkem
+Emtricitabine 476,MED85269,Antiviral,Injection,94.07,86.11,18,0,157,12,325,1919,"otc,prescription,essential",Emtricitabine 10mg + Excipients,30041000,6091,None,Sanofi India
+Antidiarrheal 654mg,MED27905,Antidiabetic,Syrup,94.86,80.57,18,0,65,24,251,2186,"prescription,branded,otc",Antidiarrheal 20mg + Excipients,30033900,7742,X,Sun Pharma
+Paracetamol 509mg,MED52563,Supplement,Syrup,136.46,116.52,18,0,137,50,442,1030,"prescription,otc,generic",Paracetamol 500mg + Excipients,30039000,4607,None,AstraZeneca India
+Aceclofenac 394mg,MED64090,Antacid,Injection,71.93,66.23,12,0,160,17,484,1181,"generic,prescription,branded",Aceclofenac 10mg + Excipients,30039000,6436,C,Johnson & Johnson India
+Aceclofenac 151ml,MED81805,Anxiolytic,Gel,462.04,419.45,12,0,192,21,355,2025,essential,Aceclofenac 20mg + Excipients,30043900,3322,H,Bayer India
+Voxilaprevir 109,MED27412,Nasal,Patch,338.88,287.75,5,0,128,44,425,2465,"essential,prescription",Voxilaprevir 20mg + Excipients,30031000,2814,H,Alkem
+Paritaprevir 454mg,MED26900,Vitamin,Inhaler,174.59,159.81,12,0,164,34,353,4761,essential,Paritaprevir 10mg + Excipients,30042000,1593,C,Merck India
+Nasal Spray 853,MED31851,Nasal,Gel,247.66,225.19,12,0,187,23,397,3215,"generic,otc,prescription",Nasal 5mg + Excipients,30043900,5600,None,Mankind
+Losartan 830,MED47588,Laxative,Capsule,477.75,389.83,5,0,121,46,438,1308,"essential,generic",Losartan 5mg + Excipients,30042000,6910,X,Alkem
+Eye Drops 808,MED85504,Analgesic,Syrup,331.01,290.58,18,0,179,21,196,3971,prescription,Eye 20mg + Excipients,30044000,9706,C,Bayer India
+Paritaprevir 164ml,MED61291,Vitamin,Capsule,366.36,338.33,28,2,120,14,155,4812,"essential,prescription",Paritaprevir 500mg + Excipients,30033100,1694,X,Johnson & Johnson India
+Atorvastatin 772,MED77180,Laxative,Cream,162.93,131.15,12,0,63,25,205,4215,"generic,prescription",Atorvastatin 10mg + Excipients,30032000,5308,None,Sun Pharma
+Hydroxychloroquine 966,MED45357,Antacid,Ointment,306.62,266.65,28,0,182,34,324,2466,branded,Hydroxychloroquine 250mg + Excipients,30049000,1168,None,Alkem
+Metformin 854mg,MED70299,Antifungal,Patch,148.05,120.84,18,0,92,43,178,1903,"generic,essential",Metformin 20mg + Excipients,30031000,4174,None,GSK India
+Budesonide 800ml,MED63762,Supplement,Ointment,336.87,302.6,18,0,137,26,154,4759,"essential,otc",Budesonide 5mg + Excipients,30039000,7058,C,Cipla
+Losartan 821,MED84514,Antacid,Inhaler,60.4,49.75,5,0,189,21,222,4346,otc,Losartan 5mg + Excipients,30032000,6260,C,Sun Pharma
+Amoxicillin 257,MED48708,Antimalarial,Syrup,237.17,209.99,18,0,85,38,124,3657,"generic,branded,essential",Amoxicillin 100mg + Excipients,30033100,4448,X,Pfizer India
+Ribavirin 240mg,MED39593,Otic,Ointment,37.77,31.87,5,0,134,12,225,3769,"generic,prescription,branded",Ribavirin 500mg + Excipients,30041000,8680,H,Dr. Reddys
+Folic Acid 312,MED84422,Antimalarial,Capsule,375.9,322.93,18,0,84,11,218,1276,otc,Folic 20mg + Excipients,30049000,8151,C,Lupin
+Glecaprevir 315,MED51081,Analgesic,Gel,438.35,391.86,28,1,184,50,325,2956,"generic,otc",Glecaprevir 250mg + Excipients,30043100,5342,H1,Merck India
+Primaquine 155,MED41427,Antihistamine,Injection,297.54,261.03,28,2,117,29,224,3283,"generic,prescription,branded",Primaquine 10mg + Excipients,30044000,8828,X,Bayer India
+Bictegravir 155mg,MED75562,Mineral,Inhaler,142.31,119.39,12,0,158,32,252,3520,otc,Bictegravir 20mg + Excipients,30043900,9052,H,GSK India
+Metformin 558,MED95872,Antidiabetic,Injection,357.27,337.54,18,0,65,26,329,4410,"branded,generic,essential",Metformin 250mg + Excipients,30033900,1998,X,Torrent
+Montelukast 619mg,MED49318,Nasal,Ointment,64.74,53.81,18,0,198,47,422,4643,"generic,branded",Montelukast 5mg + Excipients,30033900,8406,H1,Bayer India
+Atazanavir 274ml,MED71812,Ophthalmic,Cream,387.18,363.63,28,1,74,21,240,1807,"branded,otc",Atazanavir 100mg + Excipients,30032000,5762,H,Lupin
+Insulin 307mg,MED77047,Antacid,Drops,349.16,301.72,5,0,163,23,185,2611,branded,Insulin 100mg + Excipients,30033900,2131,H,Lupin
+Diazepam 305mg,MED11342,Antihypertensive,Patch,445.18,393.05,18,0,51,30,414,2864,"otc,prescription,branded",Diazepam 20mg + Excipients,30044000,2031,H1,Lupin
+Acyclovir 323ml,MED63990,Antimalarial,Ointment,198.9,166.84,12,0,54,33,137,2995,branded,Acyclovir 20mg + Excipients,30042000,7500,H1,Johnson & Johnson India
+Montelukast 574,MED14786,Ophthalmic,Syrup,149.86,126.11,5,0,198,21,399,3076,"essential,prescription,otc",Montelukast 5mg + Excipients,30033100,4882,H1,Cipla
+Ranitidine 133,MED87936,Antihypertensive,Capsule,341.04,301.69,12,0,82,42,434,4239,"essential,prescription,branded",Ranitidine 5mg + Excipients,30034000,6783,C,Merck India
+Levocetirizine 495mg,MED21622,Antimalarial,Tablet,384.05,329.0,12,0,119,45,116,2506,prescription,Levocetirizine 100mg + Excipients,30034000,2907,C,Cipla
+Iron 678mg,MED20396,Nasal,Ointment,494.95,433.13,12,0,179,28,316,4156,otc,Iron 250mg + Excipients,30031000,3715,H1,AstraZeneca India
+Mebendazole 859,MED97523,Antimalarial,Gel,27.01,22.8,18,0,152,10,334,2089,"prescription,essential",Mebendazole 100mg + Excipients,30043900,4056,C,GSK India
+Doxycycline 226,MED62880,Antiparasitic,Patch,195.89,161.21,28,2,82,30,234,3675,branded,Doxycycline 100mg + Excipients,30034000,1393,C,Merck India
+Lopinavir 829ml,MED83953,Otic,Patch,444.75,416.39,18,0,187,28,380,3573,"prescription,otc",Lopinavir 10mg + Excipients,30041000,4029,None,Aurobindo
+Primaquine 720ml,MED42687,Antihypertensive,Syrup,235.04,217.01,28,2,81,42,270,2230,"branded,otc",Primaquine 500mg + Excipients,30044000,4227,H,Sun Pharma
+Thyroxine 910ml,MED21420,Antimalarial,Patch,110.74,91.2,28,1,116,37,438,3091,otc,Thyroxine 5mg + Excipients,30034000,8282,H,Abbott India
+Nasal Spray 216,MED48962,Antidepressant,Ointment,161.07,146.74,5,0,140,50,130,2574,"otc,branded,essential",Nasal 5mg + Excipients,30031000,1880,X,Bayer India
+Ombitasvir 637,MED33404,Bronchodilator,Drops,64.68,56.56,28,1,85,44,156,2802,"prescription,essential,branded",Ombitasvir 500mg + Excipients,30031000,9971,H,Sun Pharma
+Lumefantrine 579,MED57943,Supplement,Patch,255.53,227.24,28,1,196,42,241,2988,"prescription,essential,otc",Lumefantrine 250mg + Excipients,30043100,9237,X,Torrent
+Ombitasvir 729,MED27080,Supplement,Gel,417.55,354.92,18,0,103,43,399,2942,prescription,Ombitasvir 100mg + Excipients,30034000,9251,H1,Aurobindo
+Domperidone 323,MED81307,Antibiotic,Inhaler,204.43,173.9,5,0,59,49,339,1614,generic,Domperidone 10mg + Excipients,30042000,7723,X,Abbott India
+Oseltamivir 611ml,MED51630,Sedative,Tablet,130.6,121.1,12,0,123,12,324,3439,"essential,prescription",Oseltamivir 5mg + Excipients,30031000,7932,X,Bayer India
+Alprazolam 113ml,MED38587,Antihistamine,Patch,100.03,85.65,12,0,180,25,332,4186,"essential,generic",Alprazolam 250mg + Excipients,30042000,2684,H,AstraZeneca India
+Thyroxine 347ml,MED36802,Laxative,Patch,457.77,393.57,18,0,164,41,207,4275,generic,Thyroxine 5mg + Excipients,30043100,2869,H,Pfizer India
+Lopinavir 825mg,MED15830,Vitamin,Cream,85.87,75.04,5,0,140,14,402,1564,otc,Lopinavir 500mg + Excipients,30032000,7094,H1,Abbott India
+Ledipasvir 884mg,MED75257,Antiparasitic,Tablet,330.78,276.66,12,0,154,49,297,4782,generic,Ledipasvir 100mg + Excipients,30032000,7363,H1,Cadila
+Famciclovir 171mg,MED43011,Antiviral,Ointment,136.12,124.36,28,1,195,49,311,2750,"otc,prescription",Famciclovir 100mg + Excipients,30034000,6089,None,Torrent
+Bictegravir 171ml,MED69199,Antiemetic,Gel,302.58,249.45,18,0,133,42,258,1758,"prescription,essential",Bictegravir 500mg + Excipients,30039000,4908,H1,Merck India
+Paritaprevir 459,MED74760,Laxative,Ointment,94.86,89.35,28,2,197,18,258,1620,otc,Paritaprevir 5mg + Excipients,30034000,2187,None,Boehringer Ingelheim India
+Sofosbuvir 986ml,MED73746,Antidepressant,Ointment,56.92,49.29,5,0,60,10,308,2948,"otc,branded,prescription",Sofosbuvir 20mg + Excipients,30033900,9038,None,GSK India
+Ranitidine 720,MED71539,Steroid,Cream,370.97,347.81,12,0,125,32,318,1496,"essential,generic,otc",Ranitidine 10mg + Excipients,30043900,9647,H1,Aurobindo
+Velpatasvir 133,MED18869,Analgesic,Inhaler,348.06,315.5,18,0,158,39,225,4677,"prescription,otc",Velpatasvir 5mg + Excipients,30049000,1395,C,Aurobindo
+Naproxen 995,MED59128,Antihistamine,Ointment,362.07,336.16,5,0,180,38,138,4983,"branded,generic",Naproxen 250mg + Excipients,30043900,7186,H1,Eli Lilly India
+Prednisolone 587mg,MED28091,Antimalarial,Inhaler,31.28,27.12,28,0,83,18,463,1886,"prescription,generic,branded",Prednisolone 250mg + Excipients,30049000,2509,H,Eli Lilly India
+Aspirin 525mg,MED83791,Sedative,Drops,357.57,324.75,5,0,54,43,431,2506,"otc,generic",Aspirin 5mg + Excipients,30041000,4078,X,Alkem
+Pantoprazole 822,MED67814,Steroid,Patch,47.73,38.7,5,0,143,18,469,1746,"branded,otc",Pantoprazole 500mg + Excipients,30043100,8018,H,Aurobindo
+Sulfadoxine 445ml,MED17410,Bronchodilator,Cream,359.03,327.02,28,1,177,36,469,2041,"branded,otc",Sulfadoxine 10mg + Excipients,30033900,5536,None,Novartis India
+Atazanavir 607,MED81352,Antacid,Inhaler,204.39,188.84,12,0,60,25,113,4133,"otc,prescription,branded",Atazanavir 250mg + Excipients,30043900,6022,None,Eli Lilly India
+Vitamin D 938mg,MED23600,Antifungal,Inhaler,328.29,311.7,12,0,167,50,104,1489,"essential,branded",Vitamin 20mg + Excipients,30031000,9711,H36.7sExpert
