@@ -2,7 +2,7 @@ from typing import List, Dict, Optional, Union
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
 from core.database.connection import db_manager
-from modules.admin_module.models.entities import MenuMaster, RoleMenuMapping, User, UserRole, Role
+from modules.admin_module.models.entities import MenuMaster, RoleMenuMapping, User, UserRole, Role, TenantModuleMapping, ModuleMaster
 
 class MenuService:
     
@@ -251,6 +251,88 @@ class MenuService:
             ).all()
             
             return MenuService._build_simple_menu_tree(menus)
+    
+    @staticmethod
+    def get_menus_by_tenant_modules(tenant_id: int) -> List[Dict]:
+        """Get menus based on active modules for tenant"""
+        with db_manager.get_session() as session:
+            module_codes = session.query(ModuleMaster.module_code).join(
+                TenantModuleMapping
+            ).filter(
+                TenantModuleMapping.tenant_id == tenant_id,
+                TenantModuleMapping.is_active == True
+            ).all()
+            
+            codes = [code[0] for code in module_codes]
+            
+            menus = session.query(MenuMaster).filter(
+                MenuMaster.module_code.in_(codes),
+                MenuMaster.is_active == True
+            ).order_by(MenuMaster.sort_order).all()
+            
+            return [{
+                "id": menu.id,
+                "menu_name": menu.menu_name,
+                "menu_code": menu.menu_code,
+                "module_code": menu.module_code,
+                "parent_menu_id": menu.parent_menu_id,
+                "icon": menu.icon,
+                "route": menu.route,
+                "sort_order": menu.sort_order,
+                "is_admin_only": menu.is_admin_only
+            } for menu in menus]
+    
+    @staticmethod
+    def get_user_menus_by_tenant_modules(user_id: int, tenant_id: int) -> List[Dict]:
+        """Get menus for user based on tenant modules and role permissions"""
+        with db_manager.get_session() as session:
+            user = session.query(User).filter(
+                User.id == user_id,
+                User.tenant_id == tenant_id
+            ).first()
+            
+            if not user:
+                return []
+            
+            module_codes = session.query(ModuleMaster.module_code).join(
+                TenantModuleMapping
+            ).filter(
+                TenantModuleMapping.tenant_id == tenant_id,
+                TenantModuleMapping.is_active == True
+            ).all()
+            
+            codes = [code[0] for code in module_codes]
+            
+            if user.is_tenant_admin:
+                menus = session.query(MenuMaster).filter(
+                    MenuMaster.module_code.in_(codes),
+                    MenuMaster.is_active == True
+                ).order_by(MenuMaster.sort_order).all()
+            else:
+                role_ids = session.query(UserRole.role_id).filter(
+                    UserRole.user_id == user_id,
+                    UserRole.tenant_id == tenant_id
+                ).all()
+                
+                role_ids = [rid[0] for rid in role_ids]
+                
+                if not role_ids:
+                    return []
+                
+                menu_ids = session.query(RoleMenuMapping.menu_id).filter(
+                    RoleMenuMapping.role_id.in_(role_ids),
+                    RoleMenuMapping.tenant_id == tenant_id
+                ).distinct().all()
+                
+                menu_ids = [mid[0] for mid in menu_ids]
+                
+                menus = session.query(MenuMaster).filter(
+                    MenuMaster.id.in_(menu_ids),
+                    MenuMaster.module_code.in_(codes),
+                    MenuMaster.is_active == True
+                ).order_by(MenuMaster.sort_order).all()
+            
+            return MenuService._build_menu_tree(menus, user_id, tenant_id, session)
 
     @staticmethod
     def get_all_active_menus() -> List[Dict]:

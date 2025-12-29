@@ -6,6 +6,7 @@ import csv
 import math
 
 from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
+from api.schemas.user_schemas import UpdateUserInfoRequest, ChangePasswordRequest
 from api.middleware.auth_middleware import get_current_user
 from sqlalchemy import or_
 from modules.admin_module.services.user_service import UserService
@@ -223,3 +224,29 @@ async def delete_user(user_id: int, current_user: dict = Depends(get_current_use
         raise HTTPException(status_code=404, detail="User not found")
     
     return BaseResponse(success=True, message="User deleted successfully")
+
+
+@router.patch("/users/{user_id}/info", response_model=BaseResponse)
+async def update_user_info(user_id: int, request: UpdateUserInfoRequest, current_user: dict = Depends(get_current_user)):
+    user_service = UserService()
+    data = request.model_dump(exclude_unset=True)
+    success = user_service.update_user_info(user_id, data, current_user["tenant_id"])
+    if not success:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return BaseResponse(success=True, message="User information updated successfully")
+
+
+@router.patch("/users/{user_id}/password", response_model=BaseResponse)
+async def change_user_password(user_id: int, request: ChangePasswordRequest, current_user: dict = Depends(get_current_user)):
+    user_service = UserService()
+    success = user_service.change_password(
+        user_id, 
+        request.current_password, 
+        request.new_password, 
+        current_user["tenant_id"]
+    )
+    if not success:
+        raise HTTPException(status_code=400, detail="Invalid current password or user not found")
+    
+    return BaseResponse(success=True, message="Password changed successfully")

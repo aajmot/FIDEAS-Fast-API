@@ -93,3 +93,31 @@ class UserService(BaseService):
                 session.add(user_role)
                 return True
             return False
+    
+    @ExceptionMiddleware.handle_exceptions("UserService")
+    def update_user_info(self, user_id: int, data: dict, tenant_id: int) -> bool:
+        with db_manager.get_session() as session:
+            user = session.query(User).filter(
+                User.id == user_id,
+                User.tenant_id == tenant_id
+            ).first()
+            if not user:
+                return False
+            
+            for key, value in data.items():
+                if hasattr(user, key) and value is not None:
+                    setattr(user, key, value)
+            return True
+    
+    @ExceptionMiddleware.handle_exceptions("UserService")
+    def change_password(self, user_id: int, current_password: str, new_password: str, tenant_id: int) -> bool:
+        with db_manager.get_session() as session:
+            user = session.query(User).filter(
+                User.id == user_id,
+                User.tenant_id == tenant_id
+            ).first()
+            if not user or not user.check_password(current_password):
+                return False
+            
+            user.set_password(new_password)
+            return True
