@@ -86,5 +86,5 @@ class TenantModuleService(BaseService):
         """Get all module mappings for a tenant"""
         with db_manager.get_session() as session:
             return session.query(TenantModuleMapping).filter(
-                TenantModuleMapping.tenant_id == tenant_id
+                TenantModuleMapping.tenant_id == tenant_id,is_active=True,is_deleted=False
             ).all()

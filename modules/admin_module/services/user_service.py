@@ -45,23 +45,26 @@ class UserService(BaseService):
     @ExceptionMiddleware.handle_exceptions("UserService")
     def create(self, data: dict) -> int:
         from core.shared.utils.session_manager import session_manager
-        
-        # Handle password separately
-        password = data.pop('password', None)
-        
-        # Add tenant and user tracking
-        if 'tenant_id' not in data:
+        # Work on a copy to avoid mutating the caller's dict (route relies on it)
+        payload = dict(data)
+
+        # Extract and handle password and role_ids separately
+        password = payload.pop('password', None)
+        payload.pop('role_ids', None)
+
+        # Add tenant and user tracking to the payload if missing
+        if 'tenant_id' not in payload:
             tenant_id = session_manager.get_current_tenant_id()
             if tenant_id:
-                data['tenant_id'] = tenant_id
-        
-        if 'created_by' not in data:
+                payload['tenant_id'] = tenant_id
+
+        if 'created_by' not in payload:
             username = session_manager.get_current_username()
             if username:
-                data['created_by'] = username
-        
+                payload['created_by'] = username
+
         with db_manager.get_session() as session:
-            user = User(**data)
+            user = User(**payload)
             if password:
                 user.set_password(password)
             session.add(user)

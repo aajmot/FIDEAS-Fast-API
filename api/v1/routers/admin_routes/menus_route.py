@@ -14,8 +14,8 @@ router = APIRouter()
 
 
 # Menu endpoints
-@router.get("/menus", response_model=BaseResponse)
-async def get_user_menus(current_user: dict = Depends(get_current_user)):
+@router.get("/menus/me", response_model=BaseResponse)
+async def get_my_menus(current_user: dict = Depends(get_current_user)):
     """Get menus accessible to the current user based on roles"""
     from core.database.connection import db_manager
     from modules.admin_module.models.entities import User
@@ -32,16 +32,29 @@ async def get_user_menus(current_user: dict = Depends(get_current_user)):
         # Check if user is tenant admin
         if user.is_tenant_admin:
             # Tenant admin gets all menus
-            menus = MenuService.get_user_menus(current_user["user_id"], current_user["tenant_id"])
+           menus = MenuService.get_user_menus(current_user["user_id"], current_user["tenant_id"])
+           # menus = MenuService.get_all_menus()
         else:
             # Regular user gets menus based on assigned roles (union of all role permissions)
             menus = MenuService.get_user_menus(current_user["user_id"], current_user["tenant_id"])
-        
+            #menus = MenuService.get_all_menus()
         return BaseResponse(
             success=True,
             message="Menus retrieved successfully",
             data=menus
         )
+
+@router.get("/menus", response_model=BaseResponse)
+async def get_all_menus(current_user: dict = Depends(get_current_user)):
+    """Get all menus in the system"""
+
+    menus = MenuService.get_all_menus()
+    return BaseResponse(
+        success=True,
+        message="Menus retrieved successfully",
+        data=menus
+    )
+
 
 
 # Role Menu Mapping endpoints

@@ -246,11 +246,34 @@ class MenuService:
     def get_all_menus() -> List[Dict]:
         """Get all menus for admin configuration"""
         with db_manager.get_session() as session:
-            menus = session.query(MenuMaster).filter_by(is_active=True).order_by(
+            menus = session.query(MenuMaster).filter_by(is_active=True,is_deleted=False).order_by(
                 MenuMaster.sort_order
             ).all()
             
             return MenuService._build_simple_menu_tree(menus)
+
+    @staticmethod
+    def get_all_active_menus() -> List[Dict]:
+        """Return all active (and not-deleted if applicable) menus in the same
+        tree format as `get_user_menus`.
+
+        This uses `_build_menu_tree` so the returned structure contains the
+        same fields (`id`, `name`, `code`, `module_code`, `icon`, `route`,
+        `parent_menu_id`, `sort_order`, `children`) as the user-specific
+        response.
+        """
+        with db_manager.get_session() as session:
+            query = session.query(MenuMaster).filter(MenuMaster.is_active == True)
+
+            # If the model has an `is_deleted` column, exclude deleted records
+            if hasattr(MenuMaster, 'is_deleted'):
+                query = query.filter(MenuMaster.is_deleted == False)
+
+            menus = query.order_by(MenuMaster.sort_order).all()
+
+            # `_build_menu_tree` expects user_id and tenant_id parameters but does
+            # not use them for building the raw tree; pass zeros as placeholders.
+            return MenuService._build_menu_tree(menus, user_id=0, tenant_id=0, session=session)
     
     @staticmethod
     def _build_simple_menu_tree(menus: List[MenuMaster]) -> List[Dict]:

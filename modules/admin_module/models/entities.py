@@ -176,6 +176,9 @@ class MenuMaster(Base):
     is_admin_only = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+    is_deleted = Column(Boolean, default=False)
+    created_by = Column(String(100))
+    
     
     parent = relationship("MenuMaster", remote_side=[id], backref="children")
     role_menu_mappings = relationship("RoleMenuMapping", back_populates="menu")

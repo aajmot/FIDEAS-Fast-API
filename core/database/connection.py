@@ -37,7 +37,10 @@ class DatabaseManager:
             echo=False
         )
         
-        self._session_factory = sessionmaker(bind=self._engine)
+        # Keep ORM instances usable after commit to avoid DetachedInstanceError
+        # (expire_on_commit=False prevents SQLAlchemy from expiring attributes
+        # when the session commits and closes)
+        self._session_factory = sessionmaker(bind=self._engine, expire_on_commit=False)
         logger.info("Database connection pool initialized", "DatabaseManager")
     
     @contextmanager
