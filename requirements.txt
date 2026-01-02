@@ -30,3 +30,7 @@ pytest-cov>=4.1.0
 pytest-mock>=3.11.0
 coverage>=7.2.0
 #email-validator==2.3.0
+
+# Barcode and QR code generation
+python-barcode>=0.15.1
+qrcode[pil]>=7.4.2

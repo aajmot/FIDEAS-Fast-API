@@ -125,6 +125,7 @@ try:
         testpanels_route,
         testresults_route,
         tests_route,
+        testinvoices_route,
     )
 except Exception:
     appointments_route = types.SimpleNamespace(router=APIRouter())
@@ -141,6 +142,7 @@ except Exception:
     testpanels_route = types.SimpleNamespace(router=APIRouter())
     testresults_route = types.SimpleNamespace(router=APIRouter())
     tests_route = types.SimpleNamespace(router=APIRouter())
+    testinvoices_route = types.SimpleNamespace(router=APIRouter())
 
 def _load_optional(name, module_path="api.v1.routers"):
     try:
@@ -299,6 +301,7 @@ app.include_router(testorders_route.router, prefix="/api/v1/health", tags=["heal
 app.include_router(testpanels_route.router, prefix="/api/v1/health", tags=["health-test-panels v1"], dependencies=[Depends(get_current_user)])
 app.include_router(testresults_route.router, prefix="/api/v1/health", tags=["health-test-results v1"], dependencies=[Depends(get_current_user)])
 app.include_router(tests_route.router, prefix="/api/v1/health", tags=["health-tests v1"], dependencies=[Depends(get_current_user)])
+app.include_router(testinvoices_route.router, prefix="/api/v1/health", tags=["health-test-invoices v1"], dependencies=[Depends(get_current_user)])
 #endregion health routes
 
 #region notification routes

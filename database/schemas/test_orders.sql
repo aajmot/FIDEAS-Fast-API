@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS public.test_orders (
     
     tenant_id              INTEGER NOT NULL 
                            REFERENCES public.tenants(id) ON DELETE CASCADE,
+    branch_id              INTEGER
+                            REFERENCES public.branches(id) ON DELETE SET NULL,
 
     -- Order Info
     test_order_number      VARCHAR(50) NOT NULL,

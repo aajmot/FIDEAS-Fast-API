@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS public.payments (
 
     -- Party (Customer, Supplier, Employee, Bank, etc.)
     party_type             VARCHAR(20) NOT NULL 
-                           CHECK (party_type IN ('CUSTOMER','SUPPLIER','EMPLOYEE','BANK','OTHER')),
+                           CHECK (party_type IN ('CUSTOMER','SUPPLIER','EMPLOYEE','BANK','PATIENT','OTHER')),
 
     party_id               INTEGER,  -- FK to customers/suppliers/employees
 

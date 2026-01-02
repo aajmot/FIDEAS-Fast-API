@@ -22,6 +22,37 @@ class ProductService(BaseService):
                 return 'FIXED'
         return commission_type
 
+    def get_by_id(self, entity_id: int, include_barcode: bool = False):
+        product = super().get_by_id(entity_id)
+        if product and include_barcode:
+            from core.shared.utils.barcode_utils import BarcodeGenerator
+            from core.shared.utils.logger import logger
+            try:
+                product_dict = product.__dict__.copy()
+                product_dict.pop('_sa_instance_state', None)
+                if product.product_code:
+                    product_dict['barcode'] = BarcodeGenerator.generate_barcode(product.product_code)
+                    qr_data = f"PRODUCT:{product.product_code}|NAME:{product.product_name}"
+                    product_dict['qr_code'] = BarcodeGenerator.generate_qr_code(qr_data)
+                else:
+                    product_dict['barcode'] = None
+                    product_dict['qr_code'] = None
+                return product_dict
+            except Exception as e:
+                logger.error(f"Barcode generation failed: {str(e)}", self.module_name)
+        return product
+
+    def _normalize_commission_type(self, commission_type):
+        if commission_type is None:
+            return None
+        if isinstance(commission_type, str):
+            ct = commission_type.strip().upper()
+            if ct == 'PERCENTAGE':
+                return 'PERCENTAGE'
+            if ct == 'FIXED':
+                return 'FIXED'
+        return commission_type
+
     def create(self, data):
         # Normalize/validate commission_type to match DB enum values (FIXED/PERCENTAGE)
         commission_type = data.get('commission_type')

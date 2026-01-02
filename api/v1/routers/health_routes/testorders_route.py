@@ -43,9 +43,9 @@ async def create_test_order(order_data: TestOrderCreateSchema, current_user: dic
     )
 
 @router.get("/testorders/{order_id}", response_model=BaseResponse)
-async def get_test_order(order_id: int, current_user: dict = Depends(get_current_user)):
+async def get_test_order(order_id: int, include_barcode: bool = False, current_user: dict = Depends(get_current_user)):
     service = TestOrderService()
-    order_data = service.get_order_with_items(order_id, current_user["tenant_id"])
+    order_data = service.get_order_with_items(order_id, current_user["tenant_id"], include_barcode)
     
     if not order_data:
         raise HTTPException(status_code=404, detail="Test order not found")

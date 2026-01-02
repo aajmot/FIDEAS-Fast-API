@@ -146,6 +146,33 @@ class AccountMasterService:
             
             return self._to_dict(account)
     
+    def get_by_code(self, session, code: str, tenant_id: int):
+        """Get account by code for tenant"""
+        account = session.query(AccountMaster).filter(
+            AccountMaster.code == code,
+            AccountMaster.tenant_id == tenant_id,
+            AccountMaster.is_deleted == False
+        ).first()
+        
+        if not account:
+            return None
+        
+        return {
+            'id': account.id,
+            'name': account.name,
+            'code': account.code,
+            'is_active': account.is_active,
+            'is_deleted': account.is_deleted
+        }
+    
+    def get_accounts_receivable(self, session, tenant_id: int):
+        """Get Accounts Receivable account"""
+        return self.get_by_code(session, 'ACCOUNTS_RECEIVABLE', tenant_id)
+    
+    def get_test_revenue(self, session, tenant_id: int):
+        """Get Test Revenue account"""
+        return self.get_by_code(session, 'TEST_REVENUE', tenant_id)
+    
     @ExceptionMiddleware.handle_exceptions("AccountMasterService")
     def update(self, account_id: int, account_data: dict):
         """Update an existing account master"""

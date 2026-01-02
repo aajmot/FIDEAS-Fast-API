@@ -83,17 +83,17 @@ class TestOrderService:
                 order.updated_at = datetime.utcnow()
                 
                 if items is not None:
+                    # Delete existing items first to avoid unique constraint violation
+                    session.query(TestOrderItem).filter(TestOrderItem.test_order_id == order_id).delete()
+                    session.flush()
+                    
                     if items:
-                        session.query(TestOrderItem).filter(TestOrderItem.test_order_id == order_id).update({'is_deleted': True})
-                        session.flush()
                         for item in items:
                             item.pop('id', None)
                             item['test_order_id'] = order_id
                             item['tenant_id'] = order.tenant_id
                             order_item = TestOrderItem(**item)
                             session.add(order_item)
-                    else:
-                        session.query(TestOrderItem).filter(TestOrderItem.test_order_id == order_id).update({'is_deleted': True})
                 
                 session.flush()
                 logger.info(f"Test order updated: {order.test_order_number}", self.logger_name)
@@ -121,7 +121,7 @@ class TestOrderService:
                 
                 order.is_deleted = True
                 order.updated_at = datetime.utcnow()
-                session.query(TestOrderItem).filter(TestOrderItem.test_order_id == order_id).update({'is_deleted': True})
+                session.query(TestOrderItem).filter(TestOrderItem.test_order_id == order_id).delete()
                 logger.info(f"Test order deleted: {order.test_order_number}", self.logger_name)
                 return True
         except HTTPException:
@@ -214,7 +214,7 @@ class TestOrderService:
             logger.error(f"Error fetching paginated test orders: {str(e)}", self.logger_name)
             raise
     
-    def get_order_with_items(self, order_id, tenant_id):
+    def get_order_with_items(self, order_id, tenant_id, include_barcode=False):
         try:
             order = self.get_by_id(order_id, tenant_id)
             if not order:
@@ -222,7 +222,7 @@ class TestOrderService:
             
             items = self.get_items(order_id, tenant_id)
             
-            return {
+            result = {
                 "id": order.id,
                 "test_order_number": order.test_order_number,
                 "appointment_id": order.appointment_id,
@@ -281,6 +281,19 @@ class TestOrderService:
                     "remarks": item.remarks
                 } for item in items]
             }
+            
+            if include_barcode:
+                from core.shared.utils.barcode_utils import BarcodeGenerator
+                try:
+                    result["barcode"] = BarcodeGenerator.generate_barcode(order.test_order_number)
+                    qr_data = f"TEST_ORDER:{order.test_order_number}|ID:{order.id}|PATIENT:{order.patient_name}"
+                    result["qr_code"] = BarcodeGenerator.generate_qr_code(qr_data)
+                except Exception as e:
+                    logger.error(f"Barcode generation failed: {str(e)}", self.logger_name)
+                    result["barcode"] = None
+                    result["qr_code"] = None
+            
+            return result
         except Exception as e:
             logger.error(f"Error fetching test order with items: {str(e)}", self.logger_name)
             raise

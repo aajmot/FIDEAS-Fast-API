@@ -14,4 +14,5 @@ __all__ = [
     'testpanels_route',
     'testresults_route',
     'tests_route',
+    'testinvoices_route',
 ]
