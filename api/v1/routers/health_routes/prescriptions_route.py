@@ -9,10 +9,10 @@ from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from sqlalchemy import or_
 import math
 from api.middleware.auth_middleware import get_current_user
-from modules.clinic_module.services.patient_service import PatientService
-from modules.clinic_module.services.doctor_service import DoctorService
-from modules.clinic_module.services.appointment_service import AppointmentService
-from modules.clinic_module.services.medical_record_service import MedicalRecordService
+from modules.health_module.services.patient_service import PatientService
+from modules.health_module.services.doctor_service import DoctorService
+from modules.health_module.services.appointment_service import AppointmentService
+from modules.health_module.services.medical_record_service import MedicalRecordService
 from modules.admin_module.models.agency import Agency
 
 router = APIRouter()
@@ -20,7 +20,7 @@ router = APIRouter()
 @router.get("/prescriptions", response_model=PaginatedResponse)
 async def get_prescriptions(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import Prescription, Patient, Doctor, Appointment
+    from modules.health_module.models.clinic_entities import Prescription, Patient, Doctor, Appointment
     
     with db_manager.get_session() as session:
         query = session.query(Prescription).outerjoin(Patient).outerjoin(Doctor).outerjoin(Appointment).filter(
@@ -72,7 +72,7 @@ async def get_prescriptions(pagination: PaginationParams = Depends(), current_us
 
 @router.post("/prescriptions", response_model=BaseResponse)
 async def create_prescription(prescription_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.prescription_service import PrescriptionService
+    from modules.health_module.services.prescription_service import PrescriptionService
     from modules.account_module.services.transaction_posting_service import TransactionPostingService
     from core.database.connection import db_manager
     
@@ -103,7 +103,7 @@ async def create_prescription(prescription_data: Dict[str, Any], current_user: d
 
 @router.put("/prescriptions/{prescription_id}", response_model=BaseResponse)
 async def update_prescription(prescription_id: int, prescription_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.prescription_service import PrescriptionService
+    from modules.health_module.services.prescription_service import PrescriptionService
     
     prescription_service = PrescriptionService()
     
@@ -133,7 +133,7 @@ async def update_prescription(prescription_id: int, prescription_data: Dict[str,
 
 @router.delete("/prescriptions/{prescription_id}", response_model=BaseResponse)
 async def delete_prescription(prescription_id: int, current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.prescription_service import PrescriptionService
+    from modules.health_module.services.prescription_service import PrescriptionService
     
     prescription_service = PrescriptionService()
     success = prescription_service.delete(prescription_id, current_user.get('tenant_id'))
@@ -147,9 +147,9 @@ async def delete_prescription(prescription_id: int, current_user: dict = Depends
 @router.get("/prescriptions/{prescription_id}", response_model=BaseResponse)
 async def get_prescription(prescription_id: int, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import Prescription, PrescriptionItem, PrescriptionTestItem, Patient, Doctor
-    from modules.inventory_module.models.entities import Product
-    from modules.care_module.models.entities import Test
+    from modules.health_module.models.clinic_entities import Prescription, PrescriptionItem, PrescriptionTestItem, Patient, Doctor
+    from modules.inventory_module.models.clinic_entities import Product
+    from modules.health_module.models.clinic_entities import Test
     
     with db_manager.get_session() as session:
         prescription = session.query(Prescription).outerjoin(Patient).outerjoin(Doctor).filter(Prescription.id == prescription_id).first()
@@ -201,7 +201,7 @@ async def get_prescription(prescription_id: int, current_user: dict = Depends(ge
         # Get appointment number if appointment exists
         appointment_number = None
         if prescription.appointment_id:
-            from modules.clinic_module.models.entities import Appointment
+            from modules.health_module.models.clinic_entities import Appointment
             appointment = session.query(Appointment).filter(Appointment.id == prescription.appointment_id).first()
             if appointment:
                 appointment_number = appointment.appointment_number

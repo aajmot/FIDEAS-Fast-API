@@ -5,8 +5,8 @@ import math
 
 from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from api.middleware.auth_middleware import get_current_user
-from modules.diagnostic_module.services.test_panel_service import TestPanelService
-from modules.diagnostic_module.services.test_result_service import TestResultService
+from modules.health_module.services.test_panel_service import TestPanelService
+from modules.health_module.services.test_result_service import TestResultService
 
 router = APIRouter()
 

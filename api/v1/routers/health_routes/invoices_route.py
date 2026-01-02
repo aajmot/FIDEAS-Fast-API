@@ -9,10 +9,10 @@ from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from sqlalchemy import or_
 import math
 from api.middleware.auth_middleware import get_current_user
-from modules.clinic_module.services.patient_service import PatientService
-from modules.clinic_module.services.doctor_service import DoctorService
-from modules.clinic_module.services.appointment_service import AppointmentService
-from modules.clinic_module.services.medical_record_service import MedicalRecordService
+from modules.health_module.services.patient_service import PatientService
+from modules.health_module.services.doctor_service import DoctorService
+from modules.health_module.services.appointment_service import AppointmentService
+from modules.health_module.services.medical_record_service import MedicalRecordService
 from modules.admin_module.models.agency import Agency
 
 router = APIRouter()
@@ -21,7 +21,7 @@ router = APIRouter()
 @router.get("/invoices", response_model=PaginatedResponse)
 async def get_invoices(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import Invoice, Patient
+    from modules.health_module.models.clinic_entities import Invoice, Patient
     
     with db_manager.get_session() as session:
         query = session.query(Invoice).outerjoin(Patient).filter(
@@ -72,7 +72,7 @@ async def get_invoices(pagination: PaginationParams = Depends(), current_user: d
 
 @router.post("/invoices", response_model=BaseResponse)
 async def create_invoice(invoice_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.billing_service import BillingService
+    from modules.health_module.services.billing_service import BillingService
     from modules.account_module.services.transaction_posting_service import TransactionPostingService
     from core.database.connection import db_manager
     
@@ -113,10 +113,10 @@ async def create_invoice(invoice_data: Dict[str, Any], current_user: dict = Depe
 @router.get("/invoices/{invoice_id}", response_model=BaseResponse)
 async def get_invoice(invoice_id: int, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import Invoice, InvoiceItem, Patient, Appointment
+    from modules.health_module.models.clinic_entities import Invoice, InvoiceItem, Patient, Appointment
     
     with db_manager.get_session() as session:
-        from modules.clinic_module.models.entities import Doctor
+        from modules.health_module.models.clinic_entities import Doctor
         
         invoice = session.query(Invoice).outerjoin(Patient).outerjoin(Appointment).filter(Invoice.id == invoice_id).first()
         if not invoice:
@@ -176,7 +176,7 @@ async def get_invoice(invoice_id: int, current_user: dict = Depends(get_current_
 
 @router.put("/invoices/{invoice_id}", response_model=BaseResponse)
 async def update_invoice(invoice_id: int, invoice_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.billing_service import BillingService
+    from modules.health_module.services.billing_service import BillingService
     
     billing_service = BillingService()
     
@@ -194,7 +194,7 @@ async def update_invoice(invoice_id: int, invoice_data: Dict[str, Any], current_
 
 @router.delete("/invoices/{invoice_id}", response_model=BaseResponse)
 async def delete_invoice(invoice_id: int, current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.billing_service import BillingService
+    from modules.health_module.services.billing_service import BillingService
     
     billing_service = BillingService()
     success = billing_service.delete(invoice_id)

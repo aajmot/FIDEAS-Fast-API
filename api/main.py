@@ -38,7 +38,9 @@ from api.v1.routers.admin_routes import (
     role_menu_mappings_route,
     transaction_templates_route,
     account_configurations_route,
+    branches_route,
 )
+from api.v1.routers.people_routes import departments_route, employees_route
 from api.v1.routers.account_routes import (
     comparative_reports_route,
     reconciliation_route,
@@ -74,6 +76,8 @@ from fastapi import APIRouter
 
 # Import models to ensure they're registered with SQLAlchemy
 from modules.account_module.models.bank_account_entity import BankAccount
+from modules.people_module.models.department_entity import Department
+from modules.people_module.models.employee_entity import Employee
 
 # Import commonly-used routers directly; provide safe fallbacks for
 # optional/legacy modules so the app can still start during the refactor.
@@ -111,9 +115,11 @@ try:
         billing_masters_route,
         doctors_route,
         invoices_route as health_invoices_route,
+        lab_technicians_route,
         medical_records_route,
         patients_route,
         prescriptions_route,
+        sample_collections_route,
         testcategories_route,
         testorders_route,
         testpanels_route,
@@ -125,9 +131,11 @@ except Exception:
     billing_masters_route = types.SimpleNamespace(router=APIRouter())
     doctors_route = types.SimpleNamespace(router=APIRouter())
     health_invoices_route = types.SimpleNamespace(router=APIRouter())
+    lab_technicians_route = types.SimpleNamespace(router=APIRouter())
     medical_records_route = types.SimpleNamespace(router=APIRouter())
     patients_route = types.SimpleNamespace(router=APIRouter())
     prescriptions_route = types.SimpleNamespace(router=APIRouter())
+    sample_collections_route = types.SimpleNamespace(router=APIRouter())
     testcategories_route = types.SimpleNamespace(router=APIRouter())
     testorders_route = types.SimpleNamespace(router=APIRouter())
     testpanels_route = types.SimpleNamespace(router=APIRouter())
@@ -145,9 +153,6 @@ gst_compliance_route = _load_optional('gst_compliance_route')
 gst_reports_route = _load_optional('gst_reports_route')
 inventory = _load_optional('inventory')
 account = _load_optional('account')
-clinic = _load_optional('clinic')
-care = _load_optional('care')
-diagnostic = _load_optional('diagnostic')
 account_extensions = _load_optional('account_extensions')
 inventory_extensions = _load_optional('inventory_extensions')
 invoice = _load_optional('invoice')
@@ -216,6 +221,8 @@ app.include_router(legal_entities_route.router, prefix="/api/v1/admin", tags=["a
 app.include_router(financial_years_route.router, prefix="/api/v1/admin", tags=["admin-financial-years v1"], dependencies=[Depends(get_current_user)])
 app.include_router(agencies_route.router, prefix="/api/v1/admin", tags=["admin-agencies v1"], dependencies=[Depends(get_current_user)])
 app.include_router(agency_commission_route.router, prefix="/api/v1/admin", tags=["admin-agency-commissions v1"], dependencies=[Depends(get_current_user)])
+app.include_router(branches_route.router, prefix="/api/v1/admin", tags=["admin-branches v1"], dependencies=[Depends(get_current_user)])
+
 #endregion admin routes
 
 #region inventory routes
@@ -278,16 +285,15 @@ app.include_router(dashboard_route.router, prefix="/api/v1/dashboard", tags=["da
 #endregion dashboard routes
 
 #region health routes
-app.include_router(clinic.router, prefix="/api/v1/health", tags=["clinic v1"], dependencies=[Depends(get_current_user)])
-app.include_router(care.router, prefix="/api/v1/health", tags=["care v1"], dependencies=[Depends(get_current_user)])
-app.include_router(diagnostic.router, prefix="/api/v1/health", tags=["diagnostic v1"], dependencies=[Depends(get_current_user)])
 app.include_router(appointments_route.router, prefix="/api/v1/health", tags=["health-appointments v1"], dependencies=[Depends(get_current_user)])
 app.include_router(billing_masters_route.router, prefix="/api/v1/health", tags=["health-billing v1"], dependencies=[Depends(get_current_user)])
 app.include_router(doctors_route.router, prefix="/api/v1/health", tags=["health-doctors v1"], dependencies=[Depends(get_current_user)])
 app.include_router(health_invoices_route.router, prefix="/api/v1/health", tags=["health-invoices v1"], dependencies=[Depends(get_current_user)])
+app.include_router(lab_technicians_route.router, prefix="/api/v1/health", tags=["health-lab-technicians v1"], dependencies=[Depends(get_current_user)])
 app.include_router(medical_records_route.router, prefix="/api/v1/health", tags=["health-medical-records v1"], dependencies=[Depends(get_current_user)])
 app.include_router(patients_route.router, prefix="/api/v1/health", tags=["health-patients v1"], dependencies=[Depends(get_current_user)])
 app.include_router(prescriptions_route.router, prefix="/api/v1/health", tags=["health-prescriptions v1"], dependencies=[Depends(get_current_user)])
+app.include_router(sample_collections_route.router, prefix="/api/v1/health", tags=["health-sample-collections v1"], dependencies=[Depends(get_current_user)])
 app.include_router(testcategories_route.router, prefix="/api/v1/health", tags=["health-test-categories v1"], dependencies=[Depends(get_current_user)])
 app.include_router(testorders_route.router, prefix="/api/v1/health", tags=["health-test-orders v1"], dependencies=[Depends(get_current_user)])
 app.include_router(testpanels_route.router, prefix="/api/v1/health", tags=["health-test-panels v1"], dependencies=[Depends(get_current_user)])
@@ -305,6 +311,12 @@ app.include_router(notifications_route.router, prefix="/api/v1/notifications", t
 app.include_router(fixed_assets.router, prefix="/api/v1/asset", tags=["asset-fixed-assets v1"], dependencies=[Depends(get_current_user)])
 
 #endregion asset routes
+
+#region people routes
+app.include_router(departments_route.router, prefix="/api/v1/people", tags=["people-departments v1"], dependencies=[Depends(get_current_user)])
+app.include_router(employees_route.router, prefix="/api/v1/people", tags=["people-employees v1"], dependencies=[Depends(get_current_user)])
+
+#endregion people routes
 
 
 

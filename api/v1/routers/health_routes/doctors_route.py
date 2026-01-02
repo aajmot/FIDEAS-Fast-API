@@ -9,10 +9,10 @@ from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from sqlalchemy import or_
 import math
 from api.middleware.auth_middleware import get_current_user
-from modules.clinic_module.services.patient_service import PatientService
-from modules.clinic_module.services.doctor_service import DoctorService
-from modules.clinic_module.services.appointment_service import AppointmentService
-from modules.clinic_module.services.medical_record_service import MedicalRecordService
+from modules.health_module.services.patient_service import PatientService
+from modules.health_module.services.doctor_service import DoctorService
+from modules.health_module.services.appointment_service import AppointmentService
+from modules.health_module.services.medical_record_service import MedicalRecordService
 from modules.admin_module.models.agency import Agency
 
 router = APIRouter()
@@ -21,7 +21,7 @@ router = APIRouter()
 @router.get("/doctors", response_model=PaginatedResponse)
 async def get_doctors(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import Doctor
+    from modules.health_module.models.clinic_entities import Doctor
     
     with db_manager.get_session() as session:
         query = session.query(Doctor).filter(
@@ -132,7 +132,7 @@ async def import_doctors(file: UploadFile = File(...), current_user: dict = Depe
 @router.get("/doctors/{doctor_id}", response_model=BaseResponse)
 async def get_doctor(doctor_id: int, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import Doctor
+    from modules.health_module.models.clinic_entities import Doctor
     
     with db_manager.get_session() as session:
         doctor = session.query(Doctor).filter(

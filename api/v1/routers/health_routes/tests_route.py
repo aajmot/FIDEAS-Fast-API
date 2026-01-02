@@ -8,8 +8,8 @@ import csv
 
 from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from api.middleware.auth_middleware import get_current_user
-from modules.care_module.services.test_category_service import TestCategoryService
-from modules.care_module.services.test_service import TestService
+from modules.health_module.services.test_category_service import TestCategoryService
+from modules.health_module.services.test_service import TestService
 
 router = APIRouter()
 
@@ -18,7 +18,7 @@ router = APIRouter()
 @router.get("/tests", response_model=PaginatedResponse)
 async def get_tests(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.care_module.models.entities import Test, TestCategory
+    from modules.health_module.models.care_entities import Test, TestCategory
     
     with db_manager.get_session() as session:
         query = session.query(Test).filter(
@@ -106,7 +106,7 @@ async def export_tests_template(current_user: dict = Depends(get_current_user)):
 @router.post("/tests/import", response_model=BaseResponse)
 async def import_tests(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.care_module.models.entities import TestCategory
+    from modules.health_module.models.care_entities import TestCategory
     
     content = await file.read()
     csv_data = csv.DictReader(io.StringIO(content.decode()))

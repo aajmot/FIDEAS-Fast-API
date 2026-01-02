@@ -9,10 +9,10 @@ from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from sqlalchemy import or_
 import math
 from api.middleware.auth_middleware import get_current_user
-from modules.clinic_module.services.patient_service import PatientService
-from modules.clinic_module.services.doctor_service import DoctorService
-from modules.clinic_module.services.appointment_service import AppointmentService
-from modules.clinic_module.services.medical_record_service import MedicalRecordService
+from modules.health_module.services.patient_service import PatientService
+from modules.health_module.services.doctor_service import DoctorService
+from modules.health_module.services.appointment_service import AppointmentService
+from modules.health_module.services.medical_record_service import MedicalRecordService
 from modules.admin_module.models.agency import Agency
 
 router = APIRouter()
@@ -21,7 +21,7 @@ router = APIRouter()
 @router.get("/medical-records", response_model=PaginatedResponse)
 async def get_medical_records(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import MedicalRecord, Patient, Doctor, Appointment
+    from modules.health_module.models.clinic_entities import MedicalRecord, Patient, Doctor, Appointment
     
     with db_manager.get_session() as session:
         query = session.query(MedicalRecord).join(Appointment).outerjoin(Patient, Appointment.patient_id == Patient.id).outerjoin(Doctor, Appointment.doctor_id == Doctor.id).filter(
@@ -74,7 +74,7 @@ async def get_medical_records(pagination: PaginationParams = Depends(), current_
 
 @router.post("/medical-records", response_model=BaseResponse)
 async def create_medical_record(record_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.medical_record_service import MedicalRecordService
+    from modules.health_module.services.medical_record_service import MedicalRecordService
     
     medical_record_service = MedicalRecordService()
     # Always use tenant_id from logged-in user, never from request
@@ -102,7 +102,7 @@ async def export_medical_records_template(current_user: dict = Depends(get_curre
 
 @router.post("/medical-records/import", response_model=BaseResponse)
 async def import_medical_records(request_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.medical_record_service import MedicalRecordService
+    from modules.health_module.services.medical_record_service import MedicalRecordService
     
     csv_content = request_data.get('csv_content', '')
     
@@ -121,7 +121,7 @@ async def import_medical_records(request_data: Dict[str, Any], current_user: dic
 @router.get("/medical-records/{record_id}", response_model=BaseResponse)
 async def get_medical_record(record_id: int, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import MedicalRecord, Patient, Doctor
+    from modules.health_module.models.clinic_entities import MedicalRecord, Patient, Doctor
     
     with db_manager.get_session() as session:
         record = session.query(MedicalRecord).outerjoin(Patient).outerjoin(Doctor).filter(
@@ -158,7 +158,7 @@ async def get_medical_record(record_id: int, current_user: dict = Depends(get_cu
 @router.get("/medical-records/appointment/{appointment_id}", response_model=BaseResponse)
 async def get_medical_record_by_appointment(appointment_id: int, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import MedicalRecord, Patient, Doctor, Appointment
+    from modules.health_module.models.clinic_entities import MedicalRecord, Patient, Doctor, Appointment
     
     with db_manager.get_session() as session:
         record = session.query(MedicalRecord).join(Appointment).outerjoin(Patient, Appointment.patient_id == Patient.id).outerjoin(Doctor, Appointment.doctor_id == Doctor.id).filter(
@@ -195,7 +195,7 @@ async def get_medical_record_by_appointment(appointment_id: int, current_user: d
 
 @router.put("/medical-records/{record_id}", response_model=BaseResponse)
 async def update_medical_record(record_id: int, record_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.medical_record_service import MedicalRecordService
+    from modules.health_module.services.medical_record_service import MedicalRecordService
     
     medical_record_service = MedicalRecordService()
     record = medical_record_service.update(record_id, record_data)
@@ -209,7 +209,7 @@ async def update_medical_record(record_id: int, record_data: Dict[str, Any], cur
 
 @router.delete("/medical-records/{record_id}", response_model=BaseResponse)
 async def delete_medical_record(record_id: int, current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.medical_record_service import MedicalRecordService
+    from modules.health_module.services.medical_record_service import MedicalRecordService
     
     medical_record_service = MedicalRecordService()
     success = medical_record_service.delete(record_id)

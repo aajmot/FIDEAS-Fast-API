@@ -5,16 +5,16 @@ import math
 
 from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from api.middleware.auth_middleware import get_current_user
-from modules.diagnostic_module.services.test_panel_service import TestPanelService
-from modules.diagnostic_module.services.test_result_service import TestResultService
+from modules.health_module.services.test_panel_service import TestPanelService
+from modules.health_module.services.test_result_service import TestResultService
 
 router = APIRouter()
 
 @router.get("/testpanels", response_model=PaginatedResponse)
 async def get_test_panels(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.diagnostic_module.models.entities import TestPanel
-    from modules.care_module.models.entities import TestCategory
+    from modules.health_module.models.diagnostic_entities import TestPanel
+    from modules.health_module.models.care_entities import TestCategory
     
     with db_manager.get_session() as session:
         query = session.query(TestPanel).filter(

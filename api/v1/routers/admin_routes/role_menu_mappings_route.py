@@ -8,7 +8,7 @@ from api.middleware.auth_middleware import get_current_user
 router = APIRouter()
 
 
-@router.get("/role-menu-mappings", response_model=PaginatedResponse)
+@router.get("/role-menu-mappings", response_model=PaginatedResponse, operation_id="get_role_menu_mappings_list")
 async def get_role_menu_mappings(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
     from modules.admin_module.models.entities import Role, RoleMenuMapping, MenuMaster
@@ -62,7 +62,7 @@ async def get_role_menu_mappings(pagination: PaginationParams = Depends(), curre
     )
 
 
-@router.get("/role-menu-mappings/{role_id}/menus", response_model=BaseResponse)
+@router.get("/role-menu-mappings/{role_id}/menus", response_model=BaseResponse, operation_id="get_role_menus_by_role_id")
 async def get_role_menus(role_id: int, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
     from modules.admin_module.models.entities import MenuMaster, RoleMenuMapping, TenantModuleMapping, ModuleMaster
@@ -119,7 +119,7 @@ async def get_role_menus(role_id: int, current_user: dict = Depends(get_current_
         )
 
 
-@router.put("/role-menu-mappings/{role_id}/menus", response_model=BaseResponse)
+@router.put("/role-menu-mappings/{role_id}/menus", response_model=BaseResponse, operation_id="update_role_menus_by_role_id")
 async def update_role_menus(role_id: int, menu_mappings: List[Dict[str, Any]], current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
     from modules.admin_module.models.entities import RoleMenuMapping

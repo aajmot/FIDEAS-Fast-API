@@ -9,10 +9,10 @@ from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from sqlalchemy import or_
 import math
 from api.middleware.auth_middleware import get_current_user
-from modules.clinic_module.services.patient_service import PatientService
-from modules.clinic_module.services.doctor_service import DoctorService
-from modules.clinic_module.services.appointment_service import AppointmentService
-from modules.clinic_module.services.medical_record_service import MedicalRecordService
+from modules.health_module.services.patient_service import PatientService
+from modules.health_module.services.doctor_service import DoctorService
+from modules.health_module.services.appointment_service import AppointmentService
+from modules.health_module.services.medical_record_service import MedicalRecordService
 from modules.admin_module.models.agency import Agency
 
 router = APIRouter()
@@ -21,7 +21,7 @@ router = APIRouter()
 @router.get("/billing-masters", response_model=PaginatedResponse)
 async def get_billing_masters(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import ClinicBillingMaster
+    from modules.health_module.models.clinic_entities import ClinicBillingMaster
     
     with db_manager.get_session() as session:
         query = session.query(ClinicBillingMaster).filter(
@@ -63,7 +63,7 @@ async def get_billing_masters(pagination: PaginationParams = Depends(), current_
 
 @router.post("/billing-masters", response_model=BaseResponse)
 async def create_billing_master(billing_master_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.billing_master_service import BillingMasterService
+    from modules.health_module.services.billing_master_service import BillingMasterService
     
     billing_master_service = BillingMasterService()
     # Always use tenant_id from logged-in user, never from request
@@ -78,7 +78,7 @@ async def create_billing_master(billing_master_data: Dict[str, Any], current_use
 
 @router.get("/billing-masters/export-template")
 async def export_billing_masters_template(current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.billing_master_service import BillingMasterService
+    from modules.health_module.services.billing_master_service import BillingMasterService
     
     billing_master_service = BillingMasterService()
     template_content = billing_master_service.export_template()
@@ -91,7 +91,7 @@ async def export_billing_masters_template(current_user: dict = Depends(get_curre
 
 @router.post("/billing-masters/import", response_model=BaseResponse)
 async def import_billing_masters(request_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.billing_master_service import BillingMasterService
+    from modules.health_module.services.billing_master_service import BillingMasterService
     
     csv_content = request_data.get('csv_content', '')
     
@@ -110,7 +110,7 @@ async def import_billing_masters(request_data: Dict[str, Any], current_user: dic
 @router.get("/billing-masters/{billing_master_id}", response_model=BaseResponse)
 async def get_billing_master(billing_master_id: int, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import ClinicBillingMaster
+    from modules.health_module.models.clinic_entities import ClinicBillingMaster
     
     with db_manager.get_session() as session:
         billing_master = session.query(ClinicBillingMaster).filter(
@@ -140,7 +140,7 @@ async def get_billing_master(billing_master_id: int, current_user: dict = Depend
 
 @router.put("/billing-masters/{billing_master_id}", response_model=BaseResponse)
 async def update_billing_master(billing_master_id: int, billing_master_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.billing_master_service import BillingMasterService
+    from modules.health_module.services.billing_master_service import BillingMasterService
     
     billing_master_service = BillingMasterService()
     billing_master = billing_master_service.update(billing_master_id, billing_master_data)
@@ -154,7 +154,7 @@ async def update_billing_master(billing_master_id: int, billing_master_data: Dic
 
 @router.delete("/billing-masters/{billing_master_id}", response_model=BaseResponse)
 async def delete_billing_master(billing_master_id: int, current_user: dict = Depends(get_current_user)):
-    from modules.clinic_module.services.billing_master_service import BillingMasterService
+    from modules.health_module.services.billing_master_service import BillingMasterService
     
     billing_master_service = BillingMasterService()
     success = billing_master_service.delete(billing_master_id)

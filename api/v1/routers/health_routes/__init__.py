@@ -5,6 +5,7 @@ __all__ = [
     'billing_masters_route',
     'doctors_route',
     'invoices_route',
+    'lab_technicians_route',
     'medical_records_route',
     'patients_route',
     'prescriptions_route',

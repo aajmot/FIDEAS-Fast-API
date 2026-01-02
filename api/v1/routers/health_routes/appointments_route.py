@@ -9,10 +9,10 @@ from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from sqlalchemy import or_
 import math
 from api.middleware.auth_middleware import get_current_user
-from modules.clinic_module.services.patient_service import PatientService
-from modules.clinic_module.services.doctor_service import DoctorService
-from modules.clinic_module.services.appointment_service import AppointmentService
-from modules.clinic_module.services.medical_record_service import MedicalRecordService
+from modules.health_module.services.patient_service import PatientService
+from modules.health_module.services.doctor_service import DoctorService
+from modules.health_module.services.appointment_service import AppointmentService
+from modules.health_module.services.medical_record_service import MedicalRecordService
 from modules.admin_module.models.agency import Agency
 
 router = APIRouter()
@@ -20,7 +20,7 @@ router = APIRouter()
 @router.get("/appointments", response_model=PaginatedResponse)
 async def get_appointments(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import Appointment, Patient, Doctor
+    from modules.health_module.models.clinic_entities import Appointment, Patient, Doctor
     
     with db_manager.get_session() as session:
         query = session.query(Appointment)
@@ -122,7 +122,7 @@ async def import_appointments(request_data: Dict[str, Any], current_user: dict =
 @router.get("/appointments/{appointment_identifier}", response_model=BaseResponse)
 async def get_appointment(appointment_identifier: str, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import Appointment, Patient, Doctor
+    from modules.health_module.models.clinic_entities import Appointment, Patient, Doctor
     
     with db_manager.get_session() as session:
         # Try to find by ID first (if it's numeric), then by appointment number
@@ -163,7 +163,7 @@ async def get_appointment(appointment_identifier: str, current_user: dict = Depe
 @router.put("/appointments/{appointment_id}", response_model=BaseResponse)
 async def update_appointment(appointment_id: int, appointment_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import Appointment
+    from modules.health_module.models.clinic_entities import Appointment
     
     with db_manager.get_session() as session:
         appointment = session.query(Appointment).filter(Appointment.id == appointment_id).first()
@@ -186,7 +186,7 @@ async def update_appointment(appointment_id: int, appointment_data: Dict[str, An
 @router.delete("/appointments/{appointment_id}", response_model=BaseResponse)
 async def delete_appointment(appointment_id: int, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
-    from modules.clinic_module.models.entities import Appointment
+    from modules.health_module.models.clinic_entities import Appointment
     
     with db_manager.get_session() as session:
         appointment = session.query(Appointment).filter(Appointment.id == appointment_id).first()
