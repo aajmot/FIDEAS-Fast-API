@@ -786,7 +786,7 @@ class PaymentService:
     @ExceptionMiddleware.handle_exceptions("PaymentService")
     def get_all_payments(self, page=1, page_size=100, search=None, payment_type=None, 
                         party_type=None, status=None, date_from=None, date_to=None,
-                        is_reconciled=None):
+                        is_reconciled=None, branch_id=None):
         """Get all payments with pagination and filters"""
         from modules.account_module.models.payment_entity import Payment
         import math
@@ -827,6 +827,9 @@ class PaymentService:
             
             if is_reconciled is not None:
                 query = query.filter(Payment.is_reconciled == is_reconciled)
+            
+            if branch_id is not None:
+                query = query.filter(Payment.branch_id == branch_id)
             
             # Get total count
             total = query.count()
