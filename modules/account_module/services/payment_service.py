@@ -7,7 +7,7 @@ from core.shared.middleware.exception_handler import ExceptionMiddleware
 from sqlalchemy import or_
 from datetime import datetime, date
 from decimal import Decimal
-
+from sqlalchemy.orm import selectinload
 from modules.admin_module.models.entities import TenantSetting
 
 class PaymentService:
@@ -839,14 +839,17 @@ class PaymentService:
             # Apply pagination and ordering
             query = query.order_by(Payment.payment_date.desc(), Payment.id.desc())
             offset = (page - 1) * page_size
-            payments = query.offset(offset).limit(page_size).all()
+            payments = query.options(
+                    selectinload(Payment.payment_details),
+                    selectinload(Payment.payment_allocations)
+            ).offset(offset).limit(page_size).all()
             
             return {
                 'total': total,
                 'page': page,
                 'per_page': page_size,
                 'total_pages': math.ceil(total / page_size) if total > 0 else 0,
-                'data': [self._payment_to_dict(p, include_details=False) for p in payments]
+                'data': [self._payment_to_dict(p, include_details=True) for p in payments]
             }
     
     @ExceptionMiddleware.handle_exceptions("PaymentService")
@@ -1840,7 +1843,7 @@ class PaymentService:
                 'balance_amount': float(invoice.balance_amount_base)
             }
     
-    def _payment_to_dict(self, payment, include_details=True):
+    def _payment_to_dict(self, payment, include_details=True,include_allocations=False):
         """Convert payment entity to dictionary"""
         result = {
             'id': payment.id,
@@ -1879,6 +1882,10 @@ class PaymentService:
             result['details'] = [self._detail_to_dict(detail) for detail in payment.payment_details]
         else:
             result['details'] = []
+        # if include_allocations:
+        #     result['details'] = [self._detail_to_dict(detail) for detail in payment.payment_details]
+        # else:
+        #     result['details'] = []
         
         return result
     
@@ -1898,7 +1905,8 @@ class PaymentService:
             'amount_base': detail.amount_base,
             'amount_foreign': detail.amount_foreign,
             'account_id': detail.account_id,
-            'description': detail.description
+            'description': detail.description,
+            'gateway_fee_base': getattr(detail, 'gateway_fee_base', None)
         }
     
     @ExceptionMiddleware.handle_exceptions("PaymentService")
@@ -1911,94 +1919,98 @@ class PaymentService:
         from modules.admin_module.models.currency import Currency
         
         with db_manager.get_session() as session:
-            tenant_id = session_manager.get_current_tenant_id()
-            username = session_manager.get_current_username()
-            
-            # Check if payment number already exists
-            existing = session.query(Payment).filter(
-                Payment.tenant_id == tenant_id,
-                Payment.payment_number == payment_number,
-                Payment.is_deleted == False
-            ).first()
-            
-            if existing:
-                raise ValueError(f"Payment number '{payment_number}' already exists")
-            
-            # Auto-determine status and payment type based on payment mode and party type
-            online_modes = ['UPI', 'ONLINE', 'CARD', 'WALLET', 'NEFT', 'RTGS', 'IMPS']
-            status = 'DRAFT' if payment_mode in online_modes else 'POSTED'
-            
-            # Determine payment type based on party type
-            if party_type in ['CUSTOMER', 'PATIENT']:
-                payment_type = 'RECEIPT'
-            elif party_type in ['SUPPLIER', 'EMPLOYEE']:
-                payment_type = 'PAYMENT'
-            else:
-                payment_type = 'RECEIPT'  # Default
-            
-            # Get base currency from tenant settings
-            base_currency = session.query(Currency).join(
-                TenantSetting, 
-                TenantSetting.value == Currency.code
-            ).filter(
-                TenantSetting.tenant_id == tenant_id,
-                TenantSetting.setting.ilike("base_currency"),
-                TenantSetting.value_type.ilike("CURRENCY")
-            ).first()
+            try:
+                tenant_id = session_manager.get_current_tenant_id()
+                username = session_manager.get_current_username()
+                
+                # Check if payment number already exists
+                existing = session.query(Payment).filter(
+                    Payment.tenant_id == tenant_id,
+                    Payment.payment_number == payment_number,
+                    Payment.is_deleted == False
+                ).first()
+                
+                if existing:
+                    raise ValueError(f"Payment number '{payment_number}' already exists")
+                
+                # Auto-determine status and payment type based on payment mode and party type
+                online_modes = ['UPI', 'ONLINE', 'CARD', 'WALLET', 'NEFT', 'RTGS', 'IMPS']
+                status = 'DRAFT' if payment_mode in online_modes else 'POSTED'
+                
+                # Determine payment type based on party type
+                if party_type in ['CUSTOMER', 'PATIENT']:
+                    payment_type = 'RECEIPT'
+                elif party_type in ['SUPPLIER', 'EMPLOYEE']:
+                    payment_type = 'PAYMENT'
+                else:
+                    payment_type = 'RECEIPT'  # Default
+                
+                # Get base currency from tenant settings
+                base_currency = session.query(Currency).join(
+                    TenantSetting, 
+                    TenantSetting.value == Currency.code
+                ).filter(
+                    TenantSetting.tenant_id == tenant_id,
+                    TenantSetting.setting.ilike("base_currency"),
+                    TenantSetting.value_type.ilike("CURRENCY")
+                ).first()
 
-            
-            if not base_currency:
-                raise ValueError("No active currency found")
-            
-            payment = Payment(
-                tenant_id=tenant_id,
-                payment_number=payment_number,
-                payment_date=datetime.now(),
-                payment_type=payment_type,
-                party_type=party_type,
-                party_id=party_id,
-                base_currency_id=base_currency.id,
-                exchange_rate=Decimal(1),
-                total_amount_base=amount,
-                advance_amount_base=amount,
-                allocated_amount_base=Decimal(0),
-                unallocated_amount_base=amount,
-                status=status,
-                remarks=remarks or f"Advance payment - {payment_mode}",
-                created_by=username,
-                updated_by=username
-            )
-            
-            session.add(payment)
-            session.flush()
-            
-            detail = PaymentDetail(
-                tenant_id=tenant_id,
-                payment_id=payment.id,
-                line_no=1,
-                payment_mode=payment_mode,
-                instrument_number=instrument_number,
-                instrument_date=instrument_date,
-                bank_name=bank_name,
-                branch_name=branch_name,
-                ifsc_code=ifsc_code,
-                transaction_reference=transaction_reference,
-                amount_base=amount,
-                description=f"Advance payment - {payment_mode}",
-                created_by=username,
-                updated_by=username
-            )
-            session.add(detail)
-            
-            # Create voucher only for POSTED (CASH/CHEQUE/BANK)
-            if status == 'POSTED':
-                voucher = self._create_advance_payment_voucher(session, tenant_id, username, payment, payment_mode, amount)
-                payment.voucher_id = voucher.id
-            
-            session.commit()
-            session.refresh(payment)
-            
-            return self._payment_to_dict(payment, include_details=True)
+                
+                if not base_currency:
+                    raise ValueError("No active currency found")
+                
+                payment = Payment(
+                    tenant_id=tenant_id,
+                    payment_number=payment_number,
+                    payment_date=datetime.now(),
+                    payment_type=payment_type,
+                    party_type=party_type,
+                    party_id=party_id,
+                    base_currency_id=base_currency.id,
+                    exchange_rate=Decimal(1),
+                    total_amount_base=amount,
+                    advance_amount_base=amount,
+                    allocated_amount_base=Decimal(0),
+                    unallocated_amount_base=amount,
+                    status=status,
+                    remarks=remarks or f"Advance payment - {payment_mode}",
+                    created_by=username,
+                    updated_by=username
+                )
+                
+                session.add(payment)
+                session.flush()
+                
+                detail = PaymentDetail(
+                    tenant_id=tenant_id,
+                    payment_id=payment.id,
+                    line_no=1,
+                    payment_mode=payment_mode,
+                    instrument_number=instrument_number,
+                    instrument_date=instrument_date,
+                    bank_name=bank_name,
+                    branch_name=branch_name,
+                    ifsc_code=ifsc_code,
+                    transaction_reference=transaction_reference,
+                    amount_base=amount,
+                    description=f"Advance payment - {payment_mode}",
+                    created_by=username,
+                    updated_by=username
+                )
+                session.add(detail)
+                
+                # Create voucher only for POSTED (CASH/CHEQUE/BANK)
+                if status == 'POSTED':
+                    voucher = self._create_advance_payment_voucher(session, tenant_id, username, payment, payment_mode, amount)
+                    payment.voucher_id = voucher.id
+                
+                session.commit()
+                session.refresh(payment)
+                
+                return self._payment_to_dict(payment, include_details=True)
+            except Exception as e:
+                session.rollback()
+                raise
     
     def _create_advance_payment_voucher(self, session, tenant_id, username, payment, payment_mode, amount):
         """Create voucher for advance payment"""

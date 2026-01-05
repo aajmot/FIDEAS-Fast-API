@@ -12,14 +12,14 @@ VALUES
 (1, (SELECT id FROM module_master WHERE module_code = 'INVENTORY'), 'CREDIT_NOTE',         'TT009', 'Credit Note Template',            'Template for issuing credit note to customer'),
 
 -- ACCOUNTING MODULE
-(1, (SELECT id FROM module_master WHERE module_code = 'ACCOUNTING'), 'SALES_PAYMENT',       'TT005', 'Sales Payment Template',          'Template for receiving customer payments'),
-(1, (SELECT id FROM module_master WHERE module_code = 'ACCOUNTING'), 'PURCHASE_PAYMENT',    'TT006', 'Purchase Payment Template',       'Template for making vendor payments'),
+(1, (SELECT id FROM module_master WHERE module_code = 'ACCOUNT'), 'SALES_PAYMENT',       'TT005', 'Sales Payment Template',          'Template for receiving customer payments'),
+(1, (SELECT id FROM module_master WHERE module_code = 'ACCOUNT'), 'PURCHASE_PAYMENT',    'TT006', 'Purchase Payment Template',       'Template for making vendor payments'),
 
--- CLINIC MODULE
-(1, (SELECT id FROM module_master WHERE module_code = 'CLINIC'),     'PATIENT_BILL',        'TT007', 'Patient Bill Template',           'Template for patient billing'),
+-- HEALTH MODULE
+(1, (SELECT id FROM module_master WHERE module_code = 'HEALTH'),     'PATIENT_BILL',        'TT007', 'Patient Bill Template',           'Template for patient billing'),
 
--- DIAGNOSTIC MODULE (NOW EXISTS)
-(1, (SELECT id FROM module_master WHERE module_code = 'DIAGNOSTIC'), 'DIAGNOSTIC_BILL',     'TT010', 'Diagnostic Bill Template',        'Template for diagnostic services billing')
+-- HEALTH MODULE (Diagnostic Services)
+(1, (SELECT id FROM module_master WHERE module_code = 'HEALTH'), 'DIAGNOSTIC_BILL',     'TT010', 'Diagnostic Bill Template',        'Template for diagnostic services billing')
 ON CONFLICT (tenant_id, code) DO NOTHING;
 
 -- =====================================================

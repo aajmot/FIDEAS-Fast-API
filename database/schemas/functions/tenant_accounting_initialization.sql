@@ -68,6 +68,7 @@ DECLARE
     v_comm_clinic_id INTEGER;
     v_comm_diagn_id INTEGER;
     v_patient_advance_id INTEGER;
+    v_customer_advance_id INTEGER;
     
     -- Configuration Key IDs
     v_key_cash_id INTEGER;
@@ -85,6 +86,7 @@ DECLARE
     v_key_igst_output_id INTEGER;
     v_key_waste_expense_id INTEGER;
     v_key_patient_advance_id INTEGER;
+    v_key_customer_advance_id INTEGER;
     v_key_clinic_revenue_id INTEGER;
     v_key_diagnostic_revenue_id INTEGER;
     
@@ -127,9 +129,9 @@ BEGIN
     
     -- Get module IDs (global, not tenant-specific)
     SELECT id INTO v_inventory_module_id FROM module_master WHERE module_code = 'INVENTORY';
-    SELECT id INTO v_accounting_module_id FROM module_master WHERE module_code = 'ACCOUNTING';
-    SELECT id INTO v_clinic_module_id FROM module_master WHERE module_code = 'CLINIC';
-    SELECT id INTO v_diagnostic_module_id FROM module_master WHERE module_code = 'DIAGNOSTIC';
+    SELECT id INTO v_accounting_module_id FROM module_master WHERE module_code = 'ACCOUNT';
+    SELECT id INTO v_clinic_module_id FROM module_master WHERE module_code = 'HEALTH';
+    SELECT id INTO v_diagnostic_module_id FROM module_master WHERE module_code = 'HEALTH';
     
     -- =====================================================
     -- 1. CREATE ACCOUNT GROUPS
@@ -205,6 +207,10 @@ BEGIN
     RETURNING id INTO STRICT v_patient_advance_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
+    VALUES (p_tenant_id, v_liability_group_id, '2210-CUST-ADV', 'Customer Advance', 'Customer advance payments', 'LIABILITY', 'C', TRUE, 'CUSTOMER_ADVANCE', 1, 0, 0, TRUE, p_created_by)
+    RETURNING id INTO STRICT v_customer_advance_id;
+    
+    INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
     VALUES (p_tenant_id, v_liability_group_id, '2310-GST-CGST-OUT', 'CGST Payable', 'CGST output tax payable', 'LIABILITY', 'C', TRUE, 'GST_OUTPUT_CGST', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_cgst_output_id;
     
@@ -277,7 +283,7 @@ BEGIN
     VALUES (p_tenant_id, v_expense_group_id, '5730-COMM-DIAG', 'Agent Commission - Diagnostics', 'Commission on diagnostic services', 'EXPENSE', 'D', TRUE, 'COMMISSION_DIAGNOSTIC', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_comm_diagn_id;
     
-    v_account_masters_count := 27;
+    v_account_masters_count := 28;
     
     -- =====================================================
     -- 2.1 VALIDATE ALL ACCOUNT IDS RETRIEVED
@@ -335,6 +341,7 @@ BEGIN
     VALUES 
     ('WASTE_EXPENSE', 'Waste Expense Account', 'Account for recording product waste and spoilage expenses', TRUE),
     ('PATIENT_ADVANCE', 'Patient Advance Account', 'Account for tracking patient advance payments', TRUE),
+    ('CUSTOMER_ADVANCE', 'Customer Advance Account', 'Account for tracking customer advance payments', TRUE),
     ('CLINIC_REVENUE', 'Clinic Revenue Account', 'Account for clinic services revenue', TRUE),
     ('DIAGNOSTIC_REVENUE', 'Diagnostic Revenue Account', 'Account for diagnostic services revenue', TRUE)
     ON CONFLICT (code) DO NOTHING;
@@ -402,6 +409,7 @@ BEGIN
     
     SELECT id INTO v_key_waste_expense_id FROM account_configuration_keys WHERE code = 'WASTE_EXPENSE';
     SELECT id INTO v_key_patient_advance_id FROM account_configuration_keys WHERE code = 'PATIENT_ADVANCE';
+    SELECT id INTO v_key_customer_advance_id FROM account_configuration_keys WHERE code = 'CUSTOMER_ADVANCE';
     SELECT id INTO v_key_clinic_revenue_id FROM account_configuration_keys WHERE code = 'CLINIC_REVENUE';
     SELECT id INTO v_key_diagnostic_revenue_id FROM account_configuration_keys WHERE code = 'DIAGNOSTIC_REVENUE';
     
@@ -421,6 +429,7 @@ BEGIN
     UPDATE account_configuration_keys SET default_account_id = v_igst_output_id WHERE code = 'GST_OUTPUT_IGST' AND default_account_id IS NULL;
     UPDATE account_configuration_keys SET default_account_id = v_waste_loss_id WHERE code = 'WASTE_EXPENSE' AND default_account_id IS NULL;
     UPDATE account_configuration_keys SET default_account_id = v_patient_advance_id WHERE code = 'PATIENT_ADVANCE' AND default_account_id IS NULL;
+    UPDATE account_configuration_keys SET default_account_id = v_customer_advance_id WHERE code = 'CUSTOMER_ADVANCE' AND default_account_id IS NULL;
     UPDATE account_configuration_keys SET default_account_id = v_clinic_revenue_id WHERE code = 'CLINIC_REVENUE' AND default_account_id IS NULL;
     UPDATE account_configuration_keys SET default_account_id = v_diagnostic_revenue_id WHERE code = 'DIAGNOSTIC_REVENUE' AND default_account_id IS NULL;
     
@@ -430,7 +439,7 @@ BEGIN
     WHERE code IN ('CASH', 'BANK', 'ACCOUNTS_RECEIVABLE', 'ACCOUNTS_PAYABLE', 'INVENTORY', 
                    'SALES', 'PURCHASE', 'GST_INPUT_CGST', 'GST_INPUT_SGST', 'GST_INPUT_IGST',
                    'GST_OUTPUT_CGST', 'GST_OUTPUT_SGST', 'GST_OUTPUT_IGST', 'WASTE_EXPENSE',
-                   'PATIENT_ADVANCE', 'CLINIC_REVENUE', 'DIAGNOSTIC_REVENUE');
+                   'PATIENT_ADVANCE', 'CUSTOMER_ADVANCE', 'CLINIC_REVENUE', 'DIAGNOSTIC_REVENUE');
     
     -- =====================================================
     -- 4. CREATE ACCOUNT CONFIGURATIONS (TENANT-SPECIFIC MAPPINGS)
@@ -498,11 +507,12 @@ BEGIN
         (p_tenant_id, v_key_sgst_output_id, v_sgst_output_id, NULL, p_created_by),
         (p_tenant_id, v_key_igst_output_id, v_igst_output_id, NULL, p_created_by),
         (p_tenant_id, v_key_waste_expense_id, v_waste_loss_id, 'INVENTORY', p_created_by),
-        (p_tenant_id, v_key_patient_advance_id, v_patient_advance_id, 'DIAGNOSTIC', p_created_by),
-        (p_tenant_id, v_key_clinic_revenue_id, v_clinic_revenue_id, 'CLINIC', p_created_by),
-        (p_tenant_id, v_key_diagnostic_revenue_id, v_diagnostic_revenue_id, 'DIAGNOSTIC', p_created_by);
+        (p_tenant_id, v_key_patient_advance_id, v_patient_advance_id, 'HEALTH', p_created_by),
+        (p_tenant_id, v_key_customer_advance_id, v_customer_advance_id, 'INVENTORY', p_created_by),
+        (p_tenant_id, v_key_clinic_revenue_id, v_clinic_revenue_id, 'HEALTH', p_created_by),
+        (p_tenant_id, v_key_diagnostic_revenue_id, v_diagnostic_revenue_id, 'HEALTH', p_created_by);
     
-    v_configurations_count := 17;
+    v_configurations_count := 18;
     
     -- =====================================================
     -- 5. CREATE VOUCHER TYPES
@@ -527,97 +537,97 @@ BEGIN
     -- =====================================================
     
     -- Purchase Invoice Template
-    INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
-    VALUES (p_tenant_id, v_inventory_module_id, 'PURCHASE_INVOICE', 'TMP_PURCHASE', 'Purchase Invoice Template', 
-            'Standard template for purchase invoices', TRUE, p_created_by)
-    RETURNING id INTO STRICT v_template_purchase_id;
+    -- INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
+    -- VALUES (p_tenant_id, v_inventory_module_id, 'PURCHASE_INVOICE', 'TMP_PURCHASE', 'Purchase Invoice Template', 
+    --         'Standard template for purchase invoices', TRUE, p_created_by)
+    -- RETURNING id INTO STRICT v_template_purchase_id;
     
     -- Purchase Invoice Rules
-    INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
-    VALUES 
-        (p_tenant_id, v_template_purchase_id, 1, 'EXPENSE', v_purchase_expense_id, 'DEBIT', 'item.amount', 'Purchase expense', TRUE, p_created_by),
-        (p_tenant_id, v_template_purchase_id, 2, 'ASSET', v_cgst_input_id, 'DEBIT', 'item.cgst_amount', 'CGST input', TRUE, p_created_by),
-        (p_tenant_id, v_template_purchase_id, 3, 'ASSET', v_sgst_input_id, 'DEBIT', 'item.sgst_amount', 'SGST input', TRUE, p_created_by),
-        (p_tenant_id, v_template_purchase_id, 4, 'ASSET', v_igst_input_id, 'DEBIT', 'item.igst_amount', 'IGST input', TRUE, p_created_by),
-        (p_tenant_id, v_template_purchase_id, 5, 'LIABILITY', v_ap_id, 'CREDIT', 'invoice.total_amount', 'Accounts payable', TRUE, p_created_by);
+    -- INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
+    -- VALUES 
+    --     (p_tenant_id, v_template_purchase_id, 1, 'EXPENSE', v_purchase_expense_id, 'DEBIT', 'item.amount', 'Purchase expense', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_purchase_id, 2, 'ASSET', v_cgst_input_id, 'DEBIT', 'item.cgst_amount', 'CGST input', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_purchase_id, 3, 'ASSET', v_sgst_input_id, 'DEBIT', 'item.sgst_amount', 'SGST input', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_purchase_id, 4, 'ASSET', v_igst_input_id, 'DEBIT', 'item.igst_amount', 'IGST input', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_purchase_id, 5, 'LIABILITY', v_ap_id, 'CREDIT', 'invoice.total_amount', 'Accounts payable', TRUE, p_created_by);
     
     -- Sales Invoice Template
-    INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
-    VALUES (p_tenant_id, v_inventory_module_id, 'SALES_INVOICE', 'TMP_SALES', 'Sales Invoice Template', 
-            'Standard template for sales invoices', TRUE, p_created_by)
-    RETURNING id INTO STRICT v_template_sales_id;
+    -- INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
+    -- VALUES (p_tenant_id, v_inventory_module_id, 'SALES_INVOICE', 'TMP_SALES', 'Sales Invoice Template', 
+    --         'Standard template for sales invoices', TRUE, p_created_by)
+    -- RETURNING id INTO STRICT v_template_sales_id;
     
     -- Sales Invoice Rules
-    INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
-    VALUES 
-        (p_tenant_id, v_template_sales_id, 1, 'ASSET', v_ar_id, 'DEBIT', 'invoice.total_amount', 'Accounts receivable', TRUE, p_created_by),
-        (p_tenant_id, v_template_sales_id, 2, 'REVENUE', v_sales_id, 'CREDIT', 'item.amount', 'Sales revenue', TRUE, p_created_by),
-        (p_tenant_id, v_template_sales_id, 3, 'LIABILITY', v_cgst_output_id, 'CREDIT', 'item.cgst_amount', 'CGST output', TRUE, p_created_by),
-        (p_tenant_id, v_template_sales_id, 4, 'LIABILITY', v_sgst_output_id, 'CREDIT', 'item.sgst_amount', 'SGST output', TRUE, p_created_by),
-        (p_tenant_id, v_template_sales_id, 5, 'LIABILITY', v_igst_output_id, 'CREDIT', 'item.igst_amount', 'IGST output', TRUE, p_created_by);
+    -- INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
+    -- VALUES 
+    --     (p_tenant_id, v_template_sales_id, 1, 'ASSET', v_ar_id, 'DEBIT', 'invoice.total_amount', 'Accounts receivable', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_sales_id, 2, 'REVENUE', v_sales_id, 'CREDIT', 'item.amount', 'Sales revenue', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_sales_id, 3, 'LIABILITY', v_cgst_output_id, 'CREDIT', 'item.cgst_amount', 'CGST output', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_sales_id, 4, 'LIABILITY', v_sgst_output_id, 'CREDIT', 'item.sgst_amount', 'SGST output', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_sales_id, 5, 'LIABILITY', v_igst_output_id, 'CREDIT', 'item.igst_amount', 'IGST output', TRUE, p_created_by);
     
     -- Payment Template
-    INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
-    VALUES (p_tenant_id, v_accounting_module_id, 'PAYMENT', 'TMP_PAYMENT', 'Payment Template', 
-            'Standard template for payments', TRUE, p_created_by)
-    RETURNING id INTO STRICT v_template_payment_id;
+    -- INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
+    -- VALUES (p_tenant_id, v_accounting_module_id, 'PAYMENT', 'TMP_PAYMENT', 'Payment Template', 
+    --         'Standard template for payments', TRUE, p_created_by)
+    -- RETURNING id INTO STRICT v_template_payment_id;
     
     -- Payment Rules
-    INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
-    VALUES 
-        (p_tenant_id, v_template_payment_id, 1, 'LIABILITY', v_ap_id, 'DEBIT', 'payment.amount', 'Payment to vendor', TRUE, p_created_by),
-        (p_tenant_id, v_template_payment_id, 2, 'ASSET', v_cash_id, 'CREDIT', 'payment.amount', 'Cash payment', TRUE, p_created_by);
+    -- INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
+    -- VALUES 
+    --     (p_tenant_id, v_template_payment_id, 1, 'LIABILITY', v_ap_id, 'DEBIT', 'payment.amount', 'Payment to vendor', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_payment_id, 2, 'ASSET', v_cash_id, 'CREDIT', 'payment.amount', 'Cash payment', TRUE, p_created_by);
     
     -- Receipt Template
-    INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
-    VALUES (p_tenant_id, v_accounting_module_id, 'RECEIPT', 'TMP_RECEIPT', 'Receipt Template', 
-            'Standard template for receipts', TRUE, p_created_by)
-    RETURNING id INTO STRICT v_template_receipt_id;
+    -- INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
+    -- VALUES (p_tenant_id, v_accounting_module_id, 'RECEIPT', 'TMP_RECEIPT', 'Receipt Template', 
+    --         'Standard template for receipts', TRUE, p_created_by)
+    -- RETURNING id INTO STRICT v_template_receipt_id;
     
     -- Receipt Rules
-    INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
-    VALUES 
-        (p_tenant_id, v_template_receipt_id, 1, 'ASSET', v_cash_id, 'DEBIT', 'receipt.amount', 'Cash receipt', TRUE, p_created_by),
-        (p_tenant_id, v_template_receipt_id, 2, 'ASSET', v_ar_id, 'CREDIT', 'receipt.amount', 'Receipt from customer', TRUE, p_created_by);
+    -- INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
+    -- VALUES 
+    --     (p_tenant_id, v_template_receipt_id, 1, 'ASSET', v_cash_id, 'DEBIT', 'receipt.amount', 'Cash receipt', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_receipt_id, 2, 'ASSET', v_ar_id, 'CREDIT', 'receipt.amount', 'Receipt from customer', TRUE, p_created_by);
     
     -- Test Invoice Template
-    INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
-    VALUES (p_tenant_id, v_diagnostic_module_id, 'TEST_INVOICE', 'TMP_TEST_INV', 'Test Invoice Template', 
-            'Template for diagnostic test invoices', TRUE, p_created_by)
-    RETURNING id INTO STRICT v_template_test_invoice_id;
+    -- INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
+    -- VALUES (p_tenant_id, v_diagnostic_module_id, 'TEST_INVOICE', 'TMP_TEST_INV', 'Test Invoice Template', 
+    --         'Template for diagnostic test invoices', TRUE, p_created_by)
+    -- RETURNING id INTO STRICT v_template_test_invoice_id;
     
     -- Test Invoice Rules
-    INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
-    VALUES 
-        (p_tenant_id, v_template_test_invoice_id, 1, 'ASSET', v_ar_id, 'DEBIT', 'invoice.final_amount', 'Accounts receivable', TRUE, p_created_by),
-        (p_tenant_id, v_template_test_invoice_id, 2, 'REVENUE', v_diagnostic_revenue_id, 'CREDIT', 'invoice.taxable_amount', 'Diagnostic revenue', TRUE, p_created_by),
-        (p_tenant_id, v_template_test_invoice_id, 3, 'LIABILITY', v_cgst_output_id, 'CREDIT', 'invoice.cgst_amount', 'CGST output', TRUE, p_created_by),
-        (p_tenant_id, v_template_test_invoice_id, 4, 'LIABILITY', v_sgst_output_id, 'CREDIT', 'invoice.sgst_amount', 'SGST output', TRUE, p_created_by),
-        (p_tenant_id, v_template_test_invoice_id, 5, 'LIABILITY', v_igst_output_id, 'CREDIT', 'invoice.igst_amount', 'IGST output', TRUE, p_created_by);
+    -- INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
+    -- VALUES 
+    --     (p_tenant_id, v_template_test_invoice_id, 1, 'ASSET', v_ar_id, 'DEBIT', 'invoice.final_amount', 'Accounts receivable', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_test_invoice_id, 2, 'REVENUE', v_diagnostic_revenue_id, 'CREDIT', 'invoice.taxable_amount', 'Diagnostic revenue', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_test_invoice_id, 3, 'LIABILITY', v_cgst_output_id, 'CREDIT', 'invoice.cgst_amount', 'CGST output', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_test_invoice_id, 4, 'LIABILITY', v_sgst_output_id, 'CREDIT', 'invoice.sgst_amount', 'SGST output', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_test_invoice_id, 5, 'LIABILITY', v_igst_output_id, 'CREDIT', 'invoice.igst_amount', 'IGST output', TRUE, p_created_by);
     
     -- Advance Receipt Template
-    INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
-    VALUES (p_tenant_id, v_accounting_module_id, 'ADVANCE_RECEIPT', 'TMP_ADV_REC', 'Advance Receipt Template', 
-            'Template for patient advance payments', TRUE, p_created_by)
-    RETURNING id INTO STRICT v_template_advance_receipt_id;
+    -- INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
+    -- VALUES (p_tenant_id, v_accounting_module_id, 'ADVANCE_RECEIPT', 'TMP_ADV_REC', 'Advance Receipt Template', 
+    --         'Template for patient advance payments', TRUE, p_created_by)
+    -- RETURNING id INTO STRICT v_template_advance_receipt_id;
     
     -- Advance Receipt Rules
-    INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
-    VALUES 
-        (p_tenant_id, v_template_advance_receipt_id, 1, 'ASSET', v_cash_id, 'DEBIT', 'payment.amount', 'Cash received', TRUE, p_created_by),
-        (p_tenant_id, v_template_advance_receipt_id, 2, 'LIABILITY', v_patient_advance_id, 'CREDIT', 'payment.amount', 'Patient advance', TRUE, p_created_by);
+    -- INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
+    -- VALUES 
+    --     (p_tenant_id, v_template_advance_receipt_id, 1, 'ASSET', v_cash_id, 'DEBIT', 'payment.amount', 'Cash received', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_advance_receipt_id, 2, 'LIABILITY', v_patient_advance_id, 'CREDIT', 'payment.amount', 'Patient advance', TRUE, p_created_by);
     
     -- Advance Allocation Template
-    INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
-    VALUES (p_tenant_id, v_accounting_module_id, 'ADVANCE_ALLOCATION', 'TMP_ADV_ALLOC', 'Advance Allocation Template', 
-            'Template for allocating advance to invoice', TRUE, p_created_by)
-    RETURNING id INTO STRICT v_template_advance_allocation_id;
+    -- INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
+    -- VALUES (p_tenant_id, v_accounting_module_id, 'ADVANCE_ALLOCATION', 'TMP_ADV_ALLOC', 'Advance Allocation Template', 
+    --         'Template for allocating advance to invoice', TRUE, p_created_by)
+    -- RETURNING id INTO STRICT v_template_advance_allocation_id;
     
     -- Advance Allocation Rules
-    INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
-    VALUES 
-        (p_tenant_id, v_template_advance_allocation_id, 1, 'LIABILITY', v_patient_advance_id, 'DEBIT', 'allocation.amount', 'Advance adjusted', TRUE, p_created_by),
-        (p_tenant_id, v_template_advance_allocation_id, 2, 'ASSET', v_ar_id, 'CREDIT', 'allocation.amount', 'AR reduced', TRUE, p_created_by);
+    -- INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
+    -- VALUES 
+    --     (p_tenant_id, v_template_advance_allocation_id, 1, 'LIABILITY', v_patient_advance_id, 'DEBIT', 'allocation.amount', 'Advance adjusted', TRUE, p_created_by),
+    --     (p_tenant_id, v_template_advance_allocation_id, 2, 'ASSET', v_ar_id, 'CREDIT', 'allocation.amount', 'AR reduced', TRUE, p_created_by);
     
     v_templates_count := 7;
     

@@ -167,11 +167,11 @@ class AccountMasterService:
     
     def get_accounts_receivable(self, session, tenant_id: int):
         """Get Accounts Receivable account"""
-        return self.get_by_code(session, 'ACCOUNTS_RECEIVABLE', tenant_id)
+        return self.get_by_code(session, '1100-AR', tenant_id)
     
     def get_test_revenue(self, session, tenant_id: int):
         """Get Test Revenue account"""
-        return self.get_by_code(session, 'TEST_REVENUE', tenant_id)
+        return self.get_by_code(session, '4300-DIAGNOSTIC', tenant_id)
     
     @ExceptionMiddleware.handle_exceptions("AccountMasterService")
     def update(self, account_id: int, account_data: dict):
