@@ -122,7 +122,7 @@ class PaymentDetail(Base):
     amount_base = Column(Numeric(15, 4), nullable=False)
     amount_foreign = Column(Numeric(15, 4))
     
-    account_id = Column(Integer, ForeignKey('account_masters.id', ondelete='RESTRICT'), nullable=False)
+    account_id = Column(Integer, ForeignKey('account_masters.id', ondelete='RESTRICT'))
     description = Column(Text)
     
     created_at = Column(DateTime, default=datetime.utcnow)

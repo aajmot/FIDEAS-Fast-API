@@ -67,6 +67,7 @@ DECLARE
     v_comm_sales_id INTEGER;
     v_comm_clinic_id INTEGER;
     v_comm_diagn_id INTEGER;
+    v_patient_advance_id INTEGER;
     
     -- Configuration Key IDs
     v_key_cash_id INTEGER;
@@ -83,6 +84,9 @@ DECLARE
     v_key_sgst_output_id INTEGER;
     v_key_igst_output_id INTEGER;
     v_key_waste_expense_id INTEGER;
+    v_key_patient_advance_id INTEGER;
+    v_key_clinic_revenue_id INTEGER;
+    v_key_diagnostic_revenue_id INTEGER;
     
     -- Module IDs
     v_inventory_module_id INTEGER;
@@ -95,6 +99,9 @@ DECLARE
     v_template_sales_id INTEGER;
     v_template_payment_id INTEGER;
     v_template_receipt_id INTEGER;
+    v_template_test_invoice_id INTEGER;
+    v_template_advance_receipt_id INTEGER;
+    v_template_advance_allocation_id INTEGER;
     
 BEGIN
     -- Validate tenant exists
@@ -161,112 +168,116 @@ BEGIN
     
     -- ASSETS
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_asset_group_id, 'CASH001', 'Cash Account', 'Main cash account', 'ASSET', 'D', TRUE, 'CASH', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_asset_group_id, '1010-CASH', 'Cash Account', 'Main cash account', 'ASSET', 'D', TRUE, 'CASH', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_cash_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_asset_group_id, 'BANK001', 'Bank Account', 'Main bank account', 'ASSET', 'D', TRUE, 'BANK', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_asset_group_id, '1020-BANK', 'Bank Account', 'Main bank account', 'ASSET', 'D', TRUE, 'BANK', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_bank_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_asset_group_id, 'AR001', 'Accounts Receivable', 'Customer receivables', 'ASSET', 'D', TRUE, 'ACCOUNTS_RECEIVABLE', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_asset_group_id, '1100-AR', 'Accounts Receivable', 'Customer receivables', 'ASSET', 'D', TRUE, 'ACCOUNTS_RECEIVABLE', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_ar_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_asset_group_id, 'INV001', 'Inventory', 'Inventory asset account', 'ASSET', 'D', TRUE, 'INVENTORY', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_asset_group_id, '1200-INV', 'Inventory', 'Inventory asset account', 'ASSET', 'D', TRUE, 'INVENTORY', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_inventory_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_asset_group_id, 'CGST_REC', 'CGST Input Credit', 'CGST recoverable on purchases', 'ASSET', 'D', TRUE, 'GST_INPUT_CGST', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_asset_group_id, '1310-GST-CGST-IN', 'CGST Input Credit', 'CGST recoverable on purchases', 'ASSET', 'D', TRUE, 'GST_INPUT_CGST', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_cgst_input_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_asset_group_id, 'SGST_REC', 'SGST Input Credit', 'SGST recoverable on purchases', 'ASSET', 'D', TRUE, 'GST_INPUT_SGST', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_asset_group_id, '1320-GST-SGST-IN', 'SGST Input Credit', 'SGST recoverable on purchases', 'ASSET', 'D', TRUE, 'GST_INPUT_SGST', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_sgst_input_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_asset_group_id, 'IGST_REC', 'IGST Input Credit', 'IGST recoverable on purchases', 'ASSET', 'D', TRUE, 'GST_INPUT_IGST', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_asset_group_id, '1330-GST-IGST-IN', 'IGST Input Credit', 'IGST recoverable on purchases', 'ASSET', 'D', TRUE, 'GST_INPUT_IGST', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_igst_input_id;
     
     -- LIABILITIES
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_liability_group_id, 'AP001', 'Accounts Payable', 'Vendor payables', 'LIABILITY', 'C', TRUE, 'ACCOUNTS_PAYABLE', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_liability_group_id, '2100-AP', 'Accounts Payable', 'Vendor payables', 'LIABILITY', 'C', TRUE, 'ACCOUNTS_PAYABLE', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_ap_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_liability_group_id, 'CGST_PAY', 'CGST Payable', 'CGST output tax payable', 'LIABILITY', 'C', TRUE, 'GST_OUTPUT_CGST', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_liability_group_id, '2200-PAT-ADV', 'Patient Advance', 'Patient advance payments', 'LIABILITY', 'C', TRUE, 'PATIENT_ADVANCE', 1, 0, 0, TRUE, p_created_by)
+    RETURNING id INTO STRICT v_patient_advance_id;
+    
+    INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
+    VALUES (p_tenant_id, v_liability_group_id, '2310-GST-CGST-OUT', 'CGST Payable', 'CGST output tax payable', 'LIABILITY', 'C', TRUE, 'GST_OUTPUT_CGST', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_cgst_output_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_liability_group_id, 'SGST_PAY', 'SGST Payable', 'SGST output tax payable', 'LIABILITY', 'C', TRUE, 'GST_OUTPUT_SGST', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_liability_group_id, '2320-GST-SGST-OUT', 'SGST Payable', 'SGST output tax payable', 'LIABILITY', 'C', TRUE, 'GST_OUTPUT_SGST', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_sgst_output_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_liability_group_id, 'IGST_PAY', 'IGST Payable', 'IGST output tax payable', 'LIABILITY', 'C', TRUE, 'GST_OUTPUT_IGST', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_liability_group_id, '2330-GST-IGST-OUT', 'IGST Payable', 'IGST output tax payable', 'LIABILITY', 'C', TRUE, 'GST_OUTPUT_IGST', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_igst_output_id;
     
     -- EQUITY
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_equity_group_id, 'OE001', 'Owner Equity', 'Owner capital account', 'EQUITY', 'C', TRUE, 'OWNER_EQUITY', 1, 0, 0, TRUE, p_created_by);
+    VALUES (p_tenant_id, v_equity_group_id, '3100-EQUITY', 'Owner Equity', 'Owner capital account', 'EQUITY', 'C', TRUE, 'OWNER_EQUITY', 1, 0, 0, TRUE, p_created_by);
     
     -- REVENUE
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_revenue_group_id, 'SALES001', 'Sales Revenue', 'Product sales revenue', 'REVENUE', 'C', TRUE, 'SALES', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_revenue_group_id, '4100-SALES', 'Sales Revenue', 'Product sales revenue', 'REVENUE', 'C', TRUE, 'SALES', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_sales_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_revenue_group_id, 'CLINI001', 'Clinic Revenue', 'Clinic services revenue', 'REVENUE', 'C', TRUE, 'CLINIC_REVENUE', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_revenue_group_id, '4200-CLINIC', 'Clinic Revenue', 'Clinic services revenue', 'REVENUE', 'C', TRUE, 'CLINIC_REVENUE', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_clinic_revenue_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_revenue_group_id, 'DIAGN001', 'Diagnostic Revenue', 'Diagnostic services revenue', 'REVENUE', 'C', TRUE, 'DIAGNOSTIC_REVENUE', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_revenue_group_id, '4300-DIAGNOSTIC', 'Diagnostic Revenue', 'Diagnostic services revenue', 'REVENUE', 'C', TRUE, 'DIAGNOSTIC_REVENUE', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_diagnostic_revenue_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_revenue_group_id, 'SALES_RET', 'Sales Returns', 'Sales returns and allowances', 'REVENUE', 'D', TRUE, 'SALES_RETURN', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_revenue_group_id, '4910-SALES-RET', 'Sales Returns', 'Sales returns and allowances', 'REVENUE', 'D', TRUE, 'SALES_RETURN', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_sales_return_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_revenue_group_id, 'DISC_REC', 'Discount Received', 'Discounts received from suppliers', 'REVENUE', 'C', TRUE, 'DISCOUNT_RECEIVED', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_revenue_group_id, '4920-DISC-REC', 'Discount Received', 'Discounts received from suppliers', 'REVENUE', 'C', TRUE, 'DISCOUNT_RECEIVED', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_discount_received_id;
     
     -- EXPENSE
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_expense_group_id, 'PUREXP001', 'Purchase Expense', 'Cost of goods purchased', 'EXPENSE', 'D', TRUE, 'PURCHASE', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_expense_group_id, '5100-PURCHASE', 'Purchase Expense', 'Cost of goods purchased', 'EXPENSE', 'D', TRUE, 'PURCHASE', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_purchase_expense_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_expense_group_id, 'PUR_RET', 'Purchase Returns', 'Purchase returns to suppliers', 'EXPENSE', 'C', TRUE, 'PURCHASE_RETURN', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_expense_group_id, '5910-PUR-RET', 'Purchase Returns', 'Purchase returns to suppliers', 'EXPENSE', 'C', TRUE, 'PURCHASE_RETURN', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_purchase_return_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_expense_group_id, 'DISC_GIVEN', 'Discount Allowed', 'Discounts given to customers', 'EXPENSE', 'D', TRUE, 'DISCOUNT_GIVEN', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_expense_group_id, '5300-DISC-GIVEN', 'Discount Allowed', 'Discounts given to customers', 'EXPENSE', 'D', TRUE, 'DISCOUNT_GIVEN', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_discount_given_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_expense_group_id, 'WASTE_LOSS', 'Waste Loss', 'Inventory waste and loss', 'EXPENSE', 'D', TRUE, 'WASTE_LOSS', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_expense_group_id, '5200-WASTE', 'Waste Loss', 'Inventory waste and loss', 'EXPENSE', 'D', TRUE, 'WASTE_LOSS', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_waste_loss_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_expense_group_id, 'GNEXP001', 'General Expense', 'Miscellaneous expenses', 'EXPENSE', 'D', TRUE, 'GENERAL_EXPENSE', 1, 0, 0, TRUE, p_created_by);
+    VALUES (p_tenant_id, v_expense_group_id, '5800-GEN-EXP', 'General Expense', 'Miscellaneous expenses', 'EXPENSE', 'D', TRUE, 'GENERAL_EXPENSE', 1, 0, 0, TRUE, p_created_by);
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_expense_group_id, 'OPEXP001', 'Operating Expense', 'Operating costs', 'EXPENSE', 'D', TRUE, 'OPERATING_EXPENSE', 1, 0, 0, TRUE, p_created_by);
+    VALUES (p_tenant_id, v_expense_group_id, '5900-OP-EXP', 'Operating Expense', 'Operating costs', 'EXPENSE', 'D', TRUE, 'OPERATING_EXPENSE', 1, 0, 0, TRUE, p_created_by);
     
     -- Agent Commission Accounts
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_expense_group_id, 'COMM_SALES', 'Agent Commission - Sales', 'Commission on product sales', 'EXPENSE', 'D', TRUE, 'COMMISSION_SALES', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_expense_group_id, '5710-COMM-SALES', 'Agent Commission - Sales', 'Commission on product sales', 'EXPENSE', 'D', TRUE, 'COMMISSION_SALES', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_comm_sales_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_expense_group_id, 'COMM_CLINIC', 'Agent Commission - Clinic', 'Commission on clinic services', 'EXPENSE', 'D', TRUE, 'COMMISSION_CLINIC', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_expense_group_id, '5720-COMM-CLINIC', 'Agent Commission - Clinic', 'Commission on clinic services', 'EXPENSE', 'D', TRUE, 'COMMISSION_CLINIC', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_comm_clinic_id;
     
     INSERT INTO account_masters (tenant_id, account_group_id, code, name, description, account_type, normal_balance, is_system_account, system_code, level, opening_balance, current_balance, is_active, created_by)
-    VALUES (p_tenant_id, v_expense_group_id, 'COMM_DIAGN', 'Agent Commission - Diagnostics', 'Commission on diagnostic services', 'EXPENSE', 'D', TRUE, 'COMMISSION_DIAGNOSTIC', 1, 0, 0, TRUE, p_created_by)
+    VALUES (p_tenant_id, v_expense_group_id, '5730-COMM-DIAG', 'Agent Commission - Diagnostics', 'Commission on diagnostic services', 'EXPENSE', 'D', TRUE, 'COMMISSION_DIAGNOSTIC', 1, 0, 0, TRUE, p_created_by)
     RETURNING id INTO STRICT v_comm_diagn_id;
     
-    v_account_masters_count := 26;
+    v_account_masters_count := 27;
     
     -- =====================================================
     -- 2.1 VALIDATE ALL ACCOUNT IDS RETRIEVED
@@ -323,8 +334,9 @@ BEGIN
     INSERT INTO account_configuration_keys (code, name, description, is_active)
     VALUES 
     ('WASTE_EXPENSE', 'Waste Expense Account', 'Account for recording product waste and spoilage expenses', TRUE),
-    ('INVENTORY', 'Inventory Account', 'Account for tracking inventory assets', TRUE),
-    ('CASH', 'Cash Account', 'Default cash account for cash transactions', TRUE)
+    ('PATIENT_ADVANCE', 'Patient Advance Account', 'Account for tracking patient advance payments', TRUE),
+    ('CLINIC_REVENUE', 'Clinic Revenue Account', 'Account for clinic services revenue', TRUE),
+    ('DIAGNOSTIC_REVENUE', 'Diagnostic Revenue Account', 'Account for diagnostic services revenue', TRUE)
     ON CONFLICT (code) DO NOTHING;
     SELECT id INTO v_key_cash_id FROM account_configuration_keys WHERE code = 'CASH';
     
@@ -389,6 +401,9 @@ BEGIN
     SELECT id INTO v_key_igst_output_id FROM account_configuration_keys WHERE code = 'GST_OUTPUT_IGST';
     
     SELECT id INTO v_key_waste_expense_id FROM account_configuration_keys WHERE code = 'WASTE_EXPENSE';
+    SELECT id INTO v_key_patient_advance_id FROM account_configuration_keys WHERE code = 'PATIENT_ADVANCE';
+    SELECT id INTO v_key_clinic_revenue_id FROM account_configuration_keys WHERE code = 'CLINIC_REVENUE';
+    SELECT id INTO v_key_diagnostic_revenue_id FROM account_configuration_keys WHERE code = 'DIAGNOSTIC_REVENUE';
     
     -- Update default_account_id for configuration keys (global defaults)
     UPDATE account_configuration_keys SET default_account_id = v_cash_id WHERE code = 'CASH' AND default_account_id IS NULL;
@@ -405,13 +420,17 @@ BEGIN
     UPDATE account_configuration_keys SET default_account_id = v_sgst_output_id WHERE code = 'GST_OUTPUT_SGST' AND default_account_id IS NULL;
     UPDATE account_configuration_keys SET default_account_id = v_igst_output_id WHERE code = 'GST_OUTPUT_IGST' AND default_account_id IS NULL;
     UPDATE account_configuration_keys SET default_account_id = v_waste_loss_id WHERE code = 'WASTE_EXPENSE' AND default_account_id IS NULL;
+    UPDATE account_configuration_keys SET default_account_id = v_patient_advance_id WHERE code = 'PATIENT_ADVANCE' AND default_account_id IS NULL;
+    UPDATE account_configuration_keys SET default_account_id = v_clinic_revenue_id WHERE code = 'CLINIC_REVENUE' AND default_account_id IS NULL;
+    UPDATE account_configuration_keys SET default_account_id = v_diagnostic_revenue_id WHERE code = 'DIAGNOSTIC_REVENUE' AND default_account_id IS NULL;
     
     -- Count new keys created (approximate)
     SELECT COUNT(*) INTO v_config_keys_count 
     FROM account_configuration_keys 
     WHERE code IN ('CASH', 'BANK', 'ACCOUNTS_RECEIVABLE', 'ACCOUNTS_PAYABLE', 'INVENTORY', 
                    'SALES', 'PURCHASE', 'GST_INPUT_CGST', 'GST_INPUT_SGST', 'GST_INPUT_IGST',
-                   'GST_OUTPUT_CGST', 'GST_OUTPUT_SGST', 'GST_OUTPUT_IGST', 'WASTE_EXPENSE');
+                   'GST_OUTPUT_CGST', 'GST_OUTPUT_SGST', 'GST_OUTPUT_IGST', 'WASTE_EXPENSE',
+                   'PATIENT_ADVANCE', 'CLINIC_REVENUE', 'DIAGNOSTIC_REVENUE');
     
     -- =====================================================
     -- 4. CREATE ACCOUNT CONFIGURATIONS (TENANT-SPECIFIC MAPPINGS)
@@ -478,9 +497,12 @@ BEGIN
         (p_tenant_id, v_key_cgst_output_id, v_cgst_output_id, NULL, p_created_by),
         (p_tenant_id, v_key_sgst_output_id, v_sgst_output_id, NULL, p_created_by),
         (p_tenant_id, v_key_igst_output_id, v_igst_output_id, NULL, p_created_by),
-        (p_tenant_id, v_key_waste_expense_id, v_waste_loss_id, 'INVENTORY', p_created_by);
+        (p_tenant_id, v_key_waste_expense_id, v_waste_loss_id, 'INVENTORY', p_created_by),
+        (p_tenant_id, v_key_patient_advance_id, v_patient_advance_id, 'DIAGNOSTIC', p_created_by),
+        (p_tenant_id, v_key_clinic_revenue_id, v_clinic_revenue_id, 'CLINIC', p_created_by),
+        (p_tenant_id, v_key_diagnostic_revenue_id, v_diagnostic_revenue_id, 'DIAGNOSTIC', p_created_by);
     
-    v_configurations_count := 14;
+    v_configurations_count := 17;
     
     -- =====================================================
     -- 5. CREATE VOUCHER TYPES
@@ -558,7 +580,46 @@ BEGIN
         (p_tenant_id, v_template_receipt_id, 1, 'ASSET', v_cash_id, 'DEBIT', 'receipt.amount', 'Cash receipt', TRUE, p_created_by),
         (p_tenant_id, v_template_receipt_id, 2, 'ASSET', v_ar_id, 'CREDIT', 'receipt.amount', 'Receipt from customer', TRUE, p_created_by);
     
-    v_templates_count := 4;
+    -- Test Invoice Template
+    INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
+    VALUES (p_tenant_id, v_diagnostic_module_id, 'TEST_INVOICE', 'TMP_TEST_INV', 'Test Invoice Template', 
+            'Template for diagnostic test invoices', TRUE, p_created_by)
+    RETURNING id INTO STRICT v_template_test_invoice_id;
+    
+    -- Test Invoice Rules
+    INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
+    VALUES 
+        (p_tenant_id, v_template_test_invoice_id, 1, 'ASSET', v_ar_id, 'DEBIT', 'invoice.final_amount', 'Accounts receivable', TRUE, p_created_by),
+        (p_tenant_id, v_template_test_invoice_id, 2, 'REVENUE', v_diagnostic_revenue_id, 'CREDIT', 'invoice.taxable_amount', 'Diagnostic revenue', TRUE, p_created_by),
+        (p_tenant_id, v_template_test_invoice_id, 3, 'LIABILITY', v_cgst_output_id, 'CREDIT', 'invoice.cgst_amount', 'CGST output', TRUE, p_created_by),
+        (p_tenant_id, v_template_test_invoice_id, 4, 'LIABILITY', v_sgst_output_id, 'CREDIT', 'invoice.sgst_amount', 'SGST output', TRUE, p_created_by),
+        (p_tenant_id, v_template_test_invoice_id, 5, 'LIABILITY', v_igst_output_id, 'CREDIT', 'invoice.igst_amount', 'IGST output', TRUE, p_created_by);
+    
+    -- Advance Receipt Template
+    INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
+    VALUES (p_tenant_id, v_accounting_module_id, 'ADVANCE_RECEIPT', 'TMP_ADV_REC', 'Advance Receipt Template', 
+            'Template for patient advance payments', TRUE, p_created_by)
+    RETURNING id INTO STRICT v_template_advance_receipt_id;
+    
+    -- Advance Receipt Rules
+    INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
+    VALUES 
+        (p_tenant_id, v_template_advance_receipt_id, 1, 'ASSET', v_cash_id, 'DEBIT', 'payment.amount', 'Cash received', TRUE, p_created_by),
+        (p_tenant_id, v_template_advance_receipt_id, 2, 'LIABILITY', v_patient_advance_id, 'CREDIT', 'payment.amount', 'Patient advance', TRUE, p_created_by);
+    
+    -- Advance Allocation Template
+    INSERT INTO transaction_templates (tenant_id, module_id, transaction_type, code, name, description, is_active, created_by)
+    VALUES (p_tenant_id, v_accounting_module_id, 'ADVANCE_ALLOCATION', 'TMP_ADV_ALLOC', 'Advance Allocation Template', 
+            'Template for allocating advance to invoice', TRUE, p_created_by)
+    RETURNING id INTO STRICT v_template_advance_allocation_id;
+    
+    -- Advance Allocation Rules
+    INSERT INTO transaction_template_rules (tenant_id, template_id, line_number, account_type, account_id, entry_type, amount_source, narration, is_active, created_by)
+    VALUES 
+        (p_tenant_id, v_template_advance_allocation_id, 1, 'LIABILITY', v_patient_advance_id, 'DEBIT', 'allocation.amount', 'Advance adjusted', TRUE, p_created_by),
+        (p_tenant_id, v_template_advance_allocation_id, 2, 'ASSET', v_ar_id, 'CREDIT', 'allocation.amount', 'AR reduced', TRUE, p_created_by);
+    
+    v_templates_count := 7;
     
     -- =====================================================
     -- RETURN SUCCESS

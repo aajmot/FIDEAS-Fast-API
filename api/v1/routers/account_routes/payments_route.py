@@ -1,11 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import Optional
 from datetime import datetime, date
-from pydantic import BaseModel, Field
+from decimal import Decimal
+from pydantic import BaseModel, Field, validator
 from api.schemas.common import BaseResponse
 from api.middleware.auth_middleware import get_current_user
 from modules.account_module.services.payment_service import PaymentService
-from modules.account_module.models.payment_enums import PaymentType, PartyType, PaymentStatus
+from modules.account_module.models.payment_enums import PaymentType, PartyType, PaymentStatus, PaymentMode
 from modules.account_module.models.payment_schemas import (
     PaymentRequest,
     PaymentResponse,
@@ -29,6 +30,53 @@ class PaymentReversalRequest(BaseModel):
     """Schema for reversing a payment"""
     reversal_date: Optional[datetime] = Field(None, description="Reversal date")
     reversal_remarks: str = Field(..., description="Reason for reversal")
+
+
+class AdvancePaymentRequest(BaseModel):
+    """Minimal schema for advance payment"""
+    payment_number: str = Field(..., max_length=50, description="Payment number")
+    party_id: int = Field(..., description="Party ID")
+    party_type: PartyType = Field(..., description="Party type")
+    amount: Decimal = Field(..., gt=0, description="Payment amount")
+    payment_mode: PaymentMode = Field(PaymentMode.CASH, description="Payment mode")
+    instrument_number: Optional[str] = Field(None, description="Cheque/DD number")
+    instrument_date: Optional[date] = Field(None, description="Instrument date")
+    bank_name: Optional[str] = Field(None, description="Bank name")
+    branch_name: Optional[str] = Field(None, description="Branch name")
+    ifsc_code: Optional[str] = Field(None, description="IFSC code")
+    transaction_reference: Optional[str] = Field(None, description="Transaction reference")
+    remarks: Optional[str] = Field(None, description="Remarks")
+
+
+class InvoicePaymentRequest(BaseModel):
+    """Minimal schema for payment against invoice"""
+    payment_number: str = Field(..., max_length=50, description="Payment number")
+    invoice_id: int = Field(..., description="Invoice ID")
+    invoice_type: str = Field(..., description="SALES or PURCHASE")
+    amount: Decimal = Field(..., gt=0, description="Payment amount")
+    payment_mode: PaymentMode = Field(PaymentMode.CASH, description="Payment mode")
+    instrument_number: Optional[str] = Field(None, description="Cheque/DD number")
+    instrument_date: Optional[date] = Field(None, description="Instrument date")
+    bank_name: Optional[str] = Field(None, description="Bank name")
+    branch_name: Optional[str] = Field(None, description="Branch name")
+    ifsc_code: Optional[str] = Field(None, description="IFSC code")
+    transaction_reference: Optional[str] = Field(None, description="Transaction reference")
+    remarks: Optional[str] = Field(None, description="Remarks")
+
+
+class GatewayPaymentUpdateRequest(BaseModel):
+    """Schema for updating payment with gateway response"""
+    transaction_reference: str = Field(..., description="UPI/Gateway transaction reference")
+    gateway_transaction_id: Optional[str] = Field(None, description="Gateway transaction ID")
+    gateway_status: str = Field(..., description="Gateway status (SUCCESS/FAILED)")
+    gateway_fee_base: Optional[Decimal] = Field(0, description="Gateway fee")
+    gateway_response: Optional[str] = Field(None, description="Gateway response JSON")
+    
+    @validator('gateway_status')
+    def validate_status(cls, v):
+        if v not in ['SUCCESS', 'FAILED']:
+            raise ValueError('gateway_status must be SUCCESS or FAILED')
+        return v
 
 
 @router.get("/payments", response_model=PaymentListResponse)
@@ -234,3 +282,82 @@ async def get_document_payments(
         return allocations
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching document payments: {str(e)}")
+
+
+@router.post("/payments/advance/customer", response_model=PaymentResponse, status_code=201)
+async def create_advance_customer_payment(
+    request: AdvancePaymentRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create advance payment - UPI/ONLINE auto-set to DRAFT until gateway confirms"""
+    try:
+        result = payment_service.create_advance_payment(
+            payment_number=request.payment_number,
+            party_id=request.party_id,
+            party_type=request.party_type.value,
+            amount=request.amount,
+            payment_mode=request.payment_mode.value,
+            instrument_number=request.instrument_number,
+            instrument_date=request.instrument_date,
+            bank_name=request.bank_name,
+            branch_name=request.branch_name,
+            ifsc_code=request.ifsc_code,
+            transaction_reference=request.transaction_reference,
+            remarks=request.remarks
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating advance payment: {str(e)}")
+
+
+@router.post("/payments/invoice", response_model=PaymentResponse, status_code=201)
+async def create_invoice_payment(
+    request: InvoicePaymentRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """Create payment against invoice - auto DRAFT for UPI/online, POSTED for cash"""
+    try:
+        result = payment_service.create_invoice_payment_simple(
+            payment_number=request.payment_number,
+            invoice_id=request.invoice_id,
+            invoice_type=request.invoice_type,
+            amount=request.amount,
+            payment_mode=request.payment_mode.value,
+            instrument_number=request.instrument_number,
+            instrument_date=request.instrument_date,
+            bank_name=request.bank_name,
+            branch_name=request.branch_name,
+            ifsc_code=request.ifsc_code,
+            transaction_reference=request.transaction_reference,
+            remarks=request.remarks
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating invoice payment: {str(e)}")
+
+
+@router.patch("/payments/{payment_id}/gateway-confirm", response_model=PaymentResponse)
+async def confirm_gateway_payment(
+    payment_id: int,
+    gateway_data: GatewayPaymentUpdateRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """Update DRAFT payment with gateway response - POSTED on SUCCESS, stays DRAFT on FAILED"""
+    try:
+        result = payment_service.confirm_gateway_payment(
+            payment_id=payment_id,
+            transaction_reference=gateway_data.transaction_reference,
+            gateway_transaction_id=gateway_data.gateway_transaction_id,
+            gateway_status=gateway_data.gateway_status,
+            gateway_fee_base=gateway_data.gateway_fee_base,
+            gateway_response=gateway_data.gateway_response
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error confirming payment: {str(e)}")

@@ -5,8 +5,10 @@ from modules.account_module.services.audit_service import AuditService
 from core.shared.utils.session_manager import session_manager
 from core.shared.middleware.exception_handler import ExceptionMiddleware
 from sqlalchemy import or_
-from datetime import datetime
+from datetime import datetime, date
 from decimal import Decimal
+
+from modules.admin_module.models.entities import TenantSetting
 
 class PaymentService:
     def __init__(self):
@@ -28,22 +30,22 @@ class PaymentService:
         
         # Get accounts
         ar_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'AR001',
+            AccountMaster.code == '1100-AR',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
         sales_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'SAL001',
+            AccountMaster.code == '4100-SALES',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
         cogs_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'COGS001',
+            AccountMaster.code == '5100-PURCHASE',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
         inventory_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'INV001',
+            AccountMaster.code == '1200-INV',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
@@ -245,12 +247,12 @@ class PaymentService:
         
         # Get accounts
         inventory_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'INV001',
+            AccountMaster.code == '1200-INV',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
         ap_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'AP001',
+            AccountMaster.code == '2100-AP',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
@@ -367,12 +369,12 @@ class PaymentService:
         
         # Get accounts
         inventory_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'INV001',
+            AccountMaster.code == '1200-INV',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
         expense_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'EXP001',
+            AccountMaster.code == '5200-WASTE',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
@@ -483,12 +485,12 @@ class PaymentService:
         
         # Get accounts
         ar_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'AR001',
+            AccountMaster.code == '1100-AR',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
         sales_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'SAL001',
+            AccountMaster.code == '4100-SALES',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
@@ -599,12 +601,12 @@ class PaymentService:
         
         # Get accounts
         inventory_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'INV001',
+            AccountMaster.code == '1200-INV',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
         ap_account = session.query(AccountMaster).filter(
-            AccountMaster.code == 'AP001',
+            AccountMaster.code == '2100-AP',
             AccountMaster.tenant_id == tenant_id
         ).first()
         
@@ -978,7 +980,437 @@ class PaymentService:
     def reconcile_payment(self, payment_id: int, reconciled_at: datetime = None):
         """Reconcile a payment"""
         from modules.account_module.models.payment_entity import Payment
+    
+    # ==================== PATIENT ADVANCE & TEST INVOICE METHODS ====================
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def record_test_invoice_transaction(self, session, test_invoice_id, invoice_number, 
+                                       taxable_amount, cgst_amount, sgst_amount, igst_amount, 
+                                       final_amount, transaction_date=None):
+        """Record test invoice transaction (AR Dr, Diagnostic Revenue Cr, GST Cr)"""
+        if not transaction_date:
+            transaction_date = datetime.now()
         
+        tenant_id = session_manager.get_current_tenant_id()
+        username = session_manager.get_current_username()
+        
+        # Get accounts
+        ar_account = session.query(AccountMaster).filter(
+            AccountMaster.code == '1100-AR',
+            AccountMaster.tenant_id == tenant_id
+        ).first()
+        
+        diagnostic_revenue = session.query(AccountMaster).filter(
+            AccountMaster.code == '4300-DIAGNOSTIC',
+            AccountMaster.tenant_id == tenant_id
+        ).first()
+        
+        cgst_output = session.query(AccountMaster).filter(
+            AccountMaster.code == '2310-GST-CGST-OUT',
+            AccountMaster.tenant_id == tenant_id
+        ).first()
+        
+        sgst_output = session.query(AccountMaster).filter(
+            AccountMaster.code == '2320-GST-SGST-OUT',
+            AccountMaster.tenant_id == tenant_id
+        ).first()
+        
+        igst_output = session.query(AccountMaster).filter(
+            AccountMaster.code == '2330-GST-IGST-OUT',
+            AccountMaster.tenant_id == tenant_id
+        ).first()
+        
+        # Get voucher type
+        voucher_type = session.query(VoucherType).filter(
+            VoucherType.code == 'SALES',
+            VoucherType.tenant_id == tenant_id
+        ).first()
+        
+        if not voucher_type:
+            voucher_type = session.query(VoucherType).filter(
+                VoucherType.code == 'JOURNAL',
+                VoucherType.tenant_id == tenant_id
+            ).first()
+        
+        # Create voucher
+        voucher_number = f"TINV-{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        voucher = Voucher(
+            voucher_number=voucher_number,
+            voucher_type_id=voucher_type.id,
+            voucher_date=transaction_date,
+            reference_type='TEST_INVOICE',
+            reference_id=test_invoice_id,
+            reference_number=invoice_number,
+            narration=f'Test invoice {invoice_number}',
+            total_amount=final_amount,
+            is_posted=True,
+            tenant_id=tenant_id,
+            created_by=username
+        )
+        session.add(voucher)
+        session.flush()
+        
+        # Create journal
+        journal = Journal(
+            voucher_id=voucher.id,
+            journal_date=transaction_date,
+            total_debit=final_amount,
+            total_credit=final_amount,
+            tenant_id=tenant_id
+        )
+        session.add(journal)
+        session.flush()
+        
+        # Create journal details
+        journal_details = [
+            JournalDetail(
+                journal_id=journal.id,
+                account_id=ar_account.id,
+                debit_amount=final_amount,
+                credit_amount=0,
+                narration=f'Test invoice {invoice_number}',
+                tenant_id=tenant_id
+            ),
+            JournalDetail(
+                journal_id=journal.id,
+                account_id=diagnostic_revenue.id,
+                debit_amount=0,
+                credit_amount=taxable_amount,
+                narration=f'Diagnostic revenue - {invoice_number}',
+                tenant_id=tenant_id
+            )
+        ]
+        
+        if cgst_amount > 0:
+            journal_details.append(JournalDetail(
+                journal_id=journal.id,
+                account_id=cgst_output.id,
+                debit_amount=0,
+                credit_amount=cgst_amount,
+                narration=f'CGST - {invoice_number}',
+                tenant_id=tenant_id
+            ))
+        
+        if sgst_amount > 0:
+            journal_details.append(JournalDetail(
+                journal_id=journal.id,
+                account_id=sgst_output.id,
+                debit_amount=0,
+                credit_amount=sgst_amount,
+                narration=f'SGST - {invoice_number}',
+                tenant_id=tenant_id
+            ))
+        
+        if igst_amount > 0:
+            journal_details.append(JournalDetail(
+                journal_id=journal.id,
+                account_id=igst_output.id,
+                debit_amount=0,
+                credit_amount=igst_amount,
+                narration=f'IGST - {invoice_number}',
+                tenant_id=tenant_id
+            ))
+        
+        for detail in journal_details:
+            session.add(detail)
+        
+        # Create ledger entries
+        ledger_entries = [
+            Ledger(
+                account_id=ar_account.id,
+                voucher_id=voucher.id,
+                transaction_date=transaction_date,
+                debit_amount=final_amount,
+                credit_amount=0,
+                balance=ar_account.current_balance + Decimal(str(final_amount)),
+                narration=f'Test invoice {invoice_number}',
+                tenant_id=tenant_id
+            ),
+            Ledger(
+                account_id=diagnostic_revenue.id,
+                voucher_id=voucher.id,
+                transaction_date=transaction_date,
+                debit_amount=0,
+                credit_amount=taxable_amount,
+                balance=diagnostic_revenue.current_balance + Decimal(str(taxable_amount)),
+                narration=f'Diagnostic revenue - {invoice_number}',
+                tenant_id=tenant_id
+            )
+        ]
+        
+        if cgst_amount > 0:
+            ledger_entries.append(Ledger(
+                account_id=cgst_output.id,
+                voucher_id=voucher.id,
+                transaction_date=transaction_date,
+                debit_amount=0,
+                credit_amount=cgst_amount,
+                balance=cgst_output.current_balance + Decimal(str(cgst_amount)),
+                narration=f'CGST - {invoice_number}',
+                tenant_id=tenant_id
+            ))
+        
+        if sgst_amount > 0:
+            ledger_entries.append(Ledger(
+                account_id=sgst_output.id,
+                voucher_id=voucher.id,
+                transaction_date=transaction_date,
+                debit_amount=0,
+                credit_amount=sgst_amount,
+                balance=sgst_output.current_balance + Decimal(str(sgst_amount)),
+                narration=f'SGST - {invoice_number}',
+                tenant_id=tenant_id
+            ))
+        
+        if igst_amount > 0:
+            ledger_entries.append(Ledger(
+                account_id=igst_output.id,
+                voucher_id=voucher.id,
+                transaction_date=transaction_date,
+                debit_amount=0,
+                credit_amount=igst_amount,
+                balance=igst_output.current_balance + Decimal(str(igst_amount)),
+                narration=f'IGST - {invoice_number}',
+                tenant_id=tenant_id
+            ))
+        
+        for ledger in ledger_entries:
+            session.add(ledger)
+        
+        # Update account balances
+        self.account_service.update_account_balance_in_session(session, ar_account.id, final_amount, 'DEBIT')
+        self.account_service.update_account_balance_in_session(session, diagnostic_revenue.id, taxable_amount, 'CREDIT')
+        if cgst_amount > 0:
+            self.account_service.update_account_balance_in_session(session, cgst_output.id, cgst_amount, 'CREDIT')
+        if sgst_amount > 0:
+            self.account_service.update_account_balance_in_session(session, sgst_output.id, sgst_amount, 'CREDIT')
+        if igst_amount > 0:
+            self.account_service.update_account_balance_in_session(session, igst_output.id, igst_amount, 'CREDIT')
+        
+        return voucher
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def record_advance_receipt(self, session, payment_id, payment_number, amount, transaction_date=None):
+        """Record patient advance receipt (Cash Dr, Patient Advance Cr)"""
+        if not transaction_date:
+            transaction_date = datetime.now()
+        
+        tenant_id = session_manager.get_current_tenant_id()
+        username = session_manager.get_current_username()
+        
+        # Get accounts
+        cash_account = session.query(AccountMaster).filter(
+            AccountMaster.code == '1010-CASH',
+            AccountMaster.tenant_id == tenant_id
+        ).first()
+        
+        advance_account = session.query(AccountMaster).filter(
+            AccountMaster.code == '2200-PAT-ADV',
+            AccountMaster.tenant_id == tenant_id
+        ).first()
+        
+        # Get voucher type
+        voucher_type = session.query(VoucherType).filter(
+            VoucherType.code == 'RECEIPT',
+            VoucherType.tenant_id == tenant_id
+        ).first()
+        
+        # Create voucher
+        voucher_number = f"ADV-{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        voucher = Voucher(
+            voucher_number=voucher_number,
+            voucher_type_id=voucher_type.id,
+            voucher_date=transaction_date,
+            reference_type='ADVANCE_RECEIPT',
+            reference_id=payment_id,
+            reference_number=payment_number,
+            narration=f'Patient advance - {payment_number}',
+            total_amount=amount,
+            is_posted=True,
+            tenant_id=tenant_id,
+            created_by=username
+        )
+        session.add(voucher)
+        session.flush()
+        
+        # Create journal
+        journal = Journal(
+            voucher_id=voucher.id,
+            journal_date=transaction_date,
+            total_debit=amount,
+            total_credit=amount,
+            tenant_id=tenant_id
+        )
+        session.add(journal)
+        session.flush()
+        
+        # Create journal details
+        journal_details = [
+            JournalDetail(
+                journal_id=journal.id,
+                account_id=cash_account.id,
+                debit_amount=amount,
+                credit_amount=0,
+                narration=f'Advance received - {payment_number}',
+                tenant_id=tenant_id
+            ),
+            JournalDetail(
+                journal_id=journal.id,
+                account_id=advance_account.id,
+                debit_amount=0,
+                credit_amount=amount,
+                narration=f'Patient advance liability - {payment_number}',
+                tenant_id=tenant_id
+            )
+        ]
+        
+        for detail in journal_details:
+            session.add(detail)
+        
+        # Create ledger entries
+        ledger_entries = [
+            Ledger(
+                account_id=cash_account.id,
+                voucher_id=voucher.id,
+                transaction_date=transaction_date,
+                debit_amount=amount,
+                credit_amount=0,
+                balance=cash_account.current_balance + Decimal(str(amount)),
+                narration=f'Advance received - {payment_number}',
+                tenant_id=tenant_id
+            ),
+            Ledger(
+                account_id=advance_account.id,
+                voucher_id=voucher.id,
+                transaction_date=transaction_date,
+                debit_amount=0,
+                credit_amount=amount,
+                balance=advance_account.current_balance + Decimal(str(amount)),
+                narration=f'Patient advance liability - {payment_number}',
+                tenant_id=tenant_id
+            )
+        ]
+        
+        for ledger in ledger_entries:
+            session.add(ledger)
+        
+        # Update account balances
+        self.account_service.update_account_balance_in_session(session, cash_account.id, amount, 'DEBIT')
+        self.account_service.update_account_balance_in_session(session, advance_account.id, amount, 'CREDIT')
+        
+        return voucher
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def record_advance_allocation(self, session, allocation_id, payment_number, invoice_number, 
+                                 amount, transaction_date=None):
+        """Record advance allocation to invoice (Patient Advance Dr, AR Cr)"""
+        if not transaction_date:
+            transaction_date = datetime.now()
+        
+        tenant_id = session_manager.get_current_tenant_id()
+        username = session_manager.get_current_username()
+        
+        # Get accounts
+        advance_account = session.query(AccountMaster).filter(
+            AccountMaster.code == '2200-PAT-ADV',
+            AccountMaster.tenant_id == tenant_id
+        ).first()
+        
+        ar_account = session.query(AccountMaster).filter(
+            AccountMaster.code == '1100-AR',
+            AccountMaster.tenant_id == tenant_id
+        ).first()
+        
+        # Get voucher type
+        voucher_type = session.query(VoucherType).filter(
+            VoucherType.code == 'JOURNAL',
+            VoucherType.tenant_id == tenant_id
+        ).first()
+        
+        # Create voucher
+        voucher_number = f"ALLOC-{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        voucher = Voucher(
+            voucher_number=voucher_number,
+            voucher_type_id=voucher_type.id,
+            voucher_date=transaction_date,
+            reference_type='ADVANCE_ALLOCATION',
+            reference_id=allocation_id,
+            reference_number=f"{payment_number}-{invoice_number}",
+            narration=f'Advance allocated to {invoice_number}',
+            total_amount=amount,
+            is_posted=True,
+            tenant_id=tenant_id,
+            created_by=username
+        )
+        session.add(voucher)
+        session.flush()
+        
+        # Create journal
+        journal = Journal(
+            voucher_id=voucher.id,
+            journal_date=transaction_date,
+            total_debit=amount,
+            total_credit=amount,
+            tenant_id=tenant_id
+        )
+        session.add(journal)
+        session.flush()
+        
+        # Create journal details
+        journal_details = [
+            JournalDetail(
+                journal_id=journal.id,
+                account_id=advance_account.id,
+                debit_amount=amount,
+                credit_amount=0,
+                narration=f'Advance adjusted - {invoice_number}',
+                tenant_id=tenant_id
+            ),
+            JournalDetail(
+                journal_id=journal.id,
+                account_id=ar_account.id,
+                debit_amount=0,
+                credit_amount=amount,
+                narration=f'AR reduced - {invoice_number}',
+                tenant_id=tenant_id
+            )
+        ]
+        
+        for detail in journal_details:
+            session.add(detail)
+        
+        # Create ledger entries
+        ledger_entries = [
+            Ledger(
+                account_id=advance_account.id,
+                voucher_id=voucher.id,
+                transaction_date=transaction_date,
+                debit_amount=amount,
+                credit_amount=0,
+                balance=advance_account.current_balance - Decimal(str(amount)),
+                narration=f'Advance adjusted - {invoice_number}',
+                tenant_id=tenant_id
+            ),
+            Ledger(
+                account_id=ar_account.id,
+                voucher_id=voucher.id,
+                transaction_date=transaction_date,
+                debit_amount=0,
+                credit_amount=amount,
+                balance=ar_account.current_balance - Decimal(str(amount)),
+                narration=f'AR reduced - {invoice_number}',
+                tenant_id=tenant_id
+            )
+        ]
+        
+        for ledger in ledger_entries:
+            session.add(ledger)
+        
+        # Update account balances
+        self.account_service.update_account_balance_in_session(session, advance_account.id, amount, 'DEBIT')
+        self.account_service.update_account_balance_in_session(session, ar_account.id, amount, 'CREDIT')
+        
+        return voucher
         with db_manager.get_session() as session:
             tenant_id = session_manager.get_current_tenant_id()
             username = session_manager.get_current_username()
@@ -1422,8 +1854,11 @@ class PaymentService:
             'exchange_rate': payment.exchange_rate,
             'total_amount_base': payment.total_amount_base,
             'total_amount_foreign': payment.total_amount_foreign,
+            'allocated_amount_base': payment.allocated_amount_base,
+            'unallocated_amount_base': payment.unallocated_amount_base,
             'tds_amount_base': payment.tds_amount_base,
             'advance_amount_base': payment.advance_amount_base,
+            'is_refund': payment.is_refund,
             'status': payment.status,
             'voucher_id': payment.voucher_id,
             'reference_number': payment.reference_number,
@@ -1465,3 +1900,524 @@ class PaymentService:
             'account_id': detail.account_id,
             'description': detail.description
         }
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def create_advance_payment(self, payment_number: str, party_id: int, party_type: str, amount: Decimal, payment_mode: str = 'CASH', 
+                              instrument_number: str = None, instrument_date: date = None,
+                              bank_name: str = None, branch_name: str = None, ifsc_code: str = None,
+                              transaction_reference: str = None, remarks: str = None):
+        """Create advance payment - auto DRAFT for UPI/online modes"""
+        from modules.account_module.models.payment_entity import Payment, PaymentDetail
+        from modules.admin_module.models.currency import Currency
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            username = session_manager.get_current_username()
+            
+            # Check if payment number already exists
+            existing = session.query(Payment).filter(
+                Payment.tenant_id == tenant_id,
+                Payment.payment_number == payment_number,
+                Payment.is_deleted == False
+            ).first()
+            
+            if existing:
+                raise ValueError(f"Payment number '{payment_number}' already exists")
+            
+            # Auto-determine status and payment type based on payment mode and party type
+            online_modes = ['UPI', 'ONLINE', 'CARD', 'WALLET', 'NEFT', 'RTGS', 'IMPS']
+            status = 'DRAFT' if payment_mode in online_modes else 'POSTED'
+            
+            # Determine payment type based on party type
+            if party_type in ['CUSTOMER', 'PATIENT']:
+                payment_type = 'RECEIPT'
+            elif party_type in ['SUPPLIER', 'EMPLOYEE']:
+                payment_type = 'PAYMENT'
+            else:
+                payment_type = 'RECEIPT'  # Default
+            
+            # Get base currency from tenant settings
+            base_currency = session.query(Currency).join(
+                TenantSetting, 
+                TenantSetting.value == Currency.code
+            ).filter(
+                TenantSetting.tenant_id == tenant_id,
+                TenantSetting.setting.ilike("base_currency"),
+                TenantSetting.value_type.ilike("CURRENCY")
+            ).first()
+
+            
+            if not base_currency:
+                raise ValueError("No active currency found")
+            
+            payment = Payment(
+                tenant_id=tenant_id,
+                payment_number=payment_number,
+                payment_date=datetime.now(),
+                payment_type=payment_type,
+                party_type=party_type,
+                party_id=party_id,
+                base_currency_id=base_currency.id,
+                exchange_rate=Decimal(1),
+                total_amount_base=amount,
+                advance_amount_base=amount,
+                allocated_amount_base=Decimal(0),
+                unallocated_amount_base=amount,
+                status=status,
+                remarks=remarks or f"Advance payment - {payment_mode}",
+                created_by=username,
+                updated_by=username
+            )
+            
+            session.add(payment)
+            session.flush()
+            
+            detail = PaymentDetail(
+                tenant_id=tenant_id,
+                payment_id=payment.id,
+                line_no=1,
+                payment_mode=payment_mode,
+                instrument_number=instrument_number,
+                instrument_date=instrument_date,
+                bank_name=bank_name,
+                branch_name=branch_name,
+                ifsc_code=ifsc_code,
+                transaction_reference=transaction_reference,
+                amount_base=amount,
+                description=f"Advance payment - {payment_mode}",
+                created_by=username,
+                updated_by=username
+            )
+            session.add(detail)
+            
+            # Create voucher only for POSTED (CASH/CHEQUE/BANK)
+            if status == 'POSTED':
+                voucher = self._create_advance_payment_voucher(session, tenant_id, username, payment, payment_mode, amount)
+                payment.voucher_id = voucher.id
+            
+            session.commit()
+            session.refresh(payment)
+            
+            return self._payment_to_dict(payment, include_details=True)
+    
+    def _create_advance_payment_voucher(self, session, tenant_id, username, payment, payment_mode, amount):
+        """Create voucher for advance payment"""
+        voucher_type = session.query(VoucherType).filter(
+            VoucherType.tenant_id == tenant_id,
+            VoucherType.code == 'RECEIPT',
+            VoucherType.is_active == True
+        ).first()
+        
+        if not voucher_type:
+            raise ValueError("RECEIPT voucher type not configured")
+        
+        voucher = Voucher(
+            tenant_id=tenant_id,
+            voucher_number=f"REC-{payment.payment_number}",
+            voucher_type_id=voucher_type.id,
+            voucher_date=payment.payment_date,
+            base_currency_id=payment.base_currency_id,
+            exchange_rate=payment.exchange_rate,
+            base_total_amount=amount,
+            base_total_debit=amount,
+            base_total_credit=amount,
+            reference_type='ADVANCE_PAYMENT',
+            reference_id=payment.id,
+            reference_number=payment.payment_number,
+            narration=f"Advance payment - {payment.remarks or ''}",
+            is_posted=True,
+            created_by=username,
+            updated_by=username
+        )
+        
+        session.add(voucher)
+        session.flush()
+        
+        payment_account_id = self._get_configured_account(session, tenant_id, 'CASH' if payment_mode == 'CASH' else 'BANK')
+        advance_account_id = self._get_configured_account(session, tenant_id, 'CUSTOMER_ADVANCE')
+        
+        session.add(VoucherLine(
+            tenant_id=tenant_id,
+            voucher_id=voucher.id,
+            line_no=1,
+            account_id=payment_account_id,
+            description=f"Advance received - {payment_mode}",
+            debit_base=amount,
+            credit_base=Decimal(0),
+            created_by=username,
+            updated_by=username
+        ))
+        
+        session.add(VoucherLine(
+            tenant_id=tenant_id,
+            voucher_id=voucher.id,
+            line_no=2,
+            account_id=advance_account_id,
+            description=f"Customer advance liability",
+            debit_base=Decimal(0),
+            credit_base=amount,
+            created_by=username,
+            updated_by=username
+        ))
+        
+        return voucher
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def create_invoice_payment_simple(self, payment_number: str, invoice_id: int, invoice_type: str, amount: Decimal, payment_mode: str = 'CASH',
+                                     instrument_number: str = None, instrument_date: date = None,
+                                     bank_name: str = None, branch_name: str = None, ifsc_code: str = None,
+                                     transaction_reference: str = None, remarks: str = None):
+        """Create payment against invoice with auto status determination"""
+        from modules.account_module.models.payment_entity import Payment, PaymentDetail, PaymentAllocation
+        from modules.admin_module.models.currency import Currency
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            username = session_manager.get_current_username()
+            
+            # Check if payment number already exists
+            existing = session.query(Payment).filter(
+                Payment.tenant_id == tenant_id,
+                Payment.payment_number == payment_number,
+                Payment.is_deleted == False
+            ).first()
+            
+            if existing:
+                raise ValueError(f"Payment number '{payment_number}' already exists")
+            
+            # Get invoice and validate
+            if invoice_type == 'SALES':
+                from modules.inventory_module.models.sales_invoice_entity import SalesInvoice
+                invoice = session.query(SalesInvoice).filter(
+                    SalesInvoice.id == invoice_id,
+                    SalesInvoice.tenant_id == tenant_id,
+                    SalesInvoice.is_deleted == False
+                ).first()
+                payment_type = 'RECEIPT'
+                party_type = 'CUSTOMER'
+                party_id_field = 'customer_id'
+            elif invoice_type == 'PURCHASE':
+                from modules.inventory_module.models.purchase_invoice_entity import PurchaseInvoice
+                invoice = session.query(PurchaseInvoice).filter(
+                    PurchaseInvoice.id == invoice_id,
+                    PurchaseInvoice.tenant_id == tenant_id,
+                    PurchaseInvoice.is_deleted == False
+                ).first()
+                payment_type = 'PAYMENT'
+                party_type = 'SUPPLIER'
+                party_id_field = 'supplier_id'
+            else:
+                raise ValueError(f"Invalid invoice_type: {invoice_type}")
+            
+            if not invoice:
+                raise ValueError(f"{invoice_type} invoice not found")
+            
+            # Calculate balance
+            current_paid = invoice.paid_amount or Decimal(0)
+            total_amount = invoice.final_amount if hasattr(invoice, 'final_amount') else invoice.total_amount_base
+            current_balance = total_amount - current_paid
+            
+            if amount > current_balance:
+                raise ValueError(f"Payment amount {amount} exceeds invoice balance {current_balance}")
+            
+            # Auto-determine status
+            online_modes = ['UPI', 'ONLINE', 'CARD', 'WALLET', 'NEFT', 'RTGS', 'IMPS']
+            status = 'DRAFT' if payment_mode in online_modes else 'POSTED'
+            
+            # Get base currency from tenant settings
+            base_currency = session.query(Currency).join(
+                TenantSetting,
+                TenantSetting.value == Currency.code
+            ).filter(
+                TenantSetting.tenant_id == tenant_id,
+                TenantSetting.setting.ilike("base_currency"),
+                TenantSetting.value_type.ilike("CURRENCY")
+            ).first()
+            
+            if not base_currency:
+                raise ValueError("No active currency found")
+            
+            # Create payment
+            payment = Payment(
+                tenant_id=tenant_id,
+                payment_number=payment_number,
+                payment_date=datetime.now(),
+                payment_type=payment_type,
+                party_type=party_type,
+                party_id=getattr(invoice, party_id_field),
+                base_currency_id=base_currency.id,
+                exchange_rate=Decimal(1),
+                total_amount_base=amount,
+                allocated_amount_base=amount,
+                unallocated_amount_base=Decimal(0),
+                status=status,
+                remarks=remarks or f"Payment for {invoice_type} invoice {invoice.invoice_number}",
+                created_by=username,
+                updated_by=username
+            )
+            
+            session.add(payment)
+            session.flush()
+            
+            # Create payment detail
+            detail = PaymentDetail(
+                tenant_id=tenant_id,
+                payment_id=payment.id,
+                line_no=1,
+                payment_mode=payment_mode,
+                instrument_number=instrument_number,
+                instrument_date=instrument_date,
+                bank_name=bank_name,
+                branch_name=branch_name,
+                ifsc_code=ifsc_code,
+                transaction_reference=transaction_reference,
+                amount_base=amount,
+                description=f"Payment - {payment_mode}",
+                created_by=username,
+                updated_by=username
+            )
+            session.add(detail)
+            
+            # Create allocation
+            allocation = PaymentAllocation(
+                tenant_id=tenant_id,
+                payment_id=payment.id,
+                document_type='INVOICE',
+                document_id=invoice_id,
+                document_number=invoice.invoice_number,
+                allocated_amount_base=amount,
+                allocation_date=datetime.now(),
+                remarks=f"Payment against invoice {invoice.invoice_number}",
+                created_by=username,
+                updated_by=username
+            )
+            session.add(allocation)
+            
+            # Update invoice and create voucher only if POSTED
+            if status == 'POSTED':
+                # Update invoice amounts
+                new_paid_amount = current_paid + amount
+                new_balance = total_amount - new_paid_amount
+                
+                invoice.paid_amount = new_paid_amount
+                
+                # Update payment status based on amounts
+                if new_paid_amount == 0:
+                    invoice.payment_status = 'UNPAID'
+                elif new_paid_amount < total_amount:
+                    invoice.payment_status = 'PARTIAL'
+                elif new_paid_amount == total_amount:
+                    invoice.payment_status = 'PAID'
+                else:
+                    invoice.payment_status = 'OVERPAID'
+                
+                invoice.updated_by = username
+                invoice.updated_at = datetime.now()
+                
+                # Create voucher
+                voucher = self._create_invoice_payment_voucher_simple(
+                    session, tenant_id, username, payment, invoice, invoice_type, payment_mode, amount
+                )
+                payment.voucher_id = voucher.id
+            
+            session.commit()
+            session.refresh(payment)
+            
+            return self._payment_to_dict(payment, include_details=True)
+    
+    def _create_invoice_payment_voucher_simple(self, session, tenant_id, username, payment, invoice, invoice_type, payment_mode, amount):
+        """Create voucher for invoice payment"""
+        voucher_type_code = 'RECEIPT' if invoice_type == 'SALES' else 'PAYMENT'
+        voucher_type = session.query(VoucherType).filter(
+            VoucherType.tenant_id == tenant_id,
+            VoucherType.code == voucher_type_code,
+            VoucherType.is_active == True
+        ).first()
+        
+        if not voucher_type:
+            raise ValueError(f"{voucher_type_code} voucher type not configured")
+        
+        voucher = Voucher(
+            tenant_id=tenant_id,
+            voucher_number=f"{voucher_type_code[:3]}-{payment.payment_number}",
+            voucher_type_id=voucher_type.id,
+            voucher_date=payment.payment_date,
+            base_currency_id=payment.base_currency_id,
+            exchange_rate=payment.exchange_rate,
+            base_total_amount=amount,
+            base_total_debit=amount,
+            base_total_credit=amount,
+            reference_type='INVOICE_PAYMENT',
+            reference_id=payment.id,
+            reference_number=payment.payment_number,
+            narration=f"Payment for invoice {invoice.invoice_number}",
+            is_posted=True,
+            created_by=username,
+            updated_by=username
+        )
+        
+        session.add(voucher)
+        session.flush()
+        
+        payment_account_id = self._get_configured_account(session, tenant_id, 'CASH' if payment_mode == 'CASH' else 'BANK')
+        party_account_id = self._get_or_create_party_account(session, tenant_id, payment.party_type, payment.party_id, username)
+        
+        if invoice_type == 'SALES':
+            # Debit: Cash/Bank, Credit: Customer
+            session.add(VoucherLine(
+                tenant_id=tenant_id,
+                voucher_id=voucher.id,
+                line_no=1,
+                account_id=payment_account_id,
+                description=f"Payment received - {payment_mode}",
+                debit_base=amount,
+                credit_base=Decimal(0),
+                created_by=username,
+                updated_by=username
+            ))
+            
+            session.add(VoucherLine(
+                tenant_id=tenant_id,
+                voucher_id=voucher.id,
+                line_no=2,
+                account_id=party_account_id,
+                description=f"Customer payment - {invoice.invoice_number}",
+                debit_base=Decimal(0),
+                credit_base=amount,
+                created_by=username,
+                updated_by=username
+            ))
+        else:
+            # Debit: Supplier, Credit: Cash/Bank
+            session.add(VoucherLine(
+                tenant_id=tenant_id,
+                voucher_id=voucher.id,
+                line_no=1,
+                account_id=party_account_id,
+                description=f"Supplier payment - {invoice.invoice_number}",
+                debit_base=amount,
+                credit_base=Decimal(0),
+                created_by=username,
+                updated_by=username
+            ))
+            
+            session.add(VoucherLine(
+                tenant_id=tenant_id,
+                voucher_id=voucher.id,
+                line_no=2,
+                account_id=payment_account_id,
+                description=f"Payment made - {payment_mode}",
+                debit_base=Decimal(0),
+                credit_base=amount,
+                created_by=username,
+                updated_by=username
+            ))
+        
+        return voucher
+
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def confirm_gateway_payment(self, payment_id: int, transaction_reference: str, gateway_transaction_id: str = None, 
+                               gateway_status: str = 'SUCCESS', gateway_fee_base: Decimal = None, gateway_response: str = None):
+        """Update DRAFT payment with gateway response - POSTED on SUCCESS, stays DRAFT on FAILED"""
+        from modules.account_module.models.payment_entity import Payment, PaymentDetail, PaymentAllocation
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            username = session_manager.get_current_username()
+            
+            payment = session.query(Payment).filter(
+                Payment.id == payment_id,
+                Payment.tenant_id == tenant_id,
+                Payment.is_deleted == False
+            ).first()
+            
+            if not payment:
+                raise ValueError("Payment not found")
+            
+            if payment.status != 'DRAFT':
+                raise ValueError(f"Cannot confirm payment with status {payment.status}. Only DRAFT payments can be confirmed")
+            
+            # Update payment detail with gateway info
+            detail = session.query(PaymentDetail).filter(
+                PaymentDetail.payment_id == payment_id
+            ).first()
+            
+            if detail:
+                detail.transaction_reference = transaction_reference
+                detail.payment_gateway = gateway_transaction_id.split('-')[0] if gateway_transaction_id else 'UPI'
+                detail.gateway_transaction_id = gateway_transaction_id
+                detail.gateway_status = gateway_status
+                detail.gateway_fee_base = gateway_fee_base or Decimal(0)
+                detail.gateway_response = gateway_response
+                detail.updated_by = username
+            
+            # Update payment reference
+            payment.reference_number = transaction_reference
+            payment.updated_by = username
+            
+            # Only post payment if gateway status is SUCCESS
+            if gateway_status == 'SUCCESS':
+                payment.status = 'POSTED'
+                
+                # Check if this is advance or invoice payment
+                allocation = session.query(PaymentAllocation).filter(
+                    PaymentAllocation.payment_id == payment_id
+                ).first()
+                
+                if allocation:
+                    # Invoice payment - update invoice
+                    invoice_type = 'SALES' if payment.payment_type == 'RECEIPT' else 'PURCHASE'
+                    
+                    if invoice_type == 'SALES':
+                        from modules.inventory_module.models.sales_invoice_entity import SalesInvoice
+                        invoice = session.query(SalesInvoice).filter(
+                            SalesInvoice.id == allocation.document_id,
+                            SalesInvoice.tenant_id == tenant_id
+                        ).first()
+                    else:
+                        from modules.inventory_module.models.purchase_invoice_entity import PurchaseInvoice
+                        invoice = session.query(PurchaseInvoice).filter(
+                            PurchaseInvoice.id == allocation.document_id,
+                            PurchaseInvoice.tenant_id == tenant_id
+                        ).first()
+                    
+                    if invoice:
+                        # Update invoice amounts
+                        current_paid = invoice.paid_amount or Decimal(0)
+                        total_amount = invoice.final_amount if hasattr(invoice, 'final_amount') else invoice.total_amount_base
+                        new_paid_amount = current_paid + payment.total_amount_base
+                        
+                        invoice.paid_amount = new_paid_amount
+                        
+                        # Update payment status
+                        if new_paid_amount == 0:
+                            invoice.payment_status = 'UNPAID'
+                        elif new_paid_amount < total_amount:
+                            invoice.payment_status = 'PARTIAL'
+                        elif new_paid_amount == total_amount:
+                            invoice.payment_status = 'PAID'
+                        else:
+                            invoice.payment_status = 'OVERPAID'
+                        
+                        invoice.updated_by = username
+                        invoice.updated_at = datetime.now()
+                        
+                        # Create voucher for invoice payment
+                        voucher = self._create_invoice_payment_voucher_simple(
+                            session, tenant_id, username, payment, invoice, invoice_type, 
+                            detail.payment_mode if detail else 'UPI', payment.total_amount_base
+                        )
+                        payment.voucher_id = voucher.id
+                else:
+                    # Advance payment - create voucher
+                    voucher = self._create_advance_payment_voucher(
+                        session, tenant_id, username, payment, 
+                        detail.payment_mode if detail else 'UPI', payment.total_amount_base
+                    )
+                    payment.voucher_id = voucher.id
+            # If FAILED, payment stays DRAFT with gateway info updated
+            
+            session.commit()
+            session.refresh(payment)
+            
+            return self._payment_to_dict(payment, include_details=True)

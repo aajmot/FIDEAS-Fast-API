@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS public.payment_details (
     amount_foreign         NUMERIC(15,4),
 
     -- Account (Dr/Cr)
-    account_id             INTEGER NOT NULL 
+    account_id             INTEGER
                            REFERENCES public.account_masters(id) ON DELETE RESTRICT,
 
     description            TEXT,

@@ -148,8 +148,8 @@ async def delete_prescription(prescription_id: int, current_user: dict = Depends
 async def get_prescription(prescription_id: int, current_user: dict = Depends(get_current_user)):
     from core.database.connection import db_manager
     from modules.health_module.models.clinic_entities import Prescription, PrescriptionItem, PrescriptionTestItem, Patient, Doctor
-    from modules.inventory_module.models.clinic_entities import Product
-    from modules.health_module.models.clinic_entities import Test
+    from modules.inventory_module.models.product_entity import Product
+    from modules.health_module.models.care_entities import Test
     
     with db_manager.get_session() as session:
         prescription = session.query(Prescription).outerjoin(Patient).outerjoin(Doctor).filter(Prescription.id == prescription_id).first()
