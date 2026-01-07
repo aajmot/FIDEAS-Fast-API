@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Text, Numeric, ARRAY, Date, Computed
+from sqlalchemy import Column, FetchedValue, Integer, String, DateTime, Boolean, ForeignKey, Text, Numeric, ARRAY, Date, Computed
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from core.database.connection import Base
@@ -36,6 +36,12 @@ class TestInvoice(Base):
     final_amount = Column(Numeric(12, 4), nullable=False)
     
     paid_amount = Column(Numeric(12, 4), nullable=False, default=0)
+    #balance_amount = Column(Numeric(12, 4), nullable=False, default=0)
+    balance_amount = Column(
+        Numeric(12, 4), 
+        server_default=FetchedValue(),  # Tells SQLAlchemy the DB handles this
+        nullable=False
+    )
     
     payment_status = Column(String(20), default='UNPAID')
     status = Column(String(20), default='DRAFT')

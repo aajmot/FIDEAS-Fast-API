@@ -813,13 +813,22 @@ class PaymentService:
                 )
             
             if payment_type:
-                query = query.filter(Payment.payment_type == payment_type)
+                if isinstance(payment_type, list):
+                    query = query.filter(Payment.payment_type.in_(payment_type))
+                else:
+                    query = query.filter(Payment.payment_type == payment_type)
             
             if party_type:
-                query = query.filter(Payment.party_type == party_type)
+                if isinstance(party_type, list):
+                    query = query.filter(Payment.party_type.in_(party_type))
+                else:
+                    query = query.filter(Payment.party_type == party_type)
             
             if status:
-                query = query.filter(Payment.status == status)
+                if isinstance(status, list):
+                    query = query.filter(Payment.status.in_(status))
+                else:
+                    query = query.filter(Payment.status == status)
             
             if date_from:
                 query = query.filter(Payment.payment_date >= date_from)
@@ -2097,7 +2106,7 @@ class PaymentService:
             if existing:
                 raise ValueError(f"Payment number '{payment_number}' already exists")
             
-            # Get invoice and validate
+            # Get invoice and validate based on invoice_type
             if invoice_type == 'SALES':
                 from modules.inventory_module.models.sales_invoice_entity import SalesInvoice
                 invoice = session.query(SalesInvoice).filter(
@@ -2118,6 +2127,16 @@ class PaymentService:
                 payment_type = 'PAYMENT'
                 party_type = 'SUPPLIER'
                 party_id_field = 'supplier_id'
+            elif invoice_type == 'TEST':
+                from modules.health_module.models.test_invoice_entity import TestInvoice
+                invoice = session.query(TestInvoice).filter(
+                    TestInvoice.id == invoice_id,
+                    TestInvoice.tenant_id == tenant_id,
+                    TestInvoice.is_deleted == False
+                ).first()
+                payment_type = 'RECEIPT'
+                party_type = 'PATIENT'
+                party_id_field = 'patient_id'
             else:
                 raise ValueError(f"Invalid invoice_type: {invoice_type}")
             
@@ -2194,7 +2213,7 @@ class PaymentService:
             allocation = PaymentAllocation(
                 tenant_id=tenant_id,
                 payment_id=payment.id,
-                document_type='INVOICE',
+                document_type=invoice_type,
                 document_id=invoice_id,
                 document_number=invoice.invoice_number,
                 allocated_amount_base=amount,
@@ -2239,7 +2258,7 @@ class PaymentService:
     
     def _create_invoice_payment_voucher_simple(self, session, tenant_id, username, payment, invoice, invoice_type, payment_mode, amount):
         """Create voucher for invoice payment"""
-        voucher_type_code = 'RECEIPT' if invoice_type == 'SALES' else 'PAYMENT'
+        voucher_type_code = 'RECEIPT' if invoice_type in ['SALES', 'TEST'] else 'PAYMENT'
         voucher_type = session.query(VoucherType).filter(
             VoucherType.tenant_id == tenant_id,
             VoucherType.code == voucher_type_code,
@@ -2272,10 +2291,23 @@ class PaymentService:
         session.flush()
         
         payment_account_id = self._get_configured_account(session, tenant_id, 'CASH' if payment_mode == 'CASH' else 'BANK')
-        party_account_id = self._get_or_create_party_account(session, tenant_id, payment.party_type, payment.party_id, username)
         
-        if invoice_type == 'SALES':
-            # Debit: Cash/Bank, Credit: Customer
+        if invoice_type == 'TEST':
+            # For TEST invoices, use AR account directly (Patient receivable)
+            ar_account = session.query(AccountMaster).filter(
+                AccountMaster.code == '1100-AR',
+                AccountMaster.tenant_id == tenant_id
+            ).first()
+            
+            if not ar_account:
+                raise ValueError("AR account not found")
+            
+            party_account_id = ar_account.id
+        else:
+            party_account_id = self._get_or_create_party_account(session, tenant_id, payment.party_type, payment.party_id, username)
+        
+        if invoice_type in ['SALES', 'TEST']:
+            # Debit: Cash/Bank, Credit: Customer/Patient
             session.add(VoucherLine(
                 tenant_id=tenant_id,
                 voucher_id=voucher.id,
@@ -2293,7 +2325,7 @@ class PaymentService:
                 voucher_id=voucher.id,
                 line_no=2,
                 account_id=party_account_id,
-                description=f"Customer payment - {invoice.invoice_number}",
+                description=f"{'Patient' if invoice_type == 'TEST' else 'Customer'} payment - {invoice.invoice_number}",
                 debit_base=Decimal(0),
                 credit_base=amount,
                 created_by=username,
@@ -2380,7 +2412,15 @@ class PaymentService:
                     # Invoice payment - update invoice
                     invoice_type = 'SALES' if payment.payment_type == 'RECEIPT' else 'PURCHASE'
                     
-                    if invoice_type == 'SALES':
+                    # Check if it's a test invoice by checking party_type
+                    if payment.party_type == 'PATIENT':
+                        invoice_type = 'TEST'
+                        from modules.health_module.models.test_invoice_entity import TestInvoice
+                        invoice = session.query(TestInvoice).filter(
+                            TestInvoice.id == allocation.document_id,
+                            TestInvoice.tenant_id == tenant_id
+                        ).first()
+                    elif invoice_type == 'SALES':
                         from modules.inventory_module.models.sales_invoice_entity import SalesInvoice
                         invoice = session.query(SalesInvoice).filter(
                             SalesInvoice.id == allocation.document_id,

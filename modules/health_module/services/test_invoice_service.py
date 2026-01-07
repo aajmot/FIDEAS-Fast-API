@@ -182,6 +182,7 @@ class TestInvoiceService:
                     "roundoff": float(invoice.roundoff or 0),
                     "final_amount": float(invoice.final_amount),
                     "paid_amount": float(invoice.paid_amount or 0),
+                    "balance_amount":float(invoice.balance_amount or 0),
                     "payment_status": invoice.payment_status,
                     "status": invoice.status,
                     "voucher_id": invoice.voucher_id,
@@ -245,6 +246,8 @@ class TestInvoiceService:
                 
                 if status:
                     query = query.filter(TestInvoice.status == status)
+                else:
+                    query = query.filter(TestInvoice.status=="POSTED")
                 
                 if payment_status:
                     query = query.filter(TestInvoice.payment_status == payment_status)
@@ -277,9 +280,12 @@ class TestInvoiceService:
                         "invoice_date": inv.invoice_date.isoformat() if inv.invoice_date else None,
                         "test_order_id": inv.test_order_id,
                         "order": order_data,
+                        "patient_id": inv.patient_id,
                         "patient_name": inv.patient_name,
+                        "patient_phone": inv.patient_phone,
                         "final_amount": float(inv.final_amount),
                         "paid_amount": float(inv.paid_amount or 0),
+                        "balance_amount":float(inv.balance_amount or 0),   
                         "payment_status": inv.payment_status,
                         "status": inv.status
                     })

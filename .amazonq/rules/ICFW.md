@@ -1,0 +1,1 @@
+Instead of writing an external guide, use concise inline comments within the code to explain complex logic.

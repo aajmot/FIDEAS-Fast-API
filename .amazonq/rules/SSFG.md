@@ -1,0 +1,1 @@
+Do not create separate markdown files to explain your steps. If you need to explain your logic, do so in a brief <thinking> tag at the start of your response.

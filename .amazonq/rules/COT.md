@@ -1,0 +1,1 @@
+Before generating any code, you must output a <thought_process> section.

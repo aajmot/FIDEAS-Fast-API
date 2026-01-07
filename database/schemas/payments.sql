@@ -188,7 +188,7 @@ CREATE TABLE IF NOT EXISTS public.payment_allocations (
 
     -- Document Reference
     document_type          VARCHAR(20) NOT NULL
-                           CHECK (document_type IN ('ORDER','INVOICE','EXPENSE','BILL','ADVANCE','DEBIT_NOTE','CREDIT_NOTE')),
+                           CHECK (document_type IN ('PURCHASE','SALES','TEST','CLINIC','EXPENSE','BILL','ADVANCE','DEBIT_NOTE','CREDIT_NOTE')),
     document_id            INTEGER NOT NULL,
     document_number        VARCHAR(50),
 

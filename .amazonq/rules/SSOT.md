@@ -1,0 +1,1 @@
+If documentation is required, only update the existing changelog.md. Never create new documentation files without explicit permission.

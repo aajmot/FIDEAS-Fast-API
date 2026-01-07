@@ -142,7 +142,8 @@ BEGIN
     ('Results', 'TEST_RESULT_MGMT', 'HEALTH', 4300, '/diagnostic/test-result', '📊', 3),
     ('Fees', 'DIAG_ORDER_COMMISSION', 'HEALTH', 4300, '/diagnostic/order-commission', '💸', 4),
     
-    ('Advance', 'HEALTH_ADVANCE_PAYMENT', 'HEALTH', 4400, '/health/payment/advance', '💰', 1)
+    ('Advance', 'HEALTH_ADVANCE_PAYMENT', 'HEALTH', 4400, '/health/payment/advance', '💰', 1),
+    ('Invoice', 'HEALTH_INVOICE_PAYMENT', 'HEALTH', 4400, '/health/payment/invoice', '📝', 2)
     
     ;
 

@@ -1,0 +1,1 @@
+If a task is complex, do not attempt to write the entire file at once. Break it into sub-tasks and ask for my approval after each step.

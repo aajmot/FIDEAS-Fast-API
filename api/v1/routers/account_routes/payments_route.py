@@ -2,11 +2,10 @@ from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import Optional
 from datetime import datetime, date
 from decimal import Decimal
-from pydantic import BaseModel, Field, validator
 from api.schemas.common import BaseResponse
 from api.middleware.auth_middleware import get_current_user
 from modules.account_module.services.payment_service import PaymentService
-from modules.account_module.models.payment_enums import PaymentType, PartyType, PaymentStatus, PaymentMode
+from modules.account_module.models.payment_enums import PaymentType, PaymentStatus
 from modules.account_module.models.payment_schemas import (
     PaymentRequest,
     PaymentResponse,
@@ -14,69 +13,17 @@ from modules.account_module.models.payment_schemas import (
     ReconcilePaymentRequest,
     PaymentAllocationResponse
 )
+from api.schemas.account_schema.payment_schemas import (
+    InvoicePaymentRequest,
+    AdvancePaymentRequest,
+    GatewayPaymentUpdateRequest,
+    PaymentMetadataUpdate,
+    PaymentReversalRequest,
+    PartyType
+)
 
 router = APIRouter()
 payment_service = PaymentService()
-
-
-class PaymentMetadataUpdate(BaseModel):
-    """Schema for updating payment metadata only"""
-    remarks: Optional[str] = Field(None, description="Remarks")
-    tags: Optional[list[str]] = Field(None, description="Tags")
-    reference_number: Optional[str] = Field(None, max_length=50, description="Reference number")
-
-
-class PaymentReversalRequest(BaseModel):
-    """Schema for reversing a payment"""
-    reversal_date: Optional[datetime] = Field(None, description="Reversal date")
-    reversal_remarks: str = Field(..., description="Reason for reversal")
-
-
-class AdvancePaymentRequest(BaseModel):
-    """Minimal schema for advance payment"""
-    payment_number: str = Field(..., max_length=50, description="Payment number")
-    party_id: int = Field(..., description="Party ID")
-    party_type: PartyType = Field(..., description="Party type")
-    amount: Decimal = Field(..., gt=0, description="Payment amount")
-    payment_mode: PaymentMode = Field(PaymentMode.CASH, description="Payment mode")
-    instrument_number: Optional[str] = Field(None, description="Cheque/DD number")
-    instrument_date: Optional[date] = Field(None, description="Instrument date")
-    bank_name: Optional[str] = Field(None, description="Bank name")
-    branch_name: Optional[str] = Field(None, description="Branch name")
-    ifsc_code: Optional[str] = Field(None, description="IFSC code")
-    transaction_reference: Optional[str] = Field(None, description="Transaction reference")
-    remarks: Optional[str] = Field(None, description="Remarks")
-
-
-class InvoicePaymentRequest(BaseModel):
-    """Minimal schema for payment against invoice"""
-    payment_number: str = Field(..., max_length=50, description="Payment number")
-    invoice_id: int = Field(..., description="Invoice ID")
-    invoice_type: str = Field(..., description="SALES or PURCHASE")
-    amount: Decimal = Field(..., gt=0, description="Payment amount")
-    payment_mode: PaymentMode = Field(PaymentMode.CASH, description="Payment mode")
-    instrument_number: Optional[str] = Field(None, description="Cheque/DD number")
-    instrument_date: Optional[date] = Field(None, description="Instrument date")
-    bank_name: Optional[str] = Field(None, description="Bank name")
-    branch_name: Optional[str] = Field(None, description="Branch name")
-    ifsc_code: Optional[str] = Field(None, description="IFSC code")
-    transaction_reference: Optional[str] = Field(None, description="Transaction reference")
-    remarks: Optional[str] = Field(None, description="Remarks")
-
-
-class GatewayPaymentUpdateRequest(BaseModel):
-    """Schema for updating payment with gateway response"""
-    transaction_reference: str = Field(..., description="UPI/Gateway transaction reference")
-    gateway_transaction_id: Optional[str] = Field(None, description="Gateway transaction ID")
-    gateway_status: str = Field(..., description="Gateway status (SUCCESS/FAILED)")
-    gateway_fee_base: Optional[Decimal] = Field(0, description="Gateway fee")
-    gateway_response: Optional[str] = Field(None, description="Gateway response JSON")
-    
-    @validator('gateway_status')
-    def validate_status(cls, v):
-        if v not in ['SUCCESS', 'FAILED']:
-            raise ValueError('gateway_status must be SUCCESS or FAILED')
-        return v
 
 
 @router.get("/payments", response_model=PaymentListResponse)
@@ -84,9 +31,9 @@ async def get_payments(
     page: int = Query(1, ge=1),
     page_size: int = Query(100, ge=1, le=500),
     search: Optional[str] = Query(None),
-    payment_type: Optional[PaymentType] = Query(None),
-    party_type: Optional[PartyType] = Query(None),
-    status: Optional[PaymentStatus] = Query(None),
+    payment_type: Optional[list[str]] = Query(None),
+    party_type: Optional[list[str]] = Query(None),
+    status: Optional[list[str]] = Query(None),
     date_from: Optional[date] = Query(None),
     date_to: Optional[date] = Query(None),
     is_reconciled: Optional[bool] = Query(None),
@@ -98,9 +45,9 @@ async def get_payments(
         page=page,
         page_size=page_size,
         search=search,
-        payment_type=payment_type.value if payment_type else None,
-        party_type=party_type.value if party_type else None,
-        status=status.value if status else None,
+        payment_type=payment_type,
+        party_type=party_type,
+        status=status,
         date_from=date_from,
         date_to=date_to,
         is_reconciled=is_reconciled,
@@ -322,7 +269,7 @@ async def create_invoice_payment(
         result = payment_service.create_invoice_payment_simple(
             payment_number=request.payment_number,
             invoice_id=request.invoice_id,
-            invoice_type=request.invoice_type,
+            invoice_type=request.invoice_type.value,
             amount=request.amount,
             payment_mode=request.payment_mode.value,
             instrument_number=request.instrument_number,

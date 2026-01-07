@@ -1,0 +1,1 @@
+You are forbidden from using third-party libraries unless I explicitly confirm their presence in the project. If you are unsure, stick to the standard library or ask me.
