@@ -31,19 +31,27 @@ async def get_payments(
     page: int = Query(1, ge=1),
     page_size: int = Query(100, ge=1, le=500),
     search: Optional[str] = Query(None),
-    payment_type: Optional[list[str]] = Query(None),
-    party_type: Optional[list[str]] = Query(None),
-    status: Optional[list[str]] = Query(None),
+    payment_type: Optional[list[PaymentType]] = Query(None),
+    party_type: Optional[list[PartyType]] = Query(None),
+    status: Optional[list[PaymentStatus]] = Query(None),
     date_from: Optional[date] = Query(None),
     date_to: Optional[date] = Query(None),
     is_reconciled: Optional[bool] = Query(None),
     branch_id: Optional[int] = Query(None),
+    is_reversal:bool=Query(None),
+    is_allocated:bool=Query(None),
+    include_details: bool = Query(False),
+    include_allocations: bool = Query(False),
     current_user: dict = Depends(get_current_user)
 ):
     """Get all payments with pagination and filters"""
     result = payment_service.get_all_payments(
         page=page,
         page_size=page_size,
+
+        include_details= include_details,
+        include_allocations=include_allocations,
+
         search=search,
         payment_type=payment_type,
         party_type=party_type,
@@ -51,7 +59,9 @@ async def get_payments(
         date_from=date_from,
         date_to=date_to,
         is_reconciled=is_reconciled,
-        branch_id=branch_id
+        branch_id=branch_id,
+        is_reversal=is_reversal,
+        is_allocated=is_allocated
     )
     return result
 

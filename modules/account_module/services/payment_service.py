@@ -9,6 +9,7 @@ from datetime import datetime, date
 from decimal import Decimal
 from sqlalchemy.orm import selectinload
 from modules.admin_module.models.entities import TenantSetting
+import math
 
 class PaymentService:
     def __init__(self):
@@ -785,82 +786,108 @@ class PaymentService:
             
             return self.get_payment_by_id(payment.id)
     
+    def _apply_payment_filters(self, query, filters):
+        """Helper method to handle the filtering logic"""
+        from modules.account_module.models.payment_entity import Payment
+        
+        # Mapping simple params to query filters
+        # format: { 'param_name': column_attribute }
+        multi_match_fields = {
+            'payment_type': Payment.payment_type,
+            'party_type': Payment.party_type,
+            'status': Payment.status,
+        }
+
+        # Handle List or Single Value filters (IN vs ==)
+        for param, column in multi_match_fields.items():
+            val = filters.get(param)
+            if val:
+                query = query.filter(column.in_(val) if isinstance(val, list) else column == val)
+
+        # Handle Search (OR logic)
+        search = filters.get('search')
+        if search:
+            pattern = f"%{search}%"
+            query = query.filter(or_(
+                Payment.payment_number.ilike(pattern),
+                Payment.reference_number.ilike(pattern),
+                Payment.remarks.ilike(pattern)
+            ))
+
+        # Handle Dates
+        if filters.get('date_from'):
+            query = query.filter(Payment.payment_date >= filters['date_from'])
+        if filters.get('date_to'):
+            query = query.filter(Payment.payment_date <= filters['date_to'])
+
+        # Handle Booleans/IDs (direct matches)
+        if filters.get('is_reconciled') is not None:
+            query = query.filter(Payment.is_reconciled == filters['is_reconciled'])
+        if filters.get('branch_id') is not None:
+            query = query.filter(Payment.branch_id == filters['branch_id'])
+        if filters.get('is_reversal') is not None:
+            query = query.filter(Payment.is_reversal == filters['is_reversal'])
+        if filters.get('is_allocated') is not None:
+            if filters.get('is_allocated') is True:
+                # If is_allocated is true, filter for 0 amount
+                query = query.filter(Payment.unallocated_amount_base == 0)
+            elif filters.get('is_allocated') is False:
+                # Optional: logic for when is_allocated is False (e.g., amount > 0)
+                query = query.filter(Payment.unallocated_amount_base > 0)
+
+        return query
+
     @ExceptionMiddleware.handle_exceptions("PaymentService")
-    def get_all_payments(self, page=1, page_size=100, search=None, payment_type=None, 
-                        party_type=None, status=None, date_from=None, date_to=None,
-                        is_reconciled=None, branch_id=None):
-        """Get all payments with pagination and filters"""
+    def get_all_payments(self, page=1, page_size=100, 
+                        include_details=True, 
+                        include_allocations=True, 
+                        **filters):
+        """Refactored: Get all payments with explicit detail flags"""
         from modules.account_module.models.payment_entity import Payment
         import math
         
         with db_manager.get_session() as session:
             tenant_id = session_manager.get_current_tenant_id()
             
+            # 1. Base Query
             query = session.query(Payment).filter(
                 Payment.tenant_id == tenant_id,
                 Payment.is_deleted == False
             )
             
-            # Apply filters
-            if search:
-                search_pattern = f"%{search}%"
-                query = query.filter(
-                    or_(
-                        Payment.payment_number.ilike(search_pattern),
-                        Payment.reference_number.ilike(search_pattern),
-                        Payment.remarks.ilike(search_pattern)
-                    )
-                )
+            # 2. Apply Dynamic Filters (Using the helper from the previous response)
+            query = self._apply_payment_filters(query, filters)
             
-            if payment_type:
-                if isinstance(payment_type, list):
-                    query = query.filter(Payment.payment_type.in_(payment_type))
-                else:
-                    query = query.filter(Payment.payment_type == payment_type)
-            
-            if party_type:
-                if isinstance(party_type, list):
-                    query = query.filter(Payment.party_type.in_(party_type))
-                else:
-                    query = query.filter(Payment.party_type == party_type)
-            
-            if status:
-                if isinstance(status, list):
-                    query = query.filter(Payment.status.in_(status))
-                else:
-                    query = query.filter(Payment.status == status)
-            
-            if date_from:
-                query = query.filter(Payment.payment_date >= date_from)
-            
-            if date_to:
-                query = query.filter(Payment.payment_date <= date_to)
-            
-            if is_reconciled is not None:
-                query = query.filter(Payment.is_reconciled == is_reconciled)
-            
-            if branch_id is not None:
-                query = query.filter(Payment.branch_id == branch_id)
-            
-            # Get total count
+            # 3. Get total count
             total = query.count()
             
-            # Apply pagination and ordering
+            # 4. Define Eager Loading based on flags
+            load_options = []
+            if include_details:
+                load_options.append(selectinload(Payment.payment_details))
+            if include_allocations:
+                load_options.append(selectinload(Payment.payment_allocations))
+            
+            # 5. Apply Pagination & Ordering
             query = query.order_by(Payment.payment_date.desc(), Payment.id.desc())
             offset = (page - 1) * page_size
-            payments = query.options(
-                    selectinload(Payment.payment_details),
-                    selectinload(Payment.payment_allocations)
-            ).offset(offset).limit(page_size).all()
+            
+            payments = query.options(*load_options).offset(offset).limit(page_size).all()
             
             return {
                 'total': total,
                 'page': page,
                 'per_page': page_size,
                 'total_pages': math.ceil(total / page_size) if total > 0 else 0,
-                'data': [self._payment_to_dict(p, include_details=True) for p in payments]
+                # Ensure flags are passed to the dict converter
+                'data': [
+                    self._payment_to_dict(
+                        p, 
+                        include_details=include_details, 
+                        include_allocations=include_allocations
+                    ) for p in payments
+                ]
             }
-    
     @ExceptionMiddleware.handle_exceptions("PaymentService")
     def get_payment_by_id(self, payment_id: int):
         """Get a specific payment by ID with details"""
@@ -1851,7 +1878,7 @@ class PaymentService:
                 'paid_amount': float(invoice.paid_amount_base),
                 'balance_amount': float(invoice.balance_amount_base)
             }
-    
+
     def _payment_to_dict(self, payment, include_details=True,include_allocations=False):
         """Convert payment entity to dictionary"""
         result = {
@@ -1887,14 +1914,17 @@ class PaymentService:
             'is_deleted': payment.is_deleted
         }
         
+        # 2. Map Payment Details (Lines)
         if include_details:
             result['details'] = [self._detail_to_dict(detail) for detail in payment.payment_details]
         else:
             result['details'] = []
-        # if include_allocations:
-        #     result['details'] = [self._detail_to_dict(detail) for detail in payment.payment_details]
-        # else:
-        #     result['details'] = []
+
+        # 3. Map Payment Allocations
+        if include_allocations:
+            result['allocations'] = [self._allocation_to_dict(allocations) for allocations in payment.payment_allocations]
+        else:
+            result['allocations'] = []
         
         return result
     
@@ -1918,6 +1948,27 @@ class PaymentService:
             'gateway_fee_base': getattr(detail, 'gateway_fee_base', None)
         }
     
+    def _allocation_to_dict(self, detail):
+        """Convert payment allocations entity to dictionary"""
+        return {
+            'id': detail.id,
+            'document_type': detail.document_type,
+            'document_id': detail.document_id,
+            'document_number': detail.document_number,
+            'allocated_amount_base': detail.allocated_amount_base,
+            #'allocated_amount_foreign': detail.allocated_amount_foreign,
+            'discount_amount_base': detail.discount_amount_base,
+            'adjustment_amount_base': detail.adjustment_amount_base,
+            'allocation_date': detail.allocation_date,
+            'remarks': detail.remarks,
+            'created_at':detail.created_at,
+            'created_by':detail.created_by,
+            'updated_at':detail.updated_at,
+            'updated_by':detail.updated_by,
+            #'is_deleted':detail.is_deleted
+        }
+    
+
     @ExceptionMiddleware.handle_exceptions("PaymentService")
     def create_advance_payment(self, payment_number: str, party_id: int, party_type: str, amount: Decimal, payment_mode: str = 'CASH', 
                               instrument_number: str = None, instrument_date: date = None,

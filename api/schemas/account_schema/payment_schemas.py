@@ -36,6 +36,11 @@ class PartyType(str, Enum):
     PATIENT = 'PATIENT'
     EMPLOYEE = 'EMPLOYEE'
 
+class PaymentStatus(str, Enum):
+    DRAFT = 'DRAFT'
+    POSTED = 'POSTED'
+    CANCELLED = 'CANCELLED'    
+
 
 class InvoicePaymentRequest(BaseModel):
     payment_number: str = Field(..., max_length=50, description="Payment number")
