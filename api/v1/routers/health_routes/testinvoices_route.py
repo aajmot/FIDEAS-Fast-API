@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, Query
 from typing import Optional
 
 from api.schemas.common import BaseResponse, PaginatedResponse
-from api.schemas.health_schema.test_invoice_schema import TestInvoiceCreateSchema, TestInvoiceUpdateSchema
+from api.schemas.health_schema.test_invoice_schema import TestInvoiceCreateSchema, TestInvoicePaymentStatus, TestInvoiceStatus, TestInvoiceUpdateSchema
 from api.middleware.auth_middleware import get_current_user
 from modules.health_module.services.test_invoice_service import TestInvoiceService
 
@@ -48,9 +48,10 @@ async def get_test_invoice(
 async def get_test_invoices(
     page: int = Query(1, ge=1),
     per_page: int = Query(10, ge=1, le=100),
-    search: Optional[str] = None,
-    status: Optional[str] = None,
-    payment_status: Optional[str] = None,
+    search: Optional[str] = Query(None),
+    status: Optional[list[TestInvoiceStatus]] = Query(None),
+    payment_status: Optional[list[TestInvoicePaymentStatus]] = Query(None),
+    include_items: bool = Query(None),
     current_user: dict = Depends(get_current_user)
 ):
     service = TestInvoiceService()
@@ -60,7 +61,8 @@ async def get_test_invoices(
         per_page=per_page,
         search=search,
         status=status,
-        payment_status=payment_status
+        payment_status=payment_status,
+        include_items=include_items
     )
     
     return PaginatedResponse(

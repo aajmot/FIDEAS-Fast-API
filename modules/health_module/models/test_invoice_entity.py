@@ -58,7 +58,9 @@ class TestInvoice(Base):
     is_active = Column(Boolean, default=True)
     is_deleted = Column(Boolean, default=False)
     
+    test_order = relationship("TestOrder", backref="invoices")
     items = relationship("TestInvoiceItem", back_populates="invoice")
+    #items = relationship("TestInvoiceItem", back_populates="invoice")
     voucher = relationship("Voucher")
 
 class TestInvoiceItem(Base):

@@ -2,6 +2,15 @@ from pydantic import BaseModel, Field
 from typing import Optional, List
 from datetime import datetime, date
 from decimal import Decimal
+from enum import Enum
+
+
+class TestInvoiceStatus(str, Enum):
+    DRAFT = 'DRAFT'
+    POSTED = 'POSTED'  
+class TestInvoicePaymentStatus(str, Enum):
+    PAID = 'PAID'
+    UNPAID = 'UNPAID'
 
 class TestInvoiceItemSchema(BaseModel):
     line_no: int = Field(..., gt=0)

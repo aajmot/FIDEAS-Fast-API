@@ -8,6 +8,7 @@ from datetime import datetime
 from fastapi import HTTPException
 from sqlalchemy import or_
 import math
+from sqlalchemy.orm import joinedload, selectinload
 
 class TestInvoiceService:
     def __init__(self):
@@ -230,10 +231,19 @@ class TestInvoiceService:
             logger.error(f"Error fetching test invoice: {str(e)}", self.logger_name)
             raise
     
-    def get_all(self, tenant_id, page=1, per_page=10, search=None, status=None, payment_status=None):
+    def get_all(self, tenant_id, page=1, per_page=10, search=None, status=None, payment_status=None, include_items=False):
         try:
             with db_manager.get_session() as session:
-                query = session.query(TestInvoice).join(TestOrder).filter(
+                # 1. Start query and Eager Load the 'test_order' relationship
+                # Note: This assumes you have a relationship named 'test_order' in your TestInvoice model
+                query = session.query(TestInvoice).options(joinedload(TestInvoice.test_order))
+
+                # 2. Eager Load Items only if requested
+                if include_items:
+                    query = query.options(selectinload(TestInvoice.items).filter(TestInvoiceItem.is_deleted == False))
+
+                # 3. Apply Filters
+                query = query.filter(
                     TestInvoice.tenant_id == tenant_id,
                     TestInvoice.is_deleted == False
                 ).order_by(TestInvoice.id.desc())
@@ -244,51 +254,45 @@ class TestInvoiceService:
                         TestInvoice.patient_name.ilike(f"%{search}%")
                     ))
                 
-                if status:
-                    query = query.filter(TestInvoice.status == status)
-                else:
-                    query = query.filter(TestInvoice.status=="POSTED")
-                
-                if payment_status:
-                    query = query.filter(TestInvoice.payment_status == payment_status)
-                
+                # Flexible status/payment filters using IN clause
+                for field, val in [("status", status), ("payment_status", payment_status)]:
+                    if val:
+                        attr = getattr(TestInvoice, field)
+                        query = query.filter(attr.in_(val) if isinstance(val, list) else attr == val)
+                    elif field == "status": # Default status
+                        query = query.filter(TestInvoice.status == "POSTED")
+
+                # 4. Pagination
                 total = query.count()
-                offset = (page - 1) * per_page
-                results = query.offset(offset).limit(per_page).all()
+                results = query.offset((page - 1) * per_page).limit(per_page).all()
                 
+                # 5. Build Data List without extra queries
                 data = []
                 for inv in results:
-                    order = session.query(TestOrder).filter(
-                        TestOrder.id == inv.test_order_id,
-                        TestOrder.is_deleted == False
-                    ).first()
+                    order = inv.test_order # Already loaded via joinedload
                     
-                    order_data = None
-                    if order:
-                        order_data = {
-                            "id": order.id,
-                            "test_order_number": order.test_order_number,
-                            "order_date": order.order_date.isoformat() if order.order_date else None,
-                            "doctor_name": order.doctor_name,
-                            "urgency": order.urgency,
-                            "status": order.status
-                        }
-                    
-                    data.append({
+                    invoice_dict = {
                         "id": inv.id,
                         "invoice_number": inv.invoice_number,
-                        "invoice_date": inv.invoice_date.isoformat() if inv.invoice_date else None,
-                        "test_order_id": inv.test_order_id,
-                        "order": order_data,
-                        "patient_id": inv.patient_id,
+                        "order": {
+                            "id": order.id,
+                            "test_order_number": order.test_order_number,
+                            "status": order.status
+                        } if order else None,
                         "patient_name": inv.patient_name,
-                        "patient_phone": inv.patient_phone,
                         "final_amount": float(inv.final_amount),
-                        "paid_amount": float(inv.paid_amount or 0),
-                        "balance_amount":float(inv.balance_amount or 0),   
                         "payment_status": inv.payment_status,
                         "status": inv.status
-                    })
+                    }
+
+                    if include_items:
+                        # inv.items is already loaded via selectinload
+                        invoice_dict["items"] = [{
+                            "test_name": item.test_name,
+                            "total_amount": float(item.total_amount)
+                        } for item in inv.items]
+
+                    data.append(invoice_dict)
                 
                 return {
                     "data": data,
@@ -298,9 +302,9 @@ class TestInvoiceService:
                     "total_pages": math.ceil(total / per_page)
                 }
         except Exception as e:
-            logger.error(f"Error fetching test invoices: {str(e)}", self.logger_name)
+            logger.error(f"Error: {str(e)}", self.logger_name)
             raise
-    
+
     def update(self, invoice_id, data, tenant_id):
         try:
             with db_manager.get_session() as session:
@@ -326,3 +330,4 @@ class TestInvoiceService:
         except Exception as e:
             logger.error(f"Error updating test invoice: {str(e)}", self.logger_name)
             raise
+
