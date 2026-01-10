@@ -39,6 +39,10 @@ class Payment(Base):
     party_type = Column(String(20), nullable=False)
     party_id = Column(Integer)
     
+    # Party Details
+    party_name = Column(String(200), nullable=False)
+    party_phone = Column(String(20), nullable=False)
+    
     source_document_type = Column(String(20))
     source_document_id = Column(Integer)
     

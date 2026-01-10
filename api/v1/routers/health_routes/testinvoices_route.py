@@ -49,6 +49,7 @@ async def get_test_invoices(
     page: int = Query(1, ge=1),
     per_page: int = Query(10, ge=1, le=100),
     search: Optional[str] = Query(None),
+    patient_id:Optional[int] = Query(None),
     status: Optional[list[TestInvoiceStatus]] = Query(None),
     payment_status: Optional[list[TestInvoicePaymentStatus]] = Query(None),
     include_items: bool = Query(None),
@@ -60,6 +61,7 @@ async def get_test_invoices(
         page=page,
         per_page=per_page,
         search=search,
+        patient_id=patient_id,
         status=status,
         payment_status=payment_status,
         include_items=include_items

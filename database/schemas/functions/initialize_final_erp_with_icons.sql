@@ -143,7 +143,8 @@ BEGIN
     ('Fees', 'DIAG_ORDER_COMMISSION', 'HEALTH', 4300, '/diagnostic/order-commission', '💸', 4),
     
     ('Advance', 'HEALTH_ADVANCE_PAYMENT', 'HEALTH', 4400, '/health/payment/advance', '💰', 1),
-    ('Invoice', 'HEALTH_INVOICE_PAYMENT', 'HEALTH', 4400, '/health/payment/invoice', '📝', 2)
+    ('Invoice', 'HEALTH_INVOICE_PAYMENT', 'HEALTH', 4400, '/health/payment/invoice', '📝', 2),
+    ('Allocation', 'HEALTH_PAYMENT_ALLOCATION', 'HEALTH', 4400, '/health/payment/allocation', '💸', 3)
     
     ;
 

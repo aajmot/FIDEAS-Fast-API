@@ -740,6 +740,8 @@ class PaymentService:
                 payment_type=payment_data.get('payment_type'),
                 party_type=payment_data.get('party_type'),
                 party_id=payment_data.get('party_id'),
+                party_name=payment_data.get('party_name'),
+                party_phone=payment_data.get('party_phone'),
                 base_currency_id=payment_data.get('base_currency_id'),
                 foreign_currency_id=payment_data.get('foreign_currency_id'),
                 exchange_rate=payment_data.get('exchange_rate', 1),
@@ -942,6 +944,7 @@ class PaymentService:
             
             # Update header fields
             for field in ['payment_number', 'payment_date', 'payment_type', 'party_type', 'party_id',
+                         'party_name', 'party_phone',
                          'base_currency_id', 'foreign_currency_id', 'exchange_rate',
                          'total_amount_base', 'total_amount_foreign',
                          'tds_amount_base', 'advance_amount_base', 'status',
@@ -1640,6 +1643,8 @@ class PaymentService:
                     payment_type=payment_data.get('payment_type'),
                     party_type=payment_data.get('party_type'),
                     party_id=payment_data.get('party_id'),
+                    party_name=payment_data.get('party_name'),
+                    party_phone=payment_data.get('party_phone'),
                     base_currency_id=payment_data.get('base_currency_id'),
                     foreign_currency_id=payment_data.get('foreign_currency_id'),
                     exchange_rate=payment_data.get('exchange_rate', 1),
@@ -1888,6 +1893,8 @@ class PaymentService:
             'payment_type': payment.payment_type,
             'party_type': payment.party_type,
             'party_id': payment.party_id,
+            'party_name': payment.party_name,
+            'party_phone': payment.party_phone,
             'base_currency_id': payment.base_currency_id,
             'foreign_currency_id': payment.foreign_currency_id,
             'exchange_rate': payment.exchange_rate,
@@ -1970,7 +1977,8 @@ class PaymentService:
     
 
     @ExceptionMiddleware.handle_exceptions("PaymentService")
-    def create_advance_payment(self, payment_number: str, party_id: int, party_type: str, amount: Decimal, payment_mode: str = 'CASH', 
+    def create_advance_payment(self, payment_number: str, party_id: int, party_type: str, 
+                              party_name: str, party_phone: str, amount: Decimal, payment_mode: str = 'CASH', 
                               instrument_number: str = None, instrument_date: date = None,
                               bank_name: str = None, branch_name: str = None, ifsc_code: str = None,
                               transaction_reference: str = None, remarks: str = None):
@@ -2026,6 +2034,8 @@ class PaymentService:
                     payment_type=payment_type,
                     party_type=party_type,
                     party_id=party_id,
+                    party_name=party_name,
+                    party_phone=party_phone,
                     base_currency_id=base_currency.id,
                     exchange_rate=Decimal(1),
                     total_amount_base=amount,
@@ -2135,7 +2145,8 @@ class PaymentService:
         return voucher
     
     @ExceptionMiddleware.handle_exceptions("PaymentService")
-    def create_invoice_payment_simple(self, payment_number: str, invoice_id: int, invoice_type: str, amount: Decimal, payment_mode: str = 'CASH',
+    def create_invoice_payment_simple(self, payment_number: str, invoice_id: int, invoice_type: str, 
+                                     party_name: str, party_phone: str, amount: Decimal, payment_mode: str = 'CASH',
                                      instrument_number: str = None, instrument_date: date = None,
                                      bank_name: str = None, branch_name: str = None, ifsc_code: str = None,
                                      transaction_reference: str = None, remarks: str = None):
@@ -2227,6 +2238,8 @@ class PaymentService:
                 payment_type=payment_type,
                 party_type=party_type,
                 party_id=getattr(invoice, party_id_field),
+                party_name=party_name,
+                party_phone=party_phone,
                 base_currency_id=base_currency.id,
                 exchange_rate=Decimal(1),
                 total_amount_base=amount,
@@ -2524,3 +2537,187 @@ class PaymentService:
             session.refresh(payment)
             
             return self._payment_to_dict(payment, include_details=True)
+
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def get_payment_allocations(self, payment_id: int):
+        """Get all allocations for a payment"""
+        from modules.account_module.models.payment_entity import PaymentAllocation
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            
+            allocations = session.query(PaymentAllocation).filter(
+                PaymentAllocation.payment_id == payment_id,
+                PaymentAllocation.tenant_id == tenant_id,
+                PaymentAllocation.is_deleted == False
+            ).all()
+            
+            return [self._allocation_to_dict(a) for a in allocations]
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def get_document_payments(self, document_type: str, document_id: int):
+        """Get all payments for a document"""
+        from modules.account_module.models.payment_entity import PaymentAllocation
+        
+        with db_manager.get_session() as session:
+            tenant_id = session_manager.get_current_tenant_id()
+            
+            allocations = session.query(PaymentAllocation).filter(
+                PaymentAllocation.document_type == document_type.upper(),
+                PaymentAllocation.document_id == document_id,
+                PaymentAllocation.tenant_id == tenant_id,
+                PaymentAllocation.is_deleted == False
+            ).all()
+            
+            return [self._allocation_to_dict(a) for a in allocations]
+    
+    @ExceptionMiddleware.handle_exceptions("PaymentService")
+    def allocate_payment_to_invoices(self, payment_id: int, allocation_data: dict):
+        """Allocate payment to multiple invoices with validation"""
+        from modules.account_module.models.payment_entity import Payment, PaymentAllocation
+        
+        with db_manager.get_session() as session:
+            try:
+                tenant_id = session_manager.get_current_tenant_id()
+                username = session_manager.get_current_username()
+                
+                # Get payment
+                payment = session.query(Payment).filter(
+                    Payment.id == payment_id,
+                    Payment.tenant_id == tenant_id,
+                    Payment.is_deleted == False
+                ).first()
+                
+                if not payment:
+                    raise ValueError("Payment not found")
+                
+                if payment.status not in ['POSTED', 'RECONCILED']:
+                    raise ValueError(f"Cannot allocate payment with status {payment.status}. Only POSTED or RECONCILED payments can be allocated")
+                
+                if payment.unallocated_amount_base <= 0:
+                    raise ValueError("Payment has no unallocated amount")
+                
+                allocations_list = allocation_data.get('allocations', [])
+                
+                # Validate total allocation amount
+                total_allocation = sum(Decimal(str(item['allocated_amount'])) for item in allocations_list)
+                
+                if total_allocation > payment.unallocated_amount_base:
+                    raise ValueError(
+                        f"Total allocation amount {total_allocation} exceeds unallocated amount {payment.unallocated_amount_base}"
+                    )
+                
+                created_allocations = []
+                
+                # Process each allocation
+                for item in allocations_list:
+                    doc_type = item['document_type']
+                    doc_id = item['document_id']
+                    allocated_amt = Decimal(str(item['allocated_amount']))
+                    remarks = item.get('remarks')
+                    
+                    # Check for existing allocation
+                    existing = session.query(PaymentAllocation).filter(
+                        PaymentAllocation.payment_id == payment_id,
+                        PaymentAllocation.document_type == doc_type,
+                        PaymentAllocation.document_id == doc_id,
+                        PaymentAllocation.tenant_id == tenant_id,
+                        PaymentAllocation.is_deleted == False
+                    ).first()
+                    
+                    if existing:
+                        raise ValueError(f"Payment already allocated to {doc_type} ID {doc_id}")
+                    
+                    # Get invoice and validate
+                    invoice = self._get_invoice_by_type(session, tenant_id, doc_type, doc_id)
+                    
+                    if not invoice:
+                        raise ValueError(f"{doc_type} invoice with ID {doc_id} not found")
+                    
+                    # Calculate invoice balance
+                    total_amt = invoice.final_amount if hasattr(invoice, 'final_amount') else invoice.total_amount_base
+                    paid_amt = invoice.paid_amount or Decimal(0)
+                    balance = total_amt - paid_amt
+                    
+                    if allocated_amt > balance:
+                        raise ValueError(
+                            f"Allocation amount {allocated_amt} exceeds invoice balance {balance} for {doc_type} {invoice.invoice_number}"
+                        )
+                    
+                    # Create allocation
+                    allocation = PaymentAllocation(
+                        tenant_id=tenant_id,
+                        payment_id=payment_id,
+                        document_type=doc_type,
+                        document_id=doc_id,
+                        document_number=invoice.invoice_number,
+                        allocated_amount_base=allocated_amt,
+                        allocation_date=datetime.now(),
+                        remarks=remarks,
+                        created_by=username,
+                        updated_by=username
+                    )
+                    session.add(allocation)
+                    session.flush()
+                    
+                    # Update invoice payment status
+                    new_paid = paid_amt + allocated_amt
+                    invoice.paid_amount = new_paid
+                    
+                    if new_paid >= total_amt:
+                        invoice.payment_status = 'PAID'
+                    elif new_paid > 0:
+                        invoice.payment_status = 'PARTIAL'
+                    else:
+                        invoice.payment_status = 'UNPAID'
+                    
+                    invoice.updated_by = username
+                    invoice.updated_at = datetime.now()
+                    
+                    created_allocations.append(self._allocation_to_dict(allocation))
+                
+                # Update payment amounts
+                payment.allocated_amount_base = (payment.allocated_amount_base or Decimal(0)) + total_allocation
+                payment.unallocated_amount_base = payment.unallocated_amount_base - total_allocation
+                payment.updated_by = username
+                payment.updated_at = datetime.now()
+                
+                session.commit()
+                
+                return {
+                    'payment_id': payment.id,
+                    'payment_number': payment.payment_number,
+                    'total_allocated': float(total_allocation),
+                    'remaining_unallocated': float(payment.unallocated_amount_base),
+                    'allocations': created_allocations
+                }
+                
+            except Exception as e:
+                session.rollback()
+                raise
+    
+    def _get_invoice_by_type(self, session, tenant_id, doc_type, doc_id):
+        """Get invoice based on document type"""
+        if doc_type == 'TEST':
+            from modules.health_module.models.test_invoice_entity import TestInvoice
+            return session.query(TestInvoice).filter(
+                TestInvoice.id == doc_id,
+                TestInvoice.tenant_id == tenant_id,
+                TestInvoice.is_deleted == False
+            ).first()
+        elif doc_type in ['SALES', 'INVOICE']:
+            from modules.inventory_module.models.sales_invoice_entity import SalesInvoice
+            return session.query(SalesInvoice).filter(
+                SalesInvoice.id == doc_id,
+                SalesInvoice.tenant_id == tenant_id,
+                SalesInvoice.is_deleted == False
+            ).first()
+        elif doc_type == 'PURCHASE':
+            from modules.inventory_module.models.purchase_invoice_entity import PurchaseInvoice
+            return session.query(PurchaseInvoice).filter(
+                PurchaseInvoice.id == doc_id,
+                PurchaseInvoice.tenant_id == tenant_id,
+                PurchaseInvoice.is_deleted == False
+            ).first()
+        else:
+            raise ValueError(f"Unsupported document type: {doc_type}")

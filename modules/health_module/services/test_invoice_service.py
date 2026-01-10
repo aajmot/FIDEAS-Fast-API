@@ -126,54 +126,93 @@ class TestInvoiceService:
             logger.error(f"Error creating test invoice: {str(e)}", self.logger_name)
             raise
     
+    def _map_invoice_to_dict(self, inv, include_items=False, include_order_details=False):
+        """Helper to serialize invoice objects consistently."""
+        # Map Order data
+        order_data = None
+        if inv.test_order:
+            order_data = {
+                "id": inv.test_order.id,
+                "test_order_number": inv.test_order.test_order_number,
+                "status": inv.test_order.status
+            }
+            if include_order_details:
+                order_data.update({
+                    "order_date": inv.test_order.order_date.isoformat() if inv.test_order.order_date else None,
+                    "doctor_name": inv.test_order.doctor_name,
+                    "doctor_phone": inv.test_order.doctor_phone,
+                    "urgency": inv.test_order.urgency,
+                })
+
+        # Base Invoice Data
+        result = {
+            "id": inv.id,
+            "invoice_number": inv.invoice_number,
+            "invoice_date": inv.invoice_date.isoformat() if inv.invoice_date else None,
+            "patient_id": inv.patient_id,
+            "patient_name": inv.patient_name,
+            "patient_phone": inv.patient_phone,
+            "final_amount": float(inv.final_amount),
+            "paid_amount": float(inv.paid_amount or 0),
+            "balance_amount": float(inv.balance_amount or 0),
+            "payment_status": inv.payment_status,
+            "status": inv.status,
+            "order": order_data
+        }
+
+        # Include Items if loaded
+        if include_items and hasattr(inv, 'items'):
+            result["items"] = [{
+                "id": item.id,
+                "line_no": item.line_no,
+                "test_id": item.test_id,
+                "test_name": item.test_name,
+                "panel_id": item.panel_id,
+                "panel_name": item.panel_name,
+                "rate": float(item.rate),
+                "disc_percentage": float(item.disc_percentage or 0),
+                "disc_amount": float(item.disc_amount or 0),
+                "taxable_amount": float(item.taxable_amount),
+                "cgst_rate": float(item.cgst_rate or 0),
+                "cgst_amount": float(item.cgst_amount or 0),
+                "sgst_rate": float(item.sgst_rate or 0),
+                "sgst_amount": float(item.sgst_amount or 0),
+                "igst_rate": float(item.igst_rate or 0),
+                "igst_amount": float(item.igst_amount or 0),
+                "cess_rate": float(item.cess_rate or 0),
+                "cess_amount": float(item.cess_amount or 0),
+                "total_amount": float(item.total_amount),
+                "remarks": item.remarks
+            } for item in inv.items if not item.is_deleted]
+
+        return result
+
     def get_by_id(self, invoice_id, tenant_id, include_barcode=False):
         try:
             with db_manager.get_session() as session:
-                invoice = session.query(TestInvoice).filter(
+                # Fetch everything in a single optimized query
+                invoice = session.query(TestInvoice).options(
+                    joinedload(TestInvoice.test_order),
+                    selectinload(TestInvoice.items)
+                ).filter(
                     TestInvoice.id == invoice_id,
                     TestInvoice.tenant_id == tenant_id,
                     TestInvoice.is_deleted == False
                 ).first()
-                
+
                 if not invoice:
                     return None
+
+                # Reuse mapper for high-detail view
+                result = self._map_invoice_to_dict(invoice, include_items=True, include_order_details=True)
                 
-                items = session.query(TestInvoiceItem).filter(
-                    TestInvoiceItem.test_invoice_id == invoice_id,
-                    TestInvoiceItem.is_deleted == False
-                ).all()
-                
-                # Get order details
-                order = session.query(TestOrder).filter(
-                    TestOrder.id == invoice.test_order_id,
-                    TestOrder.is_deleted == False
-                ).first()
-                
-                order_data = None
-                if order:
-                    order_data = {
-                        "id": order.id,
-                        "test_order_number": order.test_order_number,
-                        "order_date": order.order_date.isoformat() if order.order_date else None,
-                        "doctor_name": order.doctor_name,
-                        "doctor_phone": order.doctor_phone,
-                        "urgency": order.urgency,
-                        "status": order.status
-                    }
-                
-                result = {
-                    "id": invoice.id,
-                    "invoice_number": invoice.invoice_number,
-                    "invoice_date": invoice.invoice_date.isoformat() if invoice.invoice_date else None,
-                    "due_date": invoice.due_date.isoformat() if invoice.due_date else None,
+                # Add extra fields specific to get_by_id
+                result.update({
+                    "branch_id": invoice.branch_id,
                     "test_order_id": invoice.test_order_id,
-                    "order": order_data,
-                    "patient_id": invoice.patient_id,
-                    "patient_name": invoice.patient_name,
-                    "patient_phone": invoice.patient_phone,
-                    "subtotal_amount": float(invoice.subtotal_amount),
+                    "subtotal_amount": float(invoice.subtotal_amount or 0),
                     "items_total_discount_amount": float(invoice.items_total_discount_amount or 0),
-                    "taxable_amount": float(invoice.taxable_amount),
+                    "taxable_amount": float(invoice.taxable_amount or 0),
                     "cgst_amount": float(invoice.cgst_amount or 0),
                     "sgst_amount": float(invoice.sgst_amount or 0),
                     "igst_amount": float(invoice.igst_amount or 0),
@@ -181,130 +220,75 @@ class TestInvoiceService:
                     "overall_disc_percentage": float(invoice.overall_disc_percentage or 0),
                     "overall_disc_amount": float(invoice.overall_disc_amount or 0),
                     "roundoff": float(invoice.roundoff or 0),
-                    "final_amount": float(invoice.final_amount),
-                    "paid_amount": float(invoice.paid_amount or 0),
-                    "balance_amount":float(invoice.balance_amount or 0),
-                    "payment_status": invoice.payment_status,
-                    "status": invoice.status,
+                    "due_date": invoice.due_date.isoformat() if invoice.due_date else None,
                     "voucher_id": invoice.voucher_id,
                     "notes": invoice.notes,
                     "tags": invoice.tags,
                     "created_at": invoice.created_at.isoformat() if invoice.created_at else None,
                     "created_by": invoice.created_by,
-                    "items": [{
-                        "id": item.id,
-                        "line_no": item.line_no,
-                        "test_id": item.test_id,
-                        "test_name": item.test_name,
-                        "panel_id": item.panel_id,
-                        "panel_name": item.panel_name,
-                        "rate": float(item.rate),
-                        "disc_percentage": float(item.disc_percentage or 0),
-                        "disc_amount": float(item.disc_amount or 0),
-                        "taxable_amount": float(item.taxable_amount),
-                        "cgst_rate": float(item.cgst_rate or 0),
-                        "cgst_amount": float(item.cgst_amount or 0),
-                        "sgst_rate": float(item.sgst_rate or 0),
-                        "sgst_amount": float(item.sgst_amount or 0),
-                        "igst_rate": float(item.igst_rate or 0),
-                        "igst_amount": float(item.igst_amount or 0),
-                        "cess_rate": float(item.cess_rate or 0),
-                        "cess_amount": float(item.cess_amount or 0),
-                        "total_amount": float(item.total_amount),
-                        "remarks": item.remarks
-                    } for item in items]
-                }
-                
+                    "updated_at": invoice.updated_at.isoformat() if invoice.updated_at else None,
+                    "updated_by": invoice.updated_by,
+                    "is_active": invoice.is_active
+                })
+
                 if include_barcode:
                     from core.shared.utils.barcode_utils import BarcodeGenerator
                     try:
-                        #result["barcode"] = BarcodeGenerator.generate_barcode(invoice.invoice_number)
                         qr_data = f"/test-invoice?TEST_INVOICE={invoice.invoice_number}"
                         result["qr_code"] = BarcodeGenerator.generate_qr_code(qr_data)
                     except Exception as e:
                         logger.error(f"Barcode generation failed: {str(e)}", self.logger_name)
-                        # result["barcode"] = None
                         result["qr_code"] = None
-                
+
                 return result
         except Exception as e:
-            logger.error(f"Error fetching test invoice: {str(e)}", self.logger_name)
+            logger.error(f"Error fetching test invoice {invoice_id}: {str(e)}", self.logger_name)
             raise
-    
-    def get_all(self, tenant_id, page=1, per_page=10, search=None, status=None, payment_status=None, include_items=False):
+
+    def get_all(self, tenant_id, page=1, per_page=10, search=None, patient_id=None, status=None, payment_status=None, include_items=False):
         try:
             with db_manager.get_session() as session:
-                # 1. Start query and Eager Load the 'test_order' relationship
-                # Note: This assumes you have a relationship named 'test_order' in your TestInvoice model
+                # 1. Base query with eager loading
                 query = session.query(TestInvoice).options(joinedload(TestInvoice.test_order))
-
-                # 2. Eager Load Items only if requested
+                
                 if include_items:
-                    query = query.options(selectinload(TestInvoice.items).filter(TestInvoiceItem.is_deleted == False))
+                    query = query.options(selectinload(TestInvoice.items))
 
-                # 3. Apply Filters
-                query = query.filter(
-                    TestInvoice.tenant_id == tenant_id,
-                    TestInvoice.is_deleted == False
-                ).order_by(TestInvoice.id.desc())
+                # 2. Filtering
+                query = query.filter(TestInvoice.tenant_id == tenant_id, TestInvoice.is_deleted == False)
+
+                if patient_id:
+                    query = query.filter(TestInvoice.patient_id == patient_id)
                 
                 if search:
                     query = query.filter(or_(
                         TestInvoice.invoice_number.ilike(f"%{search}%"),
                         TestInvoice.patient_name.ilike(f"%{search}%")
                     ))
-                
-                # Flexible status/payment filters using IN clause
-                for field, val in [("status", status), ("payment_status", payment_status)]:
-                    if val:
-                        attr = getattr(TestInvoice, field)
-                        query = query.filter(attr.in_(val) if isinstance(val, list) else attr == val)
-                    elif field == "status": # Default status
-                        query = query.filter(TestInvoice.status == "POSTED")
 
-                # 4. Pagination
+                # Handle Statuses
+                if status:
+                    query = query.filter(TestInvoice.status.in_(status) if isinstance(status, list) else TestInvoice.status == status)
+                else:
+                    query = query.filter(TestInvoice.status == "POSTED")
+
+                if payment_status:
+                    query = query.filter(TestInvoice.payment_status.in_(payment_status) if isinstance(payment_status, list) else TestInvoice.payment_status == payment_status)
+
+                # 3. Pagination & Execution
                 total = query.count()
-                results = query.offset((page - 1) * per_page).limit(per_page).all()
-                
-                # 5. Build Data List without extra queries
-                data = []
-                for inv in results:
-                    order = inv.test_order # Already loaded via joinedload
-                    
-                    invoice_dict = {
-                        "id": inv.id,
-                        "invoice_number": inv.invoice_number,
-                        "order": {
-                            "id": order.id,
-                            "test_order_number": order.test_order_number,
-                            "status": order.status
-                        } if order else None,
-                        "patient_name": inv.patient_name,
-                        "final_amount": float(inv.final_amount),
-                        "payment_status": inv.payment_status,
-                        "status": inv.status
-                    }
+                results = query.order_by(TestInvoice.id.desc()).offset((page - 1) * per_page).limit(per_page).all()
 
-                    if include_items:
-                        # inv.items is already loaded via selectinload
-                        invoice_dict["items"] = [{
-                            "test_name": item.test_name,
-                            "total_amount": float(item.total_amount)
-                        } for item in inv.items]
-
-                    data.append(invoice_dict)
-                
                 return {
-                    "data": data,
+                    "data": [self._map_invoice_to_dict(inv, include_items=include_items) for inv in results],
                     "total": total,
                     "page": page,
                     "per_page": per_page,
                     "total_pages": math.ceil(total / per_page)
                 }
         except Exception as e:
-            logger.error(f"Error: {str(e)}", self.logger_name)
+            logger.error(f"Error listing invoices: {str(e)}", self.logger_name)
             raise
-
     def update(self, invoice_id, data, tenant_id):
         try:
             with db_manager.get_session() as session:

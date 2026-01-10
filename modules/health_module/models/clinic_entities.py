@@ -55,19 +55,38 @@ class Appointment(Base):
     __tablename__ = 'appointments'
     
     id = Column(Integer, primary_key=True)
-    appointment_number = Column(String(50), unique=True, nullable=False)
-    patient_id = Column(Integer, ForeignKey('patients.id'), nullable=False)
-    doctor_id = Column(Integer, ForeignKey('doctors.id'), nullable=False)
-    agency_id = Column(Integer, ForeignKey('agencies.id'))
+    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    branch_id = Column(Integer, ForeignKey('branches.id'))
+    
+    appointment_number = Column(String(50), nullable=False)
     appointment_date = Column(Date, nullable=False)
     appointment_time = Column(Time, nullable=False)
-    duration_minutes = Column(Integer, default=30)
-    status = Column(String(20), default='scheduled')  # scheduled, completed, cancelled
+    duration_minutes = Column(Integer)
+    
+    patient_id = Column(Integer, ForeignKey('patients.id'), nullable=False)
+    patient_name = Column(String(100))
+    patient_phone = Column(String(20))
+    
+    doctor_id = Column(Integer, ForeignKey('doctors.id'), nullable=False)
+    doctor_name = Column(String(100))
+    doctor_phone = Column(String(20))
+    doctor_license_number = Column(String(50))
+    doctor_specialization = Column(String(100))
+    
+    agency_id = Column(Integer, ForeignKey('agencies.id'))
+    agency_name = Column(String(100))
+    agency_phone = Column(String(20))
+    
+    status = Column(String(20), default='SCHEDULED')
     reason = Column(Text)
     notes = Column(Text)
-    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    
     created_at = Column(DateTime, default=datetime.utcnow)
-    created_by = Column(String(100))
+    created_by = Column(String(100), default='system')
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_by = Column(String(100), default='system')
+    is_active = Column(Boolean, default=True)
+    is_deleted = Column(Boolean, default=False)
     
     patient = relationship("Patient", back_populates="appointments")
     doctor = relationship("Doctor", back_populates="appointments")

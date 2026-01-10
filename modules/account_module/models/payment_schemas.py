@@ -57,6 +57,8 @@ class PaymentRequest(BaseModel):
     payment_type: PaymentType = Field(..., description="Payment type")
     party_type: PartyType = Field(..., description="Party type")
     party_id: Optional[int] = Field(None, description="Party ID")
+    party_name: str = Field(..., max_length=200, description="Party name")
+    party_phone: str = Field(..., max_length=20, description="Party phone")
     branch_id: Optional[int] = Field(None, description="Branch ID")
     
     source_document_type: Optional[DocumentType] = Field(None, description="Source document type")
@@ -150,6 +152,8 @@ class PaymentResponse(BaseModel):
     payment_type: str
     party_type: str
     party_id: Optional[int] = None
+    party_name: str
+    party_phone: str
     branch_id: Optional[int] = None
     source_document_type: Optional[str] = None
     source_document_id: Optional[int] = None

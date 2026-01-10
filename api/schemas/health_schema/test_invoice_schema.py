@@ -10,7 +10,9 @@ class TestInvoiceStatus(str, Enum):
     POSTED = 'POSTED'  
 class TestInvoicePaymentStatus(str, Enum):
     PAID = 'PAID'
-    UNPAID = 'UNPAID'
+    UNPAID = 'UNPAID',
+    PARTIAL= 'PARTIAL',
+
 
 class TestInvoiceItemSchema(BaseModel):
     line_no: int = Field(..., gt=0)

@@ -20,12 +20,29 @@ class AppointmentService:
     def create(self, appointment_data):
         try:
             with db_manager.get_session() as session:
-                # Use appointment_number from UI if provided, otherwise generate
                 tenant_id = appointment_data.get('tenant_id')
                 if not tenant_id:
                     raise ValueError("tenant_id is required")
+                
                 if 'appointment_number' not in appointment_data or not appointment_data['appointment_number']:
                     appointment_data['appointment_number'] = self.generate_appointment_number(tenant_id)
+                
+                # Populate denormalized fields from related entities
+                patient_id = appointment_data.get('patient_id')
+                if patient_id and not appointment_data.get('patient_name'):
+                    patient = session.query(Patient).filter(Patient.id == patient_id).first()
+                    if patient:
+                        appointment_data['patient_name'] = f"{patient.first_name} {patient.last_name}"
+                        appointment_data['patient_phone'] = patient.phone
+                
+                doctor_id = appointment_data.get('doctor_id')
+                if doctor_id and not appointment_data.get('doctor_name'):
+                    doctor = session.query(Doctor).filter(Doctor.id == doctor_id).first()
+                    if doctor:
+                        appointment_data['doctor_name'] = f"{doctor.first_name} {doctor.last_name}"
+                        appointment_data['doctor_phone'] = doctor.phone
+                        appointment_data['doctor_license_number'] = doctor.license_number
+                        appointment_data['doctor_specialization'] = doctor.specialization
                 
                 appointment = Appointment(**appointment_data)
                 session.add(appointment)
@@ -39,20 +56,32 @@ class AppointmentService:
             logger.error(f"Error creating appointment: {str(e)}", self.logger_name)
             raise
     
-    def get_all(self, tenant_id=None):
+    def get_all(self, tenant_id=None, search=None, offset=0, limit=10):
         try:
             with db_manager.get_session() as session:
-                query = session.query(Appointment).join(Patient).join(Doctor)
-                if tenant_id:
+                query = session.query(Appointment).filter(Appointment.is_deleted == False)
+                
+                if tenant_id is not None:
                     query = query.filter(Appointment.tenant_id == tenant_id)
-                appointments = query.all()
-                # Detach from session to avoid lazy loading issues
-                for appointment in appointments:
-                    session.expunge(appointment)
-                return appointments
+                
+                if search:
+                    from sqlalchemy import or_
+                    query = query.filter(or_(
+                        Appointment.appointment_number.ilike(f"%{search}%"),
+                        Appointment.patient_name.ilike(f"%{search}%"),
+                        Appointment.doctor_name.ilike(f"%{search}%"),
+                        Appointment.status.ilike(f"%{search}%")
+                    ))
+                
+                query = query.order_by(Appointment.appointment_date.desc(), Appointment.appointment_time.desc())
+                
+                total = query.count()
+                appointments = query.offset(offset).limit(limit).all()
+                
+                return {'appointments': appointments, 'total': total}
         except Exception as e:
             logger.error(f"Error fetching appointments: {str(e)}", self.logger_name)
-            return []
+            raise
     
     def get_by_date(self, appointment_date, tenant_id=None):
         try:
@@ -69,20 +98,82 @@ class AppointmentService:
             logger.error(f"Error fetching appointments by date: {str(e)}", self.logger_name)
             return []
     
-    def update_status(self, appointment_id, status):
+    def get_by_id(self, appointment_id=None, appointment_number=None):
         try:
             with db_manager.get_session() as session:
-                appointment = session.query(Appointment).filter(Appointment.id == appointment_id).first()
-                if appointment:
-                    appointment.status = status
-                    session.flush()
-                    appointment_id_val = appointment.id  # Access id while session is active
-                    logger.info(f"Appointment status updated: {appointment.appointment_number} -> {status}", self.logger_name)
-                    session.expunge(appointment)  # Detach from session
-                    appointment.id = appointment_id_val  # Set id on detached object
-                    return appointment
+                query = session.query(Appointment).filter(Appointment.is_deleted == False)
+                
+                if appointment_id:
+                    query = query.filter(Appointment.id == appointment_id)
+                elif appointment_number:
+                    query = query.filter(Appointment.appointment_number == appointment_number)
+                else:
+                    return None
+                
+                return query.first()
         except Exception as e:
-            logger.error(f"Error updating appointment status: {str(e)}", self.logger_name)
+            logger.error(f"Error fetching appointment: {str(e)}", self.logger_name)
+            raise
+    
+    def update(self, appointment_id, update_data, updated_by='system'):
+        try:
+            with db_manager.get_session() as session:
+                appointment = session.query(Appointment).filter(
+                    Appointment.id == appointment_id,
+                    Appointment.is_deleted == False
+                ).first()
+                
+                if not appointment:
+                    return None
+                
+                # Auto-populate denormalized fields if IDs changed
+                if 'patient_id' in update_data and update_data['patient_id']:
+                    patient = session.query(Patient).filter(Patient.id == update_data['patient_id']).first()
+                    if patient:
+                        update_data['patient_name'] = f"{patient.first_name} {patient.last_name}"
+                        update_data['patient_phone'] = patient.phone
+                
+                if 'doctor_id' in update_data and update_data['doctor_id']:
+                    doctor = session.query(Doctor).filter(Doctor.id == update_data['doctor_id']).first()
+                    if doctor:
+                        update_data['doctor_name'] = f"{doctor.first_name} {doctor.last_name}"
+                        update_data['doctor_phone'] = doctor.phone
+                        update_data['doctor_license_number'] = doctor.license_number
+                        update_data['doctor_specialization'] = doctor.specialization
+                
+                update_data['updated_by'] = updated_by
+                update_data['updated_at'] = datetime.utcnow()
+                
+                for key, value in update_data.items():
+                    setattr(appointment, key, value)
+                
+                session.flush()
+                logger.info(f"Appointment updated: {appointment.appointment_number}", self.logger_name)
+                return appointment
+        except Exception as e:
+            logger.error(f"Error updating appointment: {str(e)}", self.logger_name)
+            raise
+    
+    def delete(self, appointment_id, deleted_by='system'):
+        try:
+            with db_manager.get_session() as session:
+                appointment = session.query(Appointment).filter(
+                    Appointment.id == appointment_id,
+                    Appointment.is_deleted == False
+                ).first()
+                
+                if not appointment:
+                    return False
+                
+                appointment.is_deleted = True
+                appointment.is_active = False
+                appointment.updated_by = deleted_by
+                appointment.updated_at = datetime.utcnow()
+                session.flush()
+                logger.info(f"Appointment deleted: {appointment.appointment_number}", self.logger_name)
+                return True
+        except Exception as e:
+            logger.error(f"Error deleting appointment: {str(e)}", self.logger_name)
             raise
     
     def export_template(self):

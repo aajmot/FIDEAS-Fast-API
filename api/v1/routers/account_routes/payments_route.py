@@ -21,6 +21,10 @@ from api.schemas.account_schema.payment_schemas import (
     PaymentReversalRequest,
     PartyType
 )
+from api.schemas.account_schema.payment_allocation_schemas import (
+    AllocatePaymentRequest,
+    AllocatePaymentResponse
+)
 
 router = APIRouter()
 payment_service = PaymentService()
@@ -241,6 +245,23 @@ async def get_document_payments(
         raise HTTPException(status_code=500, detail=f"Error fetching document payments: {str(e)}")
 
 
+@router.post("/payments/{payment_id}/allocate", response_model=AllocatePaymentResponse)
+async def allocate_payment_to_invoices(
+    payment_id: int,
+    allocation_request: AllocatePaymentRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """Allocate payment to multiple invoices"""
+    try:
+        result = payment_service.allocate_payment_to_invoices(payment_id, allocation_request.dict())
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error allocating payment: {str(e)}")
+    
+
+
 @router.post("/payments/advance/customer", response_model=PaymentResponse, status_code=201)
 async def create_advance_customer_payment(
     request: AdvancePaymentRequest,
@@ -252,6 +273,8 @@ async def create_advance_customer_payment(
             payment_number=request.payment_number,
             party_id=request.party_id,
             party_type=request.party_type.value,
+            party_name=request.party_name,
+            party_phone=request.party_phone,
             amount=request.amount,
             payment_mode=request.payment_mode.value,
             instrument_number=request.instrument_number,
@@ -280,6 +303,8 @@ async def create_invoice_payment(
             payment_number=request.payment_number,
             invoice_id=request.invoice_id,
             invoice_type=request.invoice_type.value,
+            party_name=request.party_name,
+            party_phone=request.party_phone,
             amount=request.amount,
             payment_mode=request.payment_mode.value,
             instrument_number=request.instrument_number,

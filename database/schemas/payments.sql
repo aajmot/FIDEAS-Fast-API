@@ -23,6 +23,10 @@ CREATE TABLE IF NOT EXISTS public.payments (
 
     party_id               INTEGER,
 
+    -- Party Details
+    party_name           VARCHAR(200) NOT NULL,
+    party_phone          VARCHAR(20) NOT NULL,
+
     -- Document Linking
     source_document_type   VARCHAR(20)
                            CHECK (source_document_type IN ('ORDER','INVOICE','EXPENSE','ADVANCE','BILL','OTHER')),
