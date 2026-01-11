@@ -6,6 +6,7 @@ import csv
 from datetime import datetime
 
 from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
+from api.schemas.health_schema.medical_record_schemas import MedicalRecordCreate, MedicalRecordUpdate
 from sqlalchemy import or_
 import math
 from api.middleware.auth_middleware import get_current_user
@@ -73,18 +74,23 @@ async def get_medical_records(pagination: PaginationParams = Depends(), current_
     )
 
 @router.post("/medical-records", response_model=BaseResponse)
-async def create_medical_record(record_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.health_module.services.medical_record_service import MedicalRecordService
-    
-    medical_record_service = MedicalRecordService()
-    # Always use tenant_id from logged-in user, never from request
-    record_data['tenant_id'] = current_user.get('tenant_id')
-    record = medical_record_service.create(record_data)
-    return BaseResponse(
-        success=True,
-        message="Medical record created successfully",
-        data={"id": record.id}
-    )
+async def create_medical_record(record_data: MedicalRecordCreate, current_user: dict = Depends(get_current_user)):
+    try:
+        medical_record_service = MedicalRecordService()
+        record_dict = record_data.model_dump()
+        record_dict['tenant_id'] = current_user.get('tenant_id')
+        record_dict['created_by'] = current_user.get('username', 'system')
+        
+        record = medical_record_service.create(record_dict)
+        return BaseResponse(
+            success=True,
+            message="Medical record created successfully",
+            data={"id": record.id, "record_number": record.record_number}
+        )
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating medical record: {str(e)}")
 
 @router.get("/medical-records/export-template")
 async def export_medical_records_template(current_user: dict = Depends(get_current_user)):
@@ -101,22 +107,22 @@ async def export_medical_records_template(current_user: dict = Depends(get_curre
     )
 
 @router.post("/medical-records/import", response_model=BaseResponse)
-async def import_medical_records(request_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.health_module.services.medical_record_service import MedicalRecordService
-    
-    csv_content = request_data.get('csv_content', '')
-    
-    if not csv_content:
-        raise HTTPException(status_code=400, detail="CSV content is required")
-    
-    medical_record_service = MedicalRecordService()
-    result = medical_record_service.import_medical_records(csv_content, current_user.get('tenant_id'))
-    
-    return BaseResponse(
-        success=True,
-        message=f"Imported {result['imported']} medical records successfully",
-        data=result
-    )
+async def import_medical_records(request_data: Dict[str, str], current_user: dict = Depends(get_current_user)):
+    try:
+        csv_content = request_data.get('csv_content', '')
+        if not csv_content:
+            raise HTTPException(status_code=400, detail="CSV content is required")
+        
+        medical_record_service = MedicalRecordService()
+        result = medical_record_service.import_medical_records(csv_content, current_user.get('tenant_id'))
+        
+        return BaseResponse(
+            success=True,
+            message=f"Imported {result['imported']} medical records successfully",
+            data=result
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error importing medical records: {str(e)}")
 
 @router.get("/medical-records/{record_id}", response_model=BaseResponse)
 async def get_medical_record(record_id: int, current_user: dict = Depends(get_current_user)):
@@ -194,28 +200,33 @@ async def get_medical_record_by_appointment(appointment_id: int, current_user: d
     )
 
 @router.put("/medical-records/{record_id}", response_model=BaseResponse)
-async def update_medical_record(record_id: int, record_data: Dict[str, Any], current_user: dict = Depends(get_current_user)):
-    from modules.health_module.services.medical_record_service import MedicalRecordService
-    
-    medical_record_service = MedicalRecordService()
-    record = medical_record_service.update(record_id, record_data)
-    if not record:
-        raise HTTPException(status_code=404, detail="Medical record not found")
-    return BaseResponse(
-        success=True,
-        message="Medical record updated successfully",
-        data={"id": record.id}
-    )
+async def update_medical_record(record_id: int, record_data: MedicalRecordUpdate, current_user: dict = Depends(get_current_user)):
+    try:
+        medical_record_service = MedicalRecordService()
+        record_dict = record_data.model_dump(exclude_unset=True)
+        record_dict['updated_by'] = current_user.get('username', 'system')
+        
+        record = medical_record_service.update(record_id, record_dict)
+        if not record:
+            raise HTTPException(status_code=404, detail="Medical record not found")
+        return BaseResponse(
+            success=True,
+            message="Medical record updated successfully",
+            data={"id": record.id, "record_number": record.record_number}
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating medical record: {str(e)}")
 
 @router.delete("/medical-records/{record_id}", response_model=BaseResponse)
 async def delete_medical_record(record_id: int, current_user: dict = Depends(get_current_user)):
-    from modules.health_module.services.medical_record_service import MedicalRecordService
-    
-    medical_record_service = MedicalRecordService()
-    success = medical_record_service.delete(record_id)
-    if not success:
-        raise HTTPException(status_code=404, detail="Medical record not found")
-    return BaseResponse(
-        success=True,
-        message="Medical record deleted successfully"
-    )
+    try:
+        medical_record_service = MedicalRecordService()
+        success = medical_record_service.delete(record_id)
+        if not success:
+            raise HTTPException(status_code=404, detail="Medical record not found")
+        return BaseResponse(
+            success=True,
+            message="Medical record deleted successfully"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting medical record: {str(e)}")

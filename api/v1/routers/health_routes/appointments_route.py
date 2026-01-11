@@ -1,3 +1,4 @@
+from core.shared.utils.logger import logger
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
 from fastapi.responses import StreamingResponse
 from typing import List, Dict, Any
@@ -5,7 +6,7 @@ import io
 import csv
 from datetime import datetime
 import math
-
+from fastapi import Query # Import Query
 from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
 from api.schemas.health_schema.appointment_schemas import AppointmentCreate, AppointmentUpdate, AppointmentResponse
 from api.middleware.auth_middleware import get_current_user
@@ -14,14 +15,27 @@ from modules.health_module.services.appointment_service import AppointmentServic
 router = APIRouter()
 
 @router.get("/appointments", response_model=PaginatedResponse)
-async def get_appointments(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
+async def get_appointments(
+    pagination: PaginationParams = Depends(),
+    medical_record_generated: bool = Query(None),
+    prescription_generated: bool = Query(None),
+    appointment_invoice_generated: bool = Query(None),
+    test_order_generated: bool = Query(None),
+    current_user: dict = Depends(get_current_user)
+):
     try:
         appointment_service = AppointmentService()
+        
+        # Pass the separate parameters into the service call
         result = appointment_service.get_all(
             tenant_id=current_user.get('tenant_id'),
             search=pagination.search,
             offset=pagination.offset,
-            limit=pagination.per_page
+            limit=pagination.per_page,
+            medical_record_generated=medical_record_generated,
+            prescription_generated=prescription_generated,
+            appointment_invoice_generated=appointment_invoice_generated,
+            test_order_generated=test_order_generated
         )
         
         appointment_data = [{
@@ -45,6 +59,11 @@ async def get_appointments(pagination: PaginationParams = Depends(), current_use
             "status": apt.status,
             "reason": apt.reason,
             "notes": apt.notes,
+            # Including the flags in the response list
+            "medical_record_generated": apt.medical_record_generated,
+            "prescription_generated": apt.prescription_generated,
+            "appointment_invoice_generated": apt.appointment_invoice_generated,
+            "test_order_generated": apt.test_order_generated,
             "created_at": apt.created_at.isoformat() if apt.created_at else None
         } for apt in result['appointments']]
         
@@ -58,7 +77,9 @@ async def get_appointments(pagination: PaginationParams = Depends(), current_use
             total_pages=math.ceil(result['total'] / pagination.per_page)
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Error in get_appointments API: {str(e)}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+    
 
 @router.post("/appointments", response_model=BaseResponse)
 async def create_appointment(appointment_data: AppointmentCreate, current_user: dict = Depends(get_current_user)):

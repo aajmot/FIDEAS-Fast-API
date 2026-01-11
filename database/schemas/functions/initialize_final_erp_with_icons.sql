@@ -134,8 +134,10 @@ BEGIN
     ('Billing', 'BILLING_MASTER', 'HEALTH', 4100, '/clinic/billing-master', '💰', 5),
     
     ('Appointments', 'APPOINTMENT_MGMT', 'HEALTH', 4200, '/clinic/appointments', '📅', 1),
-    ('Prescriptions', 'PRESCRIPTION_MGMT', 'HEALTH', 4200, '/clinic/prescriptions', '💊', 2),
-    ('History', 'MEDICAL_RECORDS', 'HEALTH', 4200, '/clinic/medical-records', '📁', 3),
+    ('Records', 'MEDICAL_RECORDS', 'HEALTH', 4200, '/clinic/medical-records', '📁', 2),
+    ('Prescriptions', 'PRESCRIPTION_MGMT', 'HEALTH', 4200, '/clinic/prescriptions', '💊', 3),
+    ('Invoices', 'APPOINTMENT_INVOICE', 'HEALTH', 4200, '/health/appointment-invoice', '📋', 4),
+    
     
     ('Orders', 'TEST_ORDER_MGMT', 'HEALTH', 4300, '/diagnostic/test-order', '📝', 1),
     ('Invoices', 'TEST_INVOICE_MGMT', 'HEALTH', 4300, '/health/test-invoice', '💰', 2),

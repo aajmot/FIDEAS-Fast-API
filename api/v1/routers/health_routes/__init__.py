@@ -2,6 +2,7 @@ from . import testcategories_route
 
 __all__ = [
     'appointments_route',
+    'appointment_invoices_route',
     'billing_masters_route',
     'doctors_route',
     'invoices_route',

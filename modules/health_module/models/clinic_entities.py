@@ -81,6 +81,15 @@ class Appointment(Base):
     reason = Column(Text)
     notes = Column(Text)
     
+    medical_record_generated = Column(Boolean, default=False)
+    medical_record_id = Column(Integer)
+    prescription_generated = Column(Boolean, default=False)
+    prescription_id = Column(Integer)
+    appointment_invoice_generated = Column(Boolean, default=False)
+    appointment_invoice_id = Column(Integer)
+    test_order_generated = Column(Boolean, default=False)
+    test_order_id = Column(Integer)
+    
     created_at = Column(DateTime, default=datetime.utcnow)
     created_by = Column(String(100), default='system')
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -96,17 +105,27 @@ class MedicalRecord(Base):
     __tablename__ = 'medical_records'
     
     id = Column(Integer, primary_key=True)
-    record_number = Column(String(50), unique=True, nullable=False)
+    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    branch_id = Column(Integer, ForeignKey('branches.id'))
     appointment_id = Column(Integer, ForeignKey('appointments.id'), nullable=False)
+    record_number = Column(String(50), unique=True, nullable=False)
     visit_date = Column(DateTime, default=datetime.utcnow)
+    patient_id = Column(Integer, ForeignKey('patients.id'), nullable=False)
+    patient_name = Column(String(100))
+    doctor_id = Column(Integer, ForeignKey('doctors.id'), nullable=False)
+    doctor_name = Column(String(100))
     chief_complaint = Column(Text)
     diagnosis = Column(Text)
     treatment_plan = Column(Text)
-    vital_signs = Column(Text)  # JSON format: {"bp": "120/80", "temp": "98.6", "pulse": "72"}
+    vital_signs = Column(Text)
     lab_results = Column(Text)
     notes = Column(Text)
-    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(100), default='system')
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_by = Column(String(100), default='system')
+    is_active = Column(Boolean, default=True)
+    is_deleted = Column(Boolean, default=False)
     
     appointment = relationship("Appointment", back_populates="medical_records")
 
@@ -114,14 +133,25 @@ class Prescription(Base):
     __tablename__ = 'prescriptions'
     
     id = Column(Integer, primary_key=True)
-    prescription_number = Column(String(50), unique=True, nullable=False)
-    patient_id = Column(Integer, ForeignKey('patients.id'), nullable=False)
-    doctor_id = Column(Integer, ForeignKey('doctors.id'), nullable=False)
-    appointment_id = Column(Integer, ForeignKey('appointments.id'))
-    prescription_date = Column(DateTime, default=datetime.utcnow)
-    instructions = Column(Text)
     tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    branch_id = Column(Integer, ForeignKey('branches.id'))
+    appointment_id = Column(Integer, ForeignKey('appointments.id'), nullable=False)
+    prescription_number = Column(String(50), unique=True, nullable=False)
+    prescription_date = Column(DateTime, default=datetime.utcnow)
+    patient_id = Column(Integer, ForeignKey('patients.id'), nullable=False)
+    patient_name = Column(String(100))
+    patient_phone = Column(String(20))
+    doctor_id = Column(Integer, ForeignKey('doctors.id'), nullable=False)
+    doctor_name = Column(String(100))
+    doctor_license_number = Column(String(50))
+    instructions = Column(Text)
+    notes = Column(Text)
     created_at = Column(DateTime, default=datetime.utcnow)
+    created_by = Column(String(100), default='system')
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_by = Column(String(100), default='system')
+    is_active = Column(Boolean, default=True)
+    is_deleted = Column(Boolean, default=False)
     
     patient = relationship("Patient", back_populates="prescriptions")
     doctor = relationship("Doctor", back_populates="prescriptions")
@@ -133,8 +163,10 @@ class PrescriptionItem(Base):
     __tablename__ = 'prescription_items'
     
     id = Column(Integer, primary_key=True)
+    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    branch_id = Column(Integer, ForeignKey('branches.id'))
     prescription_id = Column(Integer, ForeignKey('prescriptions.id'), nullable=False)
-    product_id = Column(Integer, ForeignKey('products.id'), nullable=False)  # Reuse from inventory
+    product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
     product_name = Column(String(200))
     dosage = Column(String(100))
     frequency = Column(String(100))
@@ -145,6 +177,7 @@ class PrescriptionItem(Base):
     created_by = Column(String(100))
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     updated_by = Column(String(100))
+    is_active = Column(Boolean, default=True)
     is_deleted = Column(Boolean, default=False)
     
     prescription = relationship("Prescription", back_populates="prescription_items")
@@ -153,8 +186,9 @@ class PrescriptionTestItem(Base):
     __tablename__ = 'prescription_test_items'
     
     id = Column(Integer, primary_key=True)
-    prescription_id = Column(Integer, ForeignKey('prescriptions.id'), nullable=False)
     tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
+    branch_id = Column(Integer, ForeignKey('branches.id'))
+    prescription_id = Column(Integer, ForeignKey('prescriptions.id'), nullable=False)
     test_id = Column(Integer, ForeignKey('tests.id'), nullable=False)
     test_name = Column(String(200))
     instructions = Column(Text)
@@ -162,6 +196,7 @@ class PrescriptionTestItem(Base):
     created_by = Column(String(100))
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     updated_by = Column(String(100))
+    is_active = Column(Boolean, default=True)
     is_deleted = Column(Boolean, default=False)
     
     prescription = relationship("Prescription", back_populates="prescription_test_items")

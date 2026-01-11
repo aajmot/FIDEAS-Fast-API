@@ -112,6 +112,7 @@ try:
     # import health routes (grouped under health_routes package)
     from api.v1.routers.health_routes import (
         appointments_route,
+        appointment_invoices_route,
         billing_masters_route,
         doctors_route,
         invoices_route as health_invoices_route,
@@ -129,6 +130,7 @@ try:
     )
 except Exception:
     appointments_route = types.SimpleNamespace(router=APIRouter())
+    appointment_invoices_route = types.SimpleNamespace(router=APIRouter())
     billing_masters_route = types.SimpleNamespace(router=APIRouter())
     doctors_route = types.SimpleNamespace(router=APIRouter())
     health_invoices_route = types.SimpleNamespace(router=APIRouter())
@@ -288,6 +290,7 @@ app.include_router(dashboard_route.router, prefix="/api/v1/dashboard", tags=["da
 
 #region health routes
 app.include_router(appointments_route.router, prefix="/api/v1/health", tags=["health-appointments v1"], dependencies=[Depends(get_current_user)])
+app.include_router(appointment_invoices_route.router, prefix="/api/v1/health", tags=["health-appointment-invoices v1"], dependencies=[Depends(get_current_user)])
 app.include_router(billing_masters_route.router, prefix="/api/v1/health", tags=["health-billing v1"], dependencies=[Depends(get_current_user)])
 app.include_router(doctors_route.router, prefix="/api/v1/health", tags=["health-doctors v1"], dependencies=[Depends(get_current_user)])
 app.include_router(health_invoices_route.router, prefix="/api/v1/health", tags=["health-invoices v1"], dependencies=[Depends(get_current_user)])

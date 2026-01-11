@@ -269,8 +269,8 @@ class TestInvoiceService:
                 # Handle Statuses
                 if status:
                     query = query.filter(TestInvoice.status.in_(status) if isinstance(status, list) else TestInvoice.status == status)
-                else:
-                    query = query.filter(TestInvoice.status == "POSTED")
+                # else:
+                #     query = query.filter(TestInvoice.status == "POSTED")
 
                 if payment_status:
                     query = query.filter(TestInvoice.payment_status.in_(payment_status) if isinstance(payment_status, list) else TestInvoice.payment_status == payment_status)

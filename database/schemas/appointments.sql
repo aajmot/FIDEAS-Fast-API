@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS public.appointments (
     patient_name           VARCHAR(100),
     patient_phone          VARCHAR(20),
 
-
     doctor_id              INTEGER NOT NULL 
                            REFERENCES public.doctors(id) ON DELETE RESTRICT,
     doctor_name            VARCHAR(100),
@@ -41,6 +40,19 @@ CREATE TABLE IF NOT EXISTS public.appointments (
     -- Details
     reason                 TEXT,
     notes                  TEXT,
+
+    -- Generated Documents (no FK to avoid circular dependency - child tables reference appointments)
+    medical_record_generated    BOOLEAN DEFAULT FALSE,
+    medical_record_id           INTEGER,
+
+    prescription_generated      BOOLEAN DEFAULT FALSE,
+    prescription_id             INTEGER,
+
+    appointment_invoice_generated BOOLEAN DEFAULT FALSE,
+    appointment_invoice_id      INTEGER,
+
+    test_order_generated        BOOLEAN DEFAULT FALSE,
+    test_order_id               INTEGER,
 
     -- Audit
     created_at             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -63,3 +75,7 @@ CREATE INDEX idx_appointments_doctor ON public.appointments(doctor_id);
 CREATE INDEX idx_appointments_agency ON public.appointments(agency_id);
 CREATE INDEX idx_appointments_date ON public.appointments(appointment_date);
 CREATE INDEX idx_appointments_status ON public.appointments(status);
+CREATE INDEX idx_appointments_medical_record ON public.appointments(medical_record_id);
+CREATE INDEX idx_appointments_prescription ON public.appointments(prescription_id);
+CREATE INDEX idx_appointments_invoice ON public.appointments(appointment_invoice_id);
+CREATE INDEX idx_appointments_test_order ON public.appointments(test_order_id);

@@ -18,3 +18,47 @@
 - All payment responses now include party_name and party_phone fields
 - Advance payment endpoint (/payments/advance/customer) now requires party_name and party_phone
 - Invoice payment endpoint (/payments/invoice) now requires party_name and party_phone
+
+
+## [Appointment Invoice API] - 2026-01-10
+
+### Added
+- **Appointment Invoice Entity** (`appointment_invoice_entity.py`)
+  - AppointmentInvoice model with full tax breakdown (CGST/SGST/IGST/CESS)
+  - AppointmentInvoiceItem model with line-level tax calculations
+  - Generated columns for total_tax_amount and balance_amount
+  - Denormalized patient and doctor information for invoice records
+
+- **Appointment Invoice Schema** (`appointment_invoice_schema.py`)
+  - AppointmentInvoiceCreateSchema with validation
+  - AppointmentInvoiceUpdateSchema for partial updates
+  - AppointmentInvoiceItemSchema for line items
+  - Status enums: AppointmentInvoiceStatus, AppointmentInvoicePaymentStatus
+
+- **Appointment Invoice Service** (`appointment_invoice_service.py`)
+  - create(): Creates invoice with items and updates appointment table in same transaction
+  - get_by_id(): Retrieves invoice with items and appointment details
+  - get_all(): Paginated list with filtering by patient, doctor, appointment, status
+  - update(): Updates invoice fields
+  - delete(): Soft delete invoice
+  - Automatic voucher creation when status is POSTED
+  - Transaction-safe appointment status update (appointment_invoice_generated, appointment_invoice_id)
+
+- **Appointment Invoice Routes** (`appointment_invoices_route.py`)
+  - POST /api/v1/health/appointment-invoices - Create invoice
+  - GET /api/v1/health/appointment-invoices/{id} - Get by ID with optional barcode
+  - GET /api/v1/health/appointment-invoices - List with pagination and filters
+  - PUT /api/v1/health/appointment-invoices/{id} - Update invoice
+  - DELETE /api/v1/health/appointment-invoices/{id} - Soft delete
+
+### Changed
+- Updated appointments.sql schema with invoice tracking fields (already present)
+- Registered appointment_invoices_route in main.py health routes section
+- Added appointment_invoices_route to health_routes __init__.py
+
+### Technical Details
+- Invoice creation validates appointment exists and not already invoiced
+- Single transaction ensures appointment table updated atomically with invoice creation
+- Follows same pattern as test_invoice implementation
+- Supports Indian GST compliance with split tax calculations
+- Includes barcode/QR code generation support

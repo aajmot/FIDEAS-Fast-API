@@ -2,6 +2,7 @@ from core.database.connection import db_manager
 from modules.health_module.models.clinic_entities import MedicalRecord, Patient, Doctor
 from modules.health_module.services.patient_service import PatientService
 from modules.health_module.services.doctor_service import DoctorService
+from modules.health_module.services.appointment_service import AppointmentService
 from core.shared.utils.logger import logger
 from datetime import datetime
 import csv
@@ -20,6 +21,11 @@ class MedicalRecordService:
                 tenant_id = record_data.get('tenant_id')
                 if not tenant_id:
                     raise ValueError("tenant_id is required")
+                
+                appointment_id = record_data.get('appointment_id')
+                if not appointment_id:
+                    raise ValueError("appointment_id is required")
+                
                 record_number = f"MR-{tenant_id}{timestamp}"
                 
                 # Remove id and record_number from record_data if present to avoid conflicts
@@ -31,10 +37,16 @@ class MedicalRecordService:
                 )
                 session.add(record)
                 session.flush()
-                record_id = record.id  # Access id while session is active
+                record_id = record.id
+                
+                # Update appointment with medical record status in same transaction
+                appointment_service = AppointmentService()
+                created_by = record_data.get('created_by', 'system')
+                appointment_service.update_medical_record_status(appointment_id, record_id, created_by, session)
+                
                 logger.info(f"Medical record created: {record.record_number}", self.logger_name)
-                session.expunge(record)  # Detach from session
-                record.id = record_id  # Set id on detached object
+                session.expunge(record)
+                record.id = record_id
                 return record
         except Exception as e:
             logger.error(f"Error creating medical record: {str(e)}", self.logger_name)

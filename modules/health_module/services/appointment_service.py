@@ -56,14 +56,35 @@ class AppointmentService:
             logger.error(f"Error creating appointment: {str(e)}", self.logger_name)
             raise
     
-    def get_all(self, tenant_id=None, search=None, offset=0, limit=10):
+    def get_all(self, tenant_id=None, search=None, offset=0, limit=10, 
+                medical_record_generated=None, 
+                prescription_generated=None, 
+                appointment_invoice_generated=None, 
+                test_order_generated=None):
         try:
             with db_manager.get_session() as session:
-                query = session.query(Appointment).filter(Appointment.is_deleted == False)
+                # 1. Base query: always exclude deleted records
+                query = session.query(Appointment).filter(Appointment.tenant_id==tenant_id,Appointment.is_deleted == False)
                 
-                if tenant_id is not None:
-                    query = query.filter(Appointment.tenant_id == tenant_id)
+                # # 2. Tenant filtering
+                # if tenant_id is not None:
+                #     query = query.filter(Appointment.tenant_id == tenant_id)
                 
+                # 3. Boolean Flag Filtering
+                # We use "is not None" so that False values are treated as valid filters
+                filters = {
+                    "medical_record_generated": medical_record_generated,
+                    "prescription_generated": prescription_generated,
+                    "appointment_invoice_generated": appointment_invoice_generated,
+                    "test_order_generated": test_order_generated
+                }
+
+                for field, value in filters.items():
+                    if value is not None:
+                        # Dynamically apply the filter based on the field name
+                        query = query.filter(getattr(Appointment, field) == value)
+
+                # 4. Global Search Filter
                 if search:
                     from sqlalchemy import or_
                     query = query.filter(or_(
@@ -73,16 +94,18 @@ class AppointmentService:
                         Appointment.status.ilike(f"%{search}%")
                     ))
                 
+                # 5. Sorting and Pagination
                 query = query.order_by(Appointment.appointment_date.desc(), Appointment.appointment_time.desc())
                 
                 total = query.count()
                 appointments = query.offset(offset).limit(limit).all()
                 
                 return {'appointments': appointments, 'total': total}
+                
         except Exception as e:
             logger.error(f"Error fetching appointments: {str(e)}", self.logger_name)
             raise
-    
+        
     def get_by_date(self, appointment_date, tenant_id=None):
         try:
             with db_manager.get_session() as session:
@@ -176,7 +199,85 @@ class AppointmentService:
             logger.error(f"Error deleting appointment: {str(e)}", self.logger_name)
             raise
     
-    def export_template(self):
+    def update_medical_record_status(self, appointment_id: int, medical_record_id: int, updated_by: str = 'system', session=None) -> bool:
+        """Update appointment with medical record generation status"""
+        try:
+            if session:
+                # Use provided session (same transaction)
+                appointment = session.query(Appointment).filter(
+                    Appointment.id == appointment_id,
+                    Appointment.is_deleted == False
+                ).first()
+                
+                if not appointment:
+                    raise ValueError(f"Appointment {appointment_id} not found")
+                
+                appointment.medical_record_generated = True
+                appointment.medical_record_id = medical_record_id
+                appointment.updated_by = updated_by
+                appointment.updated_at = datetime.utcnow()
+                # No flush needed - will commit with parent transaction
+                logger.info(f"Appointment {appointment.appointment_number} updated with medical record {medical_record_id}", self.logger_name)
+                return True
+            else:
+                # Create new session
+                with db_manager.get_session() as new_session:
+                    appointment = new_session.query(Appointment).filter(
+                        Appointment.id == appointment_id,
+                        Appointment.is_deleted == False
+                    ).first()
+                    
+                    if not appointment:
+                        raise ValueError(f"Appointment {appointment_id} not found")
+                    
+                    appointment.medical_record_generated = True
+                    appointment.medical_record_id = medical_record_id
+                    appointment.updated_by = updated_by
+                    appointment.updated_at = datetime.utcnow()
+                    # Commit happens automatically via context manager
+                    logger.info(f"Appointment {appointment.appointment_number} updated with medical record {medical_record_id}", self.logger_name)
+                    return True
+        except Exception as e:
+            logger.error(f"Error updating appointment medical record status: {str(e)}", self.logger_name)
+            raise
+    
+    def update_prescription_status(self, appointment_id: int, prescription_id: int, updated_by: str = 'system', session=None) -> bool:
+        """Update appointment with prescription generation status"""
+        try:
+            if session:
+                appointment = session.query(Appointment).filter(
+                    Appointment.id == appointment_id,
+                    Appointment.is_deleted == False
+                ).first()
+                
+                if not appointment:
+                    raise ValueError(f"Appointment {appointment_id} not found")
+                
+                appointment.prescription_generated = True
+                appointment.prescription_id = prescription_id
+                appointment.updated_by = updated_by
+                appointment.updated_at = datetime.utcnow()
+                logger.info(f"Appointment {appointment.appointment_number} updated with prescription {prescription_id}", self.logger_name)
+                return True
+            else:
+                with db_manager.get_session() as new_session:
+                    appointment = new_session.query(Appointment).filter(
+                        Appointment.id == appointment_id,
+                        Appointment.is_deleted == False
+                    ).first()
+                    
+                    if not appointment:
+                        raise ValueError(f"Appointment {appointment_id} not found")
+                    
+                    appointment.prescription_generated = True
+                    appointment.prescription_id = prescription_id
+                    appointment.updated_by = updated_by
+                    appointment.updated_at = datetime.utcnow()
+                    logger.info(f"Appointment {appointment.appointment_number} updated with prescription {prescription_id}", self.logger_name)
+                    return True
+        except Exception as e:
+            logger.error(f"Error updating appointment prescription status: {str(e)}", self.logger_name)
+            raise
         """Generate CSV template for appointment import"""
         template_data = [
             ['Patient Name', 'Patient Phone', 'Doctor Name', 'Doctor Phone', 'Appointment Date', 'Appointment Time', 'Duration Minutes', 'Status', 'Reason', 'Notes'],

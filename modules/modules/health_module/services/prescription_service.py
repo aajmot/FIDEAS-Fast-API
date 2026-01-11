@@ -1,5 +1,5 @@
 from core.database.connection import db_manager
-from modules.clinic_module.models.entities import Prescription, PrescriptionItem, PrescriptionTestItem
+from modules.health_module.models.clinic_entities import Prescription, PrescriptionItem, PrescriptionTestItem
 from modules.inventory_module.services.inventory_service import InventoryService
 from core.shared.utils.logger import logger
 from datetime import datetime
