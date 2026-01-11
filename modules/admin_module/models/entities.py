@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Text, UniqueConstraint
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, Text, UniqueConstraint, ARRAY
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from core.database.connection import Base
@@ -211,17 +211,23 @@ class TenantSetting(Base):
     
     id = Column(Integer, primary_key=True)
     tenant_id = Column(Integer, ForeignKey('tenants.id', ondelete='CASCADE'), nullable=False)
-    setting = Column(Text, nullable=False)
-    description = Column(Text)
-    value_type = Column(Text, default='BOOLEAN')
-    value = Column(Text, default='TRUE')
+    
+    # Feature Flags
+    enable_inventory = Column(Boolean, nullable=False, default=True)
+    enable_gst = Column(Boolean, nullable=False, default=True)
+    enable_bank_entry = Column(Boolean, nullable=False, default=True)
+    
+    # Configurations
+    base_currency = Column(Text, nullable=False, default='INR')
+    
+    # Payment Modes
+    payment_modes = Column(ARRAY(Text), nullable=False, default=['CASH', 'UPI'])
+    default_payment_mode = Column(Text, nullable=False, default='CASH')
+    
+    # Metadata
     created_at = Column(DateTime, default=datetime.utcnow)
-    created_by = Column(String(100))
+    created_by = Column(Text)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    updated_by = Column(String(100))
+    updated_by = Column(Text)
     
     tenant = relationship("Tenant", back_populates="settings")
-    
-    __table_args__ = (
-        UniqueConstraint('tenant_id', 'setting', name='uq_tenant_setting'),
-    )

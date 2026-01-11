@@ -78,7 +78,7 @@ class BarcodeGenerator:
                 box_size=box_size,
                 border=border
             )
-            qr.add_data("http://localhost:8000/public"+data)
+            qr.add_data(data)
             qr.make(fit=True)
             
             img = qr.make_image(fill_color="black", back_color="white")

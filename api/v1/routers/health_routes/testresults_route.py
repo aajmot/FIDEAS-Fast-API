@@ -28,6 +28,7 @@ async def get_test_result(result_id: int, current_user: dict = Depends(get_curre
             "id": result.id,
             "result_number": result.result_number,
             "test_order_id": result.test_order_id,
+            "qr_code": getattr(result, 'qr_code', None),
             "result_date": result.result_date.isoformat() if result.result_date else None,
             "overall_report": result.overall_report,
             "performed_by": result.performed_by,

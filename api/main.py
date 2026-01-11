@@ -146,6 +146,12 @@ except Exception:
     tests_route = types.SimpleNamespace(router=APIRouter())
     testinvoices_route = types.SimpleNamespace(router=APIRouter())
 
+try:
+    # import public routes
+    from api.v1.routers.public_routes import test_results_public_route
+except Exception:
+    test_results_public_route = types.SimpleNamespace(router=APIRouter())
+
 def _load_optional(name, module_path="api.v1.routers"):
     try:
         module = __import__(module_path, fromlist=[name])
@@ -317,6 +323,10 @@ app.include_router(notifications_route.router, prefix="/api/v1/notifications", t
 app.include_router(fixed_assets.router, prefix="/api/v1/asset", tags=["asset-fixed-assets v1"], dependencies=[Depends(get_current_user)])
 
 #endregion asset routes
+
+#region public routes
+app.include_router(test_results_public_route.router, prefix="/api/public/v1/health", tags=["public"])
+#endregion public routes
 
 #region people routes
 app.include_router(departments_route.router, prefix="/api/v1/people", tags=["people-departments v1"], dependencies=[Depends(get_current_user)])

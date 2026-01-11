@@ -1,6 +1,9 @@
 from core.database.connection import db_manager
 from modules.health_module.models.diagnostic_entities import TestResult, TestResultDetail, TestResultFile, TestOrder
+from modules.admin_module.models.entities import Tenant
 from core.shared.utils.logger import logger
+from core.shared.utils.barcode_utils import BarcodeGenerator
+from core.shared.utils.crypto_utils import crypto_utils
 from datetime import datetime
 from sqlalchemy import or_
 import math
@@ -62,6 +65,13 @@ class TestResultService:
                 result = query.first()
                 if result:
                     session.expunge(result)
+                    try:
+                        # Generate QR code URL using crypto_utils
+                        qr_data = crypto_utils.generate_test_result_url(result.result_number)
+                        result.qr_code = BarcodeGenerator.generate_qr_code(qr_data)
+                    except Exception as qr_error:
+                        logger.error(f"QR code generation failed: {str(qr_error)}", self.logger_name)
+                        result.qr_code = None
                 return result
         except Exception as e:
             logger.error(f"Error fetching test result: {str(e)}", self.logger_name)
@@ -174,6 +184,40 @@ class TestResultService:
         except Exception as e:
             logger.error(f"Error fetching test results by order: {str(e)}", self.logger_name)
             return []
+    
+    def get_by_result_number(self, result_number: str):
+        """Get test result with tenant and test_order data (public access)"""
+        try:
+            with db_manager.get_session() as session:
+                result = session.query(TestResult).join(
+                    TestOrder, TestResult.test_order_id == TestOrder.id
+                ).filter(
+                    TestResult.result_number == result_number,
+                    TestResult.is_deleted == False
+                ).first()
+                
+                if result:
+                    # Get test_order and tenant
+                    test_order = session.query(TestOrder).filter(
+                        TestOrder.id == result.test_order_id
+                    ).first()
+                    
+                    tenant = session.query(Tenant).filter(
+                        Tenant.id == result.tenant_id
+                    ).first()
+                    
+                    session.expunge(result)
+                    if test_order:
+                        session.expunge(test_order)
+                        result.test_order = test_order
+                    if tenant:
+                        session.expunge(tenant)
+                        result.tenant = tenant
+                    
+                return result
+        except Exception as e:
+            logger.error(f"Error fetching test result by result_number: {str(e)}", self.logger_name)
+            return None
     
     def get_paginated(self, tenant_id, page, per_page, search=None):
         try:

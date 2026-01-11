@@ -34,3 +34,6 @@ coverage>=7.2.0
 # Barcode and QR code generation
 python-barcode>=0.15.1
 qrcode[pil]>=7.4.2
+
+# Encryption
+cryptography>=41.0.0

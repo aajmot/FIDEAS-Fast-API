@@ -62,3 +62,49 @@
 - Follows same pattern as test_invoice implementation
 - Supports Indian GST compliance with split tax calculations
 - Includes barcode/QR code generation support
+
+
+## [Public Test Results API] - 2026-01-11
+
+### Added
+- **Crypto Utility** (`core/shared/utils/crypto_utils.py`)
+  - CryptoUtils class for encrypting/decrypting sensitive data
+  - Uses Fernet symmetric encryption with SECRET_KEY from environment
+  - encrypt() method returns base64 encoded encrypted string
+  - decrypt() method returns decrypted string or None on failure
+
+- **Test Result Service Enhancement** (`test_result_service.py`)
+  - get_by_result_number(): Fetches test result by result_number with barcode from test_order
+  - Joins TestResult with TestOrder to retrieve barcode_data
+  - Public access method without tenant_id filtering
+
+- **Public Test Results Route** (`api/v1/routers/public_routes/test_results_public_route.py`)
+  - GET /api/public/v1/health/test-results/{encrypted_result_no}
+  - Decrypts encrypted result_no to get actual result_number
+  - Returns test result details with barcode_data, details, and files
+  - No authentication required (public endpoint)
+  - Tagged as "public" in Swagger documentation
+
+### Changed
+- Updated main.py to register public routes without authentication dependency
+- Added cryptography>=41.0.0 to requirements.txt
+
+### Technical Details
+- Encryption uses Fernet (symmetric encryption) with 32-byte key derived from SECRET_KEY
+- Barcode data retrieved from test_orders.barcode_data (generated column = test_order_number)
+- Public endpoint allows external systems to access test results via encrypted links
+- Error handling for invalid/expired encrypted tokens returns 400 Bad Request
+
+
+### Changed (2026-01-11)
+- **Test Result Service** (`test_result_service.py`)
+  - get_by_id() now generates and attaches QR code from test_order_number
+  - QR code generated using BarcodeGenerator.generate_qr_code()
+  - Returns base64 encoded QR code image in response
+
+- **Test Results Route** (`testresults_route.py`)
+  - GET /api/v1/health/testresults/{result_id} now includes qr_code field in response
+
+- QR code now contains full URL: WEB_APP_URL + "/public/health/test-result/" + encrypted_result_no
+- Uses crypto_utils to encrypt result_number for secure public access
+- WEB_APP_URL read from environment variable (defaults to http://localhost:3000)
