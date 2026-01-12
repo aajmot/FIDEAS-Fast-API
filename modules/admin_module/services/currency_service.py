@@ -6,6 +6,7 @@ from modules.account_module.models.entities import Voucher
 from modules.admin_module.models.currency import Currency, ExchangeRate
 
 class CurrencyService:
+
     @staticmethod
     def get_currencies(tenant_id: int) -> List[Dict]:
         with db_manager.get_session() as session:
@@ -121,3 +122,14 @@ class CurrencyService:
             current_rate = float(er.rate) if er and er.rate is not None else 0.0
 
             return amount * current_rate - amount * original_rate
+
+    @staticmethod
+    def get_currency_by_code(currency_code:str):
+        with db_manager.get_session() as session:
+            currency = session.query(Currency).filter(
+                Currency.code == currency_code
+            ).first()
+            if currency:
+                return currency
+            else:
+                return None
