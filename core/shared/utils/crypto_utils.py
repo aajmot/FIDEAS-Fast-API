@@ -3,6 +3,7 @@ import base64
 import os
 from typing import Optional
 
+
 class CryptoUtils:
     """Utility for encrypting/decrypting sensitive data"""
     
@@ -35,6 +36,13 @@ class CryptoUtils:
         encrypted_result_no = self.encrypt(result_number)
         web_app_url = os.getenv('WEB_APP_URL', 'http://localhost:3000')
         return f"{web_app_url}/public/health/test-result/{encrypted_result_no}"
+
+    def generate_appointment_invoice_url(self, number: str) -> str:
+        """Generate public URL for appointment invoice with encrypted number"""
+        encrypted_data = self.encrypt(number)
+        web_app_url = os.getenv('WEB_APP_URL', 'http://localhost:3000')
+        return f"{web_app_url}/public/health/appointment-invoice/{encrypted_data}"
+
 
 # Singleton instance
 crypto_utils = CryptoUtils()

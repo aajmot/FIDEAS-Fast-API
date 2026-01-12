@@ -9,6 +9,7 @@ from fastapi import HTTPException
 from sqlalchemy import or_
 from sqlalchemy.orm import joinedload, selectinload
 import math
+from core.shared.utils.crypto_utils import crypto_utils
 
 class AppointmentInvoiceService:
     def __init__(self):
@@ -287,8 +288,12 @@ class AppointmentInvoiceService:
                 if include_barcode:
                     from core.shared.utils.barcode_utils import BarcodeGenerator
                     try:
-                        qr_data = f"/appointment-invoice?INVOICE={invoice.invoice_number}"
+                        # qr_data = f"/appointment-invoice?INVOICE={invoice.invoice_number}"
+                        # result["qr_code"] = BarcodeGenerator.generate_qr_code(crypto)
+                        print("=======",invoice.invoice_number)
+                        qr_data = crypto_utils.generate_appointment_invoice_url(invoice.invoice_number)
                         result["qr_code"] = BarcodeGenerator.generate_qr_code(qr_data)
+                        
                     except Exception as e:
                         logger.error(f"Barcode generation failed: {str(e)}", self.logger_name)
                         result["qr_code"] = None
