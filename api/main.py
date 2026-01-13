@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 import os
 from dotenv import load_dotenv
 
-from api.v1.routers.dashboards_routes import dashboard_route
+from api.v1.routers.dashboards_routes import dashboard_route, health_dashboard_route
 from api.v1.routers.inventory_routes import batch_management_route, order_commission_route, warehouse_route
 from api.v1.routers.notification_routes import notifications_route
 from api.v1.routers.inventory_routes import (
@@ -292,6 +292,7 @@ app.include_router(account_types_route.router, prefix="/api/v1/account", tags=["
 
 #region dashboard routes
 app.include_router(dashboard_route.router, prefix="/api/v1/dashboard", tags=["dashboard-dashboard v1"], dependencies=[Depends(get_current_user)])
+app.include_router(health_dashboard_route.router, prefix="/api/v1/dashboard/health", tags=["dashboard-health v1"], dependencies=[Depends(get_current_user)])
 #endregion dashboard routes
 
 #region health routes
