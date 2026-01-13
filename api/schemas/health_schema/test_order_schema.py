@@ -1,7 +1,20 @@
+from enum import Enum
 from pydantic import BaseModel, Field, validator
 from typing import Optional, List
 from datetime import datetime
 from decimal import Decimal
+
+
+class TestOrderStatus(str, Enum):
+    DRAFT = 'DRAFT'
+    POSTED = 'POSTED'
+    ORDERED='ORDERED'
+    SAMPLE_COLLECTED='SAMPLE_COLLECTED'
+    IN_PROGRESS='IN_PROGRESS'
+    COMPLETED='COMPLETED' 
+    CANCELLED='CANCELLED'
+    REPORTED='REPORTED'
+
 
 class TestOrderItemSchema(BaseModel):
     line_no: int = Field(..., gt=0)

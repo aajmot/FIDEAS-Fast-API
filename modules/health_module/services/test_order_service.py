@@ -1,9 +1,10 @@
 from core.database.connection import db_manager
+from modules.health_module.models.test_invoice_entity import TestInvoice
 from modules.health_module.models.test_order_entity import TestOrder, TestOrderItem
 from core.shared.utils.logger import logger
 from datetime import datetime
 from fastapi import HTTPException
-from sqlalchemy import or_
+from sqlalchemy import or_, and_, exists
 import math
 
 class TestOrderService:
@@ -147,68 +148,94 @@ class TestOrderService:
             logger.error(f"Error fetching test order items: {str(e)}", self.logger_name)
             return []
     
-    def get_paginated(self, tenant_id, page, per_page, search=None):
+    def get_paginated(self, tenant_id, page, per_page, search=None, status=None, invoice_generated=None):
         try:
             with db_manager.get_session() as session:
+                # 1. Base Query
                 query = session.query(TestOrder).filter(
                     TestOrder.tenant_id == tenant_id,
                     TestOrder.is_deleted == False
-                ).order_by(TestOrder.id.desc())
-                
+                )
+
+                # 2. Filter by Status (String)
+                if status:
+                    # If status is passed as a single string, wrap it in a list
+                    if isinstance(status, str):
+                        status = [status]
+                    query = query.filter(TestOrder.status.in_(status))
+
+                # 3. Filter by Invoice Generated (Boolean)
+                if invoice_generated is not None:
+                    # Subquery to check for existing, non-deleted invoices
+                    invoice_exists = exists().where(
+                        and_(
+                            TestInvoice.test_order_id == TestOrder.id,
+                            TestInvoice.is_deleted == False
+                        )
+                    )
+                    if invoice_generated is True:
+                        query = query.filter(invoice_exists)
+                    else:
+                        query = query.filter(~invoice_exists)
+
+                # 4. Search Filter
                 if search:
                     query = query.filter(or_(
                         TestOrder.test_order_number.ilike(f"%{search}%"),
                         TestOrder.patient_name.ilike(f"%{search}%"),
                         TestOrder.doctor_name.ilike(f"%{search}%")
                     ))
-                
+
+                # 5. Order and Pagination
+                query = query.order_by(TestOrder.id.desc())
                 total = query.count()
                 offset = (page - 1) * per_page
                 orders = query.offset(offset).limit(per_page).all()
-                
+
+                # 6. Data Mapping
                 order_data = [{
-                "id": order.id,
-                "test_order_number": order.test_order_number,
-                "appointment_id": order.appointment_id,
-                "patient_id": order.patient_id,
-                "patient_name": order.patient_name,
-                "patient_phone": order.patient_phone,
-                "doctor_id": order.doctor_id,
-                "doctor_name": order.doctor_name,
-                "doctor_phone": order.doctor_phone,
-                "doctor_license_number": order.doctor_license_number,
-                "order_date": order.order_date.isoformat() if order.order_date else None,
-                "status": order.status,
-                "urgency": order.urgency,
-                "notes": order.notes,
-                "tags": order.tags,
-                "agency_id": order.agency_id,
-                "subtotal_amount": float(order.subtotal_amount) if order.subtotal_amount else None,
-                "items_total_discount_amount": float(order.items_total_discount_amount) if order.items_total_discount_amount else None,
-                "taxable_amount": float(order.taxable_amount) if order.taxable_amount else None,
-                "cgst_amount": float(order.cgst_amount) if order.cgst_amount else None,
-                "sgst_amount": float(order.sgst_amount) if order.sgst_amount else None,
-                "igst_amount": float(order.igst_amount) if order.igst_amount else None,
-                "cess_amount": float(order.cess_amount) if order.cess_amount else None,
-                "overall_disc_percentage": float(order.overall_disc_percentage) if order.overall_disc_percentage else None,
-                "overall_disc_amount": float(order.overall_disc_amount) if order.overall_disc_amount else None,
-                "overall_cess_percentage": float(order.overall_cess_percentage) if order.overall_cess_percentage else None,
-                "overall_cess_amount": float(order.overall_cess_amount) if order.overall_cess_amount else None,
-                "roundoff": float(order.roundoff) if order.roundoff else None,
-                "final_amount": float(order.final_amount) if order.final_amount else None,
-                "is_active": order.is_active,
-                "created_at": order.created_at.isoformat() if order.created_at else None,
-                "created_by": order.created_by,
-                "updated_at": order.updated_at.isoformat() if order.updated_at else None,
-                "updated_by": order.updated_by,
+                    "id": order.id,
+                    "test_order_number": order.test_order_number,
+                    "appointment_id": order.appointment_id,
+                    "patient_id": order.patient_id,
+                    "patient_name": order.patient_name,
+                    "patient_phone": order.patient_phone,
+                    "doctor_id": order.doctor_id,
+                    "doctor_name": order.doctor_name,
+                    "doctor_phone": order.doctor_phone,
+                    "doctor_license_number": order.doctor_license_number,
+                    "order_date": order.order_date.isoformat() if order.order_date else None,
+                    "status": order.status,
+                    "urgency": order.urgency,
+                    "notes": order.notes,
+                    "tags": order.tags,
+                    "agency_id": order.agency_id,
+                    "subtotal_amount": float(order.subtotal_amount) if order.subtotal_amount else None,
+                    "items_total_discount_amount": float(order.items_total_discount_amount) if order.items_total_discount_amount else None,
+                    "taxable_amount": float(order.taxable_amount) if order.taxable_amount else None,
+                    "cgst_amount": float(order.cgst_amount) if order.cgst_amount else None,
+                    "sgst_amount": float(order.sgst_amount) if order.sgst_amount else None,
+                    "igst_amount": float(order.igst_amount) if order.igst_amount else None,
+                    "cess_amount": float(order.cess_amount) if order.cess_amount else None,
+                    "overall_disc_percentage": float(order.overall_disc_percentage) if order.overall_disc_percentage else None,
+                    "overall_disc_amount": float(order.overall_disc_amount) if order.overall_disc_amount else None,
+                    "overall_cess_percentage": float(order.overall_cess_percentage) if order.overall_cess_percentage else None,
+                    "overall_cess_amount": float(order.overall_cess_amount) if order.overall_cess_amount else None,
+                    "roundoff": float(order.roundoff) if order.roundoff else None,
+                    "final_amount": float(order.final_amount) if order.final_amount else None,
+                    "is_active": order.is_active,
+                    "created_at": order.created_at.isoformat() if order.created_at else None,
+                    "created_by": order.created_by,
+                    "updated_at": order.updated_at.isoformat() if order.updated_at else None,
+                    "updated_by": order.updated_by,
                 } for order in orders]
-                
+
                 return {
                     "data": order_data,
                     "total": total,
                     "page": page,
                     "per_page": per_page,
-                    "total_pages": math.ceil(total / per_page)
+                    "total_pages": math.ceil(total / per_page) if per_page > 0 else 0
                 }
         except Exception as e:
             logger.error(f"Error fetching paginated test orders: {str(e)}", self.logger_name)

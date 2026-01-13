@@ -1,9 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 import math
 
+from fastapi.params import Query
+
 from api.schemas.common import BaseResponse, PaginatedResponse, PaginationParams
-from api.schemas.health_schema.test_order_schema import TestOrderCreateSchema, TestOrderUpdateSchema
+from api.schemas.health_schema.test_order_schema import TestOrderCreateSchema, TestOrderStatus, TestOrderUpdateSchema
 from api.middleware.auth_middleware import get_current_user
 from modules.health_module.services.test_order_service import TestOrderService
 from modules.health_module.services.test_result_service import TestResultService
@@ -12,13 +14,19 @@ router = APIRouter()
 
 # Test Order endpoints
 @router.get("/testorders", response_model=PaginatedResponse)
-async def get_test_orders(pagination: PaginationParams = Depends(), current_user: dict = Depends(get_current_user)):
+async def get_test_orders(
+    #page: int = Query(1, ge=1),per_page: int = Query(10, ge=1, le=100),
+    pagination: PaginationParams = Depends(),
+    #search: Optional[str] = Query(None),
+    status: Optional[list[TestOrderStatus]]=Query(None),invoice_generated: Optional[bool]=Query(None),current_user: dict = Depends(get_current_user)):
     service = TestOrderService()
     result = service.get_paginated(
         tenant_id=current_user["tenant_id"],
         page=pagination.page,
         per_page=pagination.per_page,
-        search=pagination.search
+        search=pagination.search,
+        status=status,
+        invoice_generated=invoice_generated
     )
     
     return PaginatedResponse(
