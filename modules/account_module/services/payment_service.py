@@ -11,7 +11,9 @@ from sqlalchemy.orm import selectinload
 from modules.admin_module.models.entities import TenantSetting
 import math
 from modules.admin_module.services.tenant_settings_service import TenantSettingsService
-
+from modules.inventory_module.models.customer_entity import Customer
+from modules.inventory_module.models.supplier_entity import Supplier
+from modules.health_module.models.clinic_entities import Patient
 from modules.admin_module.services.currency_service import CurrencyService
 
 class PaymentService:
@@ -1511,112 +1513,101 @@ class PaymentService:
         return config.account_id
     
     def _get_or_create_party_account(self, session, tenant_id, party_type, party_id, username):
-        """Get or create account master for customer/vendor"""
-        if party_type == 'CUSTOMER':
-            from modules.inventory_module.models.customer_entity import Customer
-            
-            customer = session.query(Customer).filter(
-                Customer.id == party_id,
-                Customer.tenant_id == tenant_id,
-                Customer.is_active == True
-            ).first()
-            
-            if not customer:
-                raise ValueError(f"Customer with ID {party_id} not found")
-            
-            # Check if customer account exists
-            customer_account = session.query(AccountMaster).filter(
-                AccountMaster.tenant_id == tenant_id,
-                AccountMaster.system_code == f'CUSTOMER_{party_id}',
-                AccountMaster.is_deleted == False
-            ).first()
-            
-            if customer_account:
-                return customer_account.id
-            
-            # Create new customer account
-            asset_group = session.query(AccountGroup).filter(
-                AccountGroup.tenant_id == tenant_id,
-                AccountGroup.code == 'ASET',
-                AccountGroup.is_active == True
-            ).first()
-            
-            if not asset_group:
-                raise ValueError("ASSET account group not found")
-            
-            customer_code = f"AR-{party_id:06d}"
-            customer_account = AccountMaster(
-                tenant_id=tenant_id,
-                account_group_id=asset_group.id,
-                code=customer_code,
-                name=f"{customer.name} - Receivable",
-                description=f"Account receivable for customer {customer.name}",
-                system_code=f'CUSTOMER_{party_id}',
-                is_system_assigned=False,
-                opening_balance=Decimal(0),
-                current_balance=Decimal(0),
-                created_by=username,
-                updated_by=username
-            )
-            
-            session.add(customer_account)
-            session.flush()
-            return customer_account.id
-            
-        elif party_type == 'SUPPLIER':
-            from modules.inventory_module.models.supplier_entity import Supplier
-            
-            supplier = session.query(Supplier).filter(
-                Supplier.id == party_id,
-                Supplier.tenant_id == tenant_id,
-                Supplier.is_deleted == False
-            ).first()
-            
-            if not supplier:
-                raise ValueError(f"Supplier with ID {party_id} not found")
-            
-            # Check if vendor account exists
-            vendor_account = session.query(AccountMaster).filter(
-                AccountMaster.tenant_id == tenant_id,
-                AccountMaster.system_code == f'VENDOR_{party_id}',
-                AccountMaster.is_deleted == False
-            ).first()
-            
-            if vendor_account:
-                return vendor_account.id
-            
-            # Create new vendor account
-            liability_group = session.query(AccountGroup).filter(
-                AccountGroup.tenant_id == tenant_id,
-                AccountGroup.code == 'LIAB',
-                AccountGroup.is_active == True
-            ).first()
-            
-            if not liability_group:
-                raise ValueError("LIABILITY account group not found")
-            
-            vendor_code = f"AP-{party_id:06d}"
-            vendor_account = AccountMaster(
-                tenant_id=tenant_id,
-                account_group_id=liability_group.id,
-                code=vendor_code,
-                name=f"{supplier.name} - Payable",
-                description=f"Account payable for supplier {supplier.name}",
-                system_code=f'VENDOR_{party_id}',
-                is_system_assigned=False,
-                opening_balance=Decimal(0),
-                current_balance=Decimal(0),
-                created_by=username,
-                updated_by=username
-            )
-            
-            session.add(vendor_account)
-            session.flush()
-            return vendor_account.id
-        
-        else:
+        """Get or create account master for customer/vendor/patient"""
+        # 1. Define the configurations for each party type
+        configs = {
+            'CUSTOMER': {
+                'model': Customer,
+                'group_code': 'ASET',
+                'acc_type': 'REVENUE',
+                'sys_prefix': 'CUSTOMER',
+                'acc_prefix': 'AR',
+                'name_func': lambda obj: f"{obj.name} - Receivable",
+                'desc_func': lambda obj: f"Account receivable for customer {obj.name}",
+                'filter_attr': 'is_active'
+            },
+            'SUPPLIER': {
+                'model': Supplier,
+                'group_code': 'LIAB',
+                'acc_type': 'LIABILITY',
+                'sys_prefix': 'VENDOR',
+                'acc_prefix': 'AP',
+                'name_func': lambda obj: f"{obj.name} - Payable",
+                'desc_func': lambda obj: f"Account payable for supplier {obj.name}",
+                'filter_attr': 'is_deleted',
+                'filter_val': False
+            },
+            'PATIENT': {
+                'model': Patient,
+                'group_code': 'ASET',
+                'acc_type': 'REVENUE',
+                'sys_prefix': 'PATIENT',
+                'acc_prefix': 'PAR',
+                'name_func': lambda obj: f"{obj.first_name} {obj.last_name} - Receivable",
+                'desc_func': lambda obj: f"Account receivable for patient {obj.first_name} {obj.last_name}",
+                'filter_attr': 'is_active'
+            }
+        }
+
+        if party_type not in configs:
             raise ValueError(f"Unsupported party type: {party_type}")
-    
+
+        cfg = configs[party_type]
+        
+        # 2. Fetch the Entity (Customer/Supplier/Patient)
+        filter_val = cfg.get('filter_val', True)
+        entity = session.query(cfg['model']).filter(
+            cfg['model'].id == party_id,
+            cfg['model'].tenant_id == tenant_id,
+            getattr(cfg['model'], cfg['filter_attr']) == filter_val
+        ).first()
+
+        if not entity:
+            raise ValueError(f"{party_type.title()} with ID {party_id} not found")
+
+        # 3. Check if Account already exists
+        system_code = f"{cfg['sys_prefix']}_{party_id}"
+        account = session.query(AccountMaster).filter(
+            AccountMaster.tenant_id == tenant_id,
+            AccountMaster.system_code == system_code,
+            AccountMaster.is_deleted == False
+        ).first()
+
+        if account:
+            return account.id
+
+        # 4. Fetch Account Group
+        group = session.query(AccountGroup).filter(
+            AccountGroup.tenant_id == tenant_id,
+            AccountGroup.code == cfg['group_code'],
+            AccountGroup.is_active == True
+        ).first()
+
+        if not group:
+            raise ValueError(f"{cfg['group_code']} account group not found")
+
+        # 5. Create New Account
+        new_account = AccountMaster(
+            tenant_id=tenant_id,
+            account_group_id=group.id,
+            account_type=cfg['acc_type'],
+            code=f"{cfg['acc_prefix']}-{party_id:06d}",
+            name=cfg['name_func'](entity),
+            description=cfg['desc_func'](entity),
+            system_code=system_code,
+            is_system_account=False,
+            opening_balance=Decimal(0),
+            current_balance=Decimal(0),
+            created_by=username,
+            updated_by=username
+        )
+
+        session.add(new_account)
+        session.flush()
+        return new_account.id
+
+
+
     @ExceptionMiddleware.handle_exceptions("PaymentService")
     def create_invoice_payment(self, payment_data: dict):
         """Create payment for invoice with proper voucher entries"""
@@ -2198,6 +2189,16 @@ class PaymentService:
                     TestInvoice.id == invoice_id,
                     TestInvoice.tenant_id == tenant_id,
                     TestInvoice.is_deleted == False
+                ).first()
+                payment_type = 'RECEIPT'
+                party_type = 'PATIENT'
+                party_id_field = 'patient_id'
+            elif invoice_type == 'CLINIC':
+                from modules.health_module.models.appointment_invoice_entity import AppointmentInvoice
+                invoice = session.query(AppointmentInvoice).filter(
+                    AppointmentInvoice.id == invoice_id,
+                    AppointmentInvoice.tenant_id == tenant_id,
+                    AppointmentInvoice.is_deleted == False
                 ).first()
                 payment_type = 'RECEIPT'
                 party_type = 'PATIENT'
