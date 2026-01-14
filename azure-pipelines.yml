@@ -76,20 +76,24 @@ stages:
               # Collect minimal metadata
               created=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
               image_id=$(docker inspect --format='{{.Id}}' "$(imageName):$(SHORT_SHA)")
-              cat > "${META_PATH}" << 'JSON'
-              {
-                "imageName": "$(imageName)",
-                "tag": "$(SHORT_SHA)",
-                "buildNumber": "$(Build.BuildNumber)",
-                "sourceVersion": "$(Build.SourceVersion)",
-                "createdUtc": "CREATED_PLACEHOLDER",
-                "imageId": "IMAGE_ID_PLACEHOLDER"
-              }
-JSON
+              printf '%s\n' '{' \
+                '  "imageName": "'"$(imageName)"'",' \
+                '  "tag": "'"$(SHORT_SHA)"'",' \
+                '  "buildNumber": "'"$(Build.BuildNumber)"'",' \
+                '  "sourceVersion": "'"$(Build.SourceVersion)"'",' \
+                '  "createdUtc": "CREATED_PLACEHOLDER",' \
+                '  "imageId": "IMAGE_ID_PLACEHOLDER"' \
+              '}' > "${META_PATH}"
               # Replace placeholders with shell values
               sed -i "s/CREATED_PLACEHOLDER/${created}/" "${META_PATH}"
               sed -i "s/IMAGE_ID_PLACEHOLDER/${image_id}/" "${META_PATH}"
             displayName: Save image tar and metadata
+
+          - bash: |
+              set -euo pipefail
+              echo "> Validating JSON: $(Build.ArtifactStagingDirectory)/image-metadata.json"
+              python3 -m json.tool "$(Build.ArtifactStagingDirectory)/image-metadata.json" > /dev/null
+            displayName: Validate image-metadata.json
 
           - task: PublishBuildArtifacts@1
             displayName: Publish image artifact
