@@ -2008,19 +2008,14 @@ class PaymentService:
                     payment_type = 'RECEIPT'  # Default
                 
                 # Get base currency from tenant settings
-                base_currency = session.query(Currency).join(
-                    TenantSetting, 
-                    TenantSetting.value == Currency.code
-                ).filter(
-                    TenantSetting.tenant_id == tenant_id,
-                    TenantSetting.setting.ilike("base_currency"),
-                    TenantSetting.value_type.ilike("CURRENCY")
-                ).first()
-
-                
+                currency_code=TenantSettingsService().get_tenant_settings(tenant_id).get("base_currency",None)
+                if not currency_code:
+                    raise ValueError("No default currency found")
+                base_currency = CurrencyService.get_currency_by_code(currency_code)
                 if not base_currency:
                     raise ValueError("No active currency found")
                 
+                # Create payment header
                 payment = Payment(
                     tenant_id=tenant_id,
                     payment_number=payment_number,

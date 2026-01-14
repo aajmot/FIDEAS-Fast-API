@@ -1,3 +1,65 @@
+# Azure DevOps CI for FastAPI Docker Image (Artifact-Based)
+
+This repository includes `azure-pipelines.yml` to build a Docker image of the FastAPI service and publish it as a downloadable artifact (`.tar`), avoiding registry pushes.
+
+## What it does
+- Builds the Docker image using the `Dockerfile` at repo root.
+- Tags the image with:
+  - Short commit SHA (e.g., `abc1234`)
+  - Build number (e.g., `20260113.1`)
+- Saves the image to an artifact: `docker-image/fideas-fast-api-<build-number>.tar`.
+- Publishes minimal metadata (`image-metadata.json`) alongside the tar.
+
+## Prerequisites
+1. Azure DevOps project with Pipelines enabled.
+2. Default Microsoft-hosted Ubuntu agent pool (`ubuntu-latest`). No registry access required.
+
+## Configure variables
+Edit the top of `azure-pipelines.yml` if desired:
+- `imageName`: Base name for the image (defaults to `fideas-fast-api`).
+- `dockerfilePath`: Defaults to `Dockerfile`.
+- `buildContext`: Defaults to `.` (repo root).
+- `publishArtifactName`: Defaults to `docker-image`.
+- `imageTarFileName`: Defaults to `fideas-fast-api-$(Build.BuildNumber).tar`.
+
+## Triggers
+- Runs on pushes to `main`.
+- Runs for any Git tag (`refs/tags/*`).
+- PR validations for PRs into `main`.
+
+## Resulting artifacts
+Artifacts published by the pipeline:
+- `docker-image/fideas-fast-api-<build-number>.tar`
+- `docker-image/image-metadata.json`
+
+## Local testing (optional)
+```bash
+# Build locally (from repo root)
+docker build -t fideas-fast-api:dev -f Dockerfile .
+
+# Run locally
+docker run --rm -p 8000:8000 fideas-fast-api:dev
+
+# Load tar artifact (after downloading from pipeline)
+# Replace <build-number> with the actual build number
+docker load -i fideas-fast-api-<build-number>.tar
+# Run the loaded image
+docker run --rm -p 8000:8000 fideas-fast-api:<short-sha>
+```
+
+## Common issues
+- Large build context: `.dockerignore` is provided to speed up builds by excluding unnecessary files.
+- Docker version mismatches: Azure-hosted agents use recent Docker; if you need older versions, use self-hosted agents.
+
+## Consumption example
+```bash
+# Download the artifact (from pipeline UI or via az devops CLI), then:
+# Load and run
+
+docker load -i fideas-fast-api-20260113.1.tar
+
+docker run --rm -p 8000:8000 fideas-fast-api:abc1234
+```
 # Azure DevOps CI for FastAPI Docker Image
 
 This repository includes `azure-pipelines.yml` to build and push a Docker image of the FastAPI service to Azure Container Registry (ACR), following industry-standard practices.

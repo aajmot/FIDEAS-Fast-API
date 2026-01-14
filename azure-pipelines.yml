@@ -1,5 +1,5 @@
-# Azure DevOps pipeline to build and push the FastAPI Docker image
-# Industry-standard defaults: short SHA tags, build number tags, and latest on main/tags.
+# Azure DevOps pipeline to build FastAPI Docker image and publish as artifact
+# Builds the image with short SHA and build number tags, then saves a .tar artifact.
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
@@ -17,29 +17,31 @@ pr:
       - main
 
 variables:
-  # REQUIRED: Update these for your environment
-  - name: dockerRegistryServiceConnection
-    value: acr-service-connection   # Service connection name for ACR in Azure DevOps
-  - name: registryLoginServer
-    value: myregistry.azurecr.io    # ACR login server (e.g., myregistry.azurecr.io)
-  - name: imageRepository
-    value: fideas-fast-api          # Image repository name in ACR
+  # Image name (no registry prefix)
+  - name: imageName
+    value: fideas-fast-api
 
-  # OPTIONAL: Paths
+  # Build configuration
   - name: dockerfilePath
     value: Dockerfile
   - name: buildContext
     value: .
+
+  # Artifact settings
+  - name: publishArtifactName
+    value: docker-image
+  - name: imageTarFileName
+    value: fideas-fast-api-$(Build.BuildNumber).tar
 
 pool:
   vmImage: ubuntu-latest
 
 stages:
   - stage: Build
-    displayName: Build and Push Image
+    displayName: Build Image and Publish Artifact
     jobs:
       - job: docker
-        displayName: Docker Build/Push
+        displayName: Docker Build and Save
         steps:
           - checkout: self
             fetchDepth: 0
@@ -52,32 +54,46 @@ stages:
             displayName: Compute short commit SHA
 
           - task: Docker@2
-            displayName: Build and push (SHA, BuildNumber)
+            displayName: Build image (SHA, BuildNumber tags)
             inputs:
-              containerRegistry: $(dockerRegistryServiceConnection)
-              repository: $(imageRepository)
-              command: buildAndPush
+              command: build
+              repository: $(imageName)
               Dockerfile: $(dockerfilePath)
               buildContext: $(buildContext)
               tags: |
                 $(SHORT_SHA)
                 $(Build.BuildNumber)
 
-          # Tag and push 'latest' for main branch and tags
           - bash: |
               set -euo pipefail
-              echo "Tagging and pushing latest from $(SHORT_SHA)"
-              SRC_TAG="$(registryLoginServer)/$(imageRepository):$(SHORT_SHA)"
-              LATEST_TAG="$(registryLoginServer)/$(imageRepository):latest"
+              mkdir -p "$(Build.ArtifactStagingDirectory)"
+              TAR_PATH="$(Build.ArtifactStagingDirectory)/$(imageTarFileName)"
+              META_PATH="$(Build.ArtifactStagingDirectory)/image-metadata.json"
 
-              # Ensure we have the pushed image locally (agent cache is ephemeral)
-              echo "> docker pull ${SRC_TAG}"
-              docker pull "${SRC_TAG}"
-              echo "> docker tag ${SRC_TAG} ${LATEST_TAG}"
-              docker tag "${SRC_TAG}" "${LATEST_TAG}"
-              echo "> docker push ${LATEST_TAG}"
-              docker push "${LATEST_TAG}"
-            env:
-              DOCKER_CLI_EXPERIMENTAL: enabled
-            displayName: Tag and push latest
-            condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/'), eq(variables['Build.SourceBranchName'], 'main')))
+              echo "> docker save $(imageName):$(SHORT_SHA) -o ${TAR_PATH}"
+              docker save "$(imageName):$(SHORT_SHA)" -o "${TAR_PATH}"
+
+              # Collect minimal metadata
+              created=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+              image_id=$(docker inspect --format='{{.Id}}' "$(imageName):$(SHORT_SHA)")
+              cat > "${META_PATH}" << 'JSON'
+              {
+                "imageName": "$(imageName)",
+                "tag": "$(SHORT_SHA)",
+                "buildNumber": "$(Build.BuildNumber)",
+                "sourceVersion": "$(Build.SourceVersion)",
+                "createdUtc": "CREATED_PLACEHOLDER",
+                "imageId": "IMAGE_ID_PLACEHOLDER"
+              }
+JSON
+              # Replace placeholders with shell values
+              sed -i "s/CREATED_PLACEHOLDER/${created}/" "${META_PATH}"
+              sed -i "s/IMAGE_ID_PLACEHOLDER/${image_id}/" "${META_PATH}"
+            displayName: Save image tar and metadata
+
+          - task: PublishBuildArtifacts@1
+            displayName: Publish image artifact
+            inputs:
+              PathtoPublish: $(Build.ArtifactStagingDirectory)
+              ArtifactName: $(publishArtifactName)
+              publishLocation: Container
