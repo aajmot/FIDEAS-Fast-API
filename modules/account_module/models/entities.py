@@ -308,18 +308,40 @@ class CostCenter(Base):
     __tablename__ = 'cost_centers'
     
     id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
+    tenant_id = Column(Integer, ForeignKey('tenants.id', ondelete='CASCADE'), nullable=False)
+    legal_entity_id = Column(Integer, ForeignKey('legal_entities.id', ondelete='CASCADE'))
     code = Column(String(20), nullable=False)
-    parent_id = Column(Integer, ForeignKey('cost_centers.id'))
-    is_active = Column(Boolean, default=True)
-    tenant_id = Column(Integer, ForeignKey('tenants.id'), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    name = Column(String(100), nullable=False)
+    description = Column(Text)
     
+    # Hierarchy & Type
+    parent_id = Column(Integer, ForeignKey('cost_centers.id'))
+    category = Column(String(20), default='NA', nullable=False)
+    
+    # Responsibility
+    manager_id = Column(Integer, ForeignKey('employees.id', ondelete='SET NULL'))
+    department_id = Column(Integer, ForeignKey('departments.id', ondelete='SET NULL'))
+    
+    # Temporal Data
+    valid_from = Column(Date, nullable=False, default=datetime.utcnow().date())
+    valid_until = Column(Date)
+    
+    # Financial Controls
+    is_active = Column(Boolean, default=True)
+    lock_posting = Column(Boolean, default=False)
+    currency_code = Column(String(3))
+    
+    # Audit Trail
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_by = Column(Integer)
+    
+    # Relationships
     parent = relationship("CostCenter", remote_side=[id])
     children = relationship("CostCenter", overlaps="parent")
     
     __table_args__ = (
-        UniqueConstraint('code', 'tenant_id', name='uq_cost_center_code_tenant'),
+        CheckConstraint("category IN ('PRODUCTION','MARKETING','ADMIN','NA')", name='chk_cc_category'),
     )
 
 class Budget(Base):

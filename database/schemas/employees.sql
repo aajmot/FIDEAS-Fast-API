@@ -1,5 +1,6 @@
+DROP TABLE IF EXISTS public.employee_cost_allocations;
 -- Department Table
-DROP TABLE IF EXISTS public.employees CASCADE;
+DROP TABLE IF EXISTS public.employees;
 -- Employee Table (for all employee types)
 CREATE TABLE IF NOT EXISTS public.employees (
     id                     SERIAL PRIMARY KEY,
@@ -9,7 +10,7 @@ CREATE TABLE IF NOT EXISTS public.employees (
     
     employee_code          VARCHAR(50) NOT NULL,
     employee_name          VARCHAR(200) NOT NULL,
-    employee_type          VARCHAR(50) NOT NULL CHECK (employee_type IN ('LAB_TECHNICIAN','DOCTOR','NURSE','ADMIN','OTHER')),
+    employee_type          VARCHAR(50) NOT NULL DEFAULT 'OTHERS' CHECK (employee_type IN ('LAB_TECHNICIAN','DOCTOR','NURSE','ADMIN','OTHERS')),
     
     phone                  VARCHAR(20),
     email                  VARCHAR(100),
@@ -44,3 +45,27 @@ CREATE INDEX idx_employees_department ON public.employees(department_id);
 CREATE INDEX idx_employees_type ON public.employees(employee_type);
 CREATE INDEX idx_employees_status ON public.employees(status);
 CREATE INDEX idx_employees_code ON public.employees(employee_code);
+
+
+CREATE TABLE employee_cost_allocations (
+    id SERIAL PRIMARY KEY,
+    tenant_id              INTEGER NOT NULL REFERENCES public.tenants(id) ON DELETE CASCADE,
+    branch_id              INTEGER REFERENCES public.branches(id) ON DELETE SET NULL,
+
+    employee_id integer REFERENCES employees(id),
+    cost_center_id integer REFERENCES cost_centers(id),
+    percentage decimal(5,2), -- e.g., 60.00
+    effective_start_date date,
+    effective_end_date date,
+
+    status                 VARCHAR(20) DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE','INACTIVE')),
+    
+    created_at             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by             VARCHAR(100) DEFAULT 'system',
+    updated_at             TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by             VARCHAR(100) DEFAULT 'system',
+    -- is_deleted             BOOLEAN DEFAULT FALSE,
+
+
+    CONSTRAINT total_pct_check_employee_cost_allocations CHECK (percentage <= 100)
+);

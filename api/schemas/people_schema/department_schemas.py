@@ -7,12 +7,20 @@ class DepartmentStatus(str, Enum):
     ACTIVE = "ACTIVE"
     INACTIVE = "INACTIVE"
 
+class OrgUnitType(str, Enum):
+    DIVISION = "DIVISION"
+    DEPARTMENT = "DEPARTMENT"
+    TEAM = "TEAM"
+
 class DepartmentBase(BaseModel):
     department_code: str = Field(..., min_length=1, max_length=50)
     department_name: str = Field(..., min_length=1, max_length=200)
+    parent_department_id: Optional[int] = None
     description: Optional[str] = None
     branch_id: Optional[int] = None
-    status: Optional[DepartmentStatus] = DepartmentStatus.ACTIVE
+    default_cost_center_id: Optional[int] = None
+    org_unit_type: OrgUnitType = OrgUnitType.DIVISION
+    status: DepartmentStatus = DepartmentStatus.ACTIVE
 
     @field_validator('department_code', 'department_name')
     @classmethod
@@ -26,8 +34,11 @@ class DepartmentCreate(DepartmentBase):
 
 class DepartmentUpdate(BaseModel):
     department_name: Optional[str] = Field(None, min_length=1, max_length=200)
+    parent_department_id: Optional[int] = None
     description: Optional[str] = None
     branch_id: Optional[int] = None
+    default_cost_center_id: Optional[int] = None
+    org_unit_type: Optional[OrgUnitType] = None
     status: Optional[DepartmentStatus] = None
 
 class DepartmentResponse(DepartmentBase):
@@ -41,3 +52,24 @@ class DepartmentResponse(DepartmentBase):
 
     class Config:
         from_attributes = True
+
+class DepartmentListResponse(BaseModel):
+    id: int
+    department_code: str
+    department_name: str
+    parent_department_id: Optional[int]
+    org_unit_type: OrgUnitType
+    status: DepartmentStatus
+    branch_id: Optional[int]
+    default_cost_center_id: Optional[int]
+
+    class Config:
+        from_attributes = True
+
+class DepartmentImportRow(BaseModel):
+    department_code: str
+    department_name: str
+    parent_code: Optional[str] = None
+    description: Optional[str] = None
+    org_unit_type: Optional[str] = "DIVISION"
+    status: Optional[str] = "ACTIVE"

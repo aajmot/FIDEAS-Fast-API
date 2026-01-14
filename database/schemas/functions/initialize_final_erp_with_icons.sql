@@ -12,7 +12,8 @@ BEGIN
     (1, 'ADMIN', 'ADMIN', 'Core system and security', true, true),
     (2, 'INVENTORY', 'INVENTORY', 'Supply chain and stock', true, false),
     (3, 'ACCOUNT', 'ACCOUNT', 'Finance and compliance', true, false),
-    (4, 'HEALTH', 'HEALTH', 'Clinical and diagnostics', true, false);
+    (4, 'HEALTH', 'HEALTH', 'Clinical and diagnostics', true, false),
+    (5, 'PEOPLE', 'PEOPLE', 'People and Operations', true, false);
 
     -- 3. Level 1: Root Menus
     INSERT INTO menu_master (id, menu_name, menu_code, module_code, parent_menu_id, icon, sort_order)
@@ -20,7 +21,8 @@ BEGIN
     (1000, 'Admin', 'ROOT_ADMIN', 'ADMIN', NULL, '🛠️', 1),
     (2000, 'Inventory', 'ROOT_INV', 'INVENTORY', NULL, '📦', 2),
     (3000, 'Finance', 'ROOT_ACC', 'ACCOUNT', NULL, '💰', 3),
-    (4000, 'Health', 'ROOT_HEALTH', 'HEALTH', NULL, '🏥', 4);
+    (4000, 'Health', 'ROOT_HEALTH', 'HEALTH', NULL, '🏥', 4),
+    (5000, 'People', 'ROOT_PEOPLE', 'PEOPLE', NULL, '👥', 5);
 
     --------------------------------------------------------------------------------
     -- ADMIN (Identity, Org, Settings)
@@ -149,6 +151,22 @@ BEGIN
     ('Allocation', 'HEALTH_PAYMENT_ALLOCATION', 'HEALTH', 4400, '/health/payment/allocation', '💸', 3)
     
     ;
+    
+    --------------------------------------------------------------------------------
+    -- PEOPLE (People and Operations)
+    --------------------------------------------------------------------------------    
+    INSERT INTO menu_master (id, menu_name, menu_code, module_code, parent_menu_id, icon, sort_order)
+    VALUES 
+    (5100, 'Setup', 'PEOPLE_MSTR_GRP', 'PEOPLE', 5000, '⚙️', 1)
+    ;
+
+    INSERT INTO menu_master (menu_name, menu_code, module_code, parent_menu_id, route, icon, sort_order)
+    VALUES 
+    ('Department', 'PEOPLE_DEPT', 'PEOPLE', 5100, '/people/departments', '📊', 1),
+    ('Employee', 'PEOPLE_EMP', 'PEOPLE', 5100, '/people/employees', '👨‍⚕️', 2)
+    ;
+
+
 
     -- 4. Currency 
     INSERT INTO currencies (
