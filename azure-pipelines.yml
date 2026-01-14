@@ -1,0 +1,83 @@
+# Azure DevOps pipeline to build and push the FastAPI Docker image
+# Industry-standard defaults: short SHA tags, build number tags, and latest on main/tags.
+
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  branches:
+    include:
+      - main
+  tags:
+    include:
+      - "*"
+
+pr:
+  branches:
+    include:
+      - main
+
+variables:
+  # REQUIRED: Update these for your environment
+  - name: dockerRegistryServiceConnection
+    value: acr-service-connection   # Service connection name for ACR in Azure DevOps
+  - name: registryLoginServer
+    value: myregistry.azurecr.io    # ACR login server (e.g., myregistry.azurecr.io)
+  - name: imageRepository
+    value: fideas-fast-api          # Image repository name in ACR
+
+  # OPTIONAL: Paths
+  - name: dockerfilePath
+    value: Dockerfile
+  - name: buildContext
+    value: .
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Build
+    displayName: Build and Push Image
+    jobs:
+      - job: docker
+        displayName: Docker Build/Push
+        steps:
+          - checkout: self
+            fetchDepth: 0
+
+          - bash: |
+              set -euo pipefail
+              sha="${BUILD_SOURCEVERSION:0:7}"
+              echo "Short SHA: ${sha}"
+              echo "##vso[task.setvariable variable=SHORT_SHA]${sha}"
+            displayName: Compute short commit SHA
+
+          - task: Docker@2
+            displayName: Build and push (SHA, BuildNumber)
+            inputs:
+              containerRegistry: $(dockerRegistryServiceConnection)
+              repository: $(imageRepository)
+              command: buildAndPush
+              Dockerfile: $(dockerfilePath)
+              buildContext: $(buildContext)
+              tags: |
+                $(SHORT_SHA)
+                $(Build.BuildNumber)
+
+          # Tag and push 'latest' for main branch and tags
+          - bash: |
+              set -euo pipefail
+              echo "Tagging and pushing latest from $(SHORT_SHA)"
+              SRC_TAG="$(registryLoginServer)/$(imageRepository):$(SHORT_SHA)"
+              LATEST_TAG="$(registryLoginServer)/$(imageRepository):latest"
+
+              # Ensure we have the pushed image locally (agent cache is ephemeral)
+              echo "> docker pull ${SRC_TAG}"
+              docker pull "${SRC_TAG}"
+              echo "> docker tag ${SRC_TAG} ${LATEST_TAG}"
+              docker tag "${SRC_TAG}" "${LATEST_TAG}"
+              echo "> docker push ${LATEST_TAG}"
+              docker push "${LATEST_TAG}"
+            env:
+              DOCKER_CLI_EXPERIMENTAL: enabled
+            displayName: Tag and push latest
+            condition: and(succeeded(), or(startsWith(variables['Build.SourceBranch'], 'refs/tags/'), eq(variables['Build.SourceBranchName'], 'main')))
