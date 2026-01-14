@@ -5,6 +5,7 @@ from sqlalchemy.pool import QueuePool
 from contextlib import contextmanager
 from core.shared.utils.logger import logger
 from core.shared.middleware.exception_handler import ExceptionMiddleware
+from sqlalchemy.engine import URL
 
 Base = declarative_base()
 
@@ -24,7 +25,14 @@ class DatabaseManager:
     
     @ExceptionMiddleware.handle_exceptions("DatabaseManager")
     def _initialize_database(self):
-        database_url = os.getenv('DATABASE_URL')
+        database_url = URL.create(
+            drivername="postgresql",
+            username=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),  # Raw password with @ or #
+            host=os.getenv('DB_HOST'),
+            database=os.getenv('DB_NAME')
+        )
+        #database_url = os.getenv('DATABASE_URL')
         pool_size = int(os.getenv('DB_POOL_SIZE', 10))
         max_overflow = int(os.getenv('DB_MAX_OVERFLOW', 20))
         

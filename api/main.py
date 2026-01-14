@@ -73,6 +73,7 @@ from api.v1.routers.account_routes import (
 from core.database.connection import db_manager
 import types
 from fastapi import APIRouter
+from core.shared.utils.logger import logger
 
 # Import models to ensure they're registered with SQLAlchemy
 from modules.account_module.models.bank_account_entity import BankAccount
@@ -108,43 +109,30 @@ try:
 except Exception:
     fixed_assets = types.SimpleNamespace(router=APIRouter())
 
-try:
-    # import health routes (grouped under health_routes package)
-    from api.v1.routers.health_routes import (
-        appointments_route,
-        appointment_invoices_route,
-        billing_masters_route,
-        doctors_route,
-        invoices_route as health_invoices_route,
-        lab_technicians_route,
-        medical_records_route,
-        patients_route,
-        prescriptions_route,
-        sample_collections_route,
-        testcategories_route,
-        testorders_route,
-        testpanels_route,
-        testresults_route,
-        tests_route,
-        testinvoices_route,
-    )
-except Exception:
-    appointments_route = types.SimpleNamespace(router=APIRouter())
-    appointment_invoices_route = types.SimpleNamespace(router=APIRouter())
-    billing_masters_route = types.SimpleNamespace(router=APIRouter())
-    doctors_route = types.SimpleNamespace(router=APIRouter())
-    health_invoices_route = types.SimpleNamespace(router=APIRouter())
-    lab_technicians_route = types.SimpleNamespace(router=APIRouter())
-    medical_records_route = types.SimpleNamespace(router=APIRouter())
-    patients_route = types.SimpleNamespace(router=APIRouter())
-    prescriptions_route = types.SimpleNamespace(router=APIRouter())
-    sample_collections_route = types.SimpleNamespace(router=APIRouter())
-    testcategories_route = types.SimpleNamespace(router=APIRouter())
-    testorders_route = types.SimpleNamespace(router=APIRouter())
-    testpanels_route = types.SimpleNamespace(router=APIRouter())
-    testresults_route = types.SimpleNamespace(router=APIRouter())
-    tests_route = types.SimpleNamespace(router=APIRouter())
-    testinvoices_route = types.SimpleNamespace(router=APIRouter())
+def _safe_import_health(name: str):
+    try:
+        module = __import__("api.v1.routers.health_routes", fromlist=[name])
+        return getattr(module, name)
+    except Exception as e:
+        logger.error(f"Health route import failed: {name}: {e}", module="api.main", exc_info=True)
+        return types.SimpleNamespace(router=APIRouter())
+
+appointments_route = _safe_import_health("appointments_route")
+appointment_invoices_route = _safe_import_health("appointment_invoices_route")
+billing_masters_route = _safe_import_health("billing_masters_route")
+doctors_route = _safe_import_health("doctors_route")
+health_invoices_route = _safe_import_health("invoices_route")
+lab_technicians_route = _safe_import_health("lab_technicians_route")
+medical_records_route = _safe_import_health("medical_records_route")
+patients_route = _safe_import_health("patients_route")
+prescriptions_route = _safe_import_health("prescriptions_route")
+sample_collections_route = _safe_import_health("sample_collections_route")
+testcategories_route = _safe_import_health("testcategories_route")
+testorders_route = _safe_import_health("testorders_route")
+testpanels_route = _safe_import_health("testpanels_route")
+testresults_route = _safe_import_health("testresults_route")
+tests_route = _safe_import_health("tests_route")
+testinvoices_route = _safe_import_health("testinvoices_route")
 
 try:
     # import public routes
